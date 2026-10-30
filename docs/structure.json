@@ -216,14 +216,14 @@
         }
       ],
       "sub": {
-        "en": "the ESP-IDF firmware, not built yet",
-        "es": "el firmware de ESP-IDF, aún sin compilar",
-        "it": "il firmware ESP-IDF, ancora da compilare",
-        "de": "die ESP-IDF-Firmware, noch nicht gebaut",
-        "fr": "le firmware ESP-IDF, pas encore compilé",
-        "pt": "o firmware ESP-IDF, ainda por compilar",
-        "zh": "ESP-IDF 固件，尚未编译",
-        "ja": "ESP-IDF ファームウェア（未ビルド）"
+        "en": "the ESP-IDF firmware (it builds, not flashed)",
+        "es": "el firmware de ESP-IDF (se compila, sin grabar)",
+        "it": "il firmware ESP-IDF (si compila, non caricato)",
+        "de": "die ESP-IDF-Firmware (baut, nicht geflasht)",
+        "fr": "le firmware ESP-IDF (se compile, non flashé)",
+        "pt": "o firmware ESP-IDF (compila-se, sem gravar)",
+        "zh": "ESP-IDF 固件（能编译，未烧录）",
+        "ja": "ESP-IDF ファームウェア（ビルド可・未書き込み）"
       }
     },
     {

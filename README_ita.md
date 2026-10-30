@@ -18,7 +18,7 @@
 
 ---
 
-**Verifica di onestà - cosa funziona oggi:** le regole del nodo sono scritte in C++17 e provate su un computer: il file delle impostazioni con i suoi valori sicuri, la misura dell'altezza del tavolo da più letture del laser (quelle anomale vengono scartate e una misura troppo dispersa è rifiutata), la velocità del mandrino dagli impulsi di un sensore, la temperatura con avviso, livello critico e isteresi, l'uscita di protezione e le parole che il nodo dice in rete (lo stato, la misura, il token). Il firmware ESP-IDF (rete cablata, server web, telecamera, impulsi del mandrino, uscita di protezione) è scritto ma non è stato compilato, caricato né eseguito su una scheda; **i driver del laser (VL53L1X), dei sensori di temperatura (DS18B20, NTC, MLX90614) e della telecamera (OV2640 o OV5640) sono scritti ma non sono mai stati eseguiti su una scheda**, quindi non è mai stata fatta una misura, e nulla è stato collegato a una macchina.
+**Verifica di onestà - cosa funziona oggi:** le regole del nodo sono scritte in C++17 e provate su un computer: il file delle impostazioni con i suoi valori sicuri, la misura dell'altezza del tavolo da più letture del laser (quelle anomale vengono scartate e una misura troppo dispersa è rifiutata), la velocità del mandrino dagli impulsi di un sensore, la temperatura con avviso, livello critico e isteresi, l'uscita di protezione e le parole che il nodo dice in rete (lo stato, la misura, il token). Il firmware ESP-IDF (rete cablata, server web, telecamera, impulsi del mandrino, uscita di protezione) è scritto e si compila con ESP-IDF 5.5.5, ma non è mai stato caricato né eseguito su una scheda; **i driver del laser (VL53L1X), dei sensori di temperatura (DS18B20, NTC, MLX90614) e della telecamera (OV2640 o OV5640) sono scritti ma non sono mai stati eseguiti su una scheda**, quindi non è mai stata fatta una misura, e nulla è stato collegato a una macchina.
 
 ---
 
@@ -32,7 +32,7 @@
 | Maturità | Impalcatura |
 | Test | 2 programmi di prova sul computer (203 verifiche) |
 | Stack tecnologico | C++17, ESP-IDF 5.5, ESP32-S3, rete W5500 |
-| Su hardware reale | No: il firmware non è stato compilato né caricato, e nulla è stato collegato a una macchina |
+| Su hardware reale | No: il firmware si compila ma non è stato caricato, e nulla è stato collegato a una macchina |
 
 **Vai a:** [Panoramica](#-panoramica) · [Architettura](#-architettura) · [Avvio rapido](#-avvio-rapido) · [Test](#-test) · [Struttura](#-struttura-del-repository) · [Correlati](#-progetti-correlati)
 
@@ -43,7 +43,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 
 | Area | Stato | Cosa significa qui |
 |---|---|---|
-| Software | 🟠 | Il progetto ESP-IDF (rete cablata con un W5500, server web, telecamera, impulsi del mandrino, uscita di protezione, il file delle impostazioni nella sua partizione) è scritto; non è stato compilato né caricato. |
+| Software | 🟠 | Il progetto ESP-IDF (rete cablata con un W5500, server web, telecamera, impulsi del mandrino, uscita di protezione, il file delle impostazioni nella sua partizione) è scritto e si compila; non è stato caricato. |
 | Test | 🟢 | 2 programmi di prova sul computer passano (`ctest`): 203 verifiche del file delle impostazioni, della misura del laser, della velocità e della temperatura del mandrino, dell'uscita di protezione e delle parole della rete. |
 | Laser (altezza del tavolo) | 🟡 | La misura da più letture (mediana, letture anomale scartate, dispersione verificata, intervallo e offset) è provata; il driver del VL53L1X è scritto ma non è mai stato eseguito, quindi non è ancora stata fatta alcuna misura. |
 | Mandrino | 🟡 | La velocità dagli impulsi di un sensore (qualsiasi numero per giro, fermo quando gli impulsi cessano), la temperatura con avviso, livello critico e isteresi e l'uscita di protezione sono provate; i driver del DS18B20, dell'NTC e dell'MLX90614 sono scritti ma non sono mai stati eseguiti. |
@@ -144,11 +144,11 @@ build.bat            # le prove sul computer (Windows)  -  ./build.sh su Linux
 python -I tools/ci_validate.py
 ```
 
-Il firmware non è ancora stato compilato: quando lo sarà, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produce l'immagine (imposta i pin della tua scheda in `EH3D Bungard AUX`), e una partizione chiamata `config` contiene `head.cfg`.
+Il firmware si compila con ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produce l'immagine (imposta i pin della tua scheda in `EH3D Bungard AUX`), e una partizione chiamata `config` contiene `head.cfg`.
 
 ## 🧪 Test
 
-Le prove sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e tutto passa: `test_aux` (103 verifiche) sul file delle impostazioni (valori predefiniti, valori, valori errati, limiti che non hanno senso insieme), la misura del laser (la mediana, la lettura anomala scartata, l'offset, letture segnate come cattive, l'intervallo, nessuna lettura, una dispersione troppo grande), la velocità del mandrino (impulsi per giro, un mandrino che rallenta, fermo quando gli impulsi cessano), la temperatura (l'isteresi, un sensore che si guasta), l'uscita di protezione e le parole della rete (la riga di richiesta, i percorsi, il token nell'intestazione o nella query, il numero di letture, il JSON dello stato e della misura, la riga di un punto della mappa). Il firmware non è coperto: non è stato compilato. Il secondo programma, `test_stream` (100 verifiche), copre il video: gli hash degli accessi contro i loro vettori pubblicati (MD5, SHA-1, base64 e l'esempio Digest dell'RFC 2617), le richieste RTSP e tutta la sessione (accesso, SDP, trasporto UDP e interleaved, play, pause, teardown, una sessione errata, multicast rifiutato), il payload RTP di JPEG (le tabelle nel primo pacchetto, l'ordine, il marcatore, il ritorno a zero della sequenza) e ONVIF (discovery, il token utente con l'esempio dello standard, le chiamate aperte e quelle protette, i servizi e una chiamata non eseguita).
+Le prove sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e tutto passa: `test_aux` (103 verifiche) sul file delle impostazioni (valori predefiniti, valori, valori errati, limiti che non hanno senso insieme), la misura del laser (la mediana, la lettura anomala scartata, l'offset, letture segnate come cattive, l'intervallo, nessuna lettura, una dispersione troppo grande), la velocità del mandrino (impulsi per giro, un mandrino che rallenta, fermo quando gli impulsi cessano), la temperatura (l'isteresi, un sensore che si guasta), l'uscita di protezione e le parole della rete (la riga di richiesta, i percorsi, il token nell'intestazione o nella query, il numero di letture, il JSON dello stato e della misura, la riga di un punto della mappa). Il firmware non è coperto: si compila, ma le prove sono sul computer. Il secondo programma, `test_stream` (100 verifiche), copre il video: gli hash degli accessi contro i loro vettori pubblicati (MD5, SHA-1, base64 e l'esempio Digest dell'RFC 2617), le richieste RTSP e tutta la sessione (accesso, SDP, trasporto UDP e interleaved, play, pause, teardown, una sessione errata, multicast rifiutato), il payload RTP di JPEG (le tabelle nel primo pacchetto, l'ordine, il marcatore, il ritorno a zero della sequenza) e ONVIF (discovery, il token utente con l'esempio dello standard, le chiamate aperte e quelle protette, i servizi e una chiamata non eseguita).
 
 ## 🏗️ Compilazione e rilascio
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Limiti noti oggi**
 
-* Nulla è stato eseguito su una scheda: il firmware non è stato compilato, caricato né provato, e i pin della telecamera e del chip di rete vanno controllati con lo schema della scheda.
+* Nulla è stato eseguito su una scheda: il firmware si compila ma non è stato caricato né provato, e i pin della telecamera e del chip di rete vanno controllati con lo schema della scheda.
 * I driver del laser (VL53L1X via I2C, con il componente `grrtzm/vl53l1x_library`, poco usato), dei sensori di temperatura e della telecamera sono scritti e non sono mai stati eseguiti: il primo sensore che risponde su una scheda può mostrare un errore.
 * EH3D-BUNGARD-GUI (la finestra del nodo della testa) e EH3D-SERVER interrogano il nodo, direttamente o tramite il server; nessuno dei due è stato provato con un nodo reale.
 * La porta di rete è HTTP semplice: tienila su una rete a parte.

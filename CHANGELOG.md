@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The firmware builds:** with ESP-IDF 5.5.5 for the ESP32-S3 (608 KB, 81% of the application partition free), with the camera driver, the VL53L1X component and the W5500 of the board; it has not been flashed or run.
+
 - **Through the server:** the node is reached by EH3D-SERVER too (`/api/v1/machines/:id/head/...`), with the address and the token of the node in the machine's configuration.
 
 - **Two cameras, the OV2640 and the OV5640:** `core/camera.hpp` lists the sizes each sensor can give; the sensor is asked which one it is (the product id), the node starts the camera at the largest size that `camera_width` and `camera_height` allow and that sensor can do, reports `camera_model` on `/api/status`, and the ONVIF encoder options list only what that sensor gives. `camera_model = auto | ov2640 | ov5640` in `head.cfg`; the pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
@@ -16,6 +18,6 @@ All notable changes to this project are documented here.
 - **The measure of the table:** several laser readings become one distance: the odd ones are thrown away (median and median absolute deviation), the range and the offset are applied, and a measure that spreads too much, lies out of the range or has too few readings is refused with the reason.
 - **The spindle:** the speed from the pulses of a sensor (any number per turn, zero when the pulses stop), the temperature with a warning, a critical level and a hysteresis, and the protect output that opens when the spindle is too fast or too hot or when a sensor that is on does not answer.
 - **The words of the network:** `GET /api/status`, `POST /api/measure` and `GET /stream`, the token in the header or the query compared in constant time, the answers as JSON and the line `Z x y height` that the desktop programs read as a point of the map of the table.
-- **The firmware, not built:** the ESP-IDF project for an ESP32-S3 with a W5500 network chip (the network, the web server, the camera, the pulses of the spindle and the protect output); the drivers of the laser and of the temperature sensors are not written.
+- **The firmware, built but never flashed:** the ESP-IDF project for an ESP32-S3 with a W5500 network chip (the network, the web server, the camera, the pulses of the spindle and the protect output); the drivers of the laser and of the temperature sensors are not written.
 - **The video as an IP camera sends it:** RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN; JPEG over RTP over UDP or interleaved in the TCP connection; Digest and Basic login) and ONVIF (WS-Discovery, and the SOAP services of profile S: capabilities, services, profiles, video sources and encoders with the sizes the camera can do, the address of the stream and of the snapshot, the user token), with the user and the password of the settings; without a password nothing is served. The firmware that carries them is not built.
 - **Host tests:** two programs with 175 checks on the rules above and on the video (the hashes of the logins against their published vectors, the RTSP session, the RTP payload of JPEG and ONVIF).

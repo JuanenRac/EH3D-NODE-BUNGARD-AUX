@@ -1,0 +1,52 @@
+dependencies:
+  espressif/esp32-camera:
+    component_hash: d1770097ec47996a9aba49b8d99672863c9855ea2d47e91fe31e11e58e8c7813
+    dependencies:
+    - name: espressif/esp_jpeg
+      registry_url: https://components.espressif.com
+      require: public
+      version: ^1.3.1
+    - name: idf
+      require: private
+      version: '>=5.1'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 2.1.8
+  espressif/esp_jpeg:
+    component_hash: 47d19eac5f76fac06798c04f4d2579c7ab26fd33280ed10f43d8895175376bdf
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.0'
+    source:
+      registry_url: https://components.espressif.com
+      type: service
+    version: 1.3.2
+  grrtzm/vl53l1x_library:
+    component_hash: 845575d40220f911d635e1f3ac3209863d79ec5e17e93a6dea8345d0e082e854
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=5.5.2'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    targets:
+    - esp32
+    - esp32s2
+    - esp32s3
+    - esp32c3
+    - esp32c6
+    version: 0.3.1
+  idf:
+    source:
+      type: idf
+    version: 5.5.5
+direct_dependencies:
+- espressif/esp32-camera
+- grrtzm/vl53l1x_library
+- idf
+manifest_hash: 5b3e2da3092b85468b198e0da8baad3d01d7b316a098e1d6d3fa442e0e372c29
+target: esp32s3
+version: 2.0.0

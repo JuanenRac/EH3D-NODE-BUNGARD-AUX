@@ -34,10 +34,12 @@ portMUX_TYPE ring_lock = portMUX_INITIALIZER_UNLOCKED;
 bungard_aux::RpmMeter* meter = nullptr;
 int tail = 0;
 
+#if CONFIG_AUX_RPM_GPIO >= 0
 void IRAM_ATTR on_pulse(void*) {
     ring[ring_head % kRing] = static_cast<std::uint64_t>(esp_timer_get_time());
     ring_head = ring_head + 1;
 }
+#endif
 
 bungard_aux::Settings cfg;
 

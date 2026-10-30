@@ -18,7 +18,7 @@
 
 ---
 
-**Honesty check - what actually runs today:** the rules of the node are written in C++17 and tested on a computer: the settings file with its safe defaults, the measure of the height of the table from several laser readings (the odd ones are thrown away and a measure that spreads too much is refused), the speed of the spindle from the pulses of a sensor, the temperature with its warning, its critical level and a hysteresis, the protect output and the words the node says on the network (the status, the measure, the token). The ESP-IDF firmware (wired network, web server, camera, pulses of the spindle, protect output) is written but has not been built, flashed or run on a board; **the drivers of the laser (VL53L1X), of the temperature sensors (DS18B20, NTC, MLX90614) and of the camera (OV2640 or OV5640) are written but have never run on a board**, so no measure has ever been taken, and nothing has been connected to a machine.
+**Honesty check - what actually runs today:** the rules of the node are written in C++17 and tested on a computer: the settings file with its safe defaults, the measure of the height of the table from several laser readings (the odd ones are thrown away and a measure that spreads too much is refused), the speed of the spindle from the pulses of a sensor, the temperature with its warning, its critical level and a hysteresis, the protect output and the words the node says on the network (the status, the measure, the token). The ESP-IDF firmware (wired network, web server, camera, pulses of the spindle, protect output) is written and builds with ESP-IDF 5.5.5, but has never been flashed or run on a board; **the drivers of the laser (VL53L1X), of the temperature sensors (DS18B20, NTC, MLX90614) and of the camera (OV2640 or OV5640) are written but have never run on a board**, so no measure has ever been taken, and nothing has been connected to a machine.
 
 ---
 
@@ -32,7 +32,7 @@
 | Maturity | Scaffolding |
 | Tests | 2 host test programs (203 checks) |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
-| On real hardware | No: the firmware has not been built or flashed, and nothing has been connected to a machine |
+| On real hardware | No: the firmware builds but has not been flashed, and nothing has been connected to a machine |
 
 **Jump to:** [Overview](#-overview) · [Architecture](#-architecture) · [Quick start](#-quick-start) · [Testing](#-testing) · [Structure](#-repository-structure) · [Related](#-related-projects)
 
@@ -43,7 +43,7 @@ Each line is one part of this repository and the light says how far it is today.
 
 | Area | State | What it means here |
 |---|---|---|
-| Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written; it has not been built or flashed. |
+| Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
 | Tests | 🟢 | 2 host test programs pass (`ctest`): 203 checks in the settings file, the measure of the laser, the speed and the temperature of the spindle, the protect output and the words of the network. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
@@ -144,11 +144,11 @@ build.bat            # the host tests (Windows)  -  ./build.sh on Linux
 python -I tools/ci_validate.py
 ```
 
-The firmware has not been built yet: when it is, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` makes the image (set the pins of your board under `EH3D Bungard AUX`), and a partition named `config` holds `head.cfg`.
+The firmware builds with ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` makes the image (set the pins of your board under `EH3D Bungard AUX`), and a partition named `config` holds `head.cfg`.
 
 ## 🧪 Testing
 
-The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_aux` (103 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it has not been built. The second program, `test_stream` (100 checks), covers the video: the hashes of the logins against their published vectors (MD5, SHA-1, base64 and the Digest example of RFC 2617), the RTSP requests and the whole session (login, SDP, UDP and interleaved transport, play, pause, teardown, a wrong session, multicast refused), the RTP payload of JPEG (the tables in the first packet, the order, the marker, the sequence wrapping) and ONVIF (discovery, the user token with the example of the standard, the open and the protected calls, the services and a call that is not done).
+The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_aux` (103 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it builds, but the tests run on a computer. The second program, `test_stream` (100 checks), covers the video: the hashes of the logins against their published vectors (MD5, SHA-1, base64 and the Digest example of RFC 2617), the RTSP requests and the whole session (login, SDP, UDP and interleaved transport, play, pause, teardown, a wrong session, multicast refused), the RTP payload of JPEG (the tables in the first packet, the order, the marker, the sequence wrapping) and ONVIF (discovery, the user token with the example of the standard, the open and the protected calls, the services and a call that is not done).
 
 ## 🏗️ Build & Release
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Known limits today**
 
-* Nothing has run on a board: the firmware has not been built, flashed or tried, and the pins of the camera and of the network chip must be checked against the schematic of the board.
+* Nothing has run on a board: the firmware builds but has not been flashed or tried, and the pins of the camera and of the network chip must be checked against the schematic of the board.
 * The drivers of the laser (VL53L1X over I2C, through the component `grrtzm/vl53l1x_library`, little used), of the temperature sensors and of the camera are written and have never run: the first sensor that answers on a board may show a mistake.
 * EH3D-BUNGARD-GUI (the window of the head node) and EH3D-SERVER ask the node, directly or through the server; neither has been tried against a real node.
 * The network port is plain HTTP: keep it on a network of its own.

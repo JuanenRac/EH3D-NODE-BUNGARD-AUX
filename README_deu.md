@@ -18,7 +18,7 @@
 
 ---
 
-**Ehrlichkeitscheck - was heute tatsächlich läuft:** die Regeln des Knotens sind in C++17 geschrieben und auf einem Computer getestet: die Einstellungsdatei mit ihren sicheren Vorgaben, die Messung der Tischhöhe aus mehreren Laserwerten (Ausreißer werden verworfen, eine zu stark streuende Messung wird abgelehnt), die Drehzahl der Spindel aus den Impulsen eines Sensors, die Temperatur mit Warnstufe, kritischer Stufe und Hysterese, der Schutzausgang und die Wörter, die der Knoten im Netz sagt (der Status, die Messung, das Token). Die ESP-IDF-Firmware (Kabelnetz, Webserver, Kamera, Spindelimpulse, Schutzausgang) ist geschrieben, aber nicht gebaut, geflasht oder auf einer Platine ausgeführt; **die Treiber des Lasers (VL53L1X), der Temperatursensoren (DS18B20, NTC, MLX90614) und der Kamera (OV2640 oder OV5640) sind geschrieben, aber nie auf einer Platine gelaufen**, daher wurde noch nie eine Messung gemacht, und nichts wurde an eine Maschine angeschlossen.
+**Ehrlichkeitscheck - was heute tatsächlich läuft:** die Regeln des Knotens sind in C++17 geschrieben und auf einem Computer getestet: die Einstellungsdatei mit ihren sicheren Vorgaben, die Messung der Tischhöhe aus mehreren Laserwerten (Ausreißer werden verworfen, eine zu stark streuende Messung wird abgelehnt), die Drehzahl der Spindel aus den Impulsen eines Sensors, die Temperatur mit Warnstufe, kritischer Stufe und Hysterese, der Schutzausgang und die Wörter, die der Knoten im Netz sagt (der Status, die Messung, das Token). Die ESP-IDF-Firmware (Kabelnetz, Webserver, Kamera, Spindelimpulse, Schutzausgang) ist geschrieben und lässt sich mit ESP-IDF 5.5.5 bauen, wurde aber nie geflasht oder auf einer Platine ausgeführt; **die Treiber des Lasers (VL53L1X), der Temperatursensoren (DS18B20, NTC, MLX90614) und der Kamera (OV2640 oder OV5640) sind geschrieben, aber nie auf einer Platine gelaufen**, daher wurde noch nie eine Messung gemacht, und nichts wurde an eine Maschine angeschlossen.
 
 ---
 
@@ -32,7 +32,7 @@
 | Reifegrad | Gerüst |
 | Tests | 2 Testprogramme auf dem Rechner (203 Prüfungen) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, ESP32-S3, Netzwerk W5500 |
-| Auf echter Hardware | Nein: die Firmware wurde nicht gebaut oder geflasht, und nichts wurde an eine Maschine angeschlossen |
+| Auf echter Hardware | Nein: die Firmware lässt sich bauen, wurde aber nicht geflasht, und nichts wurde an eine Maschine angeschlossen |
 
 **Springe zu:** [Überblick](#-überblick) · [Architektur](#-architektur) · [Schnellstart](#-schnellstart) · [Tests](#-tests) · [Struktur](#-struktur-des-repositorys) · [Verwandte](#-verwandte-projekte)
 
@@ -43,7 +43,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
-| Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben; es wurde nicht gebaut oder geflasht. |
+| Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben und baut; es wurde nicht geflasht. |
 | Tests | 🟢 | 2 Testprogramme auf dem Rechner bestehen (`ctest`): 203 Prüfungen der Einstellungsdatei, der Lasermessung, der Drehzahl und Temperatur der Spindel, des Schutzausgangs und der Wörter des Netzes. |
 | Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des VL53L1X ist geschrieben, aber nie gelaufen, daher wurde noch keine Messung gemacht. |
 | Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber des DS18B20, des NTC und des MLX90614 sind geschrieben, aber nie gelaufen. |
@@ -144,11 +144,11 @@ build.bat            # die Tests auf dem Rechner (Windows)  -  ./build.sh unter 
 python -I tools/ci_validate.py
 ```
 
-Die Firmware wurde noch nicht gebaut: wenn es so weit ist, erzeugt `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` das Image (die Pins deiner Platine unter `EH3D Bungard AUX` setzen), und eine Partition namens `config` enthält `head.cfg`.
+Die Firmware wird mit ESP-IDF 5.5.5 gebaut: erzeugt `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` das Image (die Pins deiner Platine unter `EH3D Bungard AUX` setzen), und eine Partition namens `config` enthält `head.cfg`.
 
 ## 🧪 Tests
 
-Die Tests auf dem Rechner (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_aux` (103 Prüfungen) zur Einstellungsdatei (Standardwerte, Werte, falsche Werte, Grenzen, die zusammen keinen Sinn ergeben), zur Lasermessung (der Median, der verworfene Ausreißer, der Versatz, als schlecht markierte Werte, der Bereich, keine Werte, eine zu große Streuung), zur Spindeldrehzahl (Impulse je Umdrehung, eine langsamer werdende Spindel, Stillstand bei ausbleibenden Impulsen), zur Temperatur (die Hysterese, ein ausfallender Sensor), zum Schutzausgang und zu den Wörtern des Netzes (die Anfragezeile, die Routen, das Token im Header oder in der Abfrage, die Zahl der Werte, das JSON von Status und Messung, die Zeile eines Kartenpunkts). Die Firmware ist nicht abgedeckt: sie wurde nicht gebaut. Das zweite Programm, `test_stream` (100 Prüfungen), deckt das Video ab: die Hashes der Anmeldungen gegen ihre veröffentlichten Vektoren (MD5, SHA-1, Base64 und das Digest-Beispiel des RFC 2617), die RTSP-Anfragen und die ganze Sitzung (Anmeldung, SDP, UDP- und verschachtelter Transport, Play, Pause, Teardown, eine falsche Sitzung, Multicast abgelehnt), die RTP-Nutzlast von JPEG (die Tabellen im ersten Paket, die Reihenfolge, die Markierung, der Überlauf der Sequenz) und ONVIF (Erkennung, das Benutzer-Token mit dem Beispiel des Standards, die offenen und die geschützten Aufrufe, die Dienste und ein nicht ausgeführter Aufruf).
+Die Tests auf dem Rechner (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_aux` (103 Prüfungen) zur Einstellungsdatei (Standardwerte, Werte, falsche Werte, Grenzen, die zusammen keinen Sinn ergeben), zur Lasermessung (der Median, der verworfene Ausreißer, der Versatz, als schlecht markierte Werte, der Bereich, keine Werte, eine zu große Streuung), zur Spindeldrehzahl (Impulse je Umdrehung, eine langsamer werdende Spindel, Stillstand bei ausbleibenden Impulsen), zur Temperatur (die Hysterese, ein ausfallender Sensor), zum Schutzausgang und zu den Wörtern des Netzes (die Anfragezeile, die Routen, das Token im Header oder in der Abfrage, die Zahl der Werte, das JSON von Status und Messung, die Zeile eines Kartenpunkts). Die Firmware ist nicht abgedeckt: sie lässt sich bauen, die Tests laufen aber auf dem Computer. Das zweite Programm, `test_stream` (100 Prüfungen), deckt das Video ab: die Hashes der Anmeldungen gegen ihre veröffentlichten Vektoren (MD5, SHA-1, Base64 und das Digest-Beispiel des RFC 2617), die RTSP-Anfragen und die ganze Sitzung (Anmeldung, SDP, UDP- und verschachtelter Transport, Play, Pause, Teardown, eine falsche Sitzung, Multicast abgelehnt), die RTP-Nutzlast von JPEG (die Tabellen im ersten Paket, die Reihenfolge, die Markierung, der Überlauf der Sequenz) und ONVIF (Erkennung, das Benutzer-Token mit dem Beispiel des Standards, die offenen und die geschützten Aufrufe, die Dienste und ein nicht ausgeführter Aufruf).
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Bekannte Grenzen heute**
 
-* Nichts lief auf einer Platine: die Firmware wurde nicht gebaut, geflasht oder erprobt, und die Pins der Kamera und des Netzwerkchips müssen mit dem Schaltplan der Platine geprüft werden.
+* Nichts lief auf einer Platine: die Firmware lässt sich bauen, wurde aber nicht geflasht oder erprobt, und die Pins der Kamera und des Netzwerkchips müssen mit dem Schaltplan der Platine geprüft werden.
 * Die Treiber des Lasers (VL53L1X über I2C, mit der wenig genutzten Komponente `grrtzm/vl53l1x_library`), der Temperatursensoren und der Kamera sind geschrieben und nie gelaufen: der erste Sensor, der auf einer Platine antwortet, kann einen Fehler zeigen.
 * EH3D-BUNGARD-GUI (das Fenster des Knotens am Bohrkopf) und EH3D-SERVER fragen den Knoten ab, direkt oder über den Server; keiner wurde an einem echten Knoten probiert.
 * Der Netzwerkport ist einfaches HTTP: halte ihn in einem eigenen Netz.

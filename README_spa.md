@@ -18,7 +18,7 @@
 
 ---
 
-**Comprobación de honestidad - lo que se ejecuta hoy:** las reglas del nodo están escritas en C++17 y probadas en un ordenador: el fichero de ajustes con sus valores seguros, la medida de la altura de la mesa a partir de varias lecturas del láser (las raras se descartan y una medida que se dispersa demasiado se rechaza), la velocidad del husillo a partir de los pulsos de un sensor, la temperatura con su aviso, su nivel crítico y una histéresis, la salida de protección y las palabras que el nodo dice en la red (el estado, la medida, el token). El firmware de ESP-IDF (red por cable, servidor web, cámara, pulsos del husillo, salida de protección) está escrito pero no se ha compilado, grabado ni ejecutado en una placa; **los controladores del láser (VL53L1X), de los sensores de temperatura (DS18B20, NTC, MLX90614) y de la cámara (OV2640 u OV5640) están escritos pero nunca se han ejecutado en una placa**, así que nunca se ha hecho una medida, y no se ha conectado nada a una máquina.
+**Comprobación de honestidad - lo que se ejecuta hoy:** las reglas del nodo están escritas en C++17 y probadas en un ordenador: el fichero de ajustes con sus valores seguros, la medida de la altura de la mesa a partir de varias lecturas del láser (las raras se descartan y una medida que se dispersa demasiado se rechaza), la velocidad del husillo a partir de los pulsos de un sensor, la temperatura con su aviso, su nivel crítico y una histéresis, la salida de protección y las palabras que el nodo dice en la red (el estado, la medida, el token). El firmware de ESP-IDF (red por cable, servidor web, cámara, pulsos del husillo, salida de protección) está escrito y se compila con ESP-IDF 5.5.5, pero nunca se ha grabado ni ejecutado en una placa; **los controladores del láser (VL53L1X), de los sensores de temperatura (DS18B20, NTC, MLX90614) y de la cámara (OV2640 u OV5640) están escritos pero nunca se han ejecutado en una placa**, así que nunca se ha hecho una medida, y no se ha conectado nada a una máquina.
 
 ---
 
@@ -32,7 +32,7 @@
 | Madurez | Andamiaje |
 | Pruebas | 2 programas de pruebas en el ordenador (203 comprobaciones) |
 | Pila tecnológica | C++17, ESP-IDF 5.5, ESP32-S3, red W5500 |
-| En hardware real | No: el firmware no se ha compilado ni grabado, y no se ha conectado nada a una máquina |
+| En hardware real | No: el firmware se compila pero no se ha grabado, y no se ha conectado nada a una máquina |
 
 **Ir a:** [Resumen](#-resumen) · [Arquitectura](#-arquitectura) · [Inicio rápido](#-inicio-rápido) · [Pruebas](#-pruebas) · [Estructura](#-estructura-del-repositorio) · [Relacionados](#-proyectos-relacionados)
 
@@ -43,7 +43,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 
 | Área | Estado | Qué significa aquí |
 |---|---|---|
-| Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito; no se ha compilado ni grabado. |
+| Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito y se compila; no se ha grabado. |
 | Pruebas | 🟢 | 2 programas de pruebas en el ordenador pasan (`ctest`): 203 comprobaciones del fichero de ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección y las palabras de la red. |
 | Láser (altura de la mesa) | 🟡 | La medida a partir de varias lecturas (mediana, lecturas raras descartadas, dispersión comprobada, rango y desplazamiento) está probada; el controlador del VL53L1X está escrito pero nunca se ha ejecutado, así que aún no se ha hecho ninguna medida. |
 | Husillo | 🟡 | La velocidad a partir de los pulsos de un sensor (cualquier número por vuelta, parado cuando cesan los pulsos), la temperatura con aviso, nivel crítico e histéresis y la salida de protección están probadas; los controladores del DS18B20, del NTC y del MLX90614 están escritos pero nunca se han ejecutado. |
@@ -144,11 +144,11 @@ build.bat            # las pruebas en el ordenador (Windows)  -  ./build.sh en L
 python -I tools/ci_validate.py
 ```
 
-El firmware todavía no se ha compilado: cuando se haga, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` genera la imagen (fija los pines de tu placa en `EH3D Bungard AUX`), y una partición llamada `config` contiene `head.cfg`.
+El firmware se compila con ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` genera la imagen (fija los pines de tu placa en `EH3D Bungard AUX`), y una partición llamada `config` contiene `head.cfg`.
 
 ## 🧪 Pruebas
 
-Las pruebas en el ordenador (`build.bat` o `./build.sh`, luego `ctest`) son dos programas y todo pasa: `test_aux` (103 comprobaciones) sobre el fichero de ajustes (valores por defecto, valores, valores erróneos, límites que no tienen sentido juntos), la medida del láser (la mediana, la lectura rara descartada, el desplazamiento, lecturas marcadas como malas, el rango, ninguna lectura, una dispersión demasiado grande), la velocidad del husillo (pulsos por vuelta, un husillo que frena, parado cuando cesan los pulsos), la temperatura (la histéresis, un sensor que falla), la salida de protección y las palabras de la red (la línea de petición, las rutas, el token en la cabecera o en la consulta, el número de lecturas, el JSON del estado y de la medida, la línea de un punto del mapa). El firmware no está cubierto: no se ha compilado. El segundo programa, `test_stream` (100 comprobaciones), cubre el vídeo: los resúmenes de los accesos contra sus vectores publicados (MD5, SHA-1, base64 y el ejemplo Digest del RFC 2617), las peticiones RTSP y toda la sesión (acceso, SDP, transporte UDP e intercalado, play, pause, teardown, una sesión errónea, multicast rechazado), la carga RTP de JPEG (las tablas en el primer paquete, el orden, el marcador, el cambio de la secuencia) y ONVIF (descubrimiento, el token de usuario con el ejemplo del estándar, las llamadas abiertas y las protegidas, los servicios y una llamada que no se hace).
+Las pruebas en el ordenador (`build.bat` o `./build.sh`, luego `ctest`) son dos programas y todo pasa: `test_aux` (103 comprobaciones) sobre el fichero de ajustes (valores por defecto, valores, valores erróneos, límites que no tienen sentido juntos), la medida del láser (la mediana, la lectura rara descartada, el desplazamiento, lecturas marcadas como malas, el rango, ninguna lectura, una dispersión demasiado grande), la velocidad del husillo (pulsos por vuelta, un husillo que frena, parado cuando cesan los pulsos), la temperatura (la histéresis, un sensor que falla), la salida de protección y las palabras de la red (la línea de petición, las rutas, el token en la cabecera o en la consulta, el número de lecturas, el JSON del estado y de la medida, la línea de un punto del mapa). El firmware no está cubierto: se compila, pero las pruebas son del ordenador. El segundo programa, `test_stream` (100 comprobaciones), cubre el vídeo: los resúmenes de los accesos contra sus vectores publicados (MD5, SHA-1, base64 y el ejemplo Digest del RFC 2617), las peticiones RTSP y toda la sesión (acceso, SDP, transporte UDP e intercalado, play, pause, teardown, una sesión errónea, multicast rechazado), la carga RTP de JPEG (las tablas en el primer paquete, el orden, el marcador, el cambio de la secuencia) y ONVIF (descubrimiento, el token de usuario con el ejemplo del estándar, las llamadas abiertas y las protegidas, los servicios y una llamada que no se hace).
 
 ## 🏗️ Compilación y publicación
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Límites conocidos hoy**
 
-* Nada se ha ejecutado en una placa: el firmware no se ha compilado, grabado ni probado, y los pines de la cámara y del chip de red hay que comprobarlos con el esquema de la placa.
+* Nada se ha ejecutado en una placa: el firmware se compila pero no se ha grabado ni probado, y los pines de la cámara y del chip de red hay que comprobarlos con el esquema de la placa.
 * Los controladores del láser (VL53L1X por I2C, con el componente `grrtzm/vl53l1x_library`, poco usado), de los sensores de temperatura y de la cámara están escritos y nunca se han ejecutado: el primer sensor que responda en una placa puede mostrar un error.
 * EH3D-BUNGARD-GUI (la ventana del nodo del cabezal) y EH3D-SERVER consultan el nodo, directamente o a través del servidor; ninguno se ha probado con un nodo real.
 * El puerto de red es HTTP sin más: mantenlo en una red propia.

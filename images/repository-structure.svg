@@ -64,7 +64,7 @@
 <rect x="360" y="557" width="780" height="192" rx="10" fill="url(#card)" stroke="#1E2A36" stroke-width="1"/>
 <rect x="360" y="571" width="3" height="164" rx="1.5" fill="#4DA3FF"><animate attributeName="opacity" values="0.55;1;0.55" dur="4s" begin="0.6s" repeatCount="indefinite"/></rect>
 <text x="382" y="591" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="19" font-weight="700" fill="#F2F6FA" text-anchor="start">main/</text>
-<text x="1122" y="591" font-family="'Segoe UI','Noto Sans','Noto Sans CJK SC','Microsoft YaHei','Yu Gothic','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="400" fill="#7D8A99" text-anchor="end" letter-spacing="0.3">the ESP-IDF firmware, not built yet</text>
+<text x="1122" y="591" font-family="'Segoe UI','Noto Sans','Noto Sans CJK SC','Microsoft YaHei','Yu Gothic','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12" font-weight="400" fill="#7D8A99" text-anchor="end" letter-spacing="0.3">the ESP-IDF firmware (it builds, not flashed)</text>
 <line x1="382" y1="605" x2="1122" y2="605" stroke="#4DA3FF" stroke-opacity="0.35" stroke-width="1"/>
 <text x="392" y="637" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="14.5" font-weight="600" fill="#E6EDF3" text-anchor="start">app_main.cpp</text>
 <text x="739.64" y="637" font-family="'Segoe UI','Noto Sans','Noto Sans CJK SC','Microsoft YaHei','Yu Gothic','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12.8" font-weight="400" fill="#8A97A6" text-anchor="start">start, settings, network, web server, camera</text>

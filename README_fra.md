@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** les règles du nœud sont écrites en C++17 et testées sur un ordinateur : le fichier de réglages avec ses valeurs sûres, la mesure de la hauteur de la table à partir de plusieurs lectures du laser (les valeurs aberrantes sont écartées et une mesure trop dispersée est refusée), la vitesse de la broche à partir des impulsions d'un capteur, la température avec son avertissement, son niveau critique et une hystérésis, la sortie de protection et les mots que le nœud dit sur le réseau (l'état, la mesure, le jeton). Le firmware ESP-IDF (réseau filaire, serveur web, caméra, impulsions de la broche, sortie de protection) est écrit mais n'a pas été compilé, flashé ni exécuté sur une carte ; **les pilotes du laser (VL53L1X), des capteurs de température (DS18B20, NTC, MLX90614) et de la caméra (OV2640 ou OV5640) sont écrits mais n'ont jamais tourné sur une carte**, donc aucune mesure n'a jamais été faite, et rien n'a été branché à une machine.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** les règles du nœud sont écrites en C++17 et testées sur un ordinateur : le fichier de réglages avec ses valeurs sûres, la mesure de la hauteur de la table à partir de plusieurs lectures du laser (les valeurs aberrantes sont écartées et une mesure trop dispersée est refusée), la vitesse de la broche à partir des impulsions d'un capteur, la température avec son avertissement, son niveau critique et une hystérésis, la sortie de protection et les mots que le nœud dit sur le réseau (l'état, la mesure, le jeton). Le firmware ESP-IDF (réseau filaire, serveur web, caméra, impulsions de la broche, sortie de protection) est écrit et se compile avec ESP-IDF 5.5.5, mais n'a jamais été flashé ni exécuté sur une carte ; **les pilotes du laser (VL53L1X), des capteurs de température (DS18B20, NTC, MLX90614) et de la caméra (OV2640 ou OV5640) sont écrits mais n'ont jamais tourné sur une carte**, donc aucune mesure n'a jamais été faite, et rien n'a été branché à une machine.
 
 ---
 
@@ -32,7 +32,7 @@
 | Maturité | Échafaudage |
 | Tests | 2 programmes de test sur l'ordinateur (203 vérifications) |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
-| Sur du matériel réel | Non : le firmware n'a pas été compilé ni flashé, et rien n'a été branché à une machine |
+| Sur du matériel réel | Non : le firmware se compile mais n'a pas été flashé, et rien n'a été branché à une machine |
 
 **Aller à  :** [Présentation](#-présentation) · [Architecture](#-architecture) · [Démarrage rapide](#-démarrage-rapide) · [Tests](#-tests) · [Structure](#-structure-du-dépôt) · [Liés](#-projets-liés)
 
@@ -43,7 +43,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
-| Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit ; il n'a pas été compilé ni flashé. |
+| Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit et se compile ; il n'a pas été flashé. |
 | Tests | 🟢 | 2 programmes de test sur l'ordinateur réussissent (`ctest`) : 203 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
@@ -144,11 +144,11 @@ build.bat            # les tests sur l'ordinateur (Windows)  -  ./build.sh sous 
 python -I tools/ci_validate.py
 ```
 
-Le firmware n'a pas encore été compilé : quand il le sera, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produit l'image (réglez les broches de votre carte sous `EH3D Bungard AUX`), et une partition nommée `config` contient `head.cfg`.
+Le firmware se compile avec ESP-IDF 5.5.5 : `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produit l'image (réglez les broches de votre carte sous `EH3D Bungard AUX`), et une partition nommée `config` contient `head.cfg`.
 
 ## 🧪 Tests
 
-Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (103 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il n'a pas été compilé. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
+Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (103 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il se compile, mais les tests tournent sur l'ordinateur. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
 
 ## 🏗️ Compilation et publication
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Limites connues aujourd'hui**
 
-* Rien n'a tourné sur une carte : le firmware n'a pas été compilé, flashé ni essayé, et les broches de la caméra et de la puce réseau doivent être vérifiées avec le schéma de la carte.
+* Rien n'a tourné sur une carte : le firmware se compile mais n'a pas été flashé ni essayé, et les broches de la caméra et de la puce réseau doivent être vérifiées avec le schéma de la carte.
 * Les pilotes du laser (VL53L1X en I2C, avec le composant `grrtzm/vl53l1x_library`, peu utilisé), des capteurs de température et de la caméra sont écrits et n'ont jamais tourné : le premier capteur qui répond sur une carte peut révéler une erreur.
 * EH3D-BUNGARD-GUI (la fenêtre du nœud de la tête) et EH3D-SERVER interrogent le nœud, directement ou par le serveur ; aucun n'a été essayé avec un vrai nœud.
 * Le port réseau est du HTTP simple : gardez-le sur un réseau à part.

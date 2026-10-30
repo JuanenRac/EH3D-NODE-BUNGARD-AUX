@@ -18,7 +18,7 @@
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** as regras do nó estão escritas em C++17 e testadas num computador: o ficheiro de definições com os seus valores seguros, a medição da altura da mesa a partir de várias leituras do laser (as estranhas são descartadas e uma medição que se dispersa demasiado é recusada), a velocidade do fuso a partir dos impulsos de um sensor, a temperatura com o seu aviso, o seu nível crítico e uma histerese, a saída de proteção e as palavras que o nó diz na rede (o estado, a medição, o token). O firmware ESP-IDF (rede por cabo, servidor web, câmara, impulsos do fuso, saída de proteção) está escrito mas não foi compilado, gravado nem executado numa placa; **os controladores do laser (VL53L1X), dos sensores de temperatura (DS18B20, NTC, MLX90614) e da câmara (OV2640 ou OV5640) estão escritos mas nunca correram numa placa**, por isso nunca se fez uma medição, e nada foi ligado a uma máquina.
+**Verificação de honestidade - o que funciona hoje:** as regras do nó estão escritas em C++17 e testadas num computador: o ficheiro de definições com os seus valores seguros, a medição da altura da mesa a partir de várias leituras do laser (as estranhas são descartadas e uma medição que se dispersa demasiado é recusada), a velocidade do fuso a partir dos impulsos de um sensor, a temperatura com o seu aviso, o seu nível crítico e uma histerese, a saída de proteção e as palavras que o nó diz na rede (o estado, a medição, o token). O firmware ESP-IDF (rede por cabo, servidor web, câmara, impulsos do fuso, saída de proteção) está escrito e compila-se com o ESP-IDF 5.5.5, mas nunca foi gravado nem executado numa placa; **os controladores do laser (VL53L1X), dos sensores de temperatura (DS18B20, NTC, MLX90614) e da câmara (OV2640 ou OV5640) estão escritos mas nunca correram numa placa**, por isso nunca se fez uma medição, e nada foi ligado a uma máquina.
 
 ---
 
@@ -32,7 +32,7 @@
 | Maturidade | Estrutura inicial |
 | Testes | 2 programas de testes no computador (203 verificações) |
 | Tecnologias | C++17, ESP-IDF 5.5, ESP32-S3, rede W5500 |
-| Em hardware real | Não: o firmware não foi compilado nem gravado, e nada foi ligado a uma máquina |
+| Em hardware real | Não: o firmware compila-se mas não foi gravado, e nada foi ligado a uma máquina |
 
 **Ir para:** [Visão geral](#-visão-geral) · [Arquitetura](#-arquitetura) · [Início rápido](#-início-rápido) · [Testes](#-testes) · [Estrutura](#-estrutura-do-repositório) · [Relacionados](#-projetos-relacionados)
 
@@ -43,7 +43,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 
 | Área | Estado | O que significa aqui |
 |---|---|---|
-| Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito; não foi compilado nem gravado. |
+| Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito e compila-se; não foi gravado. |
 | Testes | 🟢 | 2 programas de testes no computador passam (`ctest`): 203 verificações do ficheiro de definições, da medição do laser, da velocidade e da temperatura do fuso, da saída de proteção e das palavras da rede. |
 | Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do VL53L1X está escrito mas nunca correu, por isso ainda não se fez nenhuma medição. |
 | Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores do DS18B20, do NTC e do MLX90614 estão escritos mas nunca correram. |
@@ -144,11 +144,11 @@ build.bat            # os testes no computador (Windows)  -  ./build.sh em Linux
 python -I tools/ci_validate.py
 ```
 
-O firmware ainda não foi compilado: quando for, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` gera a imagem (defina os pinos da sua placa em `EH3D Bungard AUX`), e uma partição chamada `config` contém `head.cfg`.
+O firmware compila-se com o ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` gera a imagem (defina os pinos da sua placa em `EH3D Bungard AUX`), e uma partição chamada `config` contém `head.cfg`.
 
 ## 🧪 Testes
 
-Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são dois programas e tudo passa: `test_aux` (103 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: não foi compilado. O segundo programa, `test_stream` (100 verificações), cobre o vídeo: os resumos dos acessos contra os seus vetores publicados (MD5, SHA-1, base64 e o exemplo Digest do RFC 2617), os pedidos RTSP e toda a sessão (acesso, SDP, transporte UDP e intercalado, play, pause, teardown, uma sessão errada, multicast recusado), a carga RTP de JPEG (as tabelas no primeiro pacote, a ordem, o marcador, a volta da sequência) e ONVIF (descoberta, o token de utilizador com o exemplo da norma, as chamadas abertas e as protegidas, os serviços e uma chamada que não se faz).
+Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são dois programas e tudo passa: `test_aux` (103 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: compila-se, mas os testes correm no computador. O segundo programa, `test_stream` (100 verificações), cobre o vídeo: os resumos dos acessos contra os seus vetores publicados (MD5, SHA-1, base64 e o exemplo Digest do RFC 2617), os pedidos RTSP e toda a sessão (acesso, SDP, transporte UDP e intercalado, play, pause, teardown, uma sessão errada, multicast recusado), a carga RTP de JPEG (as tabelas no primeiro pacote, a ordem, o marcador, a volta da sequência) e ONVIF (descoberta, o token de utilizador com o exemplo da norma, as chamadas abertas e as protegidas, os serviços e uma chamada que não se faz).
 
 ## 🏗️ Compilação e publicação
 
@@ -212,7 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 
 **Limites conhecidos hoje**
 
-* Nada foi executado numa placa: o firmware não foi compilado, gravado nem experimentado, e os pinos da câmara e do chip de rede têm de ser verificados com o esquema da placa.
+* Nada foi executado numa placa: o firmware compila-se mas não foi gravado nem experimentado, e os pinos da câmara e do chip de rede têm de ser verificados com o esquema da placa.
 * Os controladores do laser (VL53L1X por I2C, com o componente `grrtzm/vl53l1x_library`, pouco usado), dos sensores de temperatura e da câmara estão escritos e nunca correram: o primeiro sensor que responder numa placa pode mostrar um erro.
 * o EH3D-BUNGARD-GUI (a janela do nó da cabeça) e o EH3D-SERVER consultam o nó, diretamente ou através do servidor; nenhum foi experimentado com um nó real.
 * A porta de rede é HTTP simples: mantenha-a numa rede própria.
