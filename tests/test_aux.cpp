@@ -6,8 +6,10 @@
 #include <vector>
 
 #include "../core/aux_config.hpp"
+#include "../core/camera.hpp"
 #include "../core/laser.hpp"
 #include "../core/protocol.hpp"
+#include "../core/thermo.hpp"
 #include "../core/spindle.hpp"
 
 using namespace bungard_aux;
@@ -261,6 +263,76 @@ static void words_of_the_network() {
     CHECK(reading_line(bad, 1.0, 2.0).empty());
 }
 
+static void cameras() {
+    using namespace bungard_aux;
+    // the sensor says which one it is
+    CHECK(model_from_pid(0x26) == CameraModel::Ov2640 && model_from_pid(0x5640) == CameraModel::Ov5640 && model_from_pid(0x3660) == CameraModel::Auto);
+    CHECK(std::string(model_text(CameraModel::Ov5640)) == "ov5640" && std::string(model_text(CameraModel::Auto)) == "auto");
+    // the nearest size that is not larger; the OV2640 stops at 1600x1200, the OV5640 goes on
+    const auto& t = frame_sizes();
+    CHECK(t[frame_index_for(640, 480, CameraModel::Ov2640)].width == 640);
+    CHECK(t[frame_index_for(700, 500, CameraModel::Ov2640)].width == 640);
+    CHECK(t[frame_index_for(1920, 1080, CameraModel::Ov2640)].width == 1280 && t[frame_index_for(1920, 1080, CameraModel::Ov2640)].height == 1024);
+    CHECK(t[frame_index_for(1920, 1080, CameraModel::Ov5640)].width == 1920);
+    CHECK(t[frame_index_for(2592, 1944, CameraModel::Ov5640)].height == 1944);
+    CHECK(t[frame_index_for(2592, 1944, CameraModel::Ov2640)].width == 1600);
+    CHECK(t[frame_index_for(2592, 1944, CameraModel::Auto)].width == 1600);  // not known yet: only what both can do
+    CHECK(frame_index_for(10, 10, CameraModel::Ov5640) == 0);
+    // the list for the ONVIF encoder: the largest first, and only what the model gives
+    auto five = sizes_of(CameraModel::Ov5640);
+    auto two = sizes_of(CameraModel::Ov2640);
+    CHECK(five.front().first == 2592 && two.front().first == 1600 && two.back().first == 160 && five.size() > two.size());
+    // the settings file
+    std::vector<Problem> p;
+    Settings s = parse_settings("camera_model = ov5640\ncamera_width = 1920\ncamera_height = 1080\n", p);
+    CHECK(p.empty() && s.camera_model == CameraModel::Ov5640 && s.camera_width == 1920 && s.camera_height == 1080);
+    p.clear();
+    Settings b = parse_settings("camera_model = ov9999\ncamera_width = 3000\n", p);
+    CHECK(p.size() == 2 && b.camera_model == CameraModel::Auto && b.camera_width == 640);
+    // the status says which camera it is
+    Status st;
+    st.camera = true;
+    st.camera_model = "ov5640";
+    CHECK(json_status(st).find("\"camera_model\":\"ov5640\"") != std::string::npos);
+}
+
+static void thermometers() {
+    using namespace bungard_aux;
+    // the published check values of the two checksums: "123456789"
+    const std::uint8_t nine[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    CHECK(onewire_crc8(nine, 9) == 0xA1);
+    CHECK(smbus_pec(nine, 9) == 0xF4);
+    // the scratchpad of the data sheet that a DS18B20 gives before its first conversion: 85 degrees and the bytes of the power-on state, with its own CRC
+    std::uint8_t power_on[9] = {0x50, 0x05, 0x4B, 0x46, 0x7F, 0xFF, 0x0C, 0x10, 0x1C};
+    CHECK(onewire_crc8(power_on, 9) == 0);
+    double c = 0.0;
+    CHECK(!ds18b20_celsius(power_on, c));  // not converted yet: not a reading
+    // 25.0625 degrees (0x0191) with a good checksum, then with a wrong one
+    std::uint8_t pad[9] = {0x91, 0x01, 0x4B, 0x46, 0x7F, 0xFF, 0x05, 0x10, 0};
+    pad[8] = onewire_crc8(pad, 8);
+    CHECK(ds18b20_celsius(pad, c) && near(c, 25.0625));
+    pad[8] ^= 0x01;
+    CHECK(!ds18b20_celsius(pad, c));
+    // minus 10.125 degrees (0xFF5E)
+    std::uint8_t cold[9] = {0x5E, 0xFF, 0x4B, 0x46, 0x7F, 0xFF, 0x02, 0x10, 0};
+    cold[8] = onewire_crc8(cold, 8);
+    CHECK(ds18b20_celsius(cold, c) && near(c, -10.125));
+    // the NTC: 10 k at 25 degrees against 10 k, so half the supply is 25 degrees; 50 degrees of a beta 3950 is about 3.59 k
+    CHECK(ntc_celsius(1.65, 3.3, 10000.0, 10000.0, 3950.0, c) && std::fabs(c - 25.0) < 0.01);
+    const double r50 = 10000.0 * std::exp(3950.0 * (1.0 / 323.15 - 1.0 / 298.15));
+    const double v50 = 3.3 * r50 / (10000.0 + r50);
+    CHECK(ntc_celsius(v50, 3.3, 10000.0, 10000.0, 3950.0, c) && std::fabs(c - 50.0) < 0.01);
+    CHECK(!ntc_celsius(0.0, 3.3, 10000.0, 10000.0, 3950.0, c) && !ntc_celsius(3.3, 3.3, 10000.0, 10000.0, 3950.0, c));  // a wire off
+    // the MLX90614: units of 0.02 kelvin; 15000 is 26.85 degrees; the top bit is the error flag
+    CHECK(mlx90614_celsius(15000, c) && std::fabs(c - 26.85) < 0.001);
+    CHECK(!mlx90614_celsius(0x8000 | 15000, c));
+    CHECK(!mlx90614_celsius(0, c));
+    // the settings of the thermistor, and one that is out of range keeps the default
+    std::vector<Problem> pr;
+    Settings s = parse_settings("temp_sensor = ntc\nntc_beta = 4250\nntc_r25_ohm = 100000\nntc_series_ohm = 5\n", pr);
+    CHECK(s.temp_sensor == TempSensor::Ntc && near(s.ntc_beta, 4250.0) && near(s.ntc_r25_ohm, 100000.0) && near(s.ntc_series_ohm, 10000.0) && pr.size() == 1);
+}
+
 int main() {
     settings_file();
     laser_measure();
@@ -268,6 +340,8 @@ int main() {
     thermal_state();
     protect_output();
     words_of_the_network();
+    cameras();
+    thermometers();
     std::printf("%d checks, %d failed\n", checks, failures);
     return failures == 0 ? 0 : 1;
 }

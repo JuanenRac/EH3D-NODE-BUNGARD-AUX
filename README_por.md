@@ -18,7 +18,7 @@
 
 ---
 
-**Verificação de honestidade - o que funciona hoje:** as regras do nó estão escritas em C++17 e testadas num computador: o ficheiro de definições com os seus valores seguros, a medição da altura da mesa a partir de várias leituras do laser (as estranhas são descartadas e uma medição que se dispersa demasiado é recusada), a velocidade do fuso a partir dos impulsos de um sensor, a temperatura com o seu aviso, o seu nível crítico e uma histerese, a saída de proteção e as palavras que o nó diz na rede (o estado, a medição, o token). O firmware ESP-IDF (rede por cabo, servidor web, câmara, impulsos do fuso, saída de proteção) está escrito mas não foi compilado, gravado nem executado numa placa; **os controladores do sensor laser e dos sensores de temperatura ainda não estão escritos**, por isso hoje uma medição é recusada, e nada foi ligado a uma máquina.
+**Verificação de honestidade - o que funciona hoje:** as regras do nó estão escritas em C++17 e testadas num computador: o ficheiro de definições com os seus valores seguros, a medição da altura da mesa a partir de várias leituras do laser (as estranhas são descartadas e uma medição que se dispersa demasiado é recusada), a velocidade do fuso a partir dos impulsos de um sensor, a temperatura com o seu aviso, o seu nível crítico e uma histerese, a saída de proteção e as palavras que o nó diz na rede (o estado, a medição, o token). O firmware ESP-IDF (rede por cabo, servidor web, câmara, impulsos do fuso, saída de proteção) está escrito mas não foi compilado, gravado nem executado numa placa; **os controladores do laser (VL53L1X), dos sensores de temperatura (DS18B20, NTC, MLX90614) e da câmara (OV2640 ou OV5640) estão escritos mas nunca correram numa placa**, por isso nunca se fez uma medição, e nada foi ligado a uma máquina.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.1` |
 | Maturidade | Estrutura inicial |
-| Testes | 2 programas de testes no computador (175 verificações) |
+| Testes | 2 programas de testes no computador (203 verificações) |
 | Tecnologias | C++17, ESP-IDF 5.5, ESP32-S3, rede W5500 |
 | Em hardware real | Não: o firmware não foi compilado nem gravado, e nada foi ligado a uma máquina |
 
@@ -44,9 +44,9 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito; não foi compilado nem gravado. |
-| Testes | 🟢 | 2 programas de testes no computador passam (`ctest`): 175 verificações do ficheiro de definições, da medição do laser, da velocidade e da temperatura do fuso, da saída de proteção e das palavras da rede. |
-| Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do sensor não está escrito, por isso hoje não se pode fazer nenhuma medição. |
-| Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores dos sensores de temperatura não estão escritos. |
+| Testes | 🟢 | 2 programas de testes no computador passam (`ctest`): 203 verificações do ficheiro de definições, da medição do laser, da velocidade e da temperatura do fuso, da saída de proteção e das palavras da rede. |
+| Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do VL53L1X está escrito mas nunca correu, por isso ainda não se fez nenhuma medição. |
+| Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores do DS18B20, do NTC e do MLX90614 estão escritos mas nunca correram. |
 | Câmara | 🟠 | O fluxo MJPEG está escrito para o conector de câmara da placa e precisa dos pinos da placa em menuconfig; não foi executado. |
 | Vídeo (RTSP, ONVIF) | 🟡 | A sessão RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, por UDP ou dentro da ligação TCP, acesso Digest e Basic), a carga RTP de JPEG, a descoberta e os serviços SOAP do ONVIF (perfis, codificadores com os seus tamanhos, endereços do fluxo e do instantâneo, o token de utilizador) estão testados num computador; nenhum leitor nem gravador recebeu o vídeo de uma placa real. |
 | Hardware real | 🔴 | Nenhuma placa executou este firmware e nada foi ligado a uma máquina. |
@@ -63,7 +63,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 
 ## 🧩 Papel no EH3D
 
-EH3D-NODE-BUNGARD-AUX é o nó da cabeça de furação de uma máquina Bungard CCD, ao lado do EH3D-NODE-BUNGARD (o nó que comanda a máquina) e do EH3D-NODE-BUNGARD-HMI (o ecrã). Fica na cabeça, vê a placa com a sua câmara, mede a mesa por baixo da cabeça e vigia o fuso. Os programas de secretária (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usam as suas medições para construir o mapa da mesa (`eh3d-levelling` no EH3D-COMMON) e corrigir o Z dos trabalhos; a ligação será direta ou através do EH3D-SERVER, e nenhuma existe ainda.
+EH3D-NODE-BUNGARD-AUX é o nó da cabeça de furação de uma máquina Bungard CCD, ao lado do EH3D-NODE-BUNGARD (o nó que comanda a máquina) e do EH3D-NODE-BUNGARD-HMI (o ecrã). Fica na cabeça, vê a placa com a sua câmara, mede a mesa por baixo da cabeça e vigia o fuso. Os programas de secretária (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usam as suas medições para construir o mapa da mesa (`eh3d-levelling` no EH3D-COMMON) e corrigir o Z dos trabalhos; o EH3D-BUNGARD-GUI já consulta o nó diretamente (a janela do nó da cabeça); a ligação através do EH3D-SERVER ainda não existe.
 
 ## 🏛️ Arquitetura
 
@@ -87,6 +87,8 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 * **Um fuso vigiado o tempo todo:** velocidade a partir dos impulsos, temperatura com um aviso, um nível crítico e uma histerese, e uma saída de proteção que abre sozinha quando algo corre mal ou o nó não está a funcionar.
 * **Vídeo como uma câmara IP:** RTSP e ONVIF com acesso, para que qualquer leitor, gravador ou gestor ONVIF o receba; e a câmara como MJPEG em `/stream` atrás do token.
 * **Seguro por omissão:** sem token não há medição nem câmara; cada limite tem um interruptor nas definições e começa na sua posição conservadora.
+* **Duas câmaras, a OV2640 e a OV5640:** o sensor diz qual é e o nó dá o maior tamanho que as definições permitem e que esse sensor consegue (a OV2640 até 1600x1200, a OV5640 até 2592x1944), indica-o em `/api/status` (`camera_model`) e nas opções do codificador do ONVIF; `camera_model = auto | ov2640 | ov5640` em `head.cfg`. Os pinos do conector de câmara da Waveshare ESP32-S3-ETH são os valores por omissão de `menuconfig`.
+* **Três sensores de temperatura:** um DS18B20 num fio, um termístor NTC numa entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` em `head.cfg`) ou um termómetro de infravermelhos MLX90614 que olha para o fuso sem lhe tocar (no barramento I2C do laser); as somas de verificação e as conversões estão testadas num computador.
 
 ## 🔒 Segurança e proteção
 
@@ -111,7 +113,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 | Câmara | `GET /stream` com o token: MJPEG | `main/app_main.cpp` |
 | Impulsos do fuso | um GPIO (`AUX_RPM_GPIO` em menuconfig), flancos de subida | `main/sensors.cpp` |
 | Saída de proteção | um GPIO (`AUX_PROTECT_GPIO`), em baixo quando o fuso deve parar | `main/sensors.cpp` |
-| Laser e temperatura | I2C para o laser e um fio para o sensor de temperatura; os controladores não estão escritos | `main/sensors.cpp` |
+| Laser e temperatura | I2C para o laser e um fio para o sensor de temperatura; os controladores estão escritos e nunca correram (o termómetro MLX90614 partilha o barramento I2C, o DS18B20 usa um pino, o NTC uma entrada analógica) | `main/sensors.cpp` |
 | RTSP | `rtsp://ENDEREÇO:PORTA/stream1`: OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN; JPEG sobre RTP por UDP ou intercalado em TCP; acesso Digest ou Basic | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
 | ONVIF | WS-Discovery no endereço multicast `239.255.255.250:3702`; SOAP em `/onvif/device_service` e `/onvif/media_service` (perfil S: capacidades, serviços, perfis, codificadores, endereços do fluxo e do instantâneo); o instantâneo em `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
@@ -146,7 +148,7 @@ O firmware ainda não foi compilado: quando for, `idf.py set-target esp32s3 && i
 
 ## 🧪 Testes
 
-Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são dois programas e tudo passa: `test_aux` (74 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: não foi compilado. O segundo programa, `test_stream` (100 verificações), cobre o vídeo: os resumos dos acessos contra os seus vetores publicados (MD5, SHA-1, base64 e o exemplo Digest do RFC 2617), os pedidos RTSP e toda a sessão (acesso, SDP, transporte UDP e intercalado, play, pause, teardown, uma sessão errada, multicast recusado), a carga RTP de JPEG (as tabelas no primeiro pacote, a ordem, o marcador, a volta da sequência) e ONVIF (descoberta, o token de utilizador com o exemplo da norma, as chamadas abertas e as protegidas, os serviços e uma chamada que não se faz).
+Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são dois programas e tudo passa: `test_aux` (103 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: não foi compilado. O segundo programa, `test_stream` (100 verificações), cobre o vídeo: os resumos dos acessos contra os seus vetores publicados (MD5, SHA-1, base64 e o exemplo Digest do RFC 2617), os pedidos RTSP e toda a sessão (acesso, SDP, transporte UDP e intercalado, play, pause, teardown, uma sessão errada, multicast recusado), a carga RTP de JPEG (as tabelas no primeiro pacote, a ordem, o marcador, a volta da sequência) e ONVIF (descoberta, o token de utilizador com o exemplo da norma, as chamadas abertas e as protegidas, os serviços e uma chamada que não se faz).
 
 ## 🏗️ Compilação e publicação
 
@@ -156,10 +158,10 @@ A versão está em `eh3d.project.json`, e cada versão tem a sua entrada em [CHA
 
 | Sintoma | O que fazer |
 |---|---|
-| Uma medição é recusada com `no_readings` | O controlador do laser não está escrito nesta versão, por isso nunca chega nenhuma leitura; o resto da resposta está testado. |
+| Uma medição é recusada com `no_readings` | Nenhum VL53L1X responde no barramento I2C: verifique os pinos SDA e SCL em `menuconfig` (a câmara usa os GPIO 41 e 42 na Waveshare ESP32-S3-ETH) e a cablagem; o resto da resposta está testado. |
 | Uma medição é recusada com `too_noisy` | As leituras dispersam-se mais do que `laser_sigma_max_mm`: deixe a cabeça e a mesa assentarem, ou suba um pouco o limite; verifique que nada vibra. |
 | O nó responde 401 a uma medição ou à câmara | Defina `token` em `head.cfg` (8 a 64 caracteres) e envie-o no cabeçalho `Authorization: Bearer ...` ou em `?token=`. |
-| A saída de proteção está sempre aberta | Um sensor de temperatura ligado que não responde conta como quente, e os controladores ainda não estão escritos: ponha `temp_sensor = none` na bancada, ou ligue um sensor quando o seu controlador existir. |
+| A saída de proteção está sempre aberta | Um sensor de temperatura ligado que não responde conta como quente: verifique o seu fio e o seu pino em `menuconfig` e `temp_sensor` em `head.cfg`, ou ponha `temp_sensor = none` na bancada. |
 
 ## 📂 Estrutura do repositório
 
@@ -175,7 +177,9 @@ EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           o ficheiro de definições e os seus valores seguros
 │   ├── laser.hpp                                a medição da altura da mesa
+│   ├── camera.hpp                               as câmaras OV2640 e OV5640 e os seus tamanhos
 │   ├── spindle.hpp                              velocidade, calor e saída de proteção
+│   ├── thermo.hpp                               a temperatura: DS18B20, NTC, MLX90614
 │   ├── hash.hpp                                 os acessos: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP e a carga RTP de JPEG
 │   ├── onvif.hpp                                ONVIF: descoberta e serviços SOAP
@@ -209,14 +213,14 @@ EH3D-NODE-BUNGARD-AUX/
 **Limites conhecidos hoje**
 
 * Nada foi executado numa placa: o firmware não foi compilado, gravado nem experimentado, e os pinos da câmara e do chip de rede têm de ser verificados com o esquema da placa.
-* O controlador do sensor laser (VL53L1X por I2C) e os dos sensores de temperatura não estão escritos, por isso não se pode fazer nenhuma medição e um sensor de temperatura ligado conta como quente.
-* A ligação com os programas de secretária e com o EH3D-SERVER ainda não existe: o nó responde na sua porta, ninguém lhe pergunta.
+* Os controladores do laser (VL53L1X por I2C, com o componente `grrtzm/vl53l1x_library`, pouco usado), dos sensores de temperatura e da câmara estão escritos e nunca correram: o primeiro sensor que responder numa placa pode mostrar um erro.
+* A janela do EH3D-BUNGARD-GUI consulta o nó diretamente (nunca experimentada com um nó real); a ligação através do EH3D-SERVER ainda não existe.
 * A porta de rede é HTTP simples: mantenha-a numa rede própria.
 * RTSP e ONVIF não foram experimentados com um leitor, gravador ou gestor ONVIF reais; o modelo da câmara na placa decidirá os tamanhos e os pinos.
 
 **Seguinte**
 
-* Escrever os controladores do laser e dos sensores de temperatura e compilar o firmware.
+* Compilar o firmware, experimentar os controladores numa placa e acrescentar a ligação através do EH3D-SERVER.
 * Acrescentar a ligação com o EH3D-BUNGARD-GUI, com o EH3D-SERVER e com o ecrã, e a vista da câmara.
 * Experimentar a saída de proteção ligada a uma linha de paragem numa máquina.
 

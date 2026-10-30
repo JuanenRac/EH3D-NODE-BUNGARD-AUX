@@ -11,14 +11,14 @@ namespace sensors {
 void init(const bungard_aux::Settings& s);
 
 /// One reading of the distance to the table, in mm. False when the sensor gave nothing or says the reading is bad.
-/// NOT WRITTEN YET: the driver of the VL53L1X is missing, so this always answers false and every measure is refused with "no_readings".
+/// Through the VL53L1X on the I2C bus (the component `grrtzm/vl53l1x_library`); with no laser answering it is false and every measure is refused with "no_readings".
 bool laser_read(double& distance_mm, bool& valid);
 
 /// The turns per minute of the spindle, from the pulses counted in the interrupt.
 double rpm_now();
 
 /// The temperature of the spindle in degrees. False when the sensor does not answer.
-/// NOT WRITTEN YET: the drivers of the temperature sensors are missing, so this always answers false (a sensor that is on in the settings counts as hot).
+/// The DS18B20, the NTC and the MLX90614 are read as head.cfg says; a sensor that is on in the settings and does not answer counts as hot.
 bool temperature_read(double& celsius);
 
 /// Opens (true) or closes the protect output: low means the spindle must stop.

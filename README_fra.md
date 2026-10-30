@@ -18,7 +18,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** les règles du nœud sont écrites en C++17 et testées sur un ordinateur : le fichier de réglages avec ses valeurs sûres, la mesure de la hauteur de la table à partir de plusieurs lectures du laser (les valeurs aberrantes sont écartées et une mesure trop dispersée est refusée), la vitesse de la broche à partir des impulsions d'un capteur, la température avec son avertissement, son niveau critique et une hystérésis, la sortie de protection et les mots que le nœud dit sur le réseau (l'état, la mesure, le jeton). Le firmware ESP-IDF (réseau filaire, serveur web, caméra, impulsions de la broche, sortie de protection) est écrit mais n'a pas été compilé, flashé ni exécuté sur une carte ; **les pilotes du capteur laser et des capteurs de température ne sont pas encore écrits**, donc une mesure est refusée aujourd'hui, et rien n'a été branché à une machine.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** les règles du nœud sont écrites en C++17 et testées sur un ordinateur : le fichier de réglages avec ses valeurs sûres, la mesure de la hauteur de la table à partir de plusieurs lectures du laser (les valeurs aberrantes sont écartées et une mesure trop dispersée est refusée), la vitesse de la broche à partir des impulsions d'un capteur, la température avec son avertissement, son niveau critique et une hystérésis, la sortie de protection et les mots que le nœud dit sur le réseau (l'état, la mesure, le jeton). Le firmware ESP-IDF (réseau filaire, serveur web, caméra, impulsions de la broche, sortie de protection) est écrit mais n'a pas été compilé, flashé ni exécuté sur une carte ; **les pilotes du laser (VL53L1X), des capteurs de température (DS18B20, NTC, MLX90614) et de la caméra (OV2640 ou OV5640) sont écrits mais n'ont jamais tourné sur une carte**, donc aucune mesure n'a jamais été faite, et rien n'a été branché à une machine.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.1` |
 | Maturité | Échafaudage |
-| Tests | 2 programmes de test sur l'ordinateur (175 vérifications) |
+| Tests | 2 programmes de test sur l'ordinateur (203 vérifications) |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
 | Sur du matériel réel | Non : le firmware n'a pas été compilé ni flashé, et rien n'a été branché à une machine |
 
@@ -44,9 +44,9 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit ; il n'a pas été compilé ni flashé. |
-| Tests | 🟢 | 2 programmes de test sur l'ordinateur réussissent (`ctest`) : 175 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
-| Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du capteur n'est pas écrit, donc aucune mesure n'est possible aujourd'hui. |
-| Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes des capteurs de température ne sont pas écrits. |
+| Tests | 🟢 | 2 programmes de test sur l'ordinateur réussissent (`ctest`) : 203 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
+| Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
+| Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |
 | Vidéo (RTSP, ONVIF) | 🟡 | La session RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, en UDP ou dans la connexion TCP, connexion Digest et Basic), la charge RTP de JPEG, la découverte et les services SOAP d'ONVIF (profils, encodeurs avec leurs tailles, adresses du flux et de l'instantané, le jeton d'utilisateur) sont testés sur un ordinateur ; aucun lecteur ni enregistreur n'a pris la vidéo d'une vraie carte. |
 | Matériel réel | 🔴 | Aucune carte n'a exécuté ce firmware et rien n'a été branché à une machine. |
@@ -63,7 +63,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 
 ## 🧩 Rôle dans EH3D
 
-EH3D-NODE-BUNGARD-AUX est le nœud de la tête de perçage d'une machine Bungard CCD, à côté d'EH3D-NODE-BUNGARD (le nœud qui pilote la machine) et d'EH3D-NODE-BUNGARD-HMI (l'écran). Il se place sur la tête, voit la carte avec sa caméra, mesure la table sous la tête et surveille la broche. Les programmes de bureau (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) utilisent ses mesures pour construire la carte de la table (`eh3d-levelling` dans EH3D-COMMON) et corriger le Z des travaux ; la liaison se fera directement ou par EH3D-SERVER, et aucune n'existe encore.
+EH3D-NODE-BUNGARD-AUX est le nœud de la tête de perçage d'une machine Bungard CCD, à côté d'EH3D-NODE-BUNGARD (le nœud qui pilote la machine) et d'EH3D-NODE-BUNGARD-HMI (l'écran). Il se place sur la tête, voit la carte avec sa caméra, mesure la table sous la tête et surveille la broche. Les programmes de bureau (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) utilisent ses mesures pour construire la carte de la table (`eh3d-levelling` dans EH3D-COMMON) et corriger le Z des travaux ; EH3D-BUNGARD-GUI interroge déjà le nœud directement (la fenêtre du nœud de la tête) ; la liaison par EH3D-SERVER n'existe pas encore.
 
 ## 🏛️ Architecture
 
@@ -87,6 +87,8 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **Une broche surveillée en permanence :** vitesse à partir des impulsions, température avec un avertissement, un niveau critique et une hystérésis, et une sortie de protection qui s'ouvre toute seule quand quelque chose ne va pas ou que le nœud ne tourne pas.
 * **Vidéo comme une caméra IP :** RTSP et ONVIF avec connexion, pour que n'importe quel lecteur, enregistreur ou gestionnaire ONVIF la prenne ; et la caméra en MJPEG sur `/stream` derrière le jeton.
 * **Sûr par défaut :** sans jeton, ni mesure ni caméra ; chaque limite a un interrupteur dans les réglages et part de sa position conservatrice.
+* **Deux caméras, l'OV2640 et l'OV5640 :** le capteur dit laquelle c'est et le nœud donne la plus grande taille que les réglages permettent et que ce capteur sait faire (l'OV2640 jusqu'à 1600x1200, l'OV5640 jusqu'à 2592x1944), l'indique dans `/api/status` (`camera_model`) et dans les options d'encodeur d'ONVIF ; `camera_model = auto | ov2640 | ov5640` dans `head.cfg`. Les broches du connecteur caméra de la Waveshare ESP32-S3-ETH sont les valeurs par défaut de `menuconfig`.
+* **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans `head.cfg`) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
 
 ## 🔒 Sécurité et protection
 
@@ -111,7 +113,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 | Caméra | `GET /stream` avec le jeton : MJPEG | `main/app_main.cpp` |
 | Impulsions de la broche | un GPIO (`AUX_RPM_GPIO` dans menuconfig), fronts montants | `main/sensors.cpp` |
 | Sortie de protection | un GPIO (`AUX_PROTECT_GPIO`), bas quand la broche doit s'arrêter | `main/sensors.cpp` |
-| Laser et température | I2C pour le laser et un fil pour le capteur de température ; les pilotes ne sont pas écrits | `main/sensors.cpp` |
+| Laser et température | I2C pour le laser et un fil pour le capteur de température ; les pilotes sont écrits et n'ont jamais tourné (le thermomètre MLX90614 partage le bus I2C, le DS18B20 utilise une broche, la CTN une entrée analogique) | `main/sensors.cpp` |
 | RTSP | `rtsp://ADRESSE:PORT/stream1` : OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN ; JPEG sur RTP en UDP ou entrelacé dans TCP ; connexion Digest ou Basic | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
 | ONVIF | WS-Discovery à l'adresse multicast `239.255.255.250:3702` ; SOAP sur `/onvif/device_service` et `/onvif/media_service` (profil S : capacités, services, profils, encodeurs, adresses du flux et de l'instantané) ; l'instantané sur `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
@@ -146,7 +148,7 @@ Le firmware n'a pas encore été compilé : quand il le sera, `idf.py set-target
 
 ## 🧪 Tests
 
-Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (74 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il n'a pas été compilé. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
+Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (103 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il n'a pas été compilé. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
 
 ## 🏗️ Compilation et publication
 
@@ -156,10 +158,10 @@ La version se trouve dans `eh3d.project.json`, et chaque version a son entrée d
 
 | Symptôme | Que faire |
 |---|---|
-| Une mesure est refusée avec `no_readings` | Le pilote du laser n'est pas écrit dans cette version, donc aucune lecture n'arrive jamais ; le reste de la réponse est testé. |
+| Une mesure est refusée avec `no_readings` | Aucun VL53L1X ne répond sur le bus I2C : vérifiez les broches SDA et SCL dans `menuconfig` (la caméra prend les GPIO 41 et 42 sur la Waveshare ESP32-S3-ETH) et le câblage ; le reste de la réponse est testé. |
 | Une mesure est refusée avec `too_noisy` | Les lectures se dispersent plus que `laser_sigma_max_mm` : laissez la tête et la table se stabiliser, ou relevez un peu la limite ; vérifiez que rien ne vibre. |
 | Le nœud répond 401 à une mesure ou à la caméra | Réglez `token` dans `head.cfg` (8 à 64 caractères) et envoyez-le dans l'en-tête `Authorization: Bearer ...` ou dans `?token=`. |
-| La sortie de protection est toujours ouverte | Un capteur de température activé qui ne répond pas compte comme chaud, et les pilotes ne sont pas encore écrits : mettez `temp_sensor = none` au banc d'essai, ou branchez un capteur quand son pilote existera. |
+| La sortie de protection est toujours ouverte | Un capteur de température activé qui ne répond pas compte comme chaud : vérifiez son fil et sa broche dans `menuconfig` et `temp_sensor` dans `head.cfg`, ou mettez `temp_sensor = none` au banc. |
 
 ## 📂 Structure du dépôt
 
@@ -175,7 +177,9 @@ EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
 │   ├── laser.hpp                                la mesure de la hauteur de la table
+│   ├── camera.hpp                               les caméras OV2640 et OV5640 et leurs tailles
 │   ├── spindle.hpp                              vitesse, chaleur et sortie de protection
+│   ├── thermo.hpp                               la température : DS18B20, CTN, MLX90614
 │   ├── hash.hpp                                 les connexions : MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP et la charge RTP de JPEG
 │   ├── onvif.hpp                                ONVIF : découverte et services SOAP
@@ -209,14 +213,14 @@ EH3D-NODE-BUNGARD-AUX/
 **Limites connues aujourd'hui**
 
 * Rien n'a tourné sur une carte : le firmware n'a pas été compilé, flashé ni essayé, et les broches de la caméra et de la puce réseau doivent être vérifiées avec le schéma de la carte.
-* Le pilote du capteur laser (VL53L1X en I2C) et ceux des capteurs de température ne sont pas écrits, donc aucune mesure n'est possible et un capteur de température activé compte comme chaud.
-* La liaison avec les programmes de bureau et avec EH3D-SERVER n'existe pas encore : le nœud répond sur son port, personne ne l'interroge.
+* Les pilotes du laser (VL53L1X en I2C, avec le composant `grrtzm/vl53l1x_library`, peu utilisé), des capteurs de température et de la caméra sont écrits et n'ont jamais tourné : le premier capteur qui répond sur une carte peut révéler une erreur.
+* La fenêtre d'EH3D-BUNGARD-GUI interroge le nœud directement (jamais essayée avec un vrai nœud) ; la liaison par EH3D-SERVER n'existe pas encore.
 * Le port réseau est du HTTP simple : gardez-le sur un réseau à part.
 * RTSP et ONVIF n'ont pas été essayés avec un vrai lecteur, enregistreur ou gestionnaire ONVIF ; le modèle de la caméra sur la carte décidera des tailles et des broches.
 
 **Suite**
 
-* Écrire les pilotes du laser et des capteurs de température et compiler le firmware.
+* Compiler le firmware, essayer les pilotes sur une carte et ajouter la liaison par EH3D-SERVER.
 * Ajouter la liaison avec EH3D-BUNGARD-GUI, avec EH3D-SERVER et avec l'écran, et la vue de la caméra.
 * Essayer la sortie de protection câblée sur une ligne d'arrêt d'une machine.
 

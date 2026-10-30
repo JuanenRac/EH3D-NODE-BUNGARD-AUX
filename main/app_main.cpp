@@ -19,6 +19,7 @@
 #include "sdkconfig.h"
 
 #include "../core/aux_config.hpp"
+#include "../core/camera.hpp"
 #include "../core/laser.hpp"
 #include "../core/protocol.hpp"
 #include "../core/spindle.hpp"
@@ -62,8 +63,15 @@ void load_settings() {
 
 // ------------------------------------------------------------------------------------------------------------------------------ the camera
 
-bool camera_start() {
+/// The driver's frame size for each row of `bungard_aux::frame_sizes()`, in the same order.
+const framesize_t FRAME_OF[] = {FRAMESIZE_QQVGA, FRAMESIZE_QVGA, FRAMESIZE_CIF, FRAMESIZE_VGA, FRAMESIZE_SVGA, FRAMESIZE_XGA, FRAMESIZE_HD,
+                                FRAMESIZE_SXGA,  FRAMESIZE_UXGA, FRAMESIZE_FHD, FRAMESIZE_QXGA, FRAMESIZE_QHD, FRAMESIZE_QSXGA, FRAMESIZE_5MP};
+static_assert(sizeof(FRAME_OF) / sizeof(FRAME_OF[0]) == 14, "one driver size for each row of the table of sizes");
+
+std::string camera_model_seen;  // what the sensor said it is, for /api/status
+
 #if CONFIG_AUX_CAM_XCLK >= 0
+esp_err_t camera_init(framesize_t size) {
     camera_config_t c = {};
     c.pin_pwdn = CONFIG_AUX_CAM_PWDN;
     c.pin_reset = CONFIG_AUX_CAM_RESET;
@@ -85,12 +93,37 @@ bool camera_start() {
     c.ledc_timer = LEDC_TIMER_0;
     c.ledc_channel = LEDC_CHANNEL_0;
     c.pixel_format = PIXFORMAT_JPEG;
-    c.frame_size = settings.camera_width >= 640 ? FRAMESIZE_VGA : FRAMESIZE_QVGA;
+    c.frame_size = size;
     c.jpeg_quality = settings.camera_quality;
     c.fb_count = 2;
     c.fb_location = CAMERA_FB_IN_PSRAM;
     c.grab_mode = CAMERA_GRAB_LATEST;
-    return esp_camera_init(&c) == ESP_OK;
+    return esp_camera_init(&c);
+}
+#endif
+
+/// Starts the camera. The sensor is asked which one it is (OV2640 or OV5640) with a small picture first; then the camera is started again at the size of the settings
+/// that this sensor can give, and the settings keep the real size and model so the status and ONVIF say the truth.
+bool camera_start() {
+#if CONFIG_AUX_CAM_XCLK >= 0
+    using namespace bungard_aux;
+    if (camera_init(FRAMESIZE_QVGA) != ESP_OK) return false;
+    sensor_t* sensor = esp_camera_sensor_get();
+    CameraModel seen = sensor ? model_from_pid(sensor->id.PID) : CameraModel::Auto;
+    if (seen == CameraModel::Auto) ESP_LOGW(TAG, "the camera is not an OV2640 or an OV5640 (product id 0x%x)", sensor ? sensor->id.PID : 0);
+    if (settings.camera_model != CameraModel::Auto && seen != CameraModel::Auto && seen != settings.camera_model) {
+        ESP_LOGW(TAG, "head.cfg says %s but the sensor is %s: the sensor wins", model_text(settings.camera_model), model_text(seen));
+    }
+    const CameraModel model = seen != CameraModel::Auto ? seen : settings.camera_model;
+    const std::size_t index = frame_index_for(settings.camera_width, settings.camera_height, model);
+    settings.camera_model = model;
+    settings.camera_width = static_cast<std::uint16_t>(frame_sizes()[index].width);
+    settings.camera_height = static_cast<std::uint16_t>(frame_sizes()[index].height);
+    camera_model_seen = model_text(model);
+    esp_camera_deinit();
+    if (camera_init(FRAME_OF[index]) != ESP_OK) return false;
+    ESP_LOGI(TAG, "camera %s at %ux%u", camera_model_seen.c_str(), static_cast<unsigned>(settings.camera_width), static_cast<unsigned>(settings.camera_height));
+    return true;
 #else
     ESP_LOGW(TAG, "camera pins are not set in menuconfig: no video");
     return false;
@@ -128,6 +161,7 @@ esp_err_t status_handler(httpd_req_t* req) {
     s.name = settings.name;
     s.version = VERSION;
     s.camera = camera_ok && settings.camera_enabled;
+    if (s.camera) s.camera_model = camera_model_seen;
     s.laser = settings.laser_enabled;
     s.rpm_on = settings.rpm_enabled;
     s.rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;

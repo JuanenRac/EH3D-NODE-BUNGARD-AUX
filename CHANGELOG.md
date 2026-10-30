@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Two cameras, the OV2640 and the OV5640:** `core/camera.hpp` lists the sizes each sensor can give; the sensor is asked which one it is (the product id), the node starts the camera at the largest size that `camera_width` and `camera_height` allow and that sensor can do, reports `camera_model` on `/api/status`, and the ONVIF encoder options list only what that sensor gives. `camera_model = auto | ov2640 | ov5640` in `head.cfg`; the pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
+- **The drivers of the sensors:** the VL53L1X laser through the component `grrtzm/vl53l1x_library`, and three ways to read the temperature of the spindle: a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta`) and an MLX90614 infrared thermometer on the I2C bus. The checksums and the conversions (`core/thermo.hpp`) are tested on a computer, with the published check values of both CRCs; the drivers have never run on a board.
+- **More tests:** 203 checks in the two host programs.
+
 ## [0.0.1] - The rules of the node: the settings file, the measure of the laser, the watch of the spindle and the words of the network
 
 - **The settings file:** `head.cfg` holds every tuned value (the network, the camera, the laser, the spindle, the temperature, the protect output); a value out of range or an unknown key is reported and the safe default stays, and limits that make no sense together fall back to the defaults.

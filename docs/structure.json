@@ -50,6 +50,20 @@
         },
         {
           "desc": {
+            "en": "the cameras OV2640 and OV5640 and their sizes",
+            "es": "las cámaras OV2640 y OV5640 y sus tamaños",
+            "it": "le telecamere OV2640 e OV5640 e le loro dimensioni",
+            "de": "die Kameras OV2640 und OV5640 und ihre Größen",
+            "fr": "les caméras OV2640 et OV5640 et leurs tailles",
+            "pt": "as câmaras OV2640 e OV5640 e os seus tamanhos",
+            "zh": "摄像头 OV2640 和 OV5640 及其尺寸",
+            "ja": "カメラ OV2640 と OV5640 とそのサイズ"
+          },
+          "name": "camera.hpp",
+          "tree_name": "camera.hpp"
+        },
+        {
+          "desc": {
             "en": "speed, heat and the protect output",
             "es": "velocidad, calor y salida de protección",
             "it": "velocità, calore e uscita di protezione",
@@ -60,6 +74,20 @@
             "ja": "回転数、温度、保護出力"
           },
           "name": "spindle.hpp"
+        },
+        {
+          "desc": {
+            "en": "the temperature: DS18B20, NTC, MLX90614",
+            "es": "la temperatura: DS18B20, NTC, MLX90614",
+            "it": "la temperatura: DS18B20, NTC, MLX90614",
+            "de": "die Temperatur: DS18B20, NTC, MLX90614",
+            "fr": "la température : DS18B20, CTN, MLX90614",
+            "pt": "a temperatura: DS18B20, NTC, MLX90614",
+            "zh": "温度：DS18B20、NTC、MLX90614",
+            "ja": "温度：DS18B20、NTC、MLX90614"
+          },
+          "name": "thermo.hpp",
+          "tree_name": "thermo.hpp"
         },
         {
           "desc": {

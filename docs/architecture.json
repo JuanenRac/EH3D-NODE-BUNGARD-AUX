@@ -2,7 +2,7 @@
   "repo": "EH3D-NODE-BUNGARD-AUX",
   "ecosystem": "eh3d",
   "tagline": "The node of the drill head of a Bungard CCD machine: video, the height of the table, the speed and the temperature of the spindle.",
-  "description": "EH3D-NODE-BUNGARD-AUX is firmware in C++17 for an ESP32-S3 with a wired network port, written for ESP-IDF 5.5. It measures the height of the table with a laser (several readings, the odd ones thrown away), reads the speed and the temperature of the spindle, opens a protect output when the spindle is too fast or too hot, and says it all on the network, with the camera as MJPEG, behind a token. The rules and the words of the network are tested on a computer; the firmware has not been built or run on a board, and the drivers of the laser and of the temperature sensors are not written.",
+  "description": "EH3D-NODE-BUNGARD-AUX is firmware in C++17 for an ESP32-S3 with a wired network port, written for ESP-IDF 5.5. It measures the height of the table with a laser (several readings, the odd ones thrown away), reads the speed and the temperature of the spindle, opens a protect output when the spindle is too fast or too hot, and says it all on the network, with the camera as MJPEG, behind a token. The rules and the words of the network are tested on a computer; the firmware, with the drivers of the laser, of the temperature sensors and of the camera (OV2640 or OV5640), has not been built or run on a board.",
   "columns": [
     "WHO USES IT",
     "THIS REPOSITORY",
@@ -103,11 +103,13 @@
       "level": "untested",
       "title": "Laser and temperature",
       "lines": [
-        "drivers of the VL53L1X and",
-        "of the heat sensors: missing"
+        "drivers of the VL53L1X, the",
+        "DS18B20, NTC and MLX90614:",
+        "written, never run"
       ],
       "code": [
-        "main/sensors.hpp"
+        "main/sensors.hpp",
+        "core/thermo.hpp"
       ]
     }
   ],

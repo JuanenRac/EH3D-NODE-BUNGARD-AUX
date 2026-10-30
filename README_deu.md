@@ -18,7 +18,7 @@
 
 ---
 
-**Ehrlichkeitscheck - was heute tatsächlich läuft:** die Regeln des Knotens sind in C++17 geschrieben und auf einem Computer getestet: die Einstellungsdatei mit ihren sicheren Vorgaben, die Messung der Tischhöhe aus mehreren Laserwerten (Ausreißer werden verworfen, eine zu stark streuende Messung wird abgelehnt), die Drehzahl der Spindel aus den Impulsen eines Sensors, die Temperatur mit Warnstufe, kritischer Stufe und Hysterese, der Schutzausgang und die Wörter, die der Knoten im Netz sagt (der Status, die Messung, das Token). Die ESP-IDF-Firmware (Kabelnetz, Webserver, Kamera, Spindelimpulse, Schutzausgang) ist geschrieben, aber nicht gebaut, geflasht oder auf einer Platine ausgeführt; **die Treiber des Lasersensors und der Temperatursensoren sind noch nicht geschrieben**, daher wird eine Messung heute abgelehnt, und nichts wurde an eine Maschine angeschlossen.
+**Ehrlichkeitscheck - was heute tatsächlich läuft:** die Regeln des Knotens sind in C++17 geschrieben und auf einem Computer getestet: die Einstellungsdatei mit ihren sicheren Vorgaben, die Messung der Tischhöhe aus mehreren Laserwerten (Ausreißer werden verworfen, eine zu stark streuende Messung wird abgelehnt), die Drehzahl der Spindel aus den Impulsen eines Sensors, die Temperatur mit Warnstufe, kritischer Stufe und Hysterese, der Schutzausgang und die Wörter, die der Knoten im Netz sagt (der Status, die Messung, das Token). Die ESP-IDF-Firmware (Kabelnetz, Webserver, Kamera, Spindelimpulse, Schutzausgang) ist geschrieben, aber nicht gebaut, geflasht oder auf einer Platine ausgeführt; **die Treiber des Lasers (VL53L1X), der Temperatursensoren (DS18B20, NTC, MLX90614) und der Kamera (OV2640 oder OV5640) sind geschrieben, aber nie auf einer Platine gelaufen**, daher wurde noch nie eine Messung gemacht, und nichts wurde an eine Maschine angeschlossen.
 
 ---
 
@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.1` |
 | Reifegrad | Gerüst |
-| Tests | 2 Testprogramme auf dem Rechner (175 Prüfungen) |
+| Tests | 2 Testprogramme auf dem Rechner (203 Prüfungen) |
 | Technologie-Stack | C++17, ESP-IDF 5.5, ESP32-S3, Netzwerk W5500 |
 | Auf echter Hardware | Nein: die Firmware wurde nicht gebaut oder geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -44,9 +44,9 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben; es wurde nicht gebaut oder geflasht. |
-| Tests | 🟢 | 2 Testprogramme auf dem Rechner bestehen (`ctest`): 175 Prüfungen der Einstellungsdatei, der Lasermessung, der Drehzahl und Temperatur der Spindel, des Schutzausgangs und der Wörter des Netzes. |
-| Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des Sensors ist nicht geschrieben, daher ist heute keine Messung möglich. |
-| Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber der Temperatursensoren sind nicht geschrieben. |
+| Tests | 🟢 | 2 Testprogramme auf dem Rechner bestehen (`ctest`): 203 Prüfungen der Einstellungsdatei, der Lasermessung, der Drehzahl und Temperatur der Spindel, des Schutzausgangs und der Wörter des Netzes. |
+| Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des VL53L1X ist geschrieben, aber nie gelaufen, daher wurde noch keine Messung gemacht. |
+| Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber des DS18B20, des NTC und des MLX90614 sind geschrieben, aber nie gelaufen. |
 | Kamera | 🟠 | Der MJPEG-Strom ist für den Kameraanschluss der Platine geschrieben und braucht die Pins der Platine in menuconfig; er ist nicht gelaufen. |
 | Video (RTSP, ONVIF) | 🟡 | Die RTSP-Sitzung (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, über UDP oder in der TCP-Verbindung, Digest- und Basic-Anmeldung), die RTP-Nutzlast von JPEG, die Erkennung und die SOAP-Dienste von ONVIF (Profile, Encoder mit ihren Größen, Adressen von Strom und Schnappschuss, das Benutzer-Token) sind auf einem Rechner getestet; kein Player und kein Rekorder hat das Video von einer echten Platine geholt. |
 | Echte Hardware | 🔴 | Keine Platine hat diese Firmware ausgeführt, und nichts wurde an eine Maschine angeschlossen. |
@@ -63,7 +63,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 ## 🧩 Rolle in EH3D
 
-EH3D-NODE-BUNGARD-AUX ist der Knoten am Bohrkopf einer Bungard-CCD-Maschine, neben EH3D-NODE-BUNGARD (dem Knoten, der die Maschine antreibt) und EH3D-NODE-BUNGARD-HMI (dem Bildschirm). Er sitzt am Kopf, sieht die Platine mit seiner Kamera, misst den Tisch unter dem Kopf und überwacht die Spindel. Die Desktop-Programme (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) nutzen seine Messungen, um die Tischkarte zu bauen (`eh3d-levelling` in EH3D-COMMON) und das Z der Aufträge zu korrigieren; die Verbindung wird direkt oder über EH3D-SERVER laufen, und beides gibt es noch nicht.
+EH3D-NODE-BUNGARD-AUX ist der Knoten am Bohrkopf einer Bungard-CCD-Maschine, neben EH3D-NODE-BUNGARD (dem Knoten, der die Maschine antreibt) und EH3D-NODE-BUNGARD-HMI (dem Bildschirm). Er sitzt am Kopf, sieht die Platine mit seiner Kamera, misst den Tisch unter dem Kopf und überwacht die Spindel. Die Desktop-Programme (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) nutzen seine Messungen, um die Tischkarte zu bauen (`eh3d-levelling` in EH3D-COMMON) und das Z der Aufträge zu korrigieren; EH3D-BUNGARD-GUI fragt den Knoten schon direkt ab (das Fenster des Knotens am Bohrkopf); die Verbindung über EH3D-SERVER gibt es noch nicht.
 
 ## 🏛️ Architektur
 
@@ -87,6 +87,8 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 * **Eine ständig überwachte Spindel:** Drehzahl aus den Impulsen, Temperatur mit Warnstufe, kritischer Stufe und Hysterese, und ein Schutzausgang, der von selbst öffnet, wenn etwas nicht stimmt oder der Knoten nicht läuft.
 * **Video wie eine IP-Kamera:** RTSP und ONVIF mit Anmeldung, damit jeder Player, Rekorder oder ONVIF-Manager es abholen kann; und die Kamera als MJPEG auf `/stream` hinter dem Token.
 * **Standardmäßig sicher:** ohne Token keine Messung und keine Kamera; jede Grenze hat einen Schalter in den Einstellungen und beginnt in der konservativen Stellung.
+* **Zwei Kameras, die OV2640 und die OV5640:** der Sensor sagt, welche es ist, und der Knoten liefert die größte Größe, die die Einstellungen erlauben und die dieser Sensor kann (die OV2640 bis 1600x1200, die OV5640 bis 2592x1944), meldet sie in `/api/status` (`camera_model`) und in den Encoder-Optionen von ONVIF; `camera_model = auto | ov2640 | ov5640` in `head.cfg`. Die Pins des Kameraanschlusses der Waveshare ESP32-S3-ETH sind die Standardwerte von `menuconfig`.
+* **Drei Temperatursensoren:** ein DS18B20 an einem Draht, ein NTC-Thermistor an einem Analogeingang (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in `head.cfg`) oder ein Infrarotthermometer MLX90614, das die Spindel berührungslos ansieht (am I2C-Bus des Lasers); die Prüfsummen und die Umrechnungen sind auf einem Computer getestet.
 
 ## 🔒 Sicherheit und Schutz
 
@@ -111,7 +113,7 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 | Kamera | `GET /stream` mit Token: MJPEG | `main/app_main.cpp` |
 | Spindelimpulse | ein GPIO (`AUX_RPM_GPIO` in menuconfig), steigende Flanken | `main/sensors.cpp` |
 | Schutzausgang | ein GPIO (`AUX_PROTECT_GPIO`), low, wenn die Spindel stoppen muss | `main/sensors.cpp` |
-| Laser und Temperatur | I2C für den Laser und One-Wire für den Temperatursensor; die Treiber sind nicht geschrieben | `main/sensors.cpp` |
+| Laser und Temperatur | I2C für den Laser und One-Wire für den Temperatursensor; die Treiber sind geschrieben und nie gelaufen (das Thermometer MLX90614 teilt sich den I2C-Bus, der DS18B20 nutzt einen Pin, der NTC einen Analogeingang) | `main/sensors.cpp` |
 | RTSP | `rtsp://ADRESSE:PORT/stream1`: OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN; JPEG über RTP per UDP oder verschachtelt in TCP; Digest- oder Basic-Anmeldung | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
 | ONVIF | WS-Discovery an der Multicast-Adresse `239.255.255.250:3702`; SOAP auf `/onvif/device_service` und `/onvif/media_service` (Profil S: Fähigkeiten, Dienste, Profile, Encoder, Adressen von Strom und Schnappschuss); der Schnappschuss auf `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
@@ -146,7 +148,7 @@ Die Firmware wurde noch nicht gebaut: wenn es so weit ist, erzeugt `idf.py set-t
 
 ## 🧪 Tests
 
-Die Tests auf dem Rechner (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_aux` (74 Prüfungen) zur Einstellungsdatei (Standardwerte, Werte, falsche Werte, Grenzen, die zusammen keinen Sinn ergeben), zur Lasermessung (der Median, der verworfene Ausreißer, der Versatz, als schlecht markierte Werte, der Bereich, keine Werte, eine zu große Streuung), zur Spindeldrehzahl (Impulse je Umdrehung, eine langsamer werdende Spindel, Stillstand bei ausbleibenden Impulsen), zur Temperatur (die Hysterese, ein ausfallender Sensor), zum Schutzausgang und zu den Wörtern des Netzes (die Anfragezeile, die Routen, das Token im Header oder in der Abfrage, die Zahl der Werte, das JSON von Status und Messung, die Zeile eines Kartenpunkts). Die Firmware ist nicht abgedeckt: sie wurde nicht gebaut. Das zweite Programm, `test_stream` (100 Prüfungen), deckt das Video ab: die Hashes der Anmeldungen gegen ihre veröffentlichten Vektoren (MD5, SHA-1, Base64 und das Digest-Beispiel des RFC 2617), die RTSP-Anfragen und die ganze Sitzung (Anmeldung, SDP, UDP- und verschachtelter Transport, Play, Pause, Teardown, eine falsche Sitzung, Multicast abgelehnt), die RTP-Nutzlast von JPEG (die Tabellen im ersten Paket, die Reihenfolge, die Markierung, der Überlauf der Sequenz) und ONVIF (Erkennung, das Benutzer-Token mit dem Beispiel des Standards, die offenen und die geschützten Aufrufe, die Dienste und ein nicht ausgeführter Aufruf).
+Die Tests auf dem Rechner (`build.bat` oder `./build.sh`, dann `ctest`) sind zwei Programme und alles besteht: `test_aux` (103 Prüfungen) zur Einstellungsdatei (Standardwerte, Werte, falsche Werte, Grenzen, die zusammen keinen Sinn ergeben), zur Lasermessung (der Median, der verworfene Ausreißer, der Versatz, als schlecht markierte Werte, der Bereich, keine Werte, eine zu große Streuung), zur Spindeldrehzahl (Impulse je Umdrehung, eine langsamer werdende Spindel, Stillstand bei ausbleibenden Impulsen), zur Temperatur (die Hysterese, ein ausfallender Sensor), zum Schutzausgang und zu den Wörtern des Netzes (die Anfragezeile, die Routen, das Token im Header oder in der Abfrage, die Zahl der Werte, das JSON von Status und Messung, die Zeile eines Kartenpunkts). Die Firmware ist nicht abgedeckt: sie wurde nicht gebaut. Das zweite Programm, `test_stream` (100 Prüfungen), deckt das Video ab: die Hashes der Anmeldungen gegen ihre veröffentlichten Vektoren (MD5, SHA-1, Base64 und das Digest-Beispiel des RFC 2617), die RTSP-Anfragen und die ganze Sitzung (Anmeldung, SDP, UDP- und verschachtelter Transport, Play, Pause, Teardown, eine falsche Sitzung, Multicast abgelehnt), die RTP-Nutzlast von JPEG (die Tabellen im ersten Paket, die Reihenfolge, die Markierung, der Überlauf der Sequenz) und ONVIF (Erkennung, das Benutzer-Token mit dem Beispiel des Standards, die offenen und die geschützten Aufrufe, die Dienste und ein nicht ausgeführter Aufruf).
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -156,10 +158,10 @@ Die Version steht in `eh3d.project.json`, und jede Version hat ihren Eintrag in 
 
 | Symptom | Was tun |
 |---|---|
-| Eine Messung wird mit `no_readings` abgelehnt | Der Treiber des Lasers ist in dieser Version nicht geschrieben, daher kommt nie ein Wert an; der Rest der Antwort ist getestet. |
+| Eine Messung wird mit `no_readings` abgelehnt | Kein VL53L1X antwortet am I2C-Bus: prüfe die Pins SDA und SCL in `menuconfig` (die Kamera belegt auf der Waveshare ESP32-S3-ETH GPIO 41 und 42) und die Verdrahtung; der Rest der Antwort ist getestet. |
 | Eine Messung wird mit `too_noisy` abgelehnt | Die Werte streuen mehr als `laser_sigma_max_mm`: lass Kopf und Tisch zur Ruhe kommen oder erhöhe die Grenze etwas; prüfe, dass nichts wackelt. |
 | Der Knoten antwortet 401 auf eine Messung oder die Kamera | Setze `token` in `head.cfg` (8 bis 64 Zeichen) und sende es im Header `Authorization: Bearer ...` oder in `?token=`. |
-| Der Schutzausgang ist immer offen | Ein eingeschalteter Temperatursensor, der nicht antwortet, gilt als heiß, und die Treiber sind noch nicht geschrieben: setze `temp_sensor = none` auf dem Prüfstand oder schließe einen Sensor an, sobald sein Treiber existiert. |
+| Der Schutzausgang ist immer offen | Ein eingeschalteter Temperatursensor, der nicht antwortet, gilt als heiß: prüfe sein Kabel und seinen Pin in `menuconfig` sowie `temp_sensor` in `head.cfg`, oder setze `temp_sensor = none` auf dem Prüfstand. |
 
 ## 📂 Struktur des Repositorys
 
@@ -175,7 +177,9 @@ EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           die Einstellungsdatei und ihre sicheren Standardwerte
 │   ├── laser.hpp                                die Messung der Tischhöhe
+│   ├── camera.hpp                               die Kameras OV2640 und OV5640 und ihre Größen
 │   ├── spindle.hpp                              Drehzahl, Wärme und Schutzausgang
+│   ├── thermo.hpp                               die Temperatur: DS18B20, NTC, MLX90614
 │   ├── hash.hpp                                 die Anmeldungen: MD5, SHA-1, Base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP und die RTP-Nutzlast von JPEG
 │   ├── onvif.hpp                                ONVIF: Erkennung und SOAP-Dienste
@@ -209,14 +213,14 @@ EH3D-NODE-BUNGARD-AUX/
 **Bekannte Grenzen heute**
 
 * Nichts lief auf einer Platine: die Firmware wurde nicht gebaut, geflasht oder erprobt, und die Pins der Kamera und des Netzwerkchips müssen mit dem Schaltplan der Platine geprüft werden.
-* Der Treiber des Lasersensors (VL53L1X über I2C) und die der Temperatursensoren sind nicht geschrieben, daher ist keine Messung möglich, und ein eingeschalteter Temperatursensor gilt als heiß.
-* Die Verbindung zu den Desktop-Programmen und zu EH3D-SERVER gibt es noch nicht: der Knoten antwortet an seinem Port, niemand fragt ihn.
+* Die Treiber des Lasers (VL53L1X über I2C, mit der wenig genutzten Komponente `grrtzm/vl53l1x_library`), der Temperatursensoren und der Kamera sind geschrieben und nie gelaufen: der erste Sensor, der auf einer Platine antwortet, kann einen Fehler zeigen.
+* Das Fenster von EH3D-BUNGARD-GUI fragt den Knoten direkt ab (nie an einem echten Knoten probiert); die Verbindung über EH3D-SERVER gibt es noch nicht.
 * Der Netzwerkport ist einfaches HTTP: halte ihn in einem eigenen Netz.
 * RTSP und ONVIF wurden mit keinem echten Player, Rekorder oder ONVIF-Manager erprobt; das Kameramodell auf der Platine entscheidet über Größen und Pins.
 
 **Als Nächstes**
 
-* Die Treiber des Lasers und der Temperatursensoren schreiben und die Firmware bauen.
+* Die Firmware bauen, die Treiber auf einer Platine ausprobieren und die Verbindung über EH3D-SERVER ergänzen.
 * Die Verbindung zu EH3D-BUNGARD-GUI, zu EH3D-SERVER und zum Bildschirm sowie die Kameraansicht hinzufügen.
 * Den Schutzausgang an einer Stopp-Leitung einer Maschine erproben.
 

@@ -6,8 +6,9 @@ address =
 port = 80
 token =
 
-# the camera of the head (MJPEG on /stream)
+# the camera of the head (MJPEG on /stream): camera_model is auto, ov2640 or ov5640; the size is the largest one that the sensor can do and that is not larger than width x height
 camera_enabled = on
+camera_model = auto
 camera_width = 640
 camera_height = 480
 camera_quality = 12
@@ -37,6 +38,10 @@ rpm_stale_ms = 1500
 
 # the temperature of the spindle: none, ds18b20, ntc or mlx90614
 temp_sensor = none
+# the thermistor when temp_sensor = ntc: the resistor of the divider, the resistance at 25 degrees and the beta of the data sheet
+ntc_series_ohm = 10000
+ntc_r25_ohm = 10000
+ntc_beta = 3950
 temp_warn_c = 55
 temp_critical_c = 70
 temp_hysteresis_c = 3

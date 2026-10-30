@@ -84,6 +84,7 @@ struct Status {
     std::string name;
     std::string version;
     bool camera = false;
+    std::string camera_model;  // what the sensor reported (ov2640, ov5640), empty when there is no camera
     bool laser = false;
     bool rpm_on = false;
     double rpm = 0.0;
@@ -105,12 +106,12 @@ inline std::string json_escape(const std::string& s) {
 }
 
 inline std::string json_status(const Status& s) {
-    char buf[384];
+    char buf[448];
     char temp[24];
     if (s.has_temp) std::snprintf(temp, sizeof temp, "%.1f", s.temp_c); else std::snprintf(temp, sizeof temp, "null");
     std::snprintf(buf, sizeof buf,
-                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u}",
-                  json_escape(s.name).c_str(), json_escape(s.version).c_str(), s.camera ? "true" : "false", s.laser ? "true" : "false", s.rpm_on ? "true" : "false", s.rpm, temp,
+                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"camera_model\":\"%s\",\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u}",
+                  json_escape(s.name).c_str(), json_escape(s.version).c_str(), s.camera ? "true" : "false", json_escape(s.camera_model).c_str(), s.laser ? "true" : "false", s.rpm_on ? "true" : "false", s.rpm, temp,
                   heat_text(s.heat), s.protect_open ? "true" : "false", static_cast<unsigned>(s.uptime_s));
     return buf;
 }

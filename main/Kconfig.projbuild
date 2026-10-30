@@ -40,17 +40,27 @@ menu "EH3D Bungard AUX"
                 High while the spindle may run, low when it is too fast or too hot (or when this node is not running). Wire it into the stop line of the control
                 unit through a relay or an opto-coupler: it must open by itself when the node loses power.
         config AUX_I2C_SDA
-            int "I2C SDA GPIO of the laser"
-            default 41
-        config AUX_I2C_SCL
-            int "I2C SCL GPIO of the laser"
-            default 42
-        config AUX_ONEWIRE_GPIO
-            int "GPIO of the one-wire temperature sensor (-1: not wired)"
+            int "I2C SDA GPIO of the laser (-1: not wired)"
             default -1
+            help
+                Not 41: on the Waveshare ESP32-S3-ETH the camera connector takes GPIO 41 and 42. Pick two free pins of the board.
+        config AUX_I2C_SCL
+            int "I2C SCL GPIO of the laser (-1: not wired)"
+            default -1
+        config AUX_ONEWIRE_GPIO
+            int "GPIO of the one-wire temperature sensor, a DS18B20 (-1: not wired)"
+            default -1
+            help
+                With a 4.7 k pull-up to 3.3 V. Used when head.cfg says temp_sensor = ds18b20.
+        config AUX_NTC_GPIO
+            int "GPIO (analogue input) of the NTC thermistor divider (-1: not wired)"
+            default -1
+            help
+                The thermistor to ground and a fixed resistor to 3.3 V, the pin between them. Used when head.cfg says temp_sensor = ntc; its values (ntc_series_ohm, ntc_r25_ohm, ntc_beta) are in head.cfg.
+                The infrared thermometer MLX90614 (temp_sensor = mlx90614) uses the I2C pins of the laser: both sit on the same bus.
     endmenu
 
-    menu "Camera pins (set for your board)"
+    menu "Camera pins (the defaults are those of the Waveshare ESP32-S3-ETH camera connector; check them against the schematic of your board)"
         config AUX_CAM_PWDN
             int "PWDN GPIO"
             default -1
@@ -59,45 +69,45 @@ menu "EH3D Bungard AUX"
             default -1
         config AUX_CAM_XCLK
             int "XCLK GPIO"
-            default -1
+            default 3
         config AUX_CAM_SIOD
             int "SIOD (SDA) GPIO"
-            default -1
+            default 48
         config AUX_CAM_SIOC
             int "SIOC (SCL) GPIO"
-            default -1
+            default 47
         config AUX_CAM_VSYNC
             int "VSYNC GPIO"
-            default -1
+            default 1
         config AUX_CAM_HREF
             int "HREF GPIO"
-            default -1
+            default 2
         config AUX_CAM_PCLK
             int "PCLK GPIO"
-            default -1
+            default 39
         config AUX_CAM_D0
             int "D0 GPIO"
-            default -1
+            default 41
         config AUX_CAM_D1
             int "D1 GPIO"
-            default -1
+            default 45
         config AUX_CAM_D2
             int "D2 GPIO"
-            default -1
+            default 46
         config AUX_CAM_D3
             int "D3 GPIO"
-            default -1
+            default 42
         config AUX_CAM_D4
             int "D4 GPIO"
-            default -1
+            default 40
         config AUX_CAM_D5
             int "D5 GPIO"
-            default -1
+            default 38
         config AUX_CAM_D6
             int "D6 GPIO"
-            default -1
+            default 15
         config AUX_CAM_D7
             int "D7 GPIO"
-            default -1
+            default 18
     endmenu
 endmenu

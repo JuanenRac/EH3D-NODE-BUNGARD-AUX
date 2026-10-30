@@ -61,6 +61,7 @@ bungard_aux::OnvifConfig onvif_config() {
     c.password = cfg.stream_password;
     c.video = {cfg.camera_width, cfg.camera_height, cfg.camera_fps_max};
     c.quality = cfg.camera_quality;
+    c.sizes = bungard_aux::sizes_of(cfg.camera_model);
     std::uint8_t mac[6] = {};
     esp_read_mac(mac, ESP_MAC_ETH);
     char id[40];

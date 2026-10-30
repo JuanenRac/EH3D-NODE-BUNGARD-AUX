@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "camera.hpp"
+
 namespace bungard_aux {
 
 enum class TempSensor { None, Ds18b20, Ntc, Mlx90614 };
@@ -21,8 +23,9 @@ struct Settings {
 
     // the camera (MJPEG over HTTP)
     bool camera_enabled = true;
-    std::uint16_t camera_width = 640;       // 160..1600
-    std::uint16_t camera_height = 480;      // 120..1200
+    CameraModel camera_model = CameraModel::Auto;  // auto: the sensor says which one it is; the OV2640 gives up to 1600x1200, the OV5640 up to 2592x1944
+    std::uint16_t camera_width = 640;       // 160..2592 (the nearest size the camera can give, not larger)
+    std::uint16_t camera_height = 480;      // 120..1944
     std::uint16_t camera_quality = 12;      // JPEG quality, 4 (best) .. 63 (smallest)
     std::uint16_t camera_fps_max = 10;      // 1..30
 
@@ -51,6 +54,9 @@ struct Settings {
 
     // the temperature of the spindle
     TempSensor temp_sensor = TempSensor::None;
+    double ntc_series_ohm = 10000.0;        // the NTC thermistor: the fixed resistor of the divider, 100..1000000
+    double ntc_r25_ohm = 10000.0;           // its resistance at 25 degrees, 100..1000000
+    double ntc_beta = 3950.0;               // its beta, 1000..10000
     double temp_warn_c = 55.0;              // 20..150
     double temp_critical_c = 70.0;          // 20..200, always above the warning
     double temp_hysteresis_c = 3.0;         // 0.5..20
@@ -178,10 +184,15 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(1, 65535)) s.port = static_cast<std::uint16_t>(n);
         } else if (key == "camera_enabled") {
             if (flag()) s.camera_enabled = b;
+        } else if (key == "camera_model") {
+            if (val == "auto") s.camera_model = CameraModel::Auto;
+            else if (val == "ov2640") s.camera_model = CameraModel::Ov2640;
+            else if (val == "ov5640") s.camera_model = CameraModel::Ov5640;
+            else bad("auto, ov2640 or ov5640");
         } else if (key == "camera_width") {
-            if (num(160, 1600)) s.camera_width = static_cast<std::uint16_t>(n);
+            if (num(160, 2592)) s.camera_width = static_cast<std::uint16_t>(n);
         } else if (key == "camera_height") {
-            if (num(120, 1200)) s.camera_height = static_cast<std::uint16_t>(n);
+            if (num(120, 1944)) s.camera_height = static_cast<std::uint16_t>(n);
         } else if (key == "camera_quality") {
             if (num(4, 63)) s.camera_quality = static_cast<std::uint16_t>(n);
         } else if (key == "camera_fps_max") {
@@ -224,6 +235,12 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             else if (val == "ntc") s.temp_sensor = TempSensor::Ntc;
             else if (val == "mlx90614") s.temp_sensor = TempSensor::Mlx90614;
             else bad("not none, ds18b20, ntc or mlx90614");
+        } else if (key == "ntc_series_ohm") {
+            if (real(100.0, 1000000.0)) s.ntc_series_ohm = d;
+        } else if (key == "ntc_r25_ohm") {
+            if (real(100.0, 1000000.0)) s.ntc_r25_ohm = d;
+        } else if (key == "ntc_beta") {
+            if (real(1000.0, 10000.0)) s.ntc_beta = d;
         } else if (key == "temp_warn_c") {
             if (real(20.0, 150.0)) s.temp_warn_c = d;
         } else if (key == "temp_critical_c") {
