@@ -63,7 +63,7 @@
 
 ## 🧩 在 EH3D 中的角色
 
-EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-BUNGARD（驱动机床的节点）和 EH3D-NODE-BUNGARD-HMI（屏幕）并列。它装在钻头上，用摄像头看板子，测量钻头下方的工作台并监视主轴。桌面程序（EH3D-BUNGARD-GUI、DRILLPRO、ROUTEPRO）用它的测量结果构建工作台高度图（EH3D-COMMON 中的 `eh3d-levelling`）并修正作业的 Z；EH3D-BUNGARD-GUI 已能直接查询该节点（钻头节点窗口）；经 EH3D-SERVER 的连接尚不存在。
+EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-BUNGARD（驱动机床的节点）和 EH3D-NODE-BUNGARD-HMI（屏幕）并列。它装在钻头上，用摄像头看板子，测量钻头下方的工作台并监视主轴。桌面程序（EH3D-BUNGARD-GUI、DRILLPRO、ROUTEPRO）用它的测量结果构建工作台高度图（EH3D-COMMON 中的 `eh3d-levelling`）并修正作业的 Z；EH3D-BUNGARD-GUI 可直接或经 EH3D-SERVER 查询该节点（钻头节点窗口）。
 
 ## 🏛️ 架构
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * 没有在板子上运行过任何东西：固件尚未编译、烧录或试用，摄像头和网络芯片的引脚必须对照板子的原理图检查。
 * 激光（I2C 上的 VL53L1X，使用较少人用的组件 `grrtzm/vl53l1x_library`）、温度传感器和摄像头的驱动已编写但从未运行：板子上第一个响应的传感器可能暴露出错误。
-* EH3D-BUNGARD-GUI 的窗口直接查询节点（从未对真实节点试过）；经 EH3D-SERVER 的连接尚不存在。
+* EH3D-BUNGARD-GUI（钻头节点窗口）和 EH3D-SERVER 会直接或经服务器查询该节点；都还没有对真实节点试过。
 * 网络口是普通 HTTP：请放在独立网络中。
 * RTSP 和 ONVIF 尚未用真实的播放器、录像机或 ONVIF 管理软件试过；板子上的摄像头型号将决定尺寸和引脚。
 
 **下一步**
 
-* 构建固件，在板子上试用驱动，并加入经 EH3D-SERVER 的连接。
+* 构建固件，并在板子上试用驱动。
 * 加入与 EH3D-BUNGARD-GUI、EH3D-SERVER 和屏幕的连接，以及摄像头视图。
 * 在机床上试验接入停机线路的保护输出。
 

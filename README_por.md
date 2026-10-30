@@ -63,7 +63,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 
 ## 🧩 Papel no EH3D
 
-EH3D-NODE-BUNGARD-AUX é o nó da cabeça de furação de uma máquina Bungard CCD, ao lado do EH3D-NODE-BUNGARD (o nó que comanda a máquina) e do EH3D-NODE-BUNGARD-HMI (o ecrã). Fica na cabeça, vê a placa com a sua câmara, mede a mesa por baixo da cabeça e vigia o fuso. Os programas de secretária (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usam as suas medições para construir o mapa da mesa (`eh3d-levelling` no EH3D-COMMON) e corrigir o Z dos trabalhos; o EH3D-BUNGARD-GUI já consulta o nó diretamente (a janela do nó da cabeça); a ligação através do EH3D-SERVER ainda não existe.
+EH3D-NODE-BUNGARD-AUX é o nó da cabeça de furação de uma máquina Bungard CCD, ao lado do EH3D-NODE-BUNGARD (o nó que comanda a máquina) e do EH3D-NODE-BUNGARD-HMI (o ecrã). Fica na cabeça, vê a placa com a sua câmara, mede a mesa por baixo da cabeça e vigia o fuso. Os programas de secretária (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usam as suas medições para construir o mapa da mesa (`eh3d-levelling` no EH3D-COMMON) e corrigir o Z dos trabalhos; o EH3D-BUNGARD-GUI consulta o nó diretamente ou através do EH3D-SERVER (a janela do nó da cabeça).
 
 ## 🏛️ Arquitetura
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Nada foi executado numa placa: o firmware não foi compilado, gravado nem experimentado, e os pinos da câmara e do chip de rede têm de ser verificados com o esquema da placa.
 * Os controladores do laser (VL53L1X por I2C, com o componente `grrtzm/vl53l1x_library`, pouco usado), dos sensores de temperatura e da câmara estão escritos e nunca correram: o primeiro sensor que responder numa placa pode mostrar um erro.
-* A janela do EH3D-BUNGARD-GUI consulta o nó diretamente (nunca experimentada com um nó real); a ligação através do EH3D-SERVER ainda não existe.
+* o EH3D-BUNGARD-GUI (a janela do nó da cabeça) e o EH3D-SERVER consultam o nó, diretamente ou através do servidor; nenhum foi experimentado com um nó real.
 * A porta de rede é HTTP simples: mantenha-a numa rede própria.
 * RTSP e ONVIF não foram experimentados com um leitor, gravador ou gestor ONVIF reais; o modelo da câmara na placa decidirá os tamanhos e os pinos.
 
 **Seguinte**
 
-* Compilar o firmware, experimentar os controladores numa placa e acrescentar a ligação através do EH3D-SERVER.
+* Compilar o firmware e experimentar os controladores numa placa.
 * Acrescentar a ligação com o EH3D-BUNGARD-GUI, com o EH3D-SERVER e com o ecrã, e a vista da câmara.
 * Experimentar a saída de proteção ligada a uma linha de paragem numa máquina.
 

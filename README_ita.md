@@ -63,7 +63,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 
 ## 🧩 Ruolo in EH3D
 
-EH3D-NODE-BUNGARD-AUX è il nodo della testa di foratura di una macchina Bungard CCD, accanto a EH3D-NODE-BUNGARD (il nodo che comanda la macchina) e EH3D-NODE-BUNGARD-HMI (lo schermo). Sta sulla testa, vede la scheda con la sua telecamera, misura il tavolo sotto la testa e sorveglia il mandrino. I programmi desktop (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usano le sue misure per costruire la mappa del tavolo (`eh3d-levelling` in EH3D-COMMON) e correggere la Z dei lavori; EH3D-BUNGARD-GUI interroga già il nodo direttamente (la finestra del nodo della testa); il collegamento tramite EH3D-SERVER non esiste ancora.
+EH3D-NODE-BUNGARD-AUX è il nodo della testa di foratura di una macchina Bungard CCD, accanto a EH3D-NODE-BUNGARD (il nodo che comanda la macchina) e EH3D-NODE-BUNGARD-HMI (lo schermo). Sta sulla testa, vede la scheda con la sua telecamera, misura il tavolo sotto la testa e sorveglia il mandrino. I programmi desktop (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usano le sue misure per costruire la mappa del tavolo (`eh3d-levelling` in EH3D-COMMON) e correggere la Z dei lavori; EH3D-BUNGARD-GUI interroga il nodo direttamente o tramite EH3D-SERVER (la finestra del nodo della testa).
 
 ## 🏛️ Architettura
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Nulla è stato eseguito su una scheda: il firmware non è stato compilato, caricato né provato, e i pin della telecamera e del chip di rete vanno controllati con lo schema della scheda.
 * I driver del laser (VL53L1X via I2C, con il componente `grrtzm/vl53l1x_library`, poco usato), dei sensori di temperatura e della telecamera sono scritti e non sono mai stati eseguiti: il primo sensore che risponde su una scheda può mostrare un errore.
-* La finestra di EH3D-BUNGARD-GUI interroga il nodo direttamente (mai provata con un nodo reale); il collegamento tramite EH3D-SERVER non esiste ancora.
+* EH3D-BUNGARD-GUI (la finestra del nodo della testa) e EH3D-SERVER interrogano il nodo, direttamente o tramite il server; nessuno dei due è stato provato con un nodo reale.
 * La porta di rete è HTTP semplice: tienila su una rete a parte.
 * RTSP e ONVIF non sono stati provati con un player, un registratore o un gestore ONVIF reali; il modello della telecamera sulla scheda deciderà dimensioni e pin.
 
 **Prossimi passi**
 
-* Compilare il firmware, provare i driver su una scheda e aggiungere il collegamento tramite EH3D-SERVER.
+* Compilare il firmware e provare i driver su una scheda.
 * Aggiungere il collegamento con EH3D-BUNGARD-GUI, con EH3D-SERVER e con lo schermo, e la vista della telecamera.
 * Provare l'uscita di protezione cablata a una linea di arresto su una macchina.
 

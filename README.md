@@ -63,7 +63,7 @@ Each line is one part of this repository and the light says how far it is today.
 
 ## 🧩 Role in EH3D
 
-EH3D-NODE-BUNGARD-AUX is the node of the drill head of a Bungard CCD machine, beside EH3D-NODE-BUNGARD (the node that drives the machine) and EH3D-NODE-BUNGARD-HMI (the screen). It sits on the head, sees the board with its camera, measures the table under the head and watches the spindle. The desktop programs (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) use its measures to build the map of the table (`eh3d-levelling` in EH3D-COMMON) and correct the Z of the jobs; EH3D-BUNGARD-GUI already asks the node directly (the window of the head node); the link through EH3D-SERVER does not exist yet.
+EH3D-NODE-BUNGARD-AUX is the node of the drill head of a Bungard CCD machine, beside EH3D-NODE-BUNGARD (the node that drives the machine) and EH3D-NODE-BUNGARD-HMI (the screen). It sits on the head, sees the board with its camera, measures the table under the head and watches the spindle. The desktop programs (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) use its measures to build the map of the table (`eh3d-levelling` in EH3D-COMMON) and correct the Z of the jobs; EH3D-BUNGARD-GUI asks the node directly or through EH3D-SERVER (the window of the head node).
 
 ## 🏛️ Architecture
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Nothing has run on a board: the firmware has not been built, flashed or tried, and the pins of the camera and of the network chip must be checked against the schematic of the board.
 * The drivers of the laser (VL53L1X over I2C, through the component `grrtzm/vl53l1x_library`, little used), of the temperature sensors and of the camera are written and have never run: the first sensor that answers on a board may show a mistake.
-* The window of EH3D-BUNGARD-GUI asks the node directly (never tried against a real node); the link through EH3D-SERVER does not exist yet.
+* EH3D-BUNGARD-GUI (the window of the head node) and EH3D-SERVER ask the node, directly or through the server; neither has been tried against a real node.
 * The network port is plain HTTP: keep it on a network of its own.
 * RTSP and ONVIF have not been tried with a real player, recorder or ONVIF manager; the model of the camera on the board will decide the sizes and the pins.
 
 **Next**
 
-* Build the firmware, try the drivers on a board and add the link through EH3D-SERVER.
+* Build the firmware and try the drivers on a board.
 * Add the link to EH3D-BUNGARD-GUI, to EH3D-SERVER and to the screen, and the camera view.
 * Try the protect output wired into a stop line on a machine.
 

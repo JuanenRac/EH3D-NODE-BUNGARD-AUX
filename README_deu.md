@@ -63,7 +63,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 ## 🧩 Rolle in EH3D
 
-EH3D-NODE-BUNGARD-AUX ist der Knoten am Bohrkopf einer Bungard-CCD-Maschine, neben EH3D-NODE-BUNGARD (dem Knoten, der die Maschine antreibt) und EH3D-NODE-BUNGARD-HMI (dem Bildschirm). Er sitzt am Kopf, sieht die Platine mit seiner Kamera, misst den Tisch unter dem Kopf und überwacht die Spindel. Die Desktop-Programme (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) nutzen seine Messungen, um die Tischkarte zu bauen (`eh3d-levelling` in EH3D-COMMON) und das Z der Aufträge zu korrigieren; EH3D-BUNGARD-GUI fragt den Knoten schon direkt ab (das Fenster des Knotens am Bohrkopf); die Verbindung über EH3D-SERVER gibt es noch nicht.
+EH3D-NODE-BUNGARD-AUX ist der Knoten am Bohrkopf einer Bungard-CCD-Maschine, neben EH3D-NODE-BUNGARD (dem Knoten, der die Maschine antreibt) und EH3D-NODE-BUNGARD-HMI (dem Bildschirm). Er sitzt am Kopf, sieht die Platine mit seiner Kamera, misst den Tisch unter dem Kopf und überwacht die Spindel. Die Desktop-Programme (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) nutzen seine Messungen, um die Tischkarte zu bauen (`eh3d-levelling` in EH3D-COMMON) und das Z der Aufträge zu korrigieren; EH3D-BUNGARD-GUI fragt den Knoten direkt oder über EH3D-SERVER ab (das Fenster des Knotens am Bohrkopf).
 
 ## 🏛️ Architektur
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Nichts lief auf einer Platine: die Firmware wurde nicht gebaut, geflasht oder erprobt, und die Pins der Kamera und des Netzwerkchips müssen mit dem Schaltplan der Platine geprüft werden.
 * Die Treiber des Lasers (VL53L1X über I2C, mit der wenig genutzten Komponente `grrtzm/vl53l1x_library`), der Temperatursensoren und der Kamera sind geschrieben und nie gelaufen: der erste Sensor, der auf einer Platine antwortet, kann einen Fehler zeigen.
-* Das Fenster von EH3D-BUNGARD-GUI fragt den Knoten direkt ab (nie an einem echten Knoten probiert); die Verbindung über EH3D-SERVER gibt es noch nicht.
+* EH3D-BUNGARD-GUI (das Fenster des Knotens am Bohrkopf) und EH3D-SERVER fragen den Knoten ab, direkt oder über den Server; keiner wurde an einem echten Knoten probiert.
 * Der Netzwerkport ist einfaches HTTP: halte ihn in einem eigenen Netz.
 * RTSP und ONVIF wurden mit keinem echten Player, Rekorder oder ONVIF-Manager erprobt; das Kameramodell auf der Platine entscheidet über Größen und Pins.
 
 **Als Nächstes**
 
-* Die Firmware bauen, die Treiber auf einer Platine ausprobieren und die Verbindung über EH3D-SERVER ergänzen.
+* Die Firmware bauen und die Treiber auf einer Platine ausprobieren.
 * Die Verbindung zu EH3D-BUNGARD-GUI, zu EH3D-SERVER und zum Bildschirm sowie die Kameraansicht hinzufügen.
 * Den Schutzausgang an einer Stopp-Leitung einer Maschine erproben.
 

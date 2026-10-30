@@ -63,7 +63,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 
 ## 🧩 Rôle dans EH3D
 
-EH3D-NODE-BUNGARD-AUX est le nœud de la tête de perçage d'une machine Bungard CCD, à côté d'EH3D-NODE-BUNGARD (le nœud qui pilote la machine) et d'EH3D-NODE-BUNGARD-HMI (l'écran). Il se place sur la tête, voit la carte avec sa caméra, mesure la table sous la tête et surveille la broche. Les programmes de bureau (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) utilisent ses mesures pour construire la carte de la table (`eh3d-levelling` dans EH3D-COMMON) et corriger le Z des travaux ; EH3D-BUNGARD-GUI interroge déjà le nœud directement (la fenêtre du nœud de la tête) ; la liaison par EH3D-SERVER n'existe pas encore.
+EH3D-NODE-BUNGARD-AUX est le nœud de la tête de perçage d'une machine Bungard CCD, à côté d'EH3D-NODE-BUNGARD (le nœud qui pilote la machine) et d'EH3D-NODE-BUNGARD-HMI (l'écran). Il se place sur la tête, voit la carte avec sa caméra, mesure la table sous la tête et surveille la broche. Les programmes de bureau (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) utilisent ses mesures pour construire la carte de la table (`eh3d-levelling` dans EH3D-COMMON) et corriger le Z des travaux ; EH3D-BUNGARD-GUI interroge le nœud directement ou par EH3D-SERVER (la fenêtre du nœud de la tête).
 
 ## 🏛️ Architecture
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Rien n'a tourné sur une carte : le firmware n'a pas été compilé, flashé ni essayé, et les broches de la caméra et de la puce réseau doivent être vérifiées avec le schéma de la carte.
 * Les pilotes du laser (VL53L1X en I2C, avec le composant `grrtzm/vl53l1x_library`, peu utilisé), des capteurs de température et de la caméra sont écrits et n'ont jamais tourné : le premier capteur qui répond sur une carte peut révéler une erreur.
-* La fenêtre d'EH3D-BUNGARD-GUI interroge le nœud directement (jamais essayée avec un vrai nœud) ; la liaison par EH3D-SERVER n'existe pas encore.
+* EH3D-BUNGARD-GUI (la fenêtre du nœud de la tête) et EH3D-SERVER interrogent le nœud, directement ou par le serveur ; aucun n'a été essayé avec un vrai nœud.
 * Le port réseau est du HTTP simple : gardez-le sur un réseau à part.
 * RTSP et ONVIF n'ont pas été essayés avec un vrai lecteur, enregistreur ou gestionnaire ONVIF ; le modèle de la caméra sur la carte décidera des tailles et des broches.
 
 **Suite**
 
-* Compiler le firmware, essayer les pilotes sur une carte et ajouter la liaison par EH3D-SERVER.
+* Compiler le firmware et essayer les pilotes sur une carte.
 * Ajouter la liaison avec EH3D-BUNGARD-GUI, avec EH3D-SERVER et avec l'écran, et la vue de la caméra.
 * Essayer la sortie de protection câblée sur une ligne d'arrêt d'une machine.
 

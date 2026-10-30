@@ -63,7 +63,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 
 ## 🧩 Papel en EH3D
 
-EH3D-NODE-BUNGARD-AUX es el nodo del cabezal de taladro de una máquina Bungard CCD, junto a EH3D-NODE-BUNGARD (el nodo que maneja la máquina) y EH3D-NODE-BUNGARD-HMI (la pantalla). Va en el cabezal, ve la placa con su cámara, mide la mesa bajo el cabezal y vigila el husillo. Los programas de escritorio (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usan sus medidas para construir el mapa de la mesa (`eh3d-levelling` en EH3D-COMMON) y corregir la Z de los trabajos; EH3D-BUNGARD-GUI ya consulta el nodo directamente (la ventana del nodo del cabezal); el enlace a través de EH3D-SERVER todavía no existe.
+EH3D-NODE-BUNGARD-AUX es el nodo del cabezal de taladro de una máquina Bungard CCD, junto a EH3D-NODE-BUNGARD (el nodo que maneja la máquina) y EH3D-NODE-BUNGARD-HMI (la pantalla). Va en el cabezal, ve la placa con su cámara, mide la mesa bajo el cabezal y vigila el husillo. Los programas de escritorio (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usan sus medidas para construir el mapa de la mesa (`eh3d-levelling` en EH3D-COMMON) y corregir la Z de los trabajos; EH3D-BUNGARD-GUI consulta el nodo directamente o a través de EH3D-SERVER (la ventana del nodo del cabezal).
 
 ## 🏛️ Arquitectura
 
@@ -214,13 +214,13 @@ EH3D-NODE-BUNGARD-AUX/
 
 * Nada se ha ejecutado en una placa: el firmware no se ha compilado, grabado ni probado, y los pines de la cámara y del chip de red hay que comprobarlos con el esquema de la placa.
 * Los controladores del láser (VL53L1X por I2C, con el componente `grrtzm/vl53l1x_library`, poco usado), de los sensores de temperatura y de la cámara están escritos y nunca se han ejecutado: el primer sensor que responda en una placa puede mostrar un error.
-* La ventana de EH3D-BUNGARD-GUI consulta el nodo directamente (nunca probada con un nodo real); el enlace a través de EH3D-SERVER todavía no existe.
+* EH3D-BUNGARD-GUI (la ventana del nodo del cabezal) y EH3D-SERVER consultan el nodo, directamente o a través del servidor; ninguno se ha probado con un nodo real.
 * El puerto de red es HTTP sin más: mantenlo en una red propia.
 * RTSP y ONVIF no se han probado con un reproductor, grabador o gestor ONVIF reales; el modelo de la cámara de la placa decidirá los tamaños y los pines.
 
 **Siguiente**
 
-* Compilar el firmware, probar los controladores en una placa y añadir el enlace a través de EH3D-SERVER.
+* Compilar el firmware y probar los controladores en una placa.
 * Añadir el enlace con EH3D-BUNGARD-GUI, con EH3D-SERVER y con la pantalla, y la vista de la cámara.
 * Probar la salida de protección cableada a una línea de parada en una máquina.
 
