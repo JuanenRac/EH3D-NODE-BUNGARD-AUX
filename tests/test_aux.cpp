@@ -52,9 +52,13 @@ static void settings_file() {
         "temp_sensor = ds18b20\n"
         "temp_warn_c = 50\n"
         "temp_critical_c = 65.5\n"
-        "protect_output = off\n",
+        "protect_output = off\n"
+        "rtsp_port = 8554\n"
+        "stream_user = cam\n"
+        "stream_password = longenough1\n",
         p);
     CHECK(p.empty());
+    CHECK(s.rtsp_port == 8554 && s.stream_user == "cam" && s.stream_password == "longenough1" && s.rtsp_enabled && s.onvif_enabled);
     CHECK(s.name == "head-1" && s.address == "192.168.0.60" && s.token == "abcdefgh12");
     CHECK(s.laser_samples == 11 && near(s.laser_offset_mm, -1.25) && s.rpm_pulses_per_rev == 2);
     CHECK(s.temp_sensor == TempSensor::Ds18b20 && near(s.temp_warn_c, 50.0) && near(s.temp_critical_c, 65.5) && !s.protect_output);
@@ -69,9 +73,12 @@ static void settings_file() {
         "camera_enabled = maybe\n"
         "colour = red\n"
         "no equals here\n"
-        "rpm_max = abc\n",
+        "rpm_max = abc\n"
+        "stream_password = short\n"
+        "stream_user = a:b\n"
+        "rtsp_port = 0\n",
         p);
-    CHECK(p.size() == 8);
+    CHECK(p.size() == 11);
     CHECK(b.laser_samples == 7 && b.address.empty() && b.token.empty() && b.temp_sensor == TempSensor::None && b.camera_enabled);
 
     // limits that make no sense together fall back to the defaults, and are said

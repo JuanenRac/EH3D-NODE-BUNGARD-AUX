@@ -12,6 +12,8 @@ else()
 endif()
 
 add_executable(test_aux test_aux.cpp)
+add_executable(test_stream test_stream.cpp)
 
 enable_testing()
 add_test(NAME aux COMMAND test_aux)
+add_test(NAME stream COMMAND test_stream)

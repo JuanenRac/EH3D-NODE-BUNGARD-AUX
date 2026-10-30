@@ -33,13 +33,15 @@
       "id": "net",
       "column": 1,
       "level": "tested",
-      "title": "Words of the network",
+      "title": "Network and video",
       "lines": [
-        "status, measure, token,",
-        "the JSON the clients read"
+        "status, measure, RTSP, ONVIF,",
+        "logins the clients use"
       ],
       "code": [
-        "core/protocol.hpp"
+        "core/protocol.hpp",
+        "core/rtsp.hpp",
+        "core/onvif.hpp"
       ]
     },
     {

@@ -13,6 +13,7 @@
 #include <string>
 
 #include "aux_config.hpp"
+#include "hash.hpp"
 #include "laser.hpp"
 #include "spindle.hpp"
 
@@ -60,14 +61,6 @@ inline std::string query_value(const std::string& query, const std::string& key)
         pos = end + 1;
     }
     return "";
-}
-
-/// Compares two strings in the same time whatever they hold, so the time does not tell how much of a guess was right.
-inline bool same_secret(const std::string& a, const std::string& b) {
-    std::uint8_t diff = static_cast<std::uint8_t>(a.size() != b.size());
-    std::size_t n = a.size() < b.size() ? a.size() : b.size();
-    for (std::size_t i = 0; i < n; ++i) diff = static_cast<std::uint8_t>(diff | (static_cast<std::uint8_t>(a[i]) ^ static_cast<std::uint8_t>(b[i])));
-    return diff == 0;
 }
 
 /// Whether a request may do what it asks. `bearer` is what follows `Bearer ` in the header (empty when there is none).

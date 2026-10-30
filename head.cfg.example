@@ -13,6 +13,13 @@ camera_height = 480
 camera_quality = 12
 camera_fps_max = 10
 
+# the video as an IP camera sends it: RTSP (rtsp://ADDRESS:PORT/stream1) and ONVIF; both log in with this user and password, and without a password nothing is served
+rtsp_enabled = on
+rtsp_port = 554
+onvif_enabled = on
+stream_user = viewer
+stream_password =
+
 # the laser that measures the table: readings per measure (the median is taken), the offset of the sensor above the tool tip, the range it trusts
 laser_enabled = on
 laser_samples = 7

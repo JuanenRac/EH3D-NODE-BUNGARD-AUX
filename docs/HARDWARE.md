@@ -5,7 +5,7 @@ EH3D-NODE-BUNGARD-AUX is written for an ESP32-S3 board with a wired network port
 | Part | How it connects | Notes |
 |---|---|---|
 | Wired network | W5500 over SPI (MISO, MOSI, SCLK, CS, interrupt, reset) | the defaults in `main/Kconfig.projbuild` are placeholders |
-| Camera | the DVP camera connector of the board (the pins are set in menuconfig) | MJPEG at the size and quality of `head.cfg` |
+| Camera | the DVP camera connector of the board (the pins are set in menuconfig); the model of the camera that goes on the board is not decided yet | MJPEG on `/stream`, RTSP (JPEG over RTP) and ONVIF at the size and quality of `head.cfg`; the sizes the camera can do are listed in `core/onvif.hpp` and must follow the real sensor |
 | Laser distance sensor | I2C (SDA, SCL), a VL53L1X or similar | the driver is not written; the sensor looks down at the table beside the tool; `laser_offset_mm` tells where it sits above the tool tip |
 | Pulses of the spindle | one GPIO, rising edges | a hall sensor and a magnet on the spindle, or a slotted disc; `rpm_pulses_per_rev` says how many pulses a turn gives |
 | Temperature of the spindle | one-wire (DS18B20), an NTC on an ADC pin or an I2C infrared sensor (MLX90614) | the drivers are not written; `temp_sensor` picks the kind |

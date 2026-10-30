@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.1` |
 | Maturité | Échafaudage |
-| Tests | 1 programme de test sur l'ordinateur (74 vérifications) |
+| Tests | 2 programmes de test sur l'ordinateur (175 vérifications) |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
 | Sur du matériel réel | Non : le firmware n'a pas été compilé ni flashé, et rien n'a été branché à une machine |
 
@@ -44,10 +44,11 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit ; il n'a pas été compilé ni flashé. |
-| Tests | 🟢 | 1 programme de test sur l'ordinateur réussit (`ctest`) : 74 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
+| Tests | 🟢 | 2 programmes de test sur l'ordinateur réussissent (`ctest`) : 175 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du capteur n'est pas écrit, donc aucune mesure n'est possible aujourd'hui. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes des capteurs de température ne sont pas écrits. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |
+| Vidéo (RTSP, ONVIF) | 🟡 | La session RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, en UDP ou dans la connexion TCP, connexion Digest et Basic), la charge RTP de JPEG, la découverte et les services SOAP d'ONVIF (profils, encodeurs avec leurs tailles, adresses du flux et de l'instantané, le jeton d'utilisateur) sont testés sur un ordinateur ; aucun lecteur ni enregistreur n'a pris la vidéo d'une vraie carte. |
 | Matériel réel | 🔴 | Aucune carte n'a exécuté ce firmware et rien n'a été branché à une machine. |
 | Documentation | 🟢 | README en huit langues, la référence des réglages et les notes matérielles. |
 
@@ -58,6 +59,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * La **sortie de protection** : un GPIO à l'état bas dès que la broche doit s'arrêter (trop rapide, trop chaude, un capteur muet) et aussi tant que le nœud ne tourne pas, à câbler sur la ligne d'arrêt de l'unité de commande par un relais ou un optocoupleur ; elle peut être désactivée dans les réglages.
 * La **caméra et le réseau** : la vidéo de la caméra en MJPEG sur `/stream` et les lectures sur `/api/status`, par un port réseau filaire (W5500 sur SPI) ; le jeton protège la mesure et la caméra.
 * Le **fichier de réglages** `head.cfg` : chaque valeur ajustée (le réseau, la caméra, le laser, la broche, la température, la sortie de protection) est une ligne d'un fichier dans sa propre partition, jamais un nombre dans le code ; une valeur hors plage est signalée et la valeur par défaut reste.
+* La **vidéo comme l'envoie une caméra IP** : RTSP (`rtsp://ADRESSE/stream1`, JPEG sur RTP, en UDP ou dans la connexion TCP, avec connexion Digest ou Basic) et ONVIF (WS-Discovery, pour que enregistreurs et gestionnaires trouvent le nœud, et les services du profil S : profils, encodeurs avec les tailles que la caméra sait faire, l'adresse du flux et de l'instantané, le jeton d'utilisateur) ; les deux utilisent l'utilisateur et le mot de passe des réglages, et sans mot de passe rien n'est servi.
 
 ## 🧩 Rôle dans EH3D
 
@@ -83,7 +85,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 
 * **Une mesure fiable, ou aucune :** plusieurs lectures, les aberrantes écartées, et un refus (avec le motif) quand les lectures se dispersent trop, sortent de la plage ou sont trop peu nombreuses.
 * **Une broche surveillée en permanence :** vitesse à partir des impulsions, température avec un avertissement, un niveau critique et une hystérésis, et une sortie de protection qui s'ouvre toute seule quand quelque chose ne va pas ou que le nœud ne tourne pas.
-* **La vidéo de la tête :** la caméra en MJPEG, derrière le jeton.
+* **Vidéo comme une caméra IP :** RTSP et ONVIF avec connexion, pour que n'importe quel lecteur, enregistreur ou gestionnaire ONVIF la prenne ; et la caméra en MJPEG sur `/stream` derrière le jeton.
 * **Sûr par défaut :** sans jeton, ni mesure ni caméra ; chaque limite a un interrupteur dans les réglages et part de sa position conservatrice.
 
 ## 🔒 Sécurité et protection
@@ -110,6 +112,8 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 | Impulsions de la broche | un GPIO (`AUX_RPM_GPIO` dans menuconfig), fronts montants | `main/sensors.cpp` |
 | Sortie de protection | un GPIO (`AUX_PROTECT_GPIO`), bas quand la broche doit s'arrêter | `main/sensors.cpp` |
 | Laser et température | I2C pour le laser et un fil pour le capteur de température ; les pilotes ne sont pas écrits | `main/sensors.cpp` |
+| RTSP | `rtsp://ADRESSE:PORT/stream1` : OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN ; JPEG sur RTP en UDP ou entrelacé dans TCP ; connexion Digest ou Basic | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
+| ONVIF | WS-Discovery à l'adresse multicast `239.255.255.250:3702` ; SOAP sur `/onvif/device_service` et `/onvif/media_service` (profil S : capacités, services, profils, encodeurs, adresses du flux et de l'instantané) ; l'instantané sur `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
 ## ⚙️ Configuration
 
@@ -126,6 +130,8 @@ Tout ce qui est réglé est une ligne de `head.cfg` (copiez `head.cfg.example` d
 | `temp_sensor` | none | none ds18b20 ntc mlx90614 | le capteur de la température de la broche |
 | `temp_warn_c / temp_critical_c` | `55 / 70` | 20 - 200 | l'avertissement et le niveau auquel la sortie de protection s'ouvre |
 | `protect_output` | `on` | on / off | la sortie de protection fonctionne ; ne la désactivez qu'au banc d'essai |
+| `stream_user / stream_password` | `viewer / none` | 8 - 64 | la connexion de RTSP et ONVIF ; sans mot de passe ils ne servent personne |
+| `rtsp_port` | `554` | 1 - 65535 | le port du serveur RTSP (celui du serveur web est `port`) |
 
 ## 🚀 Démarrage rapide
 
@@ -140,7 +146,7 @@ Le firmware n'a pas encore été compilé : quand il le sera, `idf.py set-target
 
 ## 🧪 Tests
 
-Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont un programme et tout passe : `test_aux` (74 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il n'a pas été compilé.
+Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (74 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il n'a pas été compilé. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
 
 ## 🏗️ Compilation et publication
 
@@ -170,10 +176,14 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
 │   ├── laser.hpp                                la mesure de la hauteur de la table
 │   ├── spindle.hpp                              vitesse, chaleur et sortie de protection
+│   ├── hash.hpp                                 les connexions : MD5, SHA-1, base64
+│   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP et la charge RTP de JPEG
+│   ├── onvif.hpp                                ONVIF : découverte et services SOAP
 │   └── protocol.hpp                             les mots du réseau : routes, jeton, JSON
 ├── main/
 │   ├── app_main.cpp                             démarrage, réglages, réseau, serveur web, caméra
 │   ├── sensors.cpp sensors.hpp                  les broches : impulsions, sortie de protection, capteurs
+│   ├── stream.cpp stream.hpp                    serveur RTSP, services ONVIF et découverte
 │   └── idf_component.yml Kconfig.projbuild      liste des composants et broches de menuconfig
 ├── tests/                                       tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran
 ├── docs/                                        les notes matérielles et les sources des deux images
@@ -202,6 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 * Le pilote du capteur laser (VL53L1X en I2C) et ceux des capteurs de température ne sont pas écrits, donc aucune mesure n'est possible et un capteur de température activé compte comme chaud.
 * La liaison avec les programmes de bureau et avec EH3D-SERVER n'existe pas encore : le nœud répond sur son port, personne ne l'interroge.
 * Le port réseau est du HTTP simple : gardez-le sur un réseau à part.
+* RTSP et ONVIF n'ont pas été essayés avec un vrai lecteur, enregistreur ou gestionnaire ONVIF ; le modèle de la caméra sur la carte décidera des tailles et des broches.
 
 **Suite**
 

@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.1` |
 | Maturity | Scaffolding |
-| Tests | 1 host test program (74 checks) |
+| Tests | 2 host test programs (175 checks) |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
 | On real hardware | No: the firmware has not been built or flashed, and nothing has been connected to a machine |
 
@@ -44,10 +44,11 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written; it has not been built or flashed. |
-| Tests | 🟢 | 1 host test program passes (`ctest`): 74 checks in the settings file, the measure of the laser, the speed and the temperature of the spindle, the protect output and the words of the network. |
+| Tests | 🟢 | 2 host test programs pass (`ctest`): 175 checks in the settings file, the measure of the laser, the speed and the temperature of the spindle, the protect output and the words of the network. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the sensor is not written, so no measure can be made today. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the temperature sensors are not written. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
+| Video (RTSP, ONVIF) | 🟡 | The RTSP session (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, over UDP or inside the TCP connection, Digest and Basic login), the RTP payload of JPEG, the discovery and the SOAP services of ONVIF (profiles, encoders with their sizes, stream and snapshot addresses, the user token) are tested on a computer; no player or recorder has taken the video from a real board. |
 | Real hardware | 🔴 | No board has run this firmware and nothing has been connected to a machine. |
 | Documentation | 🟢 | README in eight languages, the settings reference and the hardware notes. |
 
@@ -58,6 +59,7 @@ Each line is one part of this repository and the light says how far it is today.
 * The **protect output**: a GPIO that is low whenever the spindle must stop (too fast, too hot, a silent sensor) and also while the node is not running, to be wired into the stop line of the control unit through a relay or an opto-coupler; it can be switched off in the settings.
 * The **camera and the network**: the video of the camera as MJPEG on `/stream`, and the readings on `/api/status`, over a wired network port (W5500 over SPI); the token protects the measure and the camera.
 * The **settings file** `head.cfg`: every tuned value (the network, the camera, the laser, the spindle, the temperature, the protect output) is a line of one file in its own partition, never a number in the code; a value out of range is reported and the default stays.
+* The **video as an IP camera sends it**: RTSP (`rtsp://ADDRESS/stream1`, JPEG over RTP, over UDP or inside the TCP connection, with the Digest or Basic login) and ONVIF (WS-Discovery, so that recorders and managers find the node, and the services of profile S: profiles, encoders with the sizes the camera can do, the address of the stream and of the snapshot, the user token); both use the user and the password of the settings, and without a password nothing is served.
 
 ## 🧩 Role in EH3D
 
@@ -83,7 +85,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 
 * **A measure you can trust or no measure:** several readings, the odd ones thrown away, and a refusal (with the reason) when the readings spread too much, are out of the range or are too few.
 * **A spindle that is watched all the time:** speed from the pulses, temperature with a warning, a critical level and a hysteresis, and a protect output that opens by itself when something is wrong or the node is not running.
-* **Video from the head:** the camera as MJPEG, behind the token.
+* **Video like an IP camera:** RTSP and ONVIF with a login, so any player, recorder or ONVIF manager can take it; and the camera as MJPEG on `/stream` behind the token.
 * **Safe by default:** no token means no measure and no camera; every limit has a switch in the settings and starts in its conservative position.
 
 ## 🔒 Security & Safety
@@ -110,6 +112,8 @@ How the parts of this repository fit together: who talks to it, what it holds an
 | Pulses of the spindle | one GPIO (`AUX_RPM_GPIO` in menuconfig), rising edges | `main/sensors.cpp` |
 | Protect output | one GPIO (`AUX_PROTECT_GPIO`), low when the spindle must stop | `main/sensors.cpp` |
 | Laser and temperature | I2C for the laser and one-wire for the temperature sensor; the drivers are not written | `main/sensors.cpp` |
+| RTSP | `rtsp://ADDRESS:PORT/stream1`: OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN; JPEG over RTP over UDP or interleaved in TCP; Digest or Basic login | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
+| ONVIF | WS-Discovery on the multicast address `239.255.255.250:3702`; SOAP on `/onvif/device_service` and `/onvif/media_service` (profile S: capabilities, services, profiles, encoders, stream and snapshot addresses); the snapshot on `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
 ## ⚙️ Configuration
 
@@ -126,6 +130,8 @@ Everything tuned is a line of `head.cfg` (copy `head.cfg.example` to the `config
 | `temp_sensor` | none | none ds18b20 ntc mlx90614 | the sensor of the temperature of the spindle |
 | `temp_warn_c / temp_critical_c` | `55 / 70` | 20 - 200 | the warning and the level at which the protect output opens |
 | `protect_output` | `on` | on / off | the protect output works; off only on the bench |
+| `stream_user / stream_password` | `viewer / none` | 8 - 64 | the login of RTSP and ONVIF; without a password they serve nobody |
+| `rtsp_port` | `554` | 1 - 65535 | the port of the RTSP server (the port of the web server is `port`) |
 
 ## 🚀 Quick start
 
@@ -140,7 +146,7 @@ The firmware has not been built yet: when it is, `idf.py set-target esp32s3 && i
 
 ## 🧪 Testing
 
-The host tests (`build.bat` or `./build.sh`, then `ctest`) are one program and all of it passes: `test_aux` (74 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it has not been built.
+The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_aux` (75 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it has not been built. The second program, `test_stream` (100 checks), covers the video: the hashes of the logins against their published vectors (MD5, SHA-1, base64 and the Digest example of RFC 2617), the RTSP requests and the whole session (login, SDP, UDP and interleaved transport, play, pause, teardown, a wrong session, multicast refused), the RTP payload of JPEG (the tables in the first packet, the order, the marker, the sequence wrapping) and ONVIF (discovery, the user token with the example of the standard, the open and the protected calls, the services and a call that is not done).
 
 ## 🏗️ Build & Release
 
@@ -170,10 +176,14 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
 │   ├── laser.hpp                                the measure of the height of the table
 │   ├── spindle.hpp                              speed, heat and the protect output
+│   ├── hash.hpp                                 the logins: MD5, SHA-1, base64
+│   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP and the RTP payload of JPEG
+│   ├── onvif.hpp                                ONVIF: discovery and the SOAP services
 │   └── protocol.hpp                             the words of the network: routes, token, JSON
 ├── main/
 │   ├── app_main.cpp                             start, settings, network, web server, camera
 │   ├── sensors.cpp sensors.hpp                  the pins: pulses, protect output, sensors
+│   ├── stream.cpp stream.hpp                    RTSP server, ONVIF services and discovery
 │   └── idf_component.yml Kconfig.projbuild      component list and menuconfig pins
 ├── tests/                                       host tests of the settings, the gate, the voice and the screen texts
 ├── docs/                                        the hardware notes and the two pictures' sources
@@ -202,6 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 * The driver of the laser sensor (VL53L1X over I2C) and the drivers of the temperature sensors are not written, so no measure can be made and a temperature sensor that is switched on counts as hot.
 * The link with the desktop programs and with EH3D-SERVER does not exist yet: the node answers on its own port, nobody asks it.
 * The network port is plain HTTP: keep it on a network of its own.
+* RTSP and ONVIF have not been tried with a real player, recorder or ONVIF manager; the model of the camera on the board will decide the sizes and the pins.
 
 **Next**
 

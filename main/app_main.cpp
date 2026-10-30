@@ -23,6 +23,7 @@
 #include "../core/protocol.hpp"
 #include "../core/spindle.hpp"
 #include "sensors.hpp"
+#include "stream.hpp"
 
 namespace {
 
@@ -205,6 +206,7 @@ void http_start() {
     httpd_register_uri_handler(h, &status);
     httpd_register_uri_handler(h, &measure);
     httpd_register_uri_handler(h, &stream);
+    ::stream::register_http(h);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------ the network
@@ -281,6 +283,7 @@ extern "C" void app_main(void) {
     sensors::init(settings);
     if (settings.camera_enabled) camera_ok = camera_start();
     eth_start();
+    ::stream::start(settings);
     http_start();
     xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
     ESP_LOGI(TAG, "EH3D-NODE-BUNGARD-AUX %s: %s on port %u", VERSION, settings.name.c_str(), static_cast<unsigned>(settings.port));

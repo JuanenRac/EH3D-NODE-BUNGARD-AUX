@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.1` |
 | Maturidade | Estrutura inicial |
-| Testes | 1 programa de testes no computador (74 verificações) |
+| Testes | 2 programas de testes no computador (175 verificações) |
 | Tecnologias | C++17, ESP-IDF 5.5, ESP32-S3, rede W5500 |
 | Em hardware real | Não: o firmware não foi compilado nem gravado, e nada foi ligado a uma máquina |
 
@@ -44,10 +44,11 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito; não foi compilado nem gravado. |
-| Testes | 🟢 | 1 programa de testes no computador passa (`ctest`): 74 verificações do ficheiro de definições, da medição do laser, da velocidade e da temperatura do fuso, da saída de proteção e das palavras da rede. |
+| Testes | 🟢 | 2 programas de testes no computador passam (`ctest`): 175 verificações do ficheiro de definições, da medição do laser, da velocidade e da temperatura do fuso, da saída de proteção e das palavras da rede. |
 | Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do sensor não está escrito, por isso hoje não se pode fazer nenhuma medição. |
 | Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores dos sensores de temperatura não estão escritos. |
 | Câmara | 🟠 | O fluxo MJPEG está escrito para o conector de câmara da placa e precisa dos pinos da placa em menuconfig; não foi executado. |
+| Vídeo (RTSP, ONVIF) | 🟡 | A sessão RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, por UDP ou dentro da ligação TCP, acesso Digest e Basic), a carga RTP de JPEG, a descoberta e os serviços SOAP do ONVIF (perfis, codificadores com os seus tamanhos, endereços do fluxo e do instantâneo, o token de utilizador) estão testados num computador; nenhum leitor nem gravador recebeu o vídeo de uma placa real. |
 | Hardware real | 🔴 | Nenhuma placa executou este firmware e nada foi ligado a uma máquina. |
 | Documentação | 🟢 | README em oito idiomas, a referência das definições e as notas de hardware. |
 
@@ -58,6 +59,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 * A **saída de proteção**: um GPIO que fica em baixo sempre que o fuso deve parar (depressa demais, quente demais, um sensor mudo) e também enquanto o nó não está a funcionar, para ligar à linha de paragem da unidade de controlo por um relé ou um optoacoplador; pode ser desligada nas definições.
 * A **câmara e a rede**: o vídeo da câmara como MJPEG em `/stream` e as leituras em `/api/status`, por uma porta de rede por cabo (W5500 sobre SPI); o token protege a medição e a câmara.
 * O **ficheiro de definições** `head.cfg`: todo o valor afinado (a rede, a câmara, o laser, o fuso, a temperatura, a saída de proteção) é uma linha de um ficheiro na sua própria partição, nunca um número no código; um valor fora do intervalo é avisado e fica o predefinido.
+* O **vídeo como o envia uma câmara IP**: RTSP (`rtsp://ENDEREÇO/stream1`, JPEG sobre RTP, por UDP ou dentro da ligação TCP, com acesso Digest ou Basic) e ONVIF (WS-Discovery, para que gravadores e gestores encontrem o nó, e os serviços do perfil S: perfis, codificadores com os tamanhos que a câmara consegue fazer, o endereço do fluxo e do instantâneo, o token de utilizador); os dois usam o utilizador e a palavra-passe das definições, e sem palavra-passe nada é servido.
 
 ## 🧩 Papel no EH3D
 
@@ -83,7 +85,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 
 * **Uma medição de confiança, ou nenhuma:** várias leituras, as estranhas descartadas, e uma recusa (com o motivo) quando as leituras se dispersam demasiado, estão fora do intervalo ou são poucas.
 * **Um fuso vigiado o tempo todo:** velocidade a partir dos impulsos, temperatura com um aviso, um nível crítico e uma histerese, e uma saída de proteção que abre sozinha quando algo corre mal ou o nó não está a funcionar.
-* **Vídeo da cabeça:** a câmara como MJPEG, atrás do token.
+* **Vídeo como uma câmara IP:** RTSP e ONVIF com acesso, para que qualquer leitor, gravador ou gestor ONVIF o receba; e a câmara como MJPEG em `/stream` atrás do token.
 * **Seguro por omissão:** sem token não há medição nem câmara; cada limite tem um interruptor nas definições e começa na sua posição conservadora.
 
 ## 🔒 Segurança e proteção
@@ -110,6 +112,8 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 | Impulsos do fuso | um GPIO (`AUX_RPM_GPIO` em menuconfig), flancos de subida | `main/sensors.cpp` |
 | Saída de proteção | um GPIO (`AUX_PROTECT_GPIO`), em baixo quando o fuso deve parar | `main/sensors.cpp` |
 | Laser e temperatura | I2C para o laser e um fio para o sensor de temperatura; os controladores não estão escritos | `main/sensors.cpp` |
+| RTSP | `rtsp://ENDEREÇO:PORTA/stream1`: OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, GET_PARAMETER, TEARDOWN; JPEG sobre RTP por UDP ou intercalado em TCP; acesso Digest ou Basic | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
+| ONVIF | WS-Discovery no endereço multicast `239.255.255.250:3702`; SOAP em `/onvif/device_service` e `/onvif/media_service` (perfil S: capacidades, serviços, perfis, codificadores, endereços do fluxo e do instantâneo); o instantâneo em `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
 ## ⚙️ Configuração
 
@@ -126,6 +130,8 @@ Tudo o que é afinado é uma linha de `head.cfg` (copie `head.cfg.example` para 
 | `temp_sensor` | none | none ds18b20 ntc mlx90614 | o sensor da temperatura do fuso |
 | `temp_warn_c / temp_critical_c` | `55 / 70` | 20 - 200 | o aviso e o nível a que abre a saída de proteção |
 | `protect_output` | `on` | on / off | a saída de proteção funciona; desligue só na bancada |
+| `stream_user / stream_password` | `viewer / none` | 8 - 64 | o acesso de RTSP e ONVIF; sem palavra-passe não servem ninguém |
+| `rtsp_port` | `554` | 1 - 65535 | a porta do servidor RTSP (a do servidor web é `port`) |
 
 ## 🚀 Início rápido
 
@@ -140,7 +146,7 @@ O firmware ainda não foi compilado: quando for, `idf.py set-target esp32s3 && i
 
 ## 🧪 Testes
 
-Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são um programa e tudo passa: `test_aux` (74 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: não foi compilado.
+Os testes no computador (`build.bat` ou `./build.sh`, depois `ctest`) são dois programas e tudo passa: `test_aux` (74 verificações) sobre o ficheiro de definições (valores predefinidos, valores, valores errados, limites que não fazem sentido juntos), a medição do laser (a mediana, a leitura estranha descartada, o deslocamento, leituras marcadas como más, o intervalo, nenhuma leitura, uma dispersão demasiado grande), a velocidade do fuso (impulsos por volta, um fuso que abranda, parado quando os impulsos cessam), a temperatura (a histerese, um sensor que falha), a saída de proteção e as palavras da rede (a linha de pedido, as rotas, o token no cabeçalho ou na consulta, o número de leituras, o JSON do estado e da medição, a linha de um ponto do mapa). O firmware não está coberto: não foi compilado. O segundo programa, `test_stream` (100 verificações), cobre o vídeo: os resumos dos acessos contra os seus vetores publicados (MD5, SHA-1, base64 e o exemplo Digest do RFC 2617), os pedidos RTSP e toda a sessão (acesso, SDP, transporte UDP e intercalado, play, pause, teardown, uma sessão errada, multicast recusado), a carga RTP de JPEG (as tabelas no primeiro pacote, a ordem, o marcador, a volta da sequência) e ONVIF (descoberta, o token de utilizador com o exemplo da norma, as chamadas abertas e as protegidas, os serviços e uma chamada que não se faz).
 
 ## 🏗️ Compilação e publicação
 
@@ -170,10 +176,14 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           o ficheiro de definições e os seus valores seguros
 │   ├── laser.hpp                                a medição da altura da mesa
 │   ├── spindle.hpp                              velocidade, calor e saída de proteção
+│   ├── hash.hpp                                 os acessos: MD5, SHA-1, base64
+│   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP e a carga RTP de JPEG
+│   ├── onvif.hpp                                ONVIF: descoberta e serviços SOAP
 │   └── protocol.hpp                             as palavras da rede: rotas, token, JSON
 ├── main/
 │   ├── app_main.cpp                             arranque, definições, rede, servidor web, câmara
 │   ├── sensors.cpp sensors.hpp                  os pinos: impulsos, saída de proteção, sensores
+│   ├── stream.cpp stream.hpp                    servidor RTSP, serviços ONVIF e descoberta
 │   └── idf_component.yml Kconfig.projbuild      lista de componentes e pinos de menuconfig
 ├── tests/                                       testes no computador das definições, da comporta, da voz e dos textos de ecrã
 ├── docs/                                        as notas de hardware e as fontes dos dois desenhos
@@ -202,6 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 * O controlador do sensor laser (VL53L1X por I2C) e os dos sensores de temperatura não estão escritos, por isso não se pode fazer nenhuma medição e um sensor de temperatura ligado conta como quente.
 * A ligação com os programas de secretária e com o EH3D-SERVER ainda não existe: o nó responde na sua porta, ninguém lhe pergunta.
 * A porta de rede é HTTP simples: mantenha-a numa rede própria.
+* RTSP e ONVIF não foram experimentados com um leitor, gravador ou gestor ONVIF reais; o modelo da câmara na placa decidirá os tamanhos e os pinos.
 
 **Seguinte**
 

@@ -30,7 +30,7 @@
 |---|---|
 | 版本 | `0.0.1` |
 | 成熟度 | 脚手架 |
-| 测试 | 1 个电脑测试程序（74 项检查） |
+| 测试 | 2 个电脑测试程序（175 项检查） |
 | 技术栈 | C++17、ESP-IDF 5.5、ESP32-S3、W5500 网络 |
 | 真实硬件 | 否：固件尚未编译或烧录，也没有连接过任何机床 |
 
@@ -44,10 +44,11 @@
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 软件 | 🟠 | ESP-IDF 工程（基于 W5500 的有线网络、网页服务器、摄像头、主轴脉冲、保护输出、独立分区中的设置文件）已编写，但尚未编译或烧录。 |
-| 测试 | 🟢 | 1 个电脑测试程序通过（`ctest`）：74 项检查，涵盖设置文件、激光测量、主轴转速和温度、保护输出以及网络用语。 |
+| 测试 | 🟢 | 2 个电脑测试程序通过（`ctest`）：175 项检查，涵盖设置文件、激光测量、主轴转速和温度、保护输出以及网络用语。 |
 | 激光（工作台高度） | 🟡 | 由多次读数得出的测量（中位数、丢弃异常读数、检查离散度、量程和偏移）已测试；传感器驱动尚未编写，因此目前无法测量。 |
 | 主轴 | 🟡 | 由传感器脉冲得出的转速（每转任意脉冲数，脉冲停止即视为停转）、带警告、临界值和回差的温度以及保护输出已测试；温度传感器驱动尚未编写。 |
 | 摄像头 | 🟠 | MJPEG 视频流已按板子的摄像头接口编写，需要在 menuconfig 中填写板子的引脚；尚未运行。 |
+| 视频（RTSP、ONVIF） | 🟡 | RTSP 会话（OPTIONS、DESCRIBE、SETUP、PLAY、PAUSE、TEARDOWN，走 UDP 或 TCP 连接内，Digest 与 Basic 登录）、JPEG 的 RTP 载荷、ONVIF 的发现与 SOAP 服务（配置文件、带尺寸的编码器、流与快照地址、用户令牌）已在电脑上测试；还没有播放器或录像机从真实板子取过视频。 |
 | 真实硬件 | 🔴 | 没有板子运行过这份固件，也没有连接过任何机床。 |
 | 文档 | 🟢 | 八种语言的 README、设置参考和硬件说明。 |
 
@@ -58,6 +59,7 @@
 * **保护输出**：一个 GPIO，只要主轴必须停止（过快、过热、传感器无响应）或节点未运行，就保持低电平，可通过继电器或光耦接入控制单元的停机线路；可在设置中关闭。
 * **摄像头与网络**：摄像头视频以 MJPEG 提供在 `/stream`，读数在 `/api/status`，通过有线网口（SPI 上的 W5500）；令牌保护测量和摄像头。
 * **设置文件** `head.cfg`：每个调好的值（网络、摄像头、激光、主轴、温度、保护输出）都是独立分区中一个文件的一行，绝不写进代码；超出范围的值会被报告并保留默认值。
+* **像 IP 摄像头一样发送视频**：RTSP（`rtsp://地址/stream1`，JPEG over RTP，走 UDP 或 TCP 连接内，Digest 或 Basic 登录）和 ONVIF（WS-Discovery 让录像机和管理软件找到节点，以及 S 配置文件的服务：配置文件、带摄像头可用尺寸的编码器、流与快照地址、用户令牌）；两者都用设置里的用户名和密码，没有密码就不提供任何服务。
 
 ## 🧩 在 EH3D 中的角色
 
@@ -83,7 +85,7 @@ EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-B
 
 * **要么测量可信，要么不测量：** 多次读数、丢弃异常值，读数离散过大、超出量程或太少时拒绝（并给出原因）。
 * **时刻被监视的主轴：** 由脉冲得出转速，温度带警告、临界值和回差，出问题或节点未运行时保护输出会自行断开。
-* **来自钻头的视频：** 摄像头以 MJPEG 提供，需要令牌。
+* **像 IP 摄像头一样的视频：** 带登录的 RTSP 和 ONVIF，任何播放器、录像机或 ONVIF 管理软件都能取用；摄像头还以 MJPEG 提供在需要令牌的 `/stream`。
 * **默认安全：** 没有令牌就没有测量和摄像头；每个限值在设置里都有开关，并从保守位置开始。
 
 ## 🔒 安全与防护
@@ -110,6 +112,8 @@ EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-B
 | 主轴脉冲 | 一个 GPIO（menuconfig 中的 `AUX_RPM_GPIO`），上升沿 | `main/sensors.cpp` |
 | 保护输出 | 一个 GPIO（`AUX_PROTECT_GPIO`），主轴必须停止时为低 | `main/sensors.cpp` |
 | 激光与温度 | 激光用 I2C，温度传感器用单总线；驱动尚未编写 | `main/sensors.cpp` |
+| RTSP | `rtsp://地址:端口/stream1`：OPTIONS、DESCRIBE、SETUP、PLAY、PAUSE、GET_PARAMETER、TEARDOWN；JPEG over RTP，走 UDP 或 TCP 交错；Digest 或 Basic 登录 | `core/rtsp.hpp`, `core/rtsp_session.hpp`, `core/rtp_jpeg.hpp`, `main/stream.cpp` |
+| ONVIF | 多播地址 `239.255.255.250:3702` 上的 WS-Discovery；`/onvif/device_service` 与 `/onvif/media_service` 上的 SOAP（S 配置文件：能力、服务、配置文件、编码器、流与快照地址）；快照在 `/snapshot.jpg` | `core/onvif.hpp`, `main/stream.cpp` |
 
 ## ⚙️ 配置
 
@@ -126,6 +130,8 @@ EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-B
 | `temp_sensor` | none | none ds18b20 ntc mlx90614 | 主轴温度传感器 |
 | `temp_warn_c / temp_critical_c` | `55 / 70` | 20 - 200 | 警告值和保护输出断开的临界值 |
 | `protect_output` | `on` | on / off | 保护输出工作；仅在测试台上关闭 |
+| `stream_user / stream_password` | `viewer / none` | 8 - 64 | RTSP 和 ONVIF 的登录；没有密码就不为任何人服务 |
+| `rtsp_port` | `554` | 1 - 65535 | RTSP 服务器端口（网页服务器端口是 `port`） |
 
 ## 🚀 快速开始
 
@@ -140,7 +146,7 @@ python -I tools/ci_validate.py
 
 ## 🧪 测试
 
-电脑测试（`build.bat` 或 `./build.sh`，再 `ctest`）是一个程序，全部通过：`test_aux`（74 项检查）覆盖设置文件（默认值、取值、错误取值、彼此矛盾的限值）、激光测量（中位数、被丢弃的异常读数、偏移、被标为坏的读数、量程、没有读数、过大的离散度）、主轴转速（每转脉冲数、减速的主轴、脉冲停止即停转）、温度（回差、传感器故障）、保护输出，以及网络用语（请求行、路由、头或查询中的令牌、读数个数、状态和测量的 JSON、高度图一个点的那一行）。固件未被覆盖：它尚未编译。
+电脑测试（`build.bat` 或 `./build.sh`，再 `ctest`）是两个程序，全部通过：`test_aux`（74 项检查）覆盖设置文件（默认值、取值、错误取值、彼此矛盾的限值）、激光测量（中位数、被丢弃的异常读数、偏移、被标为坏的读数、量程、没有读数、过大的离散度）、主轴转速（每转脉冲数、减速的主轴、脉冲停止即停转）、温度（回差、传感器故障）、保护输出，以及网络用语（请求行、路由、头或查询中的令牌、读数个数、状态和测量的 JSON、高度图一个点的那一行）。固件未被覆盖：它尚未编译。 第二个程序 `test_stream`（100 项检查）覆盖视频：登录所用哈希对照公布的向量（MD5、SHA-1、base64 以及 RFC 2617 的 Digest 示例）、RTSP 请求与整个会话（登录、SDP、UDP 与交错传输、play、pause、teardown、错误会话、拒绝多播）、JPEG 的 RTP 载荷（首包中的量化表、顺序、标记位、序号回绕），以及 ONVIF（发现、带标准示例的用户令牌、开放与受保护的调用、各项服务和未实现的调用）。
 
 ## 🏗️ 构建与发布
 
@@ -170,10 +176,14 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           设置文件及其安全默认值
 │   ├── laser.hpp                                工作台高度的测量
 │   ├── spindle.hpp                              转速、温度和保护输出
+│   ├── hash.hpp                                 登录：MD5、SHA-1、base64
+│   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP 与 JPEG 的 RTP 载荷
+│   ├── onvif.hpp                                ONVIF：发现与 SOAP 服务
 │   └── protocol.hpp                             网络用语：路由、令牌、JSON
 ├── main/
 │   ├── app_main.cpp                             启动、设置、网络、网页服务器、摄像头
 │   ├── sensors.cpp sensors.hpp                  引脚：脉冲、保护输出、传感器
+│   ├── stream.cpp stream.hpp                    RTSP 服务器、ONVIF 服务与发现
 │   └── idf_component.yml Kconfig.projbuild      组件列表与 menuconfig 引脚
 ├── tests/                                       设置、闸门、语音和界面文本的主机测试
 ├── docs/                                        硬件说明和两幅图的源文件
@@ -202,6 +212,7 @@ EH3D-NODE-BUNGARD-AUX/
 * 激光传感器（I2C 上的 VL53L1X）和温度传感器的驱动尚未编写，因此无法测量，且已启用的温度传感器视为过热。
 * 与桌面程序和 EH3D-SERVER 的连接尚不存在：节点在自己的端口上应答，没有人来问它。
 * 网络口是普通 HTTP：请放在独立网络中。
+* RTSP 和 ONVIF 尚未用真实的播放器、录像机或 ONVIF 管理软件试过；板子上的摄像头型号将决定尺寸和引脚。
 
 **下一步**
 

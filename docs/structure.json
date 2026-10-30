@@ -63,6 +63,46 @@
         },
         {
           "desc": {
+            "en": "the logins: MD5, SHA-1, base64",
+            "es": "los accesos: MD5, SHA-1, base64",
+            "it": "gli accessi: MD5, SHA-1, base64",
+            "de": "die Anmeldungen: MD5, SHA-1, Base64",
+            "fr": "les connexions : MD5, SHA-1, base64",
+            "pt": "os acessos: MD5, SHA-1, base64",
+            "zh": "登录：MD5、SHA-1、base64",
+            "ja": "ログイン：MD5、SHA-1、base64"
+          },
+          "name": "hash.hpp"
+        },
+        {
+          "desc": {
+            "en": "RTSP and the RTP payload of JPEG",
+            "es": "RTSP y la carga RTP de JPEG",
+            "it": "RTSP e il payload RTP di JPEG",
+            "de": "RTSP und die RTP-Nutzlast von JPEG",
+            "fr": "RTSP et la charge RTP de JPEG",
+            "pt": "RTSP e a carga RTP de JPEG",
+            "zh": "RTSP 与 JPEG 的 RTP 载荷",
+            "ja": "RTSP と JPEG の RTP ペイロード"
+          },
+          "name": "rtsp.hpp  rtsp_session.hpp  rtp_jpeg.hpp",
+          "tree_name": "rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp"
+        },
+        {
+          "desc": {
+            "en": "ONVIF: discovery and the SOAP services",
+            "es": "ONVIF: descubrimiento y servicios SOAP",
+            "it": "ONVIF: discovery e servizi SOAP",
+            "de": "ONVIF: Erkennung und SOAP-Dienste",
+            "fr": "ONVIF : découverte et services SOAP",
+            "pt": "ONVIF: descoberta e serviços SOAP",
+            "zh": "ONVIF：发现与 SOAP 服务",
+            "ja": "ONVIF：ディスカバリーと SOAP サービス"
+          },
+          "name": "onvif.hpp"
+        },
+        {
+          "desc": {
             "en": "the words of the network: routes, token, JSON",
             "es": "las palabras de la red: rutas, token, JSON",
             "it": "le parole della rete: percorsi, token, JSON",
@@ -120,6 +160,20 @@
         },
         {
           "desc": {
+            "en": "RTSP server, ONVIF services and discovery",
+            "es": "servidor RTSP, servicios ONVIF y descubrimiento",
+            "it": "server RTSP, servizi ONVIF e discovery",
+            "de": "RTSP-Server, ONVIF-Dienste und Erkennung",
+            "fr": "serveur RTSP, services ONVIF et découverte",
+            "pt": "servidor RTSP, serviços ONVIF e descoberta",
+            "zh": "RTSP 服务器、ONVIF 服务与发现",
+            "ja": "RTSP サーバー、ONVIF サービス、ディスカバリー"
+          },
+          "name": "stream.cpp  stream.hpp",
+          "tree_name": "stream.cpp stream.hpp"
+        },
+        {
+          "desc": {
             "en": "component list and menuconfig pins",
             "es": "lista de componentes y pines de menuconfig",
             "it": "elenco dei componenti e pin di menuconfig",
@@ -160,7 +214,8 @@
             "zh": "设置、激光、主轴和网络的电脑测试",
             "ja": "設定・レーザー・スピンドル・ネットワークのテスト"
           },
-          "name": "test_aux.cpp"
+          "name": "test_aux.cpp  test_stream.cpp",
+          "tree_name": "test_aux.cpp test_stream.cpp"
         }
       ],
       "tree": {

@@ -26,6 +26,14 @@ struct Settings {
     std::uint16_t camera_quality = 12;      // JPEG quality, 4 (best) .. 63 (smallest)
     std::uint16_t camera_fps_max = 10;      // 1..30
 
+    // the video as an IP camera sends it: RTSP (JPEG over RTP, over UDP or inside the TCP connection) and ONVIF (discovery and the services of profile S).
+    // Both log in with this user and password; without them nothing is served.
+    bool rtsp_enabled = true;
+    std::uint16_t rtsp_port = 554;          // 1..65535
+    bool onvif_enabled = true;
+    std::string stream_user = "viewer";     // 1..32 characters
+    std::string stream_password;            // write-only: 8 to 64 characters; empty: RTSP and ONVIF serve nobody
+
     // the laser that measures the height of the table
     bool laser_enabled = true;
     std::uint16_t laser_samples = 7;        // readings of one measure, 1..31 (the median is taken)
@@ -178,6 +186,16 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
             if (num(4, 63)) s.camera_quality = static_cast<std::uint16_t>(n);
         } else if (key == "camera_fps_max") {
             if (num(1, 30)) s.camera_fps_max = static_cast<std::uint16_t>(n);
+        } else if (key == "rtsp_enabled") {
+            if (flag()) s.rtsp_enabled = b;
+        } else if (key == "rtsp_port") {
+            if (num(1, 65535)) s.rtsp_port = static_cast<std::uint16_t>(n);
+        } else if (key == "onvif_enabled") {
+            if (flag()) s.onvif_enabled = b;
+        } else if (key == "stream_user") {
+            if (!val.empty() && val.size() <= 32 && val.find(':') == std::string::npos) s.stream_user = val; else bad("1 to 32 characters, no colon");
+        } else if (key == "stream_password") {
+            if (val.empty() || (val.size() >= 8 && val.size() <= 64)) s.stream_password = val; else bad("8 to 64 characters");
         } else if (key == "laser_enabled") {
             if (flag()) s.laser_enabled = b;
         } else if (key == "laser_samples") {
