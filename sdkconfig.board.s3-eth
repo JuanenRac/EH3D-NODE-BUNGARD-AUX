@@ -1,0 +1,1 @@
+# EH3D-NODE-BUNGARD-AUX, board profile s3-eth: the Waveshare ESP32-S3-ETH. The settings are in sdkconfig.defaults; this file exists because the compiler of SONNET lists a profile for every board.
