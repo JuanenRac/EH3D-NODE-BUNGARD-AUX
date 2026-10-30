@@ -1,0 +1,158 @@
+{
+  "repo": "EH3D-NODE-BUNGARD-AUX",
+  "ecosystem": "eh3d",
+  "tagline": "The node of the drill head of a Bungard CCD machine: video, the height of the table, the speed and the temperature of the spindle.",
+  "description": "EH3D-NODE-BUNGARD-AUX is firmware in C++17 for an ESP32-S3 with a wired network port, written for ESP-IDF 5.5. It measures the height of the table with a laser (several readings, the odd ones thrown away), reads the speed and the temperature of the spindle, opens a protect output when the spindle is too fast or too hot, and says it all on the network, with the camera as MJPEG, behind a token. The rules and the words of the network are tested on a computer; the firmware has not been built or run on a board, and the drivers of the laser and of the temperature sensors are not written.",
+  "columns": [
+    "WHO USES IT",
+    "THIS REPOSITORY",
+    "WHAT IT DEPENDS ON"
+  ],
+  "nodes": [
+    {
+      "id": "apps",
+      "column": 0,
+      "level": "external",
+      "title": "Desktop programs",
+      "lines": [
+        "EH3D-BUNGARD-GUI, DRILLPRO,",
+        "ROUTEPRO: the map of the table"
+      ]
+    },
+    {
+      "id": "stop",
+      "column": 0,
+      "level": "external",
+      "title": "Stop line of the machine",
+      "lines": [
+        "the protect output opens",
+        "it; a hardware stop stays"
+      ]
+    },
+    {
+      "id": "net",
+      "column": 1,
+      "level": "tested",
+      "title": "Words of the network",
+      "lines": [
+        "status, measure, token,",
+        "the JSON the clients read"
+      ],
+      "code": [
+        "core/protocol.hpp"
+      ]
+    },
+    {
+      "id": "laser",
+      "column": 1,
+      "level": "tested",
+      "title": "Measure of the laser",
+      "lines": [
+        "median, odd readings out,",
+        "spread and range checked"
+      ],
+      "code": [
+        "core/laser.hpp"
+      ]
+    },
+    {
+      "id": "spindle",
+      "column": 1,
+      "level": "tested",
+      "title": "Spindle watch",
+      "lines": [
+        "speed from pulses, heat with",
+        "hysteresis, protect output"
+      ],
+      "code": [
+        "core/spindle.hpp"
+      ]
+    },
+    {
+      "id": "settings",
+      "column": 1,
+      "level": "tested",
+      "title": "Settings file",
+      "lines": [
+        "head.cfg with safe defaults;",
+        "a wrong value never opens a limit"
+      ],
+      "code": [
+        "core/aux_config.hpp"
+      ]
+    },
+    {
+      "id": "firmware",
+      "column": 2,
+      "level": "untested",
+      "title": "ESP-IDF firmware",
+      "lines": [
+        "network, web server, camera,",
+        "pulses; never built or run"
+      ],
+      "code": [
+        "main/app_main.cpp",
+        "main/sensors.cpp"
+      ]
+    },
+    {
+      "id": "sensors",
+      "column": 2,
+      "level": "untested",
+      "title": "Laser and temperature",
+      "lines": [
+        "drivers of the VL53L1X and",
+        "of the heat sensors: missing"
+      ],
+      "code": [
+        "main/sensors.hpp"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "apps",
+      "to": "net",
+      "label": "HTTP",
+      "level": "untested"
+    },
+    {
+      "from": "net",
+      "to": "laser",
+      "level": "tested"
+    },
+    {
+      "from": "net",
+      "to": "spindle",
+      "level": "tested"
+    },
+    {
+      "from": "settings",
+      "to": "laser",
+      "level": "tested"
+    },
+    {
+      "from": "spindle",
+      "to": "stop",
+      "level": "untested"
+    },
+    {
+      "from": "laser",
+      "to": "firmware",
+      "level": "untested"
+    },
+    {
+      "from": "spindle",
+      "to": "sensors",
+      "level": "untested"
+    }
+  ],
+  "legend": {
+    "tested": "rules covered by tests on a computer",
+    "contract": "shared base, kept identical by a tool",
+    "config": "builds, never flashed",
+    "untested": "has not run on real hardware",
+    "external": "a program, a person or another repository"
+  },
+  "footer": "Nothing has run on a board or on a machine yet."
+}

@@ -1,0 +1,243 @@
+<p align="center">
+  <img src="images/EH3D_BANNER.svg" alt="EH3D-NODE-BUNGARD-AUX banner" width="100%">
+</p>
+
+# 🎛️ EH3D-NODE-BUNGARD-AUX
+
+<p align="center"><a href="README.md">🇺🇸 English</a> | <a href="README_spa.md">🇪🇸 Español</a> | <a href="README_fra.md">🇫🇷 Français</a> | 🇮🇹 <b>Italiano</b> | <a href="README_deu.md">🇩🇪 Deutsch</a> | <a href="README_zho.md">🇨🇳 中文</a> | <a href="README_jpn.md">🇯🇵 日本語</a> | <a href="README_por.md">🇵🇹 Português</a></p>
+
+### Un piccolo nodo sulla testa di foratura di una macchina Bungard CCD (ESP32-S3 con porta di rete cablata): invia il video della telecamera, misura l'altezza del tavolo con un laser, legge la velocità e la temperatura del mandrino e apre un'uscita di protezione quando il mandrino è troppo veloce o troppo caldo.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
+  <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
+  <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
+  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
+</p>
+
+---
+
+**Verifica di onestà - cosa funziona oggi:** le regole del nodo sono scritte in C++17 e provate su un computer: il file delle impostazioni con i suoi valori sicuri, la misura dell'altezza del tavolo da più letture del laser (quelle anomale vengono scartate e una misura troppo dispersa è rifiutata), la velocità del mandrino dagli impulsi di un sensore, la temperatura con avviso, livello critico e isteresi, l'uscita di protezione e le parole che il nodo dice in rete (lo stato, la misura, il token). Il firmware ESP-IDF (rete cablata, server web, telecamera, impulsi del mandrino, uscita di protezione) è scritto ma non è stato compilato, caricato né eseguito su una scheda; **i driver del sensore laser e dei sensori di temperatura non sono ancora scritti**, quindi oggi una misura viene rifiutata, e nulla è stato collegato a una macchina.
+
+---
+
+> **Stato di sicurezza (safety) e di sicurezza informatica:** questo non è un sistema di sicurezza (safety). L'uscita di protezione è un segnale per la linea di arresto dell'unità di controllo, non un suo sostituto: l'arresto che protegge le persone e la macchina è un pulsante hardware che taglia l'azionamento da solo. L'uscita si apre quando il mandrino è troppo veloce o troppo caldo, quando un sensore di temperatura attivo non risponde e quando questo nodo non è in funzione; un nodo senza token rifiuta ogni richiesta che misura o mostra la telecamera. Non farci affidamento finché l'intera catena non è stata provata su una macchina reale. Il progetto è indipendente: non è realizzato, approvato né sostenuto da Bungard Elektronik, e i nomi di prodotto compaiono solo per dire con quali macchine è pensato per funzionare.
+
+## 📋 In breve
+
+| | |
+|---|---|
+| Versione | `0.0.1` |
+| Maturità | Impalcatura |
+| Test | 1 programma di prova sul computer (74 verifiche) |
+| Stack tecnologico | C++17, ESP-IDF 5.5, ESP32-S3, rete W5500 |
+| Su hardware reale | No: il firmware non è stato compilato né caricato, e nulla è stato collegato a una macchina |
+
+**Vai a:** [Panoramica](#-panoramica) · [Architettura](#-architettura) · [Avvio rapido](#-avvio-rapido) · [Test](#-test) · [Struttura](#-struttura-del-repository) · [Correlati](#-progetti-correlati)
+
+## 🚦 Stato del progetto
+Ogni riga è una parte di questo repository e il semaforo dice a che punto è oggi. È scritta in base a ciò che il repository può mostrare (test, compilazioni, esecuzioni), non a ciò che è previsto.
+
+🟢 Fatto e verificato · 🟡 Funziona, con limiti noti · 🟠 Fatto a metà o non ancora verificato · 🔴 Non fatto o non funzionante
+
+| Area | Stato | Cosa significa qui |
+|---|---|---|
+| Software | 🟠 | Il progetto ESP-IDF (rete cablata con un W5500, server web, telecamera, impulsi del mandrino, uscita di protezione, il file delle impostazioni nella sua partizione) è scritto; non è stato compilato né caricato. |
+| Test | 🟢 | 1 programma di prova sul computer passa (`ctest`): 74 verifiche del file delle impostazioni, della misura del laser, della velocità e della temperatura del mandrino, dell'uscita di protezione e delle parole della rete. |
+| Laser (altezza del tavolo) | 🟡 | La misura da più letture (mediana, letture anomale scartate, dispersione verificata, intervallo e offset) è provata; il driver del sensore non è scritto, quindi oggi non si può fare alcuna misura. |
+| Mandrino | 🟡 | La velocità dagli impulsi di un sensore (qualsiasi numero per giro, fermo quando gli impulsi cessano), la temperatura con avviso, livello critico e isteresi e l'uscita di protezione sono provate; i driver dei sensori di temperatura non sono scritti. |
+| Telecamera | 🟠 | Il flusso MJPEG è scritto per il connettore della telecamera della scheda e richiede i pin della scheda in menuconfig; non è stato eseguito. |
+| Hardware reale | 🔴 | Nessuna scheda ha eseguito questo firmware e nulla è stato collegato a una macchina. |
+| Documentazione | 🟢 | README in otto lingue, il riferimento delle impostazioni e le note sull'hardware. |
+
+## 🎯 Panoramica
+
+* La **misura del laser**: il nodo chiede al sensore più letture, scarta quelle anomale (mediana e deviazione assoluta mediana), rifiuta una misura che si disperde più di `laser_sigma_max_mm` o che cade fuori dall'intervallo, e risponde con la distanza dal tavolo e la dispersione; i programmi desktop la trasformano in un punto della mappa del tavolo (`Z x y altezza`, letto da `eh3d-levelling`).
+* Il **mandrino**: la velocità deriva dagli impulsi di un sensore (un sensore hall o un disco con fessure, qualsiasi numero di impulsi per giro) ed è zero quando gli impulsi cessano; la temperatura ha un avviso, un livello critico e un'isteresi perché lo stato non sfarfalli; un sensore attivo che non risponde conta come caldo.
+* L'**uscita di protezione**: un GPIO basso ogni volta che il mandrino deve fermarsi (troppo veloce, troppo caldo, un sensore muto) e anche mentre il nodo non è in funzione, da collegare alla linea di arresto dell'unità di controllo tramite un relè o un optoaccoppiatore; si può disattivare nelle impostazioni.
+* La **telecamera e la rete**: il video della telecamera come MJPEG su `/stream` e le letture su `/api/status`, tramite una porta di rete cablata (W5500 su SPI); il token protegge la misura e la telecamera.
+* Il **file delle impostazioni** `head.cfg`: ogni valore regolato (la rete, la telecamera, il laser, il mandrino, la temperatura, l'uscita di protezione) è una riga di un file nella sua partizione, mai un numero nel codice; un valore fuori intervallo viene segnalato e resta quello predefinito.
+
+## 🧩 Ruolo in EH3D
+
+EH3D-NODE-BUNGARD-AUX è il nodo della testa di foratura di una macchina Bungard CCD, accanto a EH3D-NODE-BUNGARD (il nodo che comanda la macchina) e EH3D-NODE-BUNGARD-HMI (lo schermo). Sta sulla testa, vede la scheda con la sua telecamera, misura il tavolo sotto la testa e sorveglia il mandrino. I programmi desktop (EH3D-BUNGARD-GUI, DRILLPRO, ROUTEPRO) usano le sue misure per costruire la mappa del tavolo (`eh3d-levelling` in EH3D-COMMON) e correggere la Z dei lavori; il collegamento sarà diretto o tramite EH3D-SERVER, e nessuno dei due esiste ancora.
+
+## 🏛️ Architettura
+
+<p align="center">
+  <img src="images/architecture.svg" alt="Architettura di EH3D-NODE-BUNGARD-AUX: chi lo usa, che cosa contiene e da che cosa dipende" width="100%">
+</p>
+
+Come si incastrano le parti di questo repository: chi parla con esso, cosa contiene e da cosa dipende. Il disegno nasce da `docs/architecture.json` ed è verificato sul codice.
+
+## 🖼️ Schermate
+
+<p align="center">
+  <img src="images/screenshots/answers.png" alt="ciò che risponde il nodo" width="100%">
+</p>
+
+<p align="center"><em>Ciò che il nodo risponde in rete: lo stato (`GET /api/status`), una misura del tavolo (`POST /api/measure`) e la riga che i programmi desktop leggono come un punto della mappa. Un disegno dei formati che le prove verificano, non una cattura da una scheda.</em></p>
+
+## ✨ Funzionalità
+
+* **Una misura affidabile, o nessuna:** più letture, quelle anomale scartate, e un rifiuto (con il motivo) quando le letture si disperdono troppo, sono fuori intervallo o sono troppo poche.
+* **Un mandrino sorvegliato sempre:** velocità dagli impulsi, temperatura con un avviso, un livello critico e un'isteresi, e un'uscita di protezione che si apre da sola quando qualcosa non va o il nodo non è in funzione.
+* **Video dalla testa:** la telecamera come MJPEG, dietro il token.
+* **Sicuro per impostazione predefinita:** senza token niente misura né telecamera; ogni limite ha un interruttore nelle impostazioni e parte dalla posizione conservativa.
+
+## 🔒 Sicurezza e protezione
+
+| Minaccia | Difesa |
+|---|---|
+| Un mandrino troppo veloce o troppo caldo | l'uscita di protezione si apre sopra `rpm_max` e alla temperatura critica, con un'isteresi perché non sfarfalli; un sensore di temperatura attivo e muto conta come caldo |
+| Il nodo perde l'alimentazione o si blocca | l'uscita è bassa finché il nodo non ha controllato il mandrino e resta bassa mentre non è in funzione, quindi va cablata come un arresto che si apre da solo |
+| Qualcuno in rete misura o guarda l'officina | senza token il nodo rifiuta la misura e la telecamera; il token è confrontato in tempo costante e non viene mai mostrato né registrato |
+| Una misura sbagliata presa per buona | le letture anomale sono scartate, una dispersione oltre `laser_sigma_max_mm`, un intervallo o poche letture rifiutano la misura con il motivo |
+| Un errore di battitura nelle impostazioni | un valore fuori intervallo o una chiave sconosciuta viene segnalato e resta il valore sicuro; una temperatura critica sotto l'avviso, o un intervallo capovolto, torna ai valori predefiniti |
+| Un segreto nel firmware o nel repository | nulla di segreto è compilato; il token è un'impostazione nella sua partizione |
+
+**Ciò che non è difeso:** il nodo non è un dispositivo di sicurezza. L'uscita di protezione vale quanto il cablaggio che la porta alla linea di arresto, e nulla di questo è stato provato su una macchina. La porta di rete non è cifrata (una semplice porta HTTP nella rete dell'officina): tienila su una rete a parte.
+
+## 🔌 Interfacce
+
+| Interfaccia | Che cos'è | Dove |
+|---|---|---|
+| File delle impostazioni | `head.cfg` nella partizione `config`: righe `chiave = valore`; vedi `head.cfg.example` | `core/aux_config.hpp` |
+| Stato | `GET /api/status`: il nodo, la telecamera, il laser, la velocità, la temperatura, l'uscita di protezione e il tempo di accensione in una riga di JSON | `core/protocol.hpp` |
+| Misura | `POST /api/measure[?samples=N]` con il token: la distanza dal tavolo, la dispersione e perché una misura è stata rifiutata | `core/laser.hpp`, `main/app_main.cpp` |
+| Telecamera | `GET /stream` con il token: MJPEG | `main/app_main.cpp` |
+| Impulsi del mandrino | un GPIO (`AUX_RPM_GPIO` in menuconfig), fronti di salita | `main/sensors.cpp` |
+| Uscita di protezione | un GPIO (`AUX_PROTECT_GPIO`), basso quando il mandrino deve fermarsi | `main/sensors.cpp` |
+| Laser e temperatura | I2C per il laser e un filo per il sensore di temperatura; i driver non sono scritti | `main/sensors.cpp` |
+
+## ⚙️ Configurazione
+
+Tutto ciò che è regolato è una riga di `head.cfg` (copia `head.cfg.example` nella partizione `config`); un valore fuori intervallo viene segnalato nel registro e resta quello predefinito. I più importanti:
+
+| Impostazione | Predefinito | Intervallo | Cosa fa |
+|---|---|---|---|
+| `token` | none | 8 - 64 | il token di accesso; senza di esso il nodo rifiuta la misura e la telecamera |
+| `laser_samples` | `7` | 1 - 31 | letture di una misura (la mediana di quelle buone) |
+| `laser_offset_mm` | `0` | -50 - 50 | si somma a ogni distanza: dove sta il sensore sopra la punta dell'utensile |
+| `laser_sigma_max_mm` | `0.15` | 0.01 - 5 | una misura le cui letture si disperdono più di questo è rifiutata |
+| `rpm_pulses_per_rev` | `1` | 1 - 64 | impulsi del sensore per ogni giro del mandrino |
+| `rpm_max` | `65000` | 1000 - 200000 | sopra questa velocità si apre l'uscita di protezione |
+| `temp_sensor` | none | none ds18b20 ntc mlx90614 | il sensore della temperatura del mandrino |
+| `temp_warn_c / temp_critical_c` | `55 / 70` | 20 - 200 | l'avviso e il livello a cui si apre l'uscita di protezione |
+| `protect_output` | `on` | on / off | l'uscita di protezione funziona; disattivala solo sul banco |
+
+## 🚀 Avvio rapido
+
+Servono un compilatore C++17 e CMake per le prove sul computer, ed ESP-IDF 5.5.5 per il firmware (il target ESP32-S3).
+
+```bash
+build.bat            # le prove sul computer (Windows)  -  ./build.sh su Linux
+python -I tools/ci_validate.py
+```
+
+Il firmware non è ancora stato compilato: quando lo sarà, `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produce l'immagine (imposta i pin della tua scheda in `EH3D Bungard AUX`), e una partizione chiamata `config` contiene `head.cfg`.
+
+## 🧪 Test
+
+Le prove sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono un programma e tutto passa: `test_aux` (74 verifiche) sul file delle impostazioni (valori predefiniti, valori, valori errati, limiti che non hanno senso insieme), la misura del laser (la mediana, la lettura anomala scartata, l'offset, letture segnate come cattive, l'intervallo, nessuna lettura, una dispersione troppo grande), la velocità del mandrino (impulsi per giro, un mandrino che rallenta, fermo quando gli impulsi cessano), la temperatura (l'isteresi, un sensore che si guasta), l'uscita di protezione e le parole della rete (la riga di richiesta, i percorsi, il token nell'intestazione o nella query, il numero di letture, il JSON dello stato e della misura, la riga di un punto della mappa). Il firmware non è coperto: non è stato compilato.
+
+## 🏗️ Compilazione e rilascio
+
+La versione è in `eh3d.project.json`, e ogni versione ha la sua voce in [CHANGELOG.md](CHANGELOG.md). `build.sh` / `build.bat` compilano ed eseguono le prove sul computer e `test.sh` / `test.bat` eseguono i controlli del repository. Il firmware si compila con ESP-IDF 5.5.5 (`idf.py build`), cosa che non è ancora stata fatta; nessuna release è stata pubblicata.
+
+## 🩺 Risoluzione dei problemi
+
+| Sintomo | Cosa fare |
+|---|---|
+| Una misura viene rifiutata con `no_readings` | Il driver del laser non è scritto in questa versione, quindi non arriva mai nessuna lettura; il resto della risposta è provato. |
+| Una misura viene rifiutata con `too_noisy` | Le letture si disperdono più di `laser_sigma_max_mm`: lascia assestare testa e tavolo, o alza un poco il limite; controlla che nulla vibri. |
+| Il nodo risponde 401 a una misura o alla telecamera | Imposta `token` in `head.cfg` (da 8 a 64 caratteri) e invialo nell'intestazione `Authorization: Bearer ...` o in `?token=`. |
+| L'uscita di protezione è sempre aperta | Un sensore di temperatura attivo che non risponde conta come caldo, e i driver non sono ancora scritti: imposta `temp_sensor = none` sul banco, o collega un sensore quando esisterà il suo driver. |
+
+## 📂 Struttura del repository
+
+<p align="center">
+  <img src="images/repository-structure.svg" alt="Struttura del repository EH3D-NODE-BUNGARD-AUX" width="100%">
+</p>
+
+<details>
+<summary>Versione testuale dell'albero</summary>
+
+```text
+EH3D-NODE-BUNGARD-AUX/
+├── core/
+│   ├── aux_config.hpp                           il file delle impostazioni e i suoi valori sicuri
+│   ├── laser.hpp                                la misura dell'altezza del tavolo
+│   ├── spindle.hpp                              velocità, calore e uscita di protezione
+│   └── protocol.hpp                             le parole della rete: percorsi, token, JSON
+├── main/
+│   ├── app_main.cpp                             avvio, impostazioni, rete, server web, telecamera
+│   ├── sensors.cpp sensors.hpp                  i pin: impulsi, uscita di protezione, sensori
+│   └── idf_component.yml Kconfig.projbuild      elenco dei componenti e pin di menuconfig
+├── tests/                                       test su computer di impostazioni, varco, voce e testi delle schermate
+├── docs/                                        le note hardware e le fonti dei due disegni
+├── tools/                                       controllo CI, README e strumenti dei disegni
+├── CMakeLists.txt                               il progetto ESP-IDF
+├── partitions.csv                               la mappa della flash con due slot
+├── head.cfg.example                             ogni impostazione con il suo default e intervallo
+├── sdkconfig.defaults                           impostazioni ESP-IDF per il modulo ESP32-P4
+├── images/                                      banner e le immagini di Architettura e Struttura del repository
+├── .github/                                     workflow di CI e di rilascio, modelli di issue e pull request
+├── build.sh build.bat                           compila ed esegue i test su computer in un pannello dal vivo
+├── eh3d.project.json                            manifesto: versione, ruolo, maturità e comando di compilazione
+├── CHANGELOG.md                                 cosa è cambiato in ogni versione
+├── SECURITY.md SUPPORT.md                       come segnalare una vulnerabilità e dove chiedere
+├── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   come contribuire, codice di condotta e licenza
+└── bump_manifest_version.py                     utilità di versione del manifesto
+```
+
+</details>
+
+## 🗺️ Roadmap e limiti noti
+
+**Limiti noti oggi**
+
+* Nulla è stato eseguito su una scheda: il firmware non è stato compilato, caricato né provato, e i pin della telecamera e del chip di rete vanno controllati con lo schema della scheda.
+* Il driver del sensore laser (VL53L1X via I2C) e quelli dei sensori di temperatura non sono scritti, quindi non si può fare alcuna misura e un sensore di temperatura attivo conta come caldo.
+* Il collegamento con i programmi desktop e con EH3D-SERVER non esiste ancora: il nodo risponde sulla sua porta, nessuno lo interroga.
+* La porta di rete è HTTP semplice: tienila su una rete a parte.
+
+**Prossimi passi**
+
+* Scrivere i driver del laser e dei sensori di temperatura e compilare il firmware.
+* Aggiungere il collegamento con EH3D-BUNGARD-GUI, con EH3D-SERVER e con lo schermo, e la vista della telecamera.
+* Provare l'uscita di protezione cablata a una linea di arresto su una macchina.
+
+## 🌍 Lingue
+
+Il README e i testi esistono in inglese, spagnolo, francese, italiano, tedesco, cinese, giapponese e portoghese europeo.
+
+## 🔗 Progetti correlati
+
+* [EH3D-BUNGARD-GUI](https://github.com/JuanenRac/EH3D-BUNGARD-GUI): l'interfaccia moderna che usa le misure per costruire la mappa del tavolo
+* [EH3D-NODE-BUNGARD](https://github.com/JuanenRac/EH3D-NODE-BUNGARD): il nodo sulla porta seriale dell'unità di controllo che comanda la macchina
+* [EH3D-NODE-BUNGARD-HMI](https://github.com/JuanenRac/EH3D-NODE-BUNGARD-HMI): lo schermo touch dell'operatore
+* [EH3D-SERVER](https://github.com/JuanenRac/EH3D-SERVER): il centro della famiglia: porterà le risposte del nodo a ogni client
+* [EH3D-COMMON](https://github.com/JuanenRac/EH3D-COMMON): le parti comuni della famiglia, tra cui `eh3d-levelling` (la mappa delle altezze del tavolo)
+
+## 📚 Documentazione
+
+* Le impostazioni: `head.cfg.example` elenca ogni chiave con il suo valore predefinito e il suo intervallo.
+* L'hardware: i pin, il cablaggio dell'uscita di protezione e i componenti, in `docs/HARDWARE.md`.
+* [Registro delle modifiche](CHANGELOG.md)
+
+## 🤝 Contribuire e comunità
+
+* Prima di una pull request esegui i test sul computer (`./build.sh` o `build.bat`) e `python -I tools/ci_validate.py`: tutto deve passare. Vedi [CONTRIBUTING.md](CONTRIBUTING.md) e il [codice di condotta](CODE_OF_CONDUCT.md).
+* Il README esiste in otto lingue: una modifica del testo si fa in tutti e otto i file, e i due disegni nascono da `docs/architecture.json` e `docs/structure.json` con `tools/make_architecture.py` e `tools/make_structure.py`.
+* Nulla che cambi il modo in cui il nodo dà una misura o apre l'uscita di protezione cambia senza una prova che lo copra e una nota di quanto osservato sull'hardware.
+* Segnala una vulnerabilità in privato: [SECURITY.md](SECURITY.md). Domande, idee e segnalazioni: electrohobby3d@gmail.com ([SUPPORT.md](SUPPORT.md)).
+
+## 👤 AUTORE
+
+**JuanenRac (Electro Hobby 3D)** · electrohobby3d@gmail.com
+
+## 📜 LICENZA
+
+Software: GPL-3.0-or-later. Vedi [LICENSE](LICENSE). I progetti hardware della suite usano la CERN OHL-S.

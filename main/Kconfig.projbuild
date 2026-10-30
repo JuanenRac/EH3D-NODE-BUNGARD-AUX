@@ -1,0 +1,103 @@
+menu "EH3D Bungard AUX"
+    config AUX_CONFIG_PATH
+        string "Settings file in the config partition"
+        default "/config/head.cfg"
+
+    menu "Wired network (W5500 over SPI)"
+        config AUX_ETH_SPI_HOST
+            int "SPI host of the network chip"
+            default 1
+        config AUX_ETH_MISO
+            int "MISO GPIO"
+            default 12
+        config AUX_ETH_MOSI
+            int "MOSI GPIO"
+            default 11
+        config AUX_ETH_SCLK
+            int "SCLK GPIO"
+            default 13
+        config AUX_ETH_CS
+            int "CS GPIO"
+            default 14
+        config AUX_ETH_INT
+            int "Interrupt GPIO"
+            default 10
+        config AUX_ETH_RST
+            int "Reset GPIO (-1: not wired)"
+            default 9
+    endmenu
+
+    menu "Sensors"
+        config AUX_RPM_GPIO
+            int "GPIO of the pulses of the spindle sensor (-1: not wired)"
+            default -1
+            help
+                A hall sensor or a slotted disc on the spindle; one rising edge for each pulse. Check the pin against the schematic of the board.
+        config AUX_PROTECT_GPIO
+            int "GPIO of the protect output (-1: not wired)"
+            default -1
+            help
+                High while the spindle may run, low when it is too fast or too hot (or when this node is not running). Wire it into the stop line of the control
+                unit through a relay or an opto-coupler: it must open by itself when the node loses power.
+        config AUX_I2C_SDA
+            int "I2C SDA GPIO of the laser"
+            default 41
+        config AUX_I2C_SCL
+            int "I2C SCL GPIO of the laser"
+            default 42
+        config AUX_ONEWIRE_GPIO
+            int "GPIO of the one-wire temperature sensor (-1: not wired)"
+            default -1
+    endmenu
+
+    menu "Camera pins (set for your board)"
+        config AUX_CAM_PWDN
+            int "PWDN GPIO"
+            default -1
+        config AUX_CAM_RESET
+            int "RESET GPIO"
+            default -1
+        config AUX_CAM_XCLK
+            int "XCLK GPIO"
+            default -1
+        config AUX_CAM_SIOD
+            int "SIOD (SDA) GPIO"
+            default -1
+        config AUX_CAM_SIOC
+            int "SIOC (SCL) GPIO"
+            default -1
+        config AUX_CAM_VSYNC
+            int "VSYNC GPIO"
+            default -1
+        config AUX_CAM_HREF
+            int "HREF GPIO"
+            default -1
+        config AUX_CAM_PCLK
+            int "PCLK GPIO"
+            default -1
+        config AUX_CAM_D0
+            int "D0 GPIO"
+            default -1
+        config AUX_CAM_D1
+            int "D1 GPIO"
+            default -1
+        config AUX_CAM_D2
+            int "D2 GPIO"
+            default -1
+        config AUX_CAM_D3
+            int "D3 GPIO"
+            default -1
+        config AUX_CAM_D4
+            int "D4 GPIO"
+            default -1
+        config AUX_CAM_D5
+            int "D5 GPIO"
+            default -1
+        config AUX_CAM_D6
+            int "D6 GPIO"
+            default -1
+        config AUX_CAM_D7
+            int "D7 GPIO"
+            default -1
+    endmenu
+endmenu
