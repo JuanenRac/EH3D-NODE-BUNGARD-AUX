@@ -64,6 +64,20 @@
         },
         {
           "desc": {
+            "en": "the ring of LEDs: levels, colours, signals",
+            "es": "el aro de LEDs: niveles, colores, señales",
+            "it": "l'anello di LED: livelli, colori, segnali",
+            "de": "der LED-Ring: Stufen, Farben, Signale",
+            "fr": "l'anneau de LED : niveaux, couleurs, signaux",
+            "pt": "o anel de LEDs: níveis, cores, sinais",
+            "zh": "LED 环形灯：亮度、颜色、信号",
+            "ja": "LED リング：明るさ・色・合図"
+          },
+          "name": "light.hpp",
+          "tree_name": "light.hpp"
+        },
+        {
+          "desc": {
             "en": "the cameras OV2640 and OV5640 and their sizes",
             "es": "las cámaras OV2640 y OV5640 y sus tamaños",
             "it": "le telecamere OV2640 e OV5640 e le loro dimensioni",
@@ -245,6 +259,20 @@
         },
         {
           "desc": {
+            "en": "the driver of the ring of LEDs",
+            "es": "el controlador del aro de LEDs",
+            "it": "il driver dell'anello di LED",
+            "de": "der Treiber des LED-Rings",
+            "fr": "le pilote de l'anneau de LED",
+            "pt": "o controlador do anel de LEDs",
+            "zh": "LED 环形灯驱动",
+            "ja": "LED リングのドライバー"
+          },
+          "name": "light.cpp  light.hpp",
+          "tree_name": "light.cpp light.hpp"
+        },
+        {
+          "desc": {
             "en": "the pins: pulses, protect output, sensors",
             "es": "los pines: pulsos, salida de protección, sensores",
             "it": "i pin: impulsi, uscita di protezione, sensori",
@@ -402,6 +430,20 @@
           },
           "name": "test_aux.cpp  test_stream.cpp",
           "tree_name": "test_aux.cpp test_stream.cpp"
+        },
+        {
+          "desc": {
+            "en": "the ring of LEDs",
+            "es": "el aro de LEDs",
+            "it": "l'anello di LED",
+            "de": "der LED-Ring",
+            "fr": "l'anneau de LED",
+            "pt": "o anel de LEDs",
+            "zh": "LED 环形灯",
+            "ja": "LED リング"
+          },
+          "name": "test_light.cpp",
+          "tree_name": "test_light.cpp"
         },
         {
           "desc": {

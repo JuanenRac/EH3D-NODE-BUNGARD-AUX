@@ -4,6 +4,11 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire (`AUX_LIGHT_GPIO` in the menu of the firmware, the RMT peripheral, no new component). The light has a level from 0 to 100 that follows the eye, a ceiling it never goes over, a tone (white for the camera, cool, warm, red, green, blue) or any colour (`color=RRGGBB`), the sectors that are lit (one side gives a raking light), and a timer that turns a forgotten light off. `GET` and `POST /api/light` and the status carry it; the panel has its settings and four buttons to try it.
+- **Signals in colour:** `cue=ok` (green), `nok` (red blinking), `busy` (a blue spot that turns), `warn` (amber) and `alarm` (fast red) show for a while on top of the light, so the head says how a check went without anyone looking at a screen.
+- **One picture on request:** `GET /api/snapshot` gives the camera as JPEG (with the token of the head), for the programs that check the work.
+- **Tests:** `test_light` (231 checks): the settings, the curve of the levels, the ceiling, the sectors, the requests and what is wrong with them, the colours and the signals, the timer and the words of the status.
+
 ## [0.0.2] - The web panel and the update from GitHub of the other nodes, on their firmware base
 
 - **The firmware base of EH3D-NODE-BUNGARD and its web panel:** the node no longer reads `head.cfg` from its own partition. It has the settings document in flash, the users and the setup access point, the Wi-Fi with up to three backup networks, the Ethernet of the Waveshare ESP32-S3-ETH or the Wi-Fi of an ESP32-S3-WROOM-1 (the `s3-eth` and `s3-wifi` board profiles), the clock, the guard of the tasks and the memory, Improv Wi-Fi over the USB cable and the rollback of a firmware that does not come up. What is only the head's (the camera, the streams, the laser, the sensors of the spindle, the protect output) is in `main/head.cpp` and in the `head` section of the settings.

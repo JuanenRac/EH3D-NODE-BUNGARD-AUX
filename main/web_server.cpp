@@ -950,7 +950,7 @@ bool start(const config::Settings& settings) {
     if (tlscert::load_or_create(settings.node_id, g_material)) {
       httpd_ssl_config_t ssl = HTTPD_SSL_CONFIG_DEFAULT();
       ssl.httpd.stack_size = 10240;
-      ssl.httpd.max_uri_handlers = 24;
+      ssl.httpd.max_uri_handlers = 32;
       ssl.httpd.max_open_sockets = 4;
       ssl.httpd.lru_purge_enable = true;
       ssl.httpd.open_fn = nodeguard::http_open_gate;   // no new connection while the internal memory is short (the guard)
@@ -974,7 +974,7 @@ bool start(const config::Settings& settings) {
   }
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.stack_size = 10240;
-  config.max_uri_handlers = 24;
+  config.max_uri_handlers = 32;
   config.max_open_sockets = 4;
   config.lru_purge_enable = true;
   config.open_fn = nodeguard::http_open_gate;   // no new connection while the internal memory is short (the guard)

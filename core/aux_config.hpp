@@ -14,6 +14,39 @@ namespace bungard_aux {
 
 enum class TempSensor { None, Ds18b20, Ntc, Mlx90614 };
 
+/// The colour of the light of the ring around the camera. Neutral is the plain white the camera is meant to look at (all three colours of the LED at the same strength); cool and warm are tinted whites; red, green and blue make the resist and the copper stand apart.
+enum class Tone { Neutral, Cool, Warm, Red, Green, Blue, Custom };  // Custom is any colour a request asks for; the settings file offers the others
+
+/// The order in which the LEDs of the ring take their three colours: the WS2812 takes green first, a few clones take red first.
+enum class ColourOrder { Grb, Rgb };
+
+inline const char* tone_text(Tone t) {
+    switch (t) {
+        case Tone::Cool: return "cool";
+        case Tone::Warm: return "warm";
+        case Tone::Red: return "red";
+        case Tone::Green: return "green";
+        case Tone::Blue: return "blue";
+        case Tone::Custom: return "custom";
+        default: return "white";
+    }
+}
+
+inline bool tone_from_text(const std::string& v, Tone& out) {
+    if (v == "neutral") {  // the old name of the white
+        out = Tone::Neutral;
+        return true;
+    }
+    static const Tone all[] = {Tone::Neutral, Tone::Cool, Tone::Warm, Tone::Red, Tone::Green, Tone::Blue};
+    for (Tone t : all) {
+        if (v == tone_text(t)) {
+            out = t;
+            return true;
+        }
+    }
+    return false;
+}
+
 struct Settings {
     // the link: the node has a wired network port; an empty address means DHCP
     std::string name = "bungard-aux";
@@ -60,6 +93,16 @@ struct Settings {
     double temp_warn_c = 55.0;              // 20..150
     double temp_critical_c = 70.0;          // 20..200, always above the warning
     double temp_hysteresis_c = 3.0;         // 0.5..20
+
+    // the ring of LEDs around the camera (eight WS2812 on one wire): it lights the area under the head so the camera sees well
+    bool light_enabled = true;
+    std::uint32_t light_leds = 8;           // 1..64
+    std::uint32_t light_level = 60;         // 0..100, the level when the light is turned on without saying how bright
+    std::uint32_t light_max_level = 80;     // 1..100, the ceiling: whatever is asked, the ring never goes over it
+    Tone light_tone = Tone::Neutral;        // white (the one for the camera), cool, warm, red, green or blue
+    std::uint32_t light_auto_off_s = 600;   // 0..86400, the light turns itself off after this long (0: never)
+    bool light_on_at_start = false;
+    ColourOrder light_order = ColourOrder::Grb;  // grb (WS2812) or rgb (a few clones)
 
     // the safety output: it opens when the spindle is too hot or too fast, so the control unit's stop line can use it
     bool protect_output = true;
@@ -247,6 +290,25 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             if (real(20.0, 200.0)) s.temp_critical_c = d;
         } else if (key == "temp_hysteresis_c") {
             if (real(0.5, 20.0)) s.temp_hysteresis_c = d;
+        } else if (key == "light_enabled") {
+            if (flag()) s.light_enabled = b;
+        } else if (key == "light_leds") {
+            if (num(1, 64)) s.light_leds = n;
+        } else if (key == "light_level") {
+            if (num(0, 100)) s.light_level = n;
+        } else if (key == "light_max_level") {
+            if (num(1, 100)) s.light_max_level = n;
+        } else if (key == "light_tone") {
+            Tone t;
+            if (tone_from_text(val, t)) s.light_tone = t; else bad("not white, cool, warm, red, green or blue");
+        } else if (key == "light_auto_off_s") {
+            if (num(0, 86400)) s.light_auto_off_s = n;
+        } else if (key == "light_on_at_start") {
+            if (flag()) s.light_on_at_start = b;
+        } else if (key == "light_order") {
+            if (val == "grb") s.light_order = ColourOrder::Grb;
+            else if (val == "rgb") s.light_order = ColourOrder::Rgb;
+            else bad("not grb or rgb");
         } else if (key == "protect_output") {
             if (flag()) s.protect_output = b;
         } else {
@@ -263,6 +325,11 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
         problems.push_back({0, "laser_range_max_mm", "must be above laser_range_min_mm; the defaults are used"});
         s.laser_range_min_mm = Settings{}.laser_range_min_mm;
         s.laser_range_max_mm = Settings{}.laser_range_max_mm;
+    }
+    // the level of the light cannot start above its own ceiling
+    if (s.light_level > s.light_max_level) {
+        problems.push_back({0, "light_level", "above light_max_level; the ceiling is used"});
+        s.light_level = s.light_max_level;
     }
     return s;
 }

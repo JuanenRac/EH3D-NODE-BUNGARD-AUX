@@ -393,6 +393,17 @@ const num = (labelKey, path, min, max, placeholder, extra) => hf(labelKey, path,
 const secret = (labelKey, path, hint) => [hf(labelKey, path, { type: "password", hint }),
   isAdmin() && S.head[path + "_set"] ? hf("fSecretClear", path + "_clear", { type: "checkbox" }) : null];
 
+// Tries the ring from the panel: the session of the panel is enough, the access token of the programs is not needed.
+async function lightCall(query) {
+  let ok = false;
+  try {
+    const r = await fetch("api/light?" + query, { method: "POST", credentials: "same-origin", headers: { "X-Requested-With": REQUEST_MARK } });
+    ok = r.ok;
+  } catch (error) { /* the node did not answer */ }
+  S.message = ok ? null : { kind: "bad", text: t("lightTestFailed") };
+  refreshBar();
+}
+
 function headPage() {
   if (!S.head) return el("p", { class: "muted" }, t("loading"));
   const h = S.head;
@@ -418,6 +429,19 @@ function headPage() {
           el("div", { class: "row" }, num("fSamples", "laser_samples", 1, 31, "7"), num("fLaserTimeout", "laser_timeout_ms", 20, 5000, "500")),
           el("div", { class: "row" }, num("fLaserOffset", "laser_offset_mm", -1000, 1000, "0", { step: "any" }), num("fLaserSigma", "laser_sigma_max_mm", 0, 50, "0.2", { step: "any" })),
           el("div", { class: "row" }, num("fLaserMin", "laser_range_min_mm", 0, 4000, "10", { step: "any" }), num("fLaserMax", "laser_range_max_mm", 1, 4000, "400", { step: "any" }))] : null),
+      card(t("hLight"), el("p", { class: "muted" }, t("hLightIntro")),
+        hf("fLightOn", "light_enabled", { type: "checkbox", rerender: true }),
+        h.light_enabled ? [
+          el("div", { class: "row" }, num("fLightLeds", "light_leds", 1, 64, "8"), num("fLightLevel", "light_level", 0, 100, "60"), num("fLightMax", "light_max_level", 1, 100, "80")),
+          hf("fLightTone", "light_tone", { type: "select", options: [["white", t("toneWhite")], ["cool", t("toneCool")], ["warm", t("toneWarm")], ["red", t("toneRed")], ["green", t("toneGreen")], ["blue", t("toneBlue")]] }),
+          el("div", { class: "row" }, num("fLightAutoOff", "light_auto_off_s", 0, 86400, "600"),
+            hf("fLightOrder", "light_order", { type: "select", options: [["grb", "GRB (WS2812)"], ["rgb", "RGB"]] })),
+          hf("fLightAtStart", "light_on_at_start", { type: "checkbox" }),
+          el("div", { class: "row" },
+            el("button", { class: "b", type: "button", onclick: () => lightCall("on=1&tone=white") }, t("lightBtnOn")),
+            el("button", { class: "b", type: "button", onclick: () => lightCall("on=0") }, t("lightBtnOff")),
+            el("button", { class: "b", type: "button", onclick: () => lightCall("cue=ok") }, t("lightBtnOk")),
+            el("button", { class: "b", type: "button", onclick: () => lightCall("cue=nok") }, t("lightBtnNok")))] : null),
       card(t("hSpindle"), el("p", { class: "muted" }, t("hSpindleIntro")),
         hf("fRpmOn", "rpm_enabled", { type: "checkbox", rerender: true }),
         h.rpm_enabled ? el("div", { class: "row" }, num("fPulses", "rpm_pulses_per_rev", 1, 64, "1"), num("fRpmMax", "rpm_max", 100, 60000, "24000"), num("fRpmStale", "rpm_stale_ms", 100, 10000, "1000")) : null,

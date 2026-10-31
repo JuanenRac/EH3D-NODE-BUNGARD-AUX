@@ -4,6 +4,9 @@
 //   GET  /api/status            the readings of the node as one line of JSON (the laser and the camera are asked for, never turned on by it)
 //   POST /api/measure[?samples=N]  one measure of the height of the table under the head (needs the token)
 //   GET  /stream                the camera as MJPEG (needs the token when the node has one)
+//   GET  /api/snapshot          one picture of the camera as JPEG (needs the token): what the programs that check the work look at
+//   GET  /api/light             the ring of LEDs around the camera (needs the token)
+//   POST /api/light?on=1&level=70&tone=warm&sectors=left   turns it on or off and changes how it shines (needs the token)
 // The token goes in the header `Authorization: Bearer <token>` or in the query `?token=`. A node without a token refuses every request that changes or measures
 // something; it still answers the status. The answers are built here, so the desktop programs, the server and the tests read the same words.
 #pragma once
@@ -15,11 +18,12 @@
 #include "aux_config.hpp"
 #include "hash.hpp"
 #include "laser.hpp"
+#include "light.hpp"
 #include "spindle.hpp"
 
 namespace bungard_aux {
 
-enum class Route { NotFound, Status, Measure, Stream, BadMethod };
+enum class Route { NotFound, Status, Measure, Stream, Snapshot, LightGet, LightSet, BadMethod };
 
 struct Request {
     std::string method;
@@ -46,6 +50,8 @@ inline Route route_of(const Request& r) {
     if (r.path == "/api/status") return r.method == "GET" ? Route::Status : Route::BadMethod;
     if (r.path == "/api/measure") return r.method == "POST" ? Route::Measure : Route::BadMethod;
     if (r.path == "/stream") return r.method == "GET" ? Route::Stream : Route::BadMethod;
+    if (r.path == "/api/snapshot") return r.method == "GET" ? Route::Snapshot : Route::BadMethod;
+    if (r.path == "/api/light") return r.method == "GET" ? Route::LightGet : r.method == "POST" ? Route::LightSet : Route::BadMethod;
     return Route::NotFound;
 }
 
@@ -93,6 +99,9 @@ struct Status {
     double temp_c = 0.0;
     bool protect_open = false;
     std::uint32_t uptime_s = 0;
+    bool light = false;        // the node has the ring of LEDs switched on in its settings
+    bool light_on = false;     // and the ring is shining
+    std::uint32_t light_level = 0;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -106,13 +115,14 @@ inline std::string json_escape(const std::string& s) {
 }
 
 inline std::string json_status(const Status& s) {
-    char buf[448];
+    char buf[640];
     char temp[24];
     if (s.has_temp) std::snprintf(temp, sizeof temp, "%.1f", s.temp_c); else std::snprintf(temp, sizeof temp, "null");
     std::snprintf(buf, sizeof buf,
-                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"camera_model\":\"%s\",\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u}",
+                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"camera_model\":\"%s\",\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u,\"light\":%s,\"light_on\":%s,\"light_level\":%u}",
                   json_escape(s.name).c_str(), json_escape(s.version).c_str(), s.camera ? "true" : "false", json_escape(s.camera_model).c_str(), s.laser ? "true" : "false", s.rpm_on ? "true" : "false", s.rpm, temp,
-                  heat_text(s.heat), s.protect_open ? "true" : "false", static_cast<unsigned>(s.uptime_s));
+                  heat_text(s.heat), s.protect_open ? "true" : "false", static_cast<unsigned>(s.uptime_s), s.light ? "true" : "false", s.light_on ? "true" : "false",
+                  static_cast<unsigned>(s.light_level));
     return buf;
 }
 

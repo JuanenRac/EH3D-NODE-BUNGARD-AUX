@@ -19,6 +19,7 @@
 #include "../core/protocol.hpp"
 #include "../core/spindle.hpp"
 #include "head.hpp"
+#include "light.hpp"
 #include "sensors.hpp"
 #include "stream.hpp"
 #include "web_server.hpp"
@@ -142,6 +143,9 @@ std::string live_json_now() {
     s.temp_c = temp_now_c;
     s.protect_open = protect_is_open;
     s.uptime_s = static_cast<std::uint32_t>(esp_timer_get_time() / 1000000);
+    s.light = light::present();
+    s.light_on = light::is_on();
+    s.light_level = light::level();
     return bungard_aux::json_status(s);
 }
 
@@ -178,6 +182,52 @@ esp_err_t measure_handler(httpd_req_t* req) {
     const std::string body = measure_json_now(bungard_aux::samples_of(settings, r));
     httpd_resp_send(req, body.c_str(), body.size());
     return ESP_OK;
+}
+
+esp_err_t light_get_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::LightGet, r)) return ESP_OK;
+    httpd_resp_set_type(req, "application/json");
+    const std::string body = light::json();
+    httpd_resp_send(req, body.c_str(), body.size());
+    return ESP_OK;
+}
+
+esp_err_t light_set_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::LightSet, r)) return ESP_OK;
+    httpd_resp_set_type(req, "application/json");
+    std::string body;
+    const int status = light::apply(r.query, body);
+    if (status == 400) httpd_resp_set_status(req, "400 Bad Request");
+    else if (status == 503) httpd_resp_set_status(req, "503 Service Unavailable");
+    httpd_resp_send(req, body.c_str(), body.size());
+    return ESP_OK;
+}
+
+/// One picture of the camera as JPEG, for the programs that look at the work (the checks of the holes and of the milling).
+esp_err_t snapshot_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::Snapshot, r)) return ESP_OK;
+    if (!camera_ok || !settings.camera_enabled) {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_send(req, "{\"error\":\"no camera\"}", HTTPD_RESP_USE_STRLEN);
+        return ESP_OK;
+    }
+    // the sensor settles its exposure on the frames after a change of light: the first one is thrown away
+    camera_fb_t* fb = esp_camera_fb_get();
+    if (fb) esp_camera_fb_return(fb);
+    fb = esp_camera_fb_get();
+    if (!fb) {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_send(req, "{\"error\":\"no picture\"}", HTTPD_RESP_USE_STRLEN);
+        return ESP_OK;
+    }
+    httpd_resp_set_type(req, "image/jpeg");
+    httpd_resp_set_hdr(req, "Cache-Control", "no-store");
+    const esp_err_t e = httpd_resp_send(req, reinterpret_cast<const char*>(fb->buf), fb->len);
+    esp_camera_fb_return(fb);
+    return e;
 }
 
 esp_err_t stream_handler(httpd_req_t* req) {
@@ -232,6 +282,7 @@ void start(const bungard_aux::Settings& s) {
     settings = s;
     thermal = bungard_aux::Thermal(settings.temp_warn_c, settings.temp_critical_c, settings.temp_hysteresis_c);
     sensors::init(settings);
+    light::start(settings);
     if (settings.camera_enabled) camera_ok = camera_start();
     ::stream::start(settings);
     xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
@@ -245,6 +296,12 @@ void register_routes(httpd_handle_t server) {
     httpd_register_uri_handler(server, &status);
     httpd_register_uri_handler(server, &measure);
     httpd_register_uri_handler(server, &stream);
+    httpd_uri_t light_get = {"/api/light", HTTP_GET, light_get_handler, nullptr};
+    httpd_uri_t light_set = {"/api/light", HTTP_POST, light_set_handler, nullptr};
+    httpd_uri_t snapshot = {"/api/snapshot", HTTP_GET, snapshot_handler, nullptr};
+    httpd_register_uri_handler(server, &light_get);
+    httpd_register_uri_handler(server, &light_set);
+    httpd_register_uri_handler(server, &snapshot);
     ::stream::register_http(server);
 }
 

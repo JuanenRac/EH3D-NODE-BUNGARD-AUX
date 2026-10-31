@@ -90,6 +90,13 @@ menu "Sensors"
         help
             High while the spindle may run, low when it is too fast or too hot (or when this node is not running). Wire it into the stop line of the control
             unit through a relay or an opto-coupler: it must open by itself when the node loses power.
+    config AUX_LIGHT_GPIO
+        int "GPIO of the data line of the ring of LEDs around the camera (-1: not wired)"
+        default -1
+        help
+            A ring of WS2812 RGB LEDs (eight of them): 5 V for the ring, ground in common with the board, and the data line from this pin through a 330 ohm resistor (a 3.3 V
+            signal is enough for most rings; a level shifter is better). Put a 470 uF capacitor across the supply of the ring. Not a pin the board uses for the camera,
+            the Ethernet or the card: pick a free one. The number of LEDs, the level and the ceiling are in the panel.
     config AUX_I2C_SDA
         int "I2C SDA GPIO of the laser (-1: not wired)"
         default -1

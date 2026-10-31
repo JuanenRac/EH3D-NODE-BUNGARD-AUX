@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.2` |
 | Madurez | Andamiaje |
-| Pruebas | 10 programas de prueba en el ordenador |
+| Pruebas | 11 programas de prueba en el ordenador |
 | Pila tecnológica | C++17, ESP-IDF 5.5, ESP32-S3, red W5500 |
 | En hardware real | No: el firmware se compila pero no se ha grabado, y no se ha conectado nada a una máquina |
 
@@ -44,7 +44,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito y se compila; no se ha grabado. |
-| Pruebas | 🟢 | 10 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en ocho idiomas y las pilas de las tareas. |
+| Pruebas | 🟢 | 11 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en ocho idiomas y las pilas de las tareas. |
 | Láser (altura de la mesa) | 🟡 | La medida a partir de varias lecturas (mediana, lecturas raras descartadas, dispersión comprobada, rango y desplazamiento) está probada; el controlador del VL53L1X está escrito pero nunca se ha ejecutado, así que aún no se ha hecho ninguna medida. |
 | Husillo | 🟡 | La velocidad a partir de los pulsos de un sensor (cualquier número por vuelta, parado cuando cesan los pulsos), la temperatura con aviso, nivel crítico e histéresis y la salida de protección están probadas; los controladores del DS18B20, del NTC y del MLX90614 están escritos pero nunca se han ejecutado. |
 | Cámara | 🟠 | El flujo MJPEG está escrito para el conector de cámara de la placa y necesita los pines de la placa en menuconfig; no se ha ejecutado. |
@@ -126,6 +126,7 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 * **Seguro por defecto:** sin token no hay medida ni cámara; cada límite tiene un interruptor en los ajustes y empieza en su posición conservadora.
 * **Dos cámaras, la OV2640 y la OV5640:** el sensor dice cuál es y el nodo da el mayor tamaño que permiten los ajustes y que ese sensor puede dar (la OV2640 hasta 1600x1200, la OV5640 hasta 2592x1944), lo informa en `/api/status` (`camera_model`) y en las opciones del codificador de ONVIF; `camera_model = auto | ov2640 | ov5640` en la página Cabezal. Los pines del conector de cámara de la Waveshare ESP32-S3-ETH son los valores por defecto de `menuconfig`.
 * **Tres sensores de temperatura:** un DS18B20 en un hilo, un termistor NTC en una entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` en la página Cabezal) o un termómetro infrarrojo MLX90614 que mira el husillo sin tocarlo (en el bus I2C del láser); las sumas de comprobación y las conversiones están probadas en un ordenador.
+* **Un aro de LEDs alrededor de la cámara:** ocho LEDs RGB del tipo WS2812 en un solo hilo iluminan la zona bajo el cabezal para que la cámara vea bien. El blanco es la luz para la cámara; los niveles siguen al ojo y nunca pasan de un techo; un solo lado da una luz rasante; se puede pedir cualquier color, y el aro dice cómo fue una verificación (verde, rojo parpadeando, un punto azul que gira, ámbar, rojo rápido). Se apaga solo pasado un tiempo. `GET` y `POST /api/light` y `GET /api/snapshot` sirven a los programas; los ajustes están en el panel y en `head.cfg` (`light_*`), y el pin en el menú del firmware (`AUX_LIGHT_GPIO`).
 
 ## 🔒 Seguridad y protección
 
@@ -215,6 +216,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           el fichero de ajustes y sus valores seguros
 │   ├── bungard_config.hpp                       los ajustes del nodo y la sección del cabezal
 │   ├── laser.hpp                                la medida de la altura de la mesa
+│   ├── light.hpp                                el aro de LEDs: niveles, colores, señales
 │   ├── camera.hpp                               las cámaras OV2640 y OV5640 y sus tamaños
 │   ├── spindle.hpp                              velocidad, calor y salida de protección
 │   ├── thermo.hpp                               la temperatura: DS18B20, NTC, MLX90614
@@ -228,6 +230,7 @@ EH3D-NODE-BUNGARD-AUX/
 ├── main/
 │   ├── app_main.cpp                             arranque, ajustes, red, panel
 │   ├── head.cpp head.hpp                        cámara, láser, husillo, rutas
+│   ├── light.cpp light.hpp                      el controlador del aro de LEDs
 │   ├── sensors.cpp sensors.hpp                  los pines: pulsos, salida de protección, sensores
 │   ├── stream.cpp stream.hpp                    servidor RTSP, servicios ONVIF y descubrimiento
 │   ├── idf_component.yml Kconfig.projbuild      lista de componentes y pines de menuconfig

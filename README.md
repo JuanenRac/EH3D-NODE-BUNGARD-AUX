@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.2` |
 | Maturity | Scaffolding |
-| Tests | 10 host test programs |
+| Tests | 11 host test programs |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
 | On real hardware | No: the firmware builds but has not been flashed, and nothing has been connected to a machine |
 
@@ -44,7 +44,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
-| Tests | 🟢 | 10 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in eight languages and the stacks of the tasks. |
+| Tests | 🟢 | 11 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in eight languages and the stacks of the tasks. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
@@ -126,6 +126,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **Safe by default:** no token means no measure and no camera; every limit has a switch in the settings and starts in its conservative position.
 * **Two cameras, the OV2640 and the OV5640:** the sensor says which one it is and the node gives the largest size that the settings allow and that sensor can do (the OV2640 up to 1600x1200, the OV5640 up to 2592x1944), reports it on `/api/status` (`camera_model`) and in the encoder options of ONVIF; `camera_model = auto | ov2640 | ov5640` in the Head page. The pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
 * **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in the Head page) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
+* **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire light the area under the head so the camera sees well. White is the light for the camera; the levels follow the eye and never go over a ceiling; one side only gives a raking light; any colour can be asked, and the ring says how a check went (green, red blinking, a blue spot turning, amber, fast red). It turns itself off after a while. `GET` and `POST /api/light` and `GET /api/snapshot` serve the programs; the settings are in the panel and in `head.cfg` (`light_*`), and the pin in the menu of the firmware (`AUX_LIGHT_GPIO`).
 
 ## 🔒 Security & Safety
 
@@ -215,6 +216,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
 │   ├── bungard_config.hpp                       the settings of the node and the head section
 │   ├── laser.hpp                                the measure of the height of the table
+│   ├── light.hpp                                the ring of LEDs: levels, colours, signals
 │   ├── camera.hpp                               the cameras OV2640 and OV5640 and their sizes
 │   ├── spindle.hpp                              speed, heat and the protect output
 │   ├── thermo.hpp                               the temperature: DS18B20, NTC, MLX90614
@@ -228,6 +230,7 @@ EH3D-NODE-BUNGARD-AUX/
 ├── main/
 │   ├── app_main.cpp                             start, settings, network, panel
 │   ├── head.cpp head.hpp                        camera, laser, spindle, routes
+│   ├── light.cpp light.hpp                      the driver of the ring of LEDs
 │   ├── sensors.cpp sensors.hpp                  the pins: pulses, protect output, sensors
 │   ├── stream.cpp stream.hpp                    RTSP server, ONVIF services and discovery
 │   ├── idf_component.yml Kconfig.projbuild      component list and menuconfig pins
