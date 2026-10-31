@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.5] - Laser, one-wire, speed sensor and camera picture settings
+
 - **The picture of the camera, set from the panel:** `camera_hmirror`, `camera_vflip`, `camera_brightness`, `camera_contrast`, `camera_saturation` (-2 to 2), `camera_auto_exposure` and, by hand, `camera_exposure` (0 to 1200), and `camera_auto_whitebalance`, applied to the sensor when the camera starts (the OV2640 and the OV5640 take all of them; one that the sensor does not have is left alone). Tested on a computer (`tests/test_aux.cpp`); not tried on a camera yet. The focus of the OV5640 is fixed: its automatic focus needs the firmware of the focus motor that the driver does not load.
 
 - **A speed sensor that tells noise from turns (TCRT5000):** `rpm_input` = `digital` (the output DO on an interrupt, the one to use) or `analog` (the output AO read by the ADC at 20 kHz, `AUX_RPM_ANALOG_GPIO`, with a Schmitt trigger: `rpm_threshold_hi_mv` and `rpm_threshold_lo_mv`, or thresholds that follow the signal with `rpm_auto_threshold`), and the edge that is a pulse (`rpm_edge`, falling for a module that goes low in front of a bright mark). The pulses go through a filter in `core/spindle.hpp`: a pulse closer than the fastest the spindle may turn (`rpm_max`, a quarter above) is noise, a spike at less than 0.4 of the usual gap is refused, a gap of twice the usual one is two turns with a missed pulse; the status shows the quality (`good`, `noisy`, `none`), the pulses refused and, on the analogue input, the level and the thresholds. The ring of pulses holds half a second at 1 kHz. Tested on a computer with simulated trains (`tests/test_rpm.cpp`); not tried on a spindle yet.
