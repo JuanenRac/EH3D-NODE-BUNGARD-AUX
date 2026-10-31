@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.3] - A ring of RGB LEDs around the camera, colour signals and one picture on request
+
 - **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire (`AUX_LIGHT_GPIO` in the menu of the firmware, the RMT peripheral, no new component). The light has a level from 0 to 100 that follows the eye, a ceiling it never goes over, a tone (white for the camera, cool, warm, red, green, blue) or any colour (`color=RRGGBB`), the sectors that are lit (one side gives a raking light), and a timer that turns a forgotten light off. `GET` and `POST /api/light` and the status carry it; the panel has its settings and four buttons to try it.
 - **Signals in colour:** `cue=ok` (green), `nok` (red blinking), `busy` (a blue spot that turns), `warn` (amber) and `alarm` (fast red) show for a while on top of the light, so the head says how a check went without anyone looking at a screen.
 - **One picture on request:** `GET /api/snapshot` gives the camera as JPEG (with the token of the head), for the programs that check the work.
