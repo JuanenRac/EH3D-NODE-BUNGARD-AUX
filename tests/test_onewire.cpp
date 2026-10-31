@@ -168,10 +168,10 @@ static void scratchpads_of_the_families() {
     for (int i = 0; i < 9; ++i) broken[i] = pad[i];
     broken[0] ^= 4;
     CHECK(!thermometer_celsius(make_rom(kFamilyDs18b20, 1), broken, c));
-    // a DS18S20 (half degrees): 22.5 C is 0x002D with count remain 12 of 16 -> about 22.25 + (16-12)/16
-    std::uint8_t old[9] = {0x2D, 0x00, 0x4B, 0x46, 0xFF, 0xFF, 0x0C, 0x10, 0};
+    // a DS18S20 (half degrees): 0x002D is 22 whole degrees (the half bit is dropped); with 8 counts remaining of 16 the extended resolution gives 22 - 0.25 + 8/16 = 22.25
+    std::uint8_t old[9] = {0x2D, 0x00, 0x4B, 0x46, 0xFF, 0xFF, 0x08, 0x10, 0};
     old[8] = onewire_crc8(old, 8);
-    CHECK(thermometer_celsius(make_rom(0x10, 1), old, c) && c > 22.0 && c < 23.0);
+    CHECK(thermometer_celsius(make_rom(0x10, 1), old, c) && c > 22.24 && c < 22.26);
 }
 
 static void the_settings() {
