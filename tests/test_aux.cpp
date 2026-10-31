@@ -135,25 +135,13 @@ static void camera_picture_settings() {
     CHECK(!d.camera_hmirror && !d.camera_vflip && d.camera_brightness == 0 && d.camera_contrast == 0 && d.camera_saturation == 0);
     CHECK(d.camera_auto_exposure && d.camera_auto_whitebalance && d.camera_exposure == 300);
     std::vector<Problem> problems;
-    Settings s = parse_settings("camera_hmirror = yes
-camera_vflip = on
-camera_brightness = -2
-camera_contrast = 1
-camera_saturation = 2
-camera_auto_exposure = no
-camera_exposure = 800
-camera_auto_whitebalance = off
-", problems);
+    Settings s = parse_settings("camera_hmirror = yes\ncamera_vflip = on\ncamera_brightness = -2\ncamera_contrast = 1\ncamera_saturation = 2\ncamera_auto_exposure = no\ncamera_exposure = 800\ncamera_auto_whitebalance = off\n", problems);
     CHECK(problems.empty());
     CHECK(s.camera_hmirror && s.camera_vflip && s.camera_brightness == -2 && s.camera_contrast == 1 && s.camera_saturation == 2);
     CHECK(!s.camera_auto_exposure && s.camera_exposure == 800 && !s.camera_auto_whitebalance);
     // out of range, not whole or not a number: refused and the value stays
     problems.clear();
-    s = parse_settings("camera_brightness = 3
-camera_contrast = 1.5
-camera_saturation = bright
-camera_exposure = 1201
-", problems);
+    s = parse_settings("camera_brightness = 3\ncamera_contrast = 1.5\ncamera_saturation = bright\ncamera_exposure = 1201\n", problems);
     CHECK(problems.size() == 4 && s.camera_brightness == 0 && s.camera_contrast == 0 && s.camera_saturation == 0 && s.camera_exposure == 300);
 }
 
