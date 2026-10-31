@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| Versione | `0.0.1` |
+| Versione | `0.0.2` |
 | Maturità | Impalcatura |
-| Test | 2 programmi di prova sul computer (203 verifiche) |
+| Test | 10 programmi di test sul computer |
 | Stack tecnologico | C++17, ESP-IDF 5.5, ESP32-S3, rete W5500 |
 | Su hardware reale | No: il firmware si compila ma non è stato caricato, e nulla è stato collegato a una macchina |
 
@@ -44,7 +44,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (rete cablata con un W5500, server web, telecamera, impulsi del mandrino, uscita di protezione, il file delle impostazioni nella sua partizione) è scritto e si compila; non è stato caricato. |
-| Test | 🟢 | 2 programmi di prova sul computer passano (`ctest`): 203 verifiche del file delle impostazioni, della misura del laser, della velocità e della temperatura del mandrino, dell'uscita di protezione e delle parole della rete. |
+| Test | 🟢 | 10 programmi di test passano (`ctest`): le impostazioni, la misura del laser, la velocità e la temperatura del mandrino, l'uscita di protezione, le parole della rete, il video (RTSP, ONVIF), il documento delle impostazioni della testa, l'aggiornamento da GitHub, l'orologio, ciò che condividono tutti i nodi, i testi del pannello in otto lingue e gli stack dei task. |
 | Laser (altezza del tavolo) | 🟡 | La misura da più letture (mediana, letture anomale scartate, dispersione verificata, intervallo e offset) è provata; il driver del VL53L1X è scritto ma non è mai stato eseguito, quindi non è ancora stata fatta alcuna misura. |
 | Mandrino | 🟡 | La velocità dagli impulsi di un sensore (qualsiasi numero per giro, fermo quando gli impulsi cessano), la temperatura con avviso, livello critico e isteresi e l'uscita di protezione sono provate; i driver del DS18B20, dell'NTC e dell'MLX90614 sono scritti ma non sono mai stati eseguiti. |
 | Telecamera | 🟠 | Il flusso MJPEG è scritto per il connettore della telecamera della scheda e richiede i pin della scheda in menuconfig; non è stato eseguito. |
@@ -58,8 +58,9 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 * Il **mandrino**: la velocità deriva dagli impulsi di un sensore (un sensore hall o un disco con fessure, qualsiasi numero di impulsi per giro) ed è zero quando gli impulsi cessano; la temperatura ha un avviso, un livello critico e un'isteresi perché lo stato non sfarfalli; un sensore attivo che non risponde conta come caldo.
 * L'**uscita di protezione**: un GPIO basso ogni volta che il mandrino deve fermarsi (troppo veloce, troppo caldo, un sensore muto) e anche mentre il nodo non è in funzione, da collegare alla linea di arresto dell'unità di controllo tramite un relè o un optoaccoppiatore; si può disattivare nelle impostazioni.
 * La **telecamera e la rete**: il video della telecamera come MJPEG su `/stream` e le letture su `/api/status`, tramite una porta di rete cablata (W5500 su SPI); il token protegge la misura e la telecamera.
-* Il **file delle impostazioni** `head.cfg`: ogni valore regolato (la rete, la telecamera, il laser, il mandrino, la temperatura, l'uscita di protezione) è una riga di un file nella sua partizione, mai un numero nel codice; un valore fuori intervallo viene segnalato e resta quello predefinito.
+* Le **impostazioni**: ogni valore regolato (la rete, la telecamera, il laser, il mandrino, la temperatura, l'uscita di protezione) è un'impostazione del nodo, conservata nella flash e modificata nel pannello web, mai un numero nel codice; un valore fuori intervallo viene rifiutato con il motivo.
 * Il **video come lo invia una telecamera IP**: RTSP (`rtsp://INDIRIZZO/stream1`, JPEG su RTP, su UDP o dentro la connessione TCP, con accesso Digest o Basic) e ONVIF (WS-Discovery, perché registratori e gestori trovino il nodo, e i servizi del profilo S: profili, encoder con le dimensioni che la telecamera può fare, l'indirizzo del flusso e dello snapshot, il token utente); entrambi usano utente e password delle impostazioni, e senza password non si serve nulla.
+* **Il pannello e l'aggiornamento, come gli altri nodi:** il nodo ha il pannello web dei nodi di A.R.M.O.R. e di EH3D-NODE-BUNGARD (il menu a gruppi con la lingua e la chiusura della sessione in fondo; un Riepilogo; una pagina Wi-Fi con fino a tre reti di riserva per quando cade la principale; una pagina Testa che modifica le impostazioni di telecamera, flussi, laser e mandrino; Aiuto; Informazioni; utenti; il registro), la copia di uno slot del firmware sull'altro in entrambe le direzioni e l'aggiornamento dall'ultima release di GitHub di questo progetto (si verifica lo SHA-256 pubblicato dalla release, l'indirizzo deve essere quello del progetto e lo richiede solo un amministratore; le release non sono firmate). Condivide la base del firmware con EH3D-NODE-BUNGARD.
 
 ## 🧩 Ruolo in EH3D
 
@@ -81,14 +82,50 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 
 <p align="center"><em>Ciò che il nodo risponde in rete: lo stato (`GET /api/status`), una misura del tavolo (`POST /api/measure`) e la riga che i programmi desktop leggono come un punto della mappa. Un disegno dei formati che le prove verificano, non una cattura da una scheda.</em></p>
 
+<p align="center">
+  <img src="images/screenshots/panel-overview.png" alt="panel-overview" width="100%">
+</p>
+
+<p align="center"><em>La pagina Riepilogo: il nodo, il suo hardware, il suo orologio, la sua flash con i due slot di firmware e la sua rete.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-status.png" alt="panel-status" width="100%">
+</p>
+
+<p align="center"><em>La pagina Stato, nel tema Forge degli altri programmi EH3D.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-head.png" alt="panel-head" width="100%">
+</p>
+
+<p align="center"><em>La pagina Testa: telecamera, flussi, laser, sensori del mandrino e uscita di protezione (password e token di sola scrittura).</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-wifi.png" alt="panel-wifi" width="100%">
+</p>
+
+<p align="center"><em>La pagina Wi-Fi: la rete a cui si unisce il nodo e fino a tre reti di riserva in caso di perdita.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-update.png" alt="panel-update" width="100%">
+</p>
+
+<p align="center"><em>La pagina Firmware: l'aggiornamento da GitHub, il caricamento di un file e i due slot, con la copia dell'uno sull'altro.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-help.png" alt="panel-help" width="100%">
+</p>
+
+<p align="center"><em>La pagina Aiuto: un argomento per ogni pagina del pannello.</em></p>
+
 ## ✨ Funzionalità
 
 * **Una misura affidabile, o nessuna:** più letture, quelle anomale scartate, e un rifiuto (con il motivo) quando le letture si disperdono troppo, sono fuori intervallo o sono troppo poche.
 * **Un mandrino sorvegliato sempre:** velocità dagli impulsi, temperatura con un avviso, un livello critico e un'isteresi, e un'uscita di protezione che si apre da sola quando qualcosa non va o il nodo non è in funzione.
 * **Video come una telecamera IP:** RTSP e ONVIF con accesso, perché lo prenda qualsiasi player, registratore o gestore ONVIF; e la telecamera come MJPEG su `/stream` dietro il token.
 * **Sicuro per impostazione predefinita:** senza token niente misura né telecamera; ogni limite ha un interruttore nelle impostazioni e parte dalla posizione conservativa.
-* **Due telecamere, la OV2640 e la OV5640:** il sensore dice quale è e il nodo dà la dimensione più grande che le impostazioni permettono e che quel sensore può dare (la OV2640 fino a 1600x1200, la OV5640 fino a 2592x1944), la riporta su `/api/status` (`camera_model`) e nelle opzioni dell'encoder di ONVIF; `camera_model = auto | ov2640 | ov5640` in `head.cfg`. I pin del connettore telecamera della Waveshare ESP32-S3-ETH sono i valori predefiniti di `menuconfig`.
-* **Tre sensori di temperatura:** un DS18B20 su un filo, un termistore NTC su un ingresso analogico (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in `head.cfg`) o un termometro a infrarossi MLX90614 che guarda il mandrino senza toccarlo (sul bus I2C del laser); i checksum e le conversioni sono testati su un computer.
+* **Due telecamere, la OV2640 e la OV5640:** il sensore dice quale è e il nodo dà la dimensione più grande che le impostazioni permettono e che quel sensore può dare (la OV2640 fino a 1600x1200, la OV5640 fino a 2592x1944), la riporta su `/api/status` (`camera_model`) e nelle opzioni dell'encoder di ONVIF; `camera_model = auto | ov2640 | ov5640` in la pagina Testa. I pin del connettore telecamera della Waveshare ESP32-S3-ETH sono i valori predefiniti di `menuconfig`.
+* **Tre sensori di temperatura:** un DS18B20 su un filo, un termistore NTC su un ingresso analogico (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in la pagina Testa) o un termometro a infrarossi MLX90614 che guarda il mandrino senza toccarlo (sul bus I2C del laser); i checksum e le conversioni sono testati su un computer.
 
 ## 🔒 Sicurezza e protezione
 
@@ -107,7 +144,7 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 
 | Interfaccia | Che cos'è | Dove |
 |---|---|---|
-| File delle impostazioni | `head.cfg` nella partizione `config`: righe `chiave = valore`; vedi `head.cfg.example` | `core/aux_config.hpp` |
+| Impostazioni | un documento nella flash, modificato nella pagina Testa del pannello web; le chiavi sono quelle di `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
 | Stato | `GET /api/status`: il nodo, la telecamera, il laser, la velocità, la temperatura, l'uscita di protezione e il tempo di accensione in una riga di JSON | `core/protocol.hpp` |
 | Misura | `POST /api/measure[?samples=N]` con il token: la distanza dal tavolo, la dispersione e perché una misura è stata rifiutata | `core/laser.hpp`, `main/app_main.cpp` |
 | Telecamera | `GET /stream` con il token: MJPEG | `main/app_main.cpp` |
@@ -119,7 +156,7 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 
 ## ⚙️ Configurazione
 
-Tutto ciò che è regolato è una riga di `head.cfg` (copia `head.cfg.example` nella partizione `config`); un valore fuori intervallo viene segnalato nel registro e resta quello predefinito. I più importanti:
+Le impostazioni sono conservate nella flash come un unico documento e si modificano nella pagina Testa del pannello web (le password e il token sono di sola scrittura: il pannello non li mostra mai). Le chiavi e i loro intervalli sono quelli elencati in `head.cfg.example`; il file la pagina Testa delle versioni precedenti non viene più letto.
 
 | Impostazione | Predefinito | Intervallo | Cosa fa |
 |---|---|---|---|
@@ -144,11 +181,11 @@ build.bat            # le prove sul computer (Windows)  -  ./build.sh su Linux
 python -I tools/ci_validate.py
 ```
 
-Il firmware si compila con ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produce l'immagine (imposta i pin della tua scheda in `EH3D Bungard AUX`), e una partizione chiamata `config` contiene `head.cfg`.
+Il firmware si compila con ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produce l'immagine (imposta i pin della tua scheda in `EH3D Bungard AUX`), e le impostazioni si fanno nel pannello web quando il nodo è in funzione.
 
 ## 🧪 Test
 
-Le prove sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e tutto passa: `test_aux` (103 verifiche) sul file delle impostazioni (valori predefiniti, valori, valori errati, limiti che non hanno senso insieme), la misura del laser (la mediana, la lettura anomala scartata, l'offset, letture segnate come cattive, l'intervallo, nessuna lettura, una dispersione troppo grande), la velocità del mandrino (impulsi per giro, un mandrino che rallenta, fermo quando gli impulsi cessano), la temperatura (l'isteresi, un sensore che si guasta), l'uscita di protezione e le parole della rete (la riga di richiesta, i percorsi, il token nell'intestazione o nella query, il numero di letture, il JSON dello stato e della misura, la riga di un punto della mappa). Il firmware non è coperto: si compila, ma le prove sono sul computer. Il secondo programma, `test_stream` (100 verifiche), copre il video: gli hash degli accessi contro i loro vettori pubblicati (MD5, SHA-1, base64 e l'esempio Digest dell'RFC 2617), le richieste RTSP e tutta la sessione (accesso, SDP, trasporto UDP e interleaved, play, pause, teardown, una sessione errata, multicast rifiutato), il payload RTP di JPEG (le tabelle nel primo pacchetto, l'ordine, il marcatore, il ritorno a zero della sequenza) e ONVIF (discovery, il token utente con l'esempio dello standard, le chiamate aperte e quelle protette, i servizi e una chiamata non eseguita).
+Le prove sul computer (`build.bat` o `./build.sh`, poi `ctest`) sono due programmi e tutto passa: `test_aux` (103 verifiche) sul file delle impostazioni (valori predefiniti, valori, valori errati, limiti che non hanno senso insieme), la misura del laser (la mediana, la lettura anomala scartata, l'offset, letture segnate come cattive, l'intervallo, nessuna lettura, una dispersione troppo grande), la velocità del mandrino (impulsi per giro, un mandrino che rallenta, fermo quando gli impulsi cessano), la temperatura (l'isteresi, un sensore che si guasta), l'uscita di protezione e le parole della rete (la riga di richiesta, i percorsi, il token nell'intestazione o nella query, il numero di letture, il JSON dello stato e della misura, la riga di un punto della mappa). Il firmware non è coperto: si compila, ma le prove sono sul computer. Il secondo programma, `test_stream` (100 verifiche), copre il video: gli hash degli accessi contro i loro vettori pubblicati (MD5, SHA-1, base64 e l'esempio Digest dell'RFC 2617), le richieste RTSP e tutta la sessione (accesso, SDP, trasporto UDP e interleaved, play, pause, teardown, una sessione errata, multicast rifiutato), il payload RTP di JPEG (le tabelle nel primo pacchetto, l'ordine, il marcatore, il ritorno a zero della sequenza) e ONVIF (discovery, il token utente con l'esempio dello standard, le chiamate aperte e quelle protette, i servizi e una chiamata non eseguita). Oltre a quei due programmi, `test_head_settings` legge, controlla e scrive la sezione della testa del documento delle impostazioni come fa il pannello (le password e il token restano di sola scrittura), e i test condivisi della base del firmware coprono l'aggiornamento da GitHub, l'orologio e gli utenti.
 
 ## 🏗️ Compilazione e rilascio
 
@@ -160,8 +197,8 @@ La versione è in `eh3d.project.json`, e ogni versione ha la sua voce in [CHANGE
 |---|---|
 | Una misura viene rifiutata con `no_readings` | Nessun VL53L1X risponde sul bus I2C: controlla i pin SDA e SCL in `menuconfig` (la telecamera usa i GPIO 41 e 42 sulla Waveshare ESP32-S3-ETH) e il cablaggio; il resto della risposta è testato. |
 | Una misura viene rifiutata con `too_noisy` | Le letture si disperdono più di `laser_sigma_max_mm`: lascia assestare testa e tavolo, o alza un poco il limite; controlla che nulla vibri. |
-| Il nodo risponde 401 a una misura o alla telecamera | Imposta `token` in `head.cfg` (da 8 a 64 caratteri) e invialo nell'intestazione `Authorization: Bearer ...` o in `?token=`. |
-| L'uscita di protezione è sempre aperta | Un sensore di temperatura attivo che non risponde conta come caldo: controlla il suo filo e il suo pin in `menuconfig` e `temp_sensor` in `head.cfg`, oppure imposta `temp_sensor = none` sul banco. |
+| Il nodo risponde 401 a una misura o alla telecamera | Imposta `token` in la pagina Testa (da 8 a 64 caratteri) e invialo nell'intestazione `Authorization: Bearer ...` o in `?token=`. |
+| L'uscita di protezione è sempre aperta | Un sensore di temperatura attivo che non risponde conta come caldo: controlla il suo filo e il suo pin in `menuconfig` e `temp_sensor` in la pagina Testa, oppure imposta `temp_sensor = none` sul banco. |
 
 ## 📂 Struttura del repository
 
@@ -176,6 +213,7 @@ La versione è in `eh3d.project.json`, e ogni versione ha la sua voce in [CHANGE
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           il file delle impostazioni e i suoi valori sicuri
+│   ├── bungard_config.hpp                       le impostazioni del nodo e la sezione della testa
 │   ├── laser.hpp                                la misura dell'altezza del tavolo
 │   ├── camera.hpp                               le telecamere OV2640 e OV5640 e le loro dimensioni
 │   ├── spindle.hpp                              velocità, calore e uscita di protezione
@@ -183,19 +221,32 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── hash.hpp                                 gli accessi: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP e il payload RTP di JPEG
 │   ├── onvif.hpp                                ONVIF: discovery e servizi SOAP
-│   └── protocol.hpp                             le parole della rete: percorsi, token, JSON
+│   ├── protocol.hpp                             le parole della rete: percorsi, token, JSON
+│   ├── node_settings.hpp auth.hpp               impostazioni, utenti (base)
+│   ├── netplan.hpp json.hpp                     piano di rete e JSON (base)
+│   └── release_assets.hpp semver.hpp            quale file di una versione è l'immagine di questa scheda
 ├── main/
-│   ├── app_main.cpp                             avvio, impostazioni, rete, server web, telecamera
+│   ├── app_main.cpp                             avvio, impostazioni, rete, pannello
+│   ├── head.cpp head.hpp                        telecamera, laser, mandrino, rotte
 │   ├── sensors.cpp sensors.hpp                  i pin: impulsi, uscita di protezione, sensori
 │   ├── stream.cpp stream.hpp                    server RTSP, servizi ONVIF e discovery
-│   └── idf_component.yml Kconfig.projbuild      elenco dei componenti e pin di menuconfig
+│   ├── idf_component.yml Kconfig.projbuild      elenco dei componenti e pin di menuconfig
+│   ├── web_server.cpp network.cpp               server pannello, rete (base)
+│   ├── node_store.cpp node_guard.cpp            archivio, guardiano (base)
+│   └── github_update.cpp entropy.cpp            l'aggiornamento da GitHub e la copia di uno slot
+├── panel/
+│   ├── index.html style.css                     la pagina e la disposizione del menu laterale
+│   └── app.js text.js                           le pagine e i testi in otto lingue
 ├── tests/                                       test su computer di impostazioni, varco, voce e testi delle schermate
 ├── docs/                                        le note hardware e le fonti dei due disegni
 ├── tools/                                       controllo CI, README e strumenti dei disegni
 ├── CMakeLists.txt                               il progetto ESP-IDF
 ├── partitions.csv                               la mappa della flash con due slot
 ├── head.cfg.example                             ogni impostazione con il suo default e intervallo
-├── sdkconfig.defaults                           impostazioni ESP-IDF per il modulo ESP32-P4
+├── sdkconfig.defaults                           impostazioni ESP-IDF comuni alle due schede
+├── sdkconfig.board.s3-eth                       impostazioni della scheda cablata
+├── sdkconfig.board.s3-wifi                      impostazioni della scheda Wi-Fi
+├── dependencies.lock                            le versioni esatte dei componenti
 ├── images/                                      banner e le immagini di Architettura e Struttura del repository
 ├── .github/                                     workflow di CI e di rilascio, modelli di issue e pull request
 ├── build.sh build.bat                           compila ed esegue i test su computer in un pannello dal vivo

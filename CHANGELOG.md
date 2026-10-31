@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.2] - The web panel and the update from GitHub of the other nodes, on their firmware base
+
+- **The firmware base of EH3D-NODE-BUNGARD and its web panel:** the node no longer reads `head.cfg` from its own partition. It has the settings document in flash, the users and the setup access point, the Wi-Fi with up to three backup networks, the Ethernet of the Waveshare ESP32-S3-ETH or the Wi-Fi of an ESP32-S3-WROOM-1 (the `s3-eth` and `s3-wifi` board profiles), the clock, the guard of the tasks and the memory, Improv Wi-Fi over the USB cable and the rollback of a firmware that does not come up. What is only the head's (the camera, the streams, the laser, the sensors of the spindle, the protect output) is in `main/head.cpp` and in the `head` section of the settings.
+- **The panel of the other nodes:** the menu in groups with the language and the sign-out at its foot, a Summary, a Wi-Fi page with the backup networks, a Head page that edits the settings of the camera, the streams, the laser and the spindle (the passwords and the token are write-only), Help, About, users, the log and the system page; the status page shows the camera, the laser, the speed, the temperature and the protect output and takes one measure of the table on request. Eight languages in every text, checked by a test.
+- **Update from GitHub and copy of a firmware slot:** the node looks for the newest release of its own repository, takes the image of its board (`eh3d-node-bungard-aux-<version>-<board>-app.bin`), checks the SHA-256 that the release publishes and installs it into the other slot with the rollback of the boot loader; the whole firmware of one slot can be copied over the other in both directions. The releases are not signed.
+- **The camera needs a signed-in person or the token:** the picture and the readings are served to a program with the access token of the head and to a person signed in to the panel without it; the status route stays readable by the token only.
+- **Tests:** the settings document of the head (read, checked, written with the secrets kept out), the update from GitHub, the clock, what the nodes share on both board profiles, the texts of the panel in eight languages and the stacks of the tasks.
+
 - **The firmware builds:** with ESP-IDF 5.5.5 for the ESP32-S3 (608 KB, 81% of the application partition free), with the camera driver, the VL53L1X component and the W5500 of the board; it has not been flashed or run.
 
 - **Through the server:** the node is reached by EH3D-SERVER too (`/api/v1/machines/:id/head/...`), with the address and the token of the node in the machine's configuration.

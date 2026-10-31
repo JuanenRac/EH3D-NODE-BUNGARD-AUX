@@ -1,325 +1,134 @@
-// EH3D-NODE-BUNGARD-AUX - main/app_main.cpp: the firmware of the node of the drill head (ESP32-S3 with a wired network port). GPL-3.0-or-later.
-// Written against ESP-IDF 5.5 and NOT built or run on a board yet: the rules (settings, the measure of the laser, the speed and the temperature, the words of the
-// network) are in core/ and are tested on a computer. The drivers of the laser and of the temperature sensors are not written (see sensors.hpp).
+/*
+ * EH3D-NODE-BUNGARD-AUX - ESP32-S3 node on the drill head of a Bungard CCD machine (a Waveshare ESP32-S3-ETH on its cable, or an ESP32-S3-WROOM-1 N16R8 on Wi-Fi): the camera, the
+ * laser that measures the table, the speed and the temperature of the spindle and the protect output, all of it served over the network.
+ * Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
+ *
+ * It shares its firmware base with EH3D-NODE-BUNGARD (the settings document in flash, the network with its backup Wi-Fi networks, the users, the web panel, the update from GitHub
+ * and the two firmware slots); what is only the head's is in head.cpp and in core/aux_config.hpp. The rules are built and tested on a computer (tests/). None of it has run on
+ * a board yet, and nothing has been mounted on a machine.
+ */
 #include <cstdio>
-#include <string>
-
-#include "driver/spi_master.h"
-#include "esp_camera.h"
-#include "esp_eth.h"
-#include "esp_eth_mac_spi.h"
+#include <cstring>
+extern "C" {
+#include "driver/gpio.h"
+#include "esp_app_desc.h"
 #include "esp_event.h"
-#include "esp_http_server.h"
 #include "esp_log.h"
-#include "esp_netif.h"
-#include "esp_spiffs.h"
-#include "esp_timer.h"
+#include "esp_ota_ops.h"
+#include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "nvs_flash.h"
 #include "sdkconfig.h"
-
-#include "../core/aux_config.hpp"
-#include "../core/camera.hpp"
-#include "../core/laser.hpp"
-#include "../core/protocol.hpp"
-#include "../core/spindle.hpp"
-#include "sensors.hpp"
-#include "stream.hpp"
+}
+#include "clock_sync.hpp"
+#include "head.hpp"
+#include "core/netplan.hpp"
+#include "improv_serial.hpp"
+#include "log_buffer.hpp"
+#include "network.hpp"
+#include "node_store.hpp"
+#include "psram_mem.hpp"
+#include "web_server.hpp"
 
 namespace {
+constexpr char kTag[] = "eh3d-aux";
 
-const char* TAG = "aux";
-const char* VERSION = "0.0.1";
+// While the node has no user, says every 15 seconds how to set it up. The code appears only here, on the USB console.
+void setup_reminder_task(void*) {
+  for (;;) {
+    if (!eh3d::store::users_empty()) vTaskDelete(nullptr);
+    const eh3d::network::Status n = eh3d::network::status();
+    ESP_LOGW(kTag, "SETUP: this node has no user yet. Join the Wi-Fi \"%s\", open http://192.168.4.1/ and enter the setup code %s", n.ap_ssid.empty() ? "EH3D-SETUP-..." : n.ap_ssid.c_str(),
+             eh3d::store::setup_code().c_str());
+    vTaskDelay(pdMS_TO_TICKS(15000));
+  }
+}
 
-bungard_aux::Settings settings;
-bungard_aux::Thermal thermal(55.0, 70.0, 3.0);
-volatile bool protect_is_open = true;
-volatile double temp_now_c = 0.0;
-volatile bool temp_now_valid = false;
-
-std::string read_file(const char* path) {
-    std::string out;
-    if (FILE* f = std::fopen(path, "rb")) {
-        char buf[256];
-        std::size_t n;
-        while ((n = std::fread(buf, 1, sizeof buf, f)) > 0) out.append(buf, n);
-        std::fclose(f);
+// Holding the BOOT button for 8 seconds in the first 30 after power-up erases the settings and the users: the node is back in setup.
+void boot_button_task(void*) {
+  constexpr gpio_num_t kButton = GPIO_NUM_0;
+  gpio_config_t io{};
+  io.pin_bit_mask = 1ULL << kButton;
+  io.mode = GPIO_MODE_INPUT;
+  io.pull_up_en = GPIO_PULLUP_ENABLE;
+  gpio_config(&io);
+  int held_ms = 0;
+  for (int elapsed_ms = 0; elapsed_ms < 30000; elapsed_ms += 100) {
+    held_ms = gpio_get_level(kButton) == 0 ? held_ms + 100 : 0;
+    if (held_ms >= 8000) {
+      ESP_LOGW(kTag, "BOOT held for 8 s: erasing the settings and the users");
+      eh3d::store::factory_reset();
+      eh3d::network::disconnect_before_restart();
+      esp_restart();
     }
-    return out;
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+  vTaskDelete(nullptr);
 }
 
-void load_settings() {
-    esp_vfs_spiffs_conf_t conf = {};
-    conf.base_path = "/config";
-    conf.partition_label = "config";
-    conf.max_files = 4;
-    conf.format_if_mount_failed = true;
-    if (esp_vfs_spiffs_register(&conf) != ESP_OK) ESP_LOGW(TAG, "config partition not mounted: the defaults are used");
-    std::vector<bungard_aux::Problem> problems;
-    settings = bungard_aux::parse_settings(read_file(CONFIG_AUX_CONFIG_PATH), problems);
-    for (const auto& p : problems) ESP_LOGW(TAG, "settings line %d (%s): %s", p.line, p.key.c_str(), p.what.c_str());
-    thermal = bungard_aux::Thermal(settings.temp_warn_c, settings.temp_critical_c, settings.temp_hysteresis_c);
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------ the camera
-
-/// The driver's frame size for each row of `bungard_aux::frame_sizes()`, in the same order.
-const framesize_t FRAME_OF[] = {FRAMESIZE_QQVGA, FRAMESIZE_QVGA, FRAMESIZE_CIF, FRAMESIZE_VGA, FRAMESIZE_SVGA, FRAMESIZE_XGA, FRAMESIZE_HD,
-                                FRAMESIZE_SXGA,  FRAMESIZE_UXGA, FRAMESIZE_FHD, FRAMESIZE_QXGA, FRAMESIZE_QHD, FRAMESIZE_QSXGA, FRAMESIZE_5MP};
-static_assert(sizeof(FRAME_OF) / sizeof(FRAME_OF[0]) == 14, "one driver size for each row of the table of sizes");
-
-std::string camera_model_seen;  // what the sensor said it is, for /api/status
-
-#if CONFIG_AUX_CAM_XCLK >= 0
-esp_err_t camera_init(framesize_t size) {
-    camera_config_t c = {};
-    c.pin_pwdn = CONFIG_AUX_CAM_PWDN;
-    c.pin_reset = CONFIG_AUX_CAM_RESET;
-    c.pin_xclk = CONFIG_AUX_CAM_XCLK;
-    c.pin_sccb_sda = CONFIG_AUX_CAM_SIOD;
-    c.pin_sccb_scl = CONFIG_AUX_CAM_SIOC;
-    c.pin_d0 = CONFIG_AUX_CAM_D0;
-    c.pin_d1 = CONFIG_AUX_CAM_D1;
-    c.pin_d2 = CONFIG_AUX_CAM_D2;
-    c.pin_d3 = CONFIG_AUX_CAM_D3;
-    c.pin_d4 = CONFIG_AUX_CAM_D4;
-    c.pin_d5 = CONFIG_AUX_CAM_D5;
-    c.pin_d6 = CONFIG_AUX_CAM_D6;
-    c.pin_d7 = CONFIG_AUX_CAM_D7;
-    c.pin_vsync = CONFIG_AUX_CAM_VSYNC;
-    c.pin_href = CONFIG_AUX_CAM_HREF;
-    c.pin_pclk = CONFIG_AUX_CAM_PCLK;
-    c.xclk_freq_hz = 20000000;
-    c.ledc_timer = LEDC_TIMER_0;
-    c.ledc_channel = LEDC_CHANNEL_0;
-    c.pixel_format = PIXFORMAT_JPEG;
-    c.frame_size = size;
-    c.jpeg_quality = settings.camera_quality;
-    c.fb_count = 2;
-    c.fb_location = CAMERA_FB_IN_PSRAM;
-    c.grab_mode = CAMERA_GRAB_LATEST;
-    return esp_camera_init(&c);
-}
-#endif
-
-/// Starts the camera. The sensor is asked which one it is (OV2640 or OV5640) with a small picture first; then the camera is started again at the size of the settings
-/// that this sensor can give, and the settings keep the real size and model so the status and ONVIF say the truth.
-bool camera_start() {
-#if CONFIG_AUX_CAM_XCLK >= 0
-    using namespace bungard_aux;
-    if (camera_init(FRAMESIZE_QVGA) != ESP_OK) return false;
-    sensor_t* sensor = esp_camera_sensor_get();
-    CameraModel seen = sensor ? model_from_pid(sensor->id.PID) : CameraModel::Auto;
-    if (seen == CameraModel::Auto) ESP_LOGW(TAG, "the camera is not an OV2640 or an OV5640 (product id 0x%x)", sensor ? sensor->id.PID : 0);
-    if (settings.camera_model != CameraModel::Auto && seen != CameraModel::Auto && seen != settings.camera_model) {
-        ESP_LOGW(TAG, "head.cfg says %s but the sensor is %s: the sensor wins", model_text(settings.camera_model), model_text(seen));
+// A freshly installed firmware is on probation: once the panel is up and has stayed up for a while, it is confirmed; if the panel could not start, the
+// boot loader is told to go back to the previous image now.
+void confirm_firmware_task(void* argument) {
+  const bool panel_ok = argument != nullptr;
+  const esp_partition_t* running = esp_ota_get_running_partition();
+  esp_ota_img_states_t state;
+  if (esp_ota_get_state_partition(running, &state) == ESP_OK && state == ESP_OTA_IMG_PENDING_VERIFY) {
+    if (!panel_ok) {
+      ESP_LOGE(kTag, "the new firmware could not start its panel: going back to the previous one");
+      esp_ota_mark_app_invalid_rollback_and_reboot();
     }
-    const CameraModel model = seen != CameraModel::Auto ? seen : settings.camera_model;
-    const std::size_t index = frame_index_for(settings.camera_width, settings.camera_height, model);
-    settings.camera_model = model;
-    settings.camera_width = static_cast<std::uint16_t>(frame_sizes()[index].width);
-    settings.camera_height = static_cast<std::uint16_t>(frame_sizes()[index].height);
-    camera_model_seen = model_text(model);
-    esp_camera_deinit();
-    if (camera_init(FRAME_OF[index]) != ESP_OK) return false;
-    ESP_LOGI(TAG, "camera %s at %ux%u", camera_model_seen.c_str(), static_cast<unsigned>(settings.camera_width), static_cast<unsigned>(settings.camera_height));
-    return true;
-#else
-    ESP_LOGW(TAG, "camera pins are not set in menuconfig: no video");
-    return false;
-#endif
-}
-
-bool camera_ok = false;
-
-// ------------------------------------------------------------------------------------------------------------------------------ the HTTP server
-
-std::string bearer_of(httpd_req_t* req) {
-    char value[128];
-    if (httpd_req_get_hdr_value_str(req, "Authorization", value, sizeof value) != ESP_OK) return "";
-    std::string v = value;
-    const std::string prefix = "Bearer ";
-    return v.compare(0, prefix.size(), prefix) == 0 ? v.substr(prefix.size()) : "";
-}
-
-bool allowed(httpd_req_t* req, bungard_aux::Route route, bungard_aux::Request& r) {
-    r.method = req->method == HTTP_POST ? "POST" : "GET";
-    std::string uri = req->uri;
-    std::size_t q = uri.find('?');
-    r.path = q == std::string::npos ? uri : uri.substr(0, q);
-    r.query = q == std::string::npos ? "" : uri.substr(q + 1);
-    if (bungard_aux::authorized(settings, route, bearer_of(req), r)) return true;
-    httpd_resp_set_status(req, "401 Unauthorized");
-    httpd_resp_send(req, "{\"error\":\"unauthorized\"}", HTTPD_RESP_USE_STRLEN);
-    return false;
-}
-
-esp_err_t status_handler(httpd_req_t* req) {
-    bungard_aux::Request r;
-    if (!allowed(req, bungard_aux::Route::Status, r)) return ESP_OK;
-    bungard_aux::Status s;
-    s.name = settings.name;
-    s.version = VERSION;
-    s.camera = camera_ok && settings.camera_enabled;
-    if (s.camera) s.camera_model = camera_model_seen;
-    s.laser = settings.laser_enabled;
-    s.rpm_on = settings.rpm_enabled;
-    s.rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
-    s.heat = thermal.state();
-    s.has_temp = temp_now_valid;
-    s.temp_c = temp_now_c;
-    s.protect_open = protect_is_open;
-    s.uptime_s = static_cast<std::uint32_t>(esp_timer_get_time() / 1000000);
-    httpd_resp_set_type(req, "application/json");
-    std::string body = bungard_aux::json_status(s);
-    httpd_resp_send(req, body.c_str(), body.size());
-    return ESP_OK;
-}
-
-esp_err_t measure_handler(httpd_req_t* req) {
-    bungard_aux::Request r;
-    if (!allowed(req, bungard_aux::Route::Measure, r)) return ESP_OK;
-    int asked = bungard_aux::samples_of(settings, r);
-    std::vector<bungard_aux::LaserReading> got;
-    std::int64_t deadline = esp_timer_get_time() + static_cast<std::int64_t>(settings.laser_timeout_ms) * 1000;
-    while (static_cast<int>(got.size()) < asked && esp_timer_get_time() < deadline && settings.laser_enabled) {
-        double mm = 0.0;
-        bool valid = false;
-        if (sensors::laser_read(mm, valid)) got.push_back({mm, valid});
-        else vTaskDelay(pdMS_TO_TICKS(5));
+    vTaskDelay(pdMS_TO_TICKS(30000));
+    // A panel that is up is not enough: a node that cannot be reached (no address from the network, no access point of its own) would stay that way and need a cable to be rescued. The image
+    // is confirmed once the node can be reached, and goes back to the previous one when five minutes pass without.
+    bool reachable = false;
+    for (int waited = 0; waited < 300 && !reachable; waited += 5) {
+      const eh3d::network::Status link = eh3d::network::status();
+      reachable = link.has_ip || link.ap_active;
+      if (!reachable) vTaskDelay(pdMS_TO_TICKS(5000));
     }
-    bungard_aux::LaserLimits lim;
-    lim.range_min_mm = settings.laser_range_min_mm;
-    lim.range_max_mm = settings.laser_range_max_mm;
-    lim.sigma_max_mm = settings.laser_sigma_max_mm;
-    lim.offset_mm = settings.laser_offset_mm;
-    bungard_aux::Measure m = bungard_aux::measure_distance(got, asked, lim);
-    httpd_resp_set_type(req, "application/json");
-    std::string body = bungard_aux::json_measure(m);
-    httpd_resp_send(req, body.c_str(), body.size());
-    return ESP_OK;
-}
-
-esp_err_t stream_handler(httpd_req_t* req) {
-    bungard_aux::Request r;
-    if (!allowed(req, bungard_aux::Route::Stream, r)) return ESP_OK;
-    if (!camera_ok || !settings.camera_enabled) {
-        httpd_resp_set_status(req, "503 Service Unavailable");
-        httpd_resp_send(req, "{\"error\":\"no camera\"}", HTTPD_RESP_USE_STRLEN);
-        return ESP_OK;
+    if (!reachable) {
+      ESP_LOGE(kTag, "the new firmware could not be reached on any network: going back to the previous one");
+      esp_ota_mark_app_invalid_rollback_and_reboot();
     }
-    httpd_resp_set_type(req, "multipart/x-mixed-replace;boundary=frame");
-    const int period_ms = 1000 / (settings.camera_fps_max ? settings.camera_fps_max : 1);
-    while (true) {
-        camera_fb_t* fb = esp_camera_fb_get();
-        if (!fb) break;
-        char head[96];
-        int n = std::snprintf(head, sizeof head, "--frame\r\nContent-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n", static_cast<unsigned>(fb->len));
-        esp_err_t e = httpd_resp_send_chunk(req, head, n);
-        if (e == ESP_OK) e = httpd_resp_send_chunk(req, reinterpret_cast<const char*>(fb->buf), fb->len);
-        if (e == ESP_OK) e = httpd_resp_send_chunk(req, "\r\n", 2);
-        esp_camera_fb_return(fb);
-        if (e != ESP_OK) break;  // the viewer closed
-        vTaskDelay(pdMS_TO_TICKS(period_ms));
-    }
-    return ESP_OK;
+    esp_ota_mark_app_valid_cancel_rollback();
+    ESP_LOGI(kTag, "the new firmware is confirmed");
+  }
+  vTaskDelete(nullptr);
 }
-
-void http_start() {
-    httpd_config_t cfg = HTTPD_DEFAULT_CONFIG();
-    cfg.server_port = settings.port;
-    cfg.stack_size = 8192;
-    httpd_handle_t h = nullptr;
-    if (httpd_start(&h, &cfg) != ESP_OK) {
-        ESP_LOGE(TAG, "the web server did not start");
-        return;
-    }
-    httpd_uri_t status = {"/api/status", HTTP_GET, status_handler, nullptr};
-    httpd_uri_t measure = {"/api/measure", HTTP_POST, measure_handler, nullptr};
-    httpd_uri_t stream = {"/stream", HTTP_GET, stream_handler, nullptr};
-    httpd_register_uri_handler(h, &status);
-    httpd_register_uri_handler(h, &measure);
-    httpd_register_uri_handler(h, &stream);
-    ::stream::register_http(h);
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------ the network
-
-void eth_start() {
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
-    esp_netif_config_t ncfg = ESP_NETIF_DEFAULT_ETH();
-    esp_netif_t* netif = esp_netif_new(&ncfg);
-
-    spi_bus_config_t bus = {};
-    bus.miso_io_num = CONFIG_AUX_ETH_MISO;
-    bus.mosi_io_num = CONFIG_AUX_ETH_MOSI;
-    bus.sclk_io_num = CONFIG_AUX_ETH_SCLK;
-    bus.quadwp_io_num = -1;
-    bus.quadhd_io_num = -1;
-    ESP_ERROR_CHECK(spi_bus_initialize(static_cast<spi_host_device_t>(CONFIG_AUX_ETH_SPI_HOST), &bus, SPI_DMA_CH_AUTO));
-    spi_device_interface_config_t dev = {};
-    dev.mode = 0;
-    dev.clock_speed_hz = 20 * 1000 * 1000;
-    dev.spics_io_num = CONFIG_AUX_ETH_CS;
-    dev.queue_size = 20;
-    eth_w5500_config_t w = ETH_W5500_DEFAULT_CONFIG(static_cast<spi_host_device_t>(CONFIG_AUX_ETH_SPI_HOST), &dev);
-    w.int_gpio_num = CONFIG_AUX_ETH_INT;
-    eth_mac_config_t mac_cfg = ETH_MAC_DEFAULT_CONFIG();
-    eth_phy_config_t phy_cfg = ETH_PHY_DEFAULT_CONFIG();
-    phy_cfg.reset_gpio_num = CONFIG_AUX_ETH_RST;
-    esp_eth_mac_t* mac = esp_eth_mac_new_w5500(&w, &mac_cfg);
-    esp_eth_phy_t* phy = esp_eth_phy_new_w5500(&phy_cfg);
-    esp_eth_config_t ecfg = ETH_DEFAULT_CONFIG(mac, phy);
-    esp_eth_handle_t eth = nullptr;
-    ESP_ERROR_CHECK(esp_eth_driver_install(&ecfg, &eth));
-    ESP_ERROR_CHECK(esp_netif_attach(netif, esp_eth_new_netif_glue(eth)));
-    if (!settings.address.empty()) {
-        esp_netif_dhcpc_stop(netif);
-        esp_netif_ip_info_t ip = {};
-        ip.ip.addr = esp_ip4addr_aton(settings.address.c_str());
-        // the gateway and the mask of a workshop network: the node sits in the same subnet as the machine's other nodes
-        ip.netmask.addr = esp_ip4addr_aton("255.255.255.0");
-        ip.gw.addr = (ip.ip.addr & ip.netmask.addr) | (1u << 24);
-        esp_netif_set_ip_info(netif, &ip);
-    }
-    ESP_ERROR_CHECK(esp_eth_start(eth));
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------ the watch of the spindle
-
-void watch_task(void*) {
-    while (true) {
-        double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
-        double c = 0.0;
-        bool got = settings.temp_sensor != bungard_aux::TempSensor::None && sensors::temperature_read(c);
-        if (settings.temp_sensor != bungard_aux::TempSensor::None) {
-            thermal.update(c, got);
-            temp_now_valid = got;
-            if (got) temp_now_c = c;
-        }
-        bool open = bungard_aux::protect_open(settings, rpm, thermal.state());
-        protect_is_open = open;
-        sensors::protect_set(open);
-        vTaskDelay(pdMS_TO_TICKS(100));
-    }
-}
-
 }  // namespace
 
-extern "C" void app_main(void) {
-    esp_err_t e = nvs_flash_init();
-    if (e == ESP_ERR_NVS_NO_FREE_PAGES || e == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ESP_ERROR_CHECK(nvs_flash_init());
-    }
-    load_settings();
-    sensors::init(settings);
-    if (settings.camera_enabled) camera_ok = camera_start();
-    eth_start();
-    ::stream::start(settings);
-    http_start();
-    xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
-    ESP_LOGI(TAG, "EH3D-NODE-BUNGARD-AUX %s: %s on port %u", VERSION, settings.name.c_str(), static_cast<unsigned>(settings.port));
+extern "C" void app_main() {
+  eh3d::logbuf::start();
+  eh3d::memory::install_tls_allocator();   // TLS memory: the external RAM, and the internal one where a board has none
+  eh3d::memory::start_monitor();           // the log says the state of the memory every minute
+  eh3d::store::init();
+  ESP_ERROR_CHECK(esp_event_loop_create_default());
+  const eh3d::config::Settings settings = eh3d::store::settings();
+  const bool setup = eh3d::store::users_empty();
+  ESP_LOGI(kTag, "EH3D-NODE-BUNGARD-AUX %s, firmware %s, MAC tail %s%s", settings.node_id.c_str(), esp_app_get_description()->version, eh3d::store::mac_tail().c_str(), setup ? ", NOT SET UP YET" : "");
+  if (eh3d::store::settings_are_stored()) {
+    const eh3d::config::Problems problems = eh3d::config::validate(settings);
+    for (const eh3d::config::Problem& problem : problems) ESP_LOGE(kTag, "settings problem: %s (%s)", problem.path.c_str(), problem.code.c_str());
+  }
+
+  const eh3d::netplan::Plan plan = eh3d::netplan::plan_network(settings, setup, eh3d::store::setup_code(), eh3d::store::mac_tail(), eh3d::store::mac_sum());
+  const bool network_ok = eh3d::network::start(settings, plan);
+  if (network_ok && !plan.ap.enabled) {
+    // Without an address after 90 s (no cable, no Wi-Fi it can join) the node would be unreachable: it opens the set-up access point again.
+    eh3d::network::arm_rescue(eh3d::netplan::plan_network(settings, true, eh3d::store::setup_code(), eh3d::store::mac_tail(), eh3d::store::mac_sum()), 90);
+  }
+  if (!network_ok) ESP_LOGE(kTag, "the network could not be started: the node stays local");
+  eh3d::clocksync::start(settings);
+  eh3d::improv_serial::start();   // Improv Wi-Fi over the USB cable (ESP Web Tools)
+  head::start(settings.head);   // the camera, the sensors and the streams start once the network is up
+  const bool panel_ok = network_ok && eh3d::web::start(settings);
+
+  // A periodic, unconditional restart the panel can turn on (0: never) - a board left running for weeks without anyone touching it.
+  if (settings.auto_restart_hours > 0) eh3d::web::restart_after(static_cast<unsigned>(settings.auto_restart_hours) * 3600u * 1000u);
+
+  if (setup) xTaskCreate(setup_reminder_task, "setup-hint", 3072, nullptr, 2, nullptr);
+#if CONFIG_EH3D_BOOT_FACTORY_RESET
+  xTaskCreate(boot_button_task, "boot-button", 3072, nullptr, 2, nullptr);
+#endif
+  xTaskCreate(confirm_firmware_task, "confirm", 3072, panel_ok ? reinterpret_cast<void*>(1) : nullptr, 2, nullptr);
 }

@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| バージョン | `0.0.1` |
+| バージョン | `0.0.2` |
 | 成熟度 | 足場 |
-| テスト | コンピューター上のテストプログラム 2 本（203 項目） |
+| テスト | コンピューター上の10のテストプログラム |
 | 技術スタック | C++17、ESP-IDF 5.5、ESP32-S3、W5500 ネットワーク |
 | 実機での動作 | いいえ：ファームウェアはビルドできますが書き込みはしておらず、機械には何も接続していません |
 
@@ -44,7 +44,7 @@
 | 領域 | 状態 | ここでの意味 |
 |---|---|---|
 | ソフトウェア | 🟠 | ESP-IDF プロジェクト（W5500 の有線ネットワーク、Web サーバー、カメラ、スピンドルのパルス、保護出力、専用パーティションの設定ファイル）は書かれていてビルドもできますが、書き込みはしていません。 |
-| テスト | 🟢 | コンピューター上のテストプログラム 2 本が通ります（`ctest`）：設定ファイル、レーザー測定、スピンドルの回転数と温度、保護出力、ネットワークの言葉についての 203 項目です。 |
+| テスト | 🟢 | 10 のテストプログラムが成功します（`ctest`）：設定、レーザーの測定、スピンドルの回転数と温度、保護出力、ネットワークのやり取り、映像（RTSP、ONVIF）、ヘッドの設定ドキュメント、GitHub からの更新、時計、全ノード共通部分、パネルの8言語の文言、タスクのスタック。 |
 | レーザー（テーブルの高さ） | 🟡 | 複数の読み取りからの測定（中央値、外れ値の破棄、ばらつきの確認、範囲とオフセット）はテスト済みですが、VL53L1X のドライバーは書かれていますが一度も動かしておらず、まだ測定はしていません。 |
 | スピンドル | 🟡 | センサーのパルスからの回転数（1 回転あたりの数は任意、パルスが止まれば停止）、警告・危険レベル・ヒステリシスを持つ温度、保護出力はテスト済みです。DS18B20、NTC、MLX90614 のドライバーは書かれていますが一度も動かしていません。 |
 | カメラ | 🟠 | MJPEG ストリームはボードのカメラコネクター向けに書かれており、menuconfig でボードのピンを設定する必要があります。実行はしていません。 |
@@ -58,8 +58,9 @@
 * **スピンドル**：回転数はセンサー（ホールセンサーまたはスリット付き円盤、1 回転あたりのパルス数は任意）のパルスから求め、パルスが止まるとゼロになります。温度には警告・危険レベル・ヒステリシスがあり、状態がちらつきません。有効にしたのに応答しないセンサーは高温として扱います。
 * **保護出力**：スピンドルが止まるべきとき（速すぎ、熱すぎ、センサー無応答）とノードが動いていない間は Low になる GPIO で、リレーまたはフォトカプラを介して制御ユニットの停止ラインに接続します。設定で無効にできます。
 * **カメラとネットワーク**：カメラ映像は `/stream` の MJPEG、読み取り値は `/api/status` で、有線ネットワークポート（SPI 上の W5500）を使います。トークンが測定とカメラを保護します。
-* **設定ファイル** `head.cfg`：調整したすべての値（ネットワーク、カメラ、レーザー、スピンドル、温度、保護出力）は専用パーティションの 1 ファイルの 1 行で、コードに数値を書きません。範囲外の値は報告され、既定値が残ります。
+* **設定**：調整されたすべての値（ネットワーク、カメラ、レーザー、スピンドル、温度、保護出力）はノードの設定で、フラッシュに保存され Web パネルで編集します。コード内の数値ではありません。範囲外の値は理由付きで拒否されます。
 * **IP カメラと同じ形での映像送信**：RTSP（`rtsp://アドレス/stream1`、JPEG over RTP、UDP または TCP 接続内、Digest または Basic のログイン）と ONVIF（レコーダーや管理ソフトがノードを見つけるための WS-Discovery と、プロファイル S のサービス：プロファイル、カメラが出せるサイズ付きエンコーダー、ストリームとスナップショットのアドレス、ユーザートークン）。どちらも設定のユーザーとパスワードを使い、パスワードがなければ何も提供しません。
+* **他のノードと同じパネルと更新：** ノードには A.R.M.O.R. のノードおよび EH3D-NODE-BUNGARD と同じ Web パネルがあります（下部に言語選択とサインアウトのあるグループ化メニュー、概要、メインが切れたときの最大3つの予備ネットワークを持つ Wi-Fi ページ、カメラ・ストリーム・レーザー・スピンドルの設定を編集するヘッドページ、ヘルプ、情報、ユーザー、ログ）。ファームウェアスロットの双方向コピーと、このプロジェクトの最新の GitHub リリースからの更新（リリースが公開する SHA-256 を検証し、アドレスはプロジェクト自身のものに限り、管理者だけが実行できます。リリースは署名されていません）にも対応します。ファームウェアの基盤は EH3D-NODE-BUNGARD と共通です。
 
 ## 🧩 EH3D での役割
 
@@ -81,14 +82,50 @@ EH3D-NODE-BUNGARD-AUX は Bungard CCD マシンのドリルヘッドのノード
 
 <p align="center"><em>ノードがネットワークで返す内容：状態（`GET /api/status`）、テーブルの測定（`POST /api/measure`）、デスクトッププログラムがマップの 1 点として読む行。テストが確認する形式の図であり、ボードからのキャプチャではありません。</em></p>
 
+<p align="center">
+  <img src="images/screenshots/panel-overview.png" alt="panel-overview" width="100%">
+</p>
+
+<p align="center"><em>概要ページ：ノード、ハードウェア、時計、2つのファームウェアスロットを持つフラッシュ、ネットワーク。</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-status.png" alt="panel-status" width="100%">
+</p>
+
+<p align="center"><em>他の EH3D プログラムと同じ Forge テーマの状態ページ。</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-head.png" alt="panel-head" width="100%">
+</p>
+
+<p align="center"><em>ヘッドページ：カメラ、ストリーム、レーザー、スピンドルセンサー、保護出力（パスワードとトークンは書き込み専用）。</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-wifi.png" alt="panel-wifi" width="100%">
+</p>
+
+<p align="center"><em>Wi-Fi ページ：ノードが接続するネットワークと、失われたときの最大3つの予備ネットワーク。</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-update.png" alt="panel-update" width="100%">
+</p>
+
+<p align="center"><em>ファームウェアページ：GitHub からの更新、ファイルのアップロード、2つのスロットと一方から他方へのコピー。</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-help.png" alt="panel-help" width="100%">
+</p>
+
+<p align="center"><em>ヘルプページ：パネルの各ページに対応するトピック。</em></p>
+
 ## ✨ 機能
 
 * **信頼できる測定か、測定なしか：** 複数の読み取り、外れ値の破棄、読み取りのばらつきが大きい・範囲外・数が少ないときは理由つきで拒否します。
 * **常時監視されるスピンドル：** パルスからの回転数、警告・危険レベル・ヒステリシスを持つ温度、異常時やノード停止時に自動で開く保護出力。
 * **IP カメラのような映像：** ログイン付きの RTSP と ONVIF で、どんなプレーヤー、レコーダー、ONVIF 管理ソフトでも取得できます。カメラはトークン付きの `/stream` で MJPEG としても提供されます。
 * **既定で安全：** トークンがなければ測定もカメラもなし。各制限は設定にスイッチがあり、保守的な位置から始まります。
-* **2 種類のカメラ、OV2640 と OV5640：** センサーが自分の種類を答え、ノードは設定が許し、そのセンサーが出せる最大のサイズを返します（OV2640 は 1600x1200 まで、OV5640 は 2592x1944 まで）。`/api/status`（`camera_model`）と ONVIF のエンコーダーオプションで報告します。`head.cfg` の `camera_model = auto | ov2640 | ov5640`。Waveshare ESP32-S3-ETH のカメラコネクターのピンが `menuconfig` の既定値です。
-* **3 種類の温度センサー：** ワンワイヤの DS18B20、アナログ入力の NTC サーミスター（`head.cfg` の `ntc_series_ohm`、`ntc_r25_ohm`、`ntc_beta`）、スピンドルに触れずに測れる赤外線温度計 MLX90614（レーザーの I2C バス上）。チェックサムと換算はコンピューター上でテスト済みです。
+* **2 種類のカメラ、OV2640 と OV5640：** センサーが自分の種類を答え、ノードは設定が許し、そのセンサーが出せる最大のサイズを返します（OV2640 は 1600x1200 まで、OV5640 は 2592x1944 まで）。`/api/status`（`camera_model`）と ONVIF のエンコーダーオプションで報告します。ヘッドページ の `camera_model = auto | ov2640 | ov5640`。Waveshare ESP32-S3-ETH のカメラコネクターのピンが `menuconfig` の既定値です。
+* **3 種類の温度センサー：** ワンワイヤの DS18B20、アナログ入力の NTC サーミスター（ヘッドページ の `ntc_series_ohm`、`ntc_r25_ohm`、`ntc_beta`）、スピンドルに触れずに測れる赤外線温度計 MLX90614（レーザーの I2C バス上）。チェックサムと換算はコンピューター上でテスト済みです。
 
 ## 🔒 セキュリティと安全
 
@@ -107,7 +144,7 @@ EH3D-NODE-BUNGARD-AUX は Bungard CCD マシンのドリルヘッドのノード
 
 | インターフェース | 内容 | 場所 |
 |---|---|---|
-| 設定ファイル | `config` パーティションの `head.cfg`：`キー = 値` の行。`head.cfg.example` を参照 | `core/aux_config.hpp` |
+| 設定 | フラッシュ内の1つのドキュメント。Web パネルのヘッドページで編集。キーは `head.cfg.example` と同じ | `core/bungard_config.hpp`、`core/aux_config.hpp` |
 | 状態 | `GET /api/status`：ノード、カメラ、レーザー、回転数、温度、保護出力、稼働時間を JSON 1 行で | `core/protocol.hpp` |
 | 測定 | トークン付きの `POST /api/measure[?samples=N]`：テーブルまでの距離、ばらつき、測定が拒否された理由 | `core/laser.hpp`, `main/app_main.cpp` |
 | カメラ | トークン付きの `GET /stream`：MJPEG | `main/app_main.cpp` |
@@ -119,7 +156,7 @@ EH3D-NODE-BUNGARD-AUX は Bungard CCD マシンのドリルヘッドのノード
 
 ## ⚙️ 設定
 
-調整した値はすべて `head.cfg` の 1 行です（`head.cfg.example` を `config` パーティションにコピー）。範囲外の値はログに報告され、既定値が残ります。主なもの：
+設定は1つのドキュメントとしてフラッシュに保存され、Web パネルのヘッドページで編集します（パスワードとトークンは書き込み専用で、パネルには表示されません）。キーとその範囲は `head.cfg.example` に記載のとおりで、以前のバージョンの ヘッドページ ファイルはもう読み込まれません。
 
 | 設定 | 既定値 | 範囲 | 内容 |
 |---|---|---|---|
@@ -144,11 +181,11 @@ build.bat            # コンピューター上のテスト（Windows）  -  Lin
 python -I tools/ci_validate.py
 ```
 
-ファームウェアは ESP-IDF 5.5.5 でビルドできます。ビルドする際は `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` でイメージを作り（`EH3D Bungard AUX` でボードのピンを設定）、`config` というパーティションに `head.cfg` を置きます。
+ファームウェアは ESP-IDF 5.5.5 でビルドできます。ビルドする際は `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` でイメージを作り（`EH3D Bungard AUX` でボードのピンを設定）、ノードが起動したら設定は Web パネルで行います。
 
 ## 🧪 テスト
 
-コンピューター上のテスト（`build.bat` または `./build.sh`、続けて `ctest`）は 2 本のプログラムで、すべて通ります。`test_aux`（103 項目）は、設定ファイル（既定値、値、誤った値、互いに矛盾する制限）、レーザー測定（中央値、捨てられた外れ値、オフセット、不良とされた読み取り、範囲、読み取りなし、大きすぎるばらつき）、スピンドルの回転数（1 回転あたりのパルス、減速するスピンドル、パルスが止まれば停止）、温度（ヒステリシス、故障するセンサー）、保護出力、ネットワークの言葉（リクエスト行、ルート、ヘッダーまたはクエリのトークン、読み取り数、状態と測定の JSON、マップの 1 点の行）を確認します。ファームウェアは対象外です。ビルドはできますが、テストはコンピューター上で動きます。 2 本目のプログラム `test_stream`（100 項目）は映像を対象にします：ログインのハッシュを公開されたベクターと照合（MD5、SHA-1、base64、RFC 2617 の Digest 例）、RTSP リクエストとセッション全体（ログイン、SDP、UDP とインターリーブの転送、play、pause、teardown、誤ったセッション、拒否されるマルチキャスト）、JPEG の RTP ペイロード（最初のパケットの量子化テーブル、順序、マーカー、シーケンスの折り返し）、ONVIF（ディスカバリー、標準の例によるユーザートークン、公開と保護された呼び出し、各サービス、未対応の呼び出し）。
+コンピューター上のテスト（`build.bat` または `./build.sh`、続けて `ctest`）は 2 本のプログラムで、すべて通ります。`test_aux`（103 項目）は、設定ファイル（既定値、値、誤った値、互いに矛盾する制限）、レーザー測定（中央値、捨てられた外れ値、オフセット、不良とされた読み取り、範囲、読み取りなし、大きすぎるばらつき）、スピンドルの回転数（1 回転あたりのパルス、減速するスピンドル、パルスが止まれば停止）、温度（ヒステリシス、故障するセンサー）、保護出力、ネットワークの言葉（リクエスト行、ルート、ヘッダーまたはクエリのトークン、読み取り数、状態と測定の JSON、マップの 1 点の行）を確認します。ファームウェアは対象外です。ビルドはできますが、テストはコンピューター上で動きます。 2 本目のプログラム `test_stream`（100 項目）は映像を対象にします：ログインのハッシュを公開されたベクターと照合（MD5、SHA-1、base64、RFC 2617 の Digest 例）、RTSP リクエストとセッション全体（ログイン、SDP、UDP とインターリーブの転送、play、pause、teardown、誤ったセッション、拒否されるマルチキャスト）、JPEG の RTP ペイロード（最初のパケットの量子化テーブル、順序、マーカー、シーケンスの折り返し）、ONVIF（ディスカバリー、標準の例によるユーザートークン、公開と保護された呼び出し、各サービス、未対応の呼び出し）。 この2つのプログラムに加え、`test_head_settings` がパネルと同じ方法で設定ドキュメントのヘッド部分を読み取り・検査・書き込みし（パスワードとトークンは書き込み専用のまま）、ファームウェア基盤の共通テストが GitHub からの更新、時計、ユーザーを扱います。
 
 ## 🏗️ ビルドとリリース
 
@@ -160,8 +197,8 @@ python -I tools/ci_validate.py
 |---|---|
 | 測定が `no_readings` で拒否される | I2C バスに VL53L1X が応答しません。`menuconfig` の SDA と SCL のピン（Waveshare ESP32-S3-ETH ではカメラが GPIO 41 と 42 を使います）と配線を確認してください。応答のそれ以外の部分はテスト済みです。 |
 | 測定が `too_noisy` で拒否される | 読み取りのばらつきが `laser_sigma_max_mm` を超えています。ヘッドとテーブルが落ち着くのを待つか、制限を少し上げてください。揺れがないかも確認します。 |
-| 測定やカメラに 401 が返る | `head.cfg` に `token`（8〜64 文字）を設定し、ヘッダー `Authorization: Bearer ...` または `?token=` で送ってください。 |
-| 保護出力がいつも開いている | 有効にしたのに応答しない温度センサーは高温として扱われます。配線、`menuconfig` のピン、`head.cfg` の `temp_sensor` を確認するか、作業台では `temp_sensor = none` にしてください。 |
+| 測定やカメラに 401 が返る | ヘッドページ に `token`（8〜64 文字）を設定し、ヘッダー `Authorization: Bearer ...` または `?token=` で送ってください。 |
+| 保護出力がいつも開いている | 有効にしたのに応答しない温度センサーは高温として扱われます。配線、`menuconfig` のピン、ヘッドページ の `temp_sensor` を確認するか、作業台では `temp_sensor = none` にしてください。 |
 
 ## 📂 リポジトリの構成
 
@@ -176,6 +213,7 @@ python -I tools/ci_validate.py
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           設定ファイルと安全な既定値
+│   ├── bungard_config.hpp                       ノードの設定とヘッドの項目
 │   ├── laser.hpp                                テーブル高さの測定
 │   ├── camera.hpp                               カメラ OV2640 と OV5640 とそのサイズ
 │   ├── spindle.hpp                              回転数、温度、保護出力
@@ -183,19 +221,32 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── hash.hpp                                 ログイン：MD5、SHA-1、base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP と JPEG の RTP ペイロード
 │   ├── onvif.hpp                                ONVIF：ディスカバリーと SOAP サービス
-│   └── protocol.hpp                             ネットワークの言葉：ルート、トークン、JSON
+│   ├── protocol.hpp                             ネットワークの言葉：ルート、トークン、JSON
+│   ├── node_settings.hpp auth.hpp               設定とユーザー（共有基盤）
+│   ├── netplan.hpp json.hpp                     ネットワーク計画と JSON（共有基盤）
+│   └── release_assets.hpp semver.hpp            リリースのどのファイルがこのボードのイメージか
 ├── main/
-│   ├── app_main.cpp                             起動、設定、ネットワーク、Web サーバー、カメラ
+│   ├── app_main.cpp                             起動・設定・ネットワーク・パネル
+│   ├── head.cpp head.hpp                        カメラ・レーザー・主軸・ルート
 │   ├── sensors.cpp sensors.hpp                  ピン：パルス、保護出力、センサー
 │   ├── stream.cpp stream.hpp                    RTSP サーバー、ONVIF サービス、ディスカバリー
-│   └── idf_component.yml Kconfig.projbuild      コンポーネント一覧と menuconfig のピン
+│   ├── idf_component.yml Kconfig.projbuild      コンポーネント一覧と menuconfig のピン
+│   ├── web_server.cpp network.cpp               パネル サーバーと通信（共有基盤）
+│   ├── node_store.cpp node_guard.cpp            設定保存とガード（共有基盤）
+│   └── github_update.cpp entropy.cpp            GitHub からの更新とスロットのコピー
+├── panel/
+│   ├── index.html style.css                     ページとサイド メニューのレイアウト
+│   └── app.js text.js                           ページと 8 言語の文言
 ├── tests/                                       設定、関門、音声、画面文言のホストテスト
 ├── docs/                                        ハードウェアのメモと 2 つの図のソース
 ├── tools/                                       CI チェック、README チェック、図のツール
 ├── CMakeLists.txt                               ESP-IDF プロジェクト
 ├── partitions.csv                               2 スロットのフラッシュ配置
 ├── head.cfg.example                             各設定の既定値と範囲
-├── sdkconfig.defaults                           ESP32-P4 モジュール向けの ESP-IDF 設定
+├── sdkconfig.defaults                           両ボード共通の ESP-IDF 設定
+├── sdkconfig.board.s3-eth                       有線ボードの設定
+├── sdkconfig.board.s3-wifi                      Wi-Fi ボードの設定
+├── dependencies.lock                            コンポーネントの正確なバージョン
 ├── images/                                      バナーとアーキテクチャ・リポジトリ構成の図
 ├── .github/                                     CI とリリースのワークフロー、Issue と PR のテンプレート
 ├── build.sh build.bat                           ホスト テストをライブ パネルでビルドして実行

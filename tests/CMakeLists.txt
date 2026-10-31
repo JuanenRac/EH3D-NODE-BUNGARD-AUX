@@ -14,7 +14,28 @@ endif()
 
 add_executable(test_aux test_aux.cpp)
 add_executable(test_stream test_stream.cpp)
+add_executable(test_head_settings test_head_settings.cpp)
+add_executable(test_base test_base.cpp)
+add_executable(test_clock test_clock.cpp)
+add_executable(test_release test_release.cpp)
+# the rules shared with the other nodes; the _eth build is the s3-eth board profile
+add_executable(test_shared test_shared.cpp)
+add_executable(test_shared_eth test_shared.cpp)
+target_compile_definitions(test_shared_eth PRIVATE EH3D_BOARD_S3_ETH=1)
 
 enable_testing()
 add_test(NAME aux COMMAND test_aux)
 add_test(NAME stream COMMAND test_stream)
+add_test(NAME head_settings COMMAND test_head_settings)
+add_test(NAME base COMMAND test_base)
+add_test(NAME clock COMMAND test_clock)
+add_test(NAME release COMMAND test_release)
+add_test(NAME shared COMMAND test_shared)
+add_test(NAME shared_eth COMMAND test_shared_eth)
+
+# the panel's texts (eight languages in every row, a text for every error the firmware can answer with) and the stacks of the tasks
+find_package(Python3 COMPONENTS Interpreter)
+if(Python3_FOUND)
+  add_test(NAME panel_text COMMAND ${Python3_EXECUTABLE} -I ${CMAKE_CURRENT_SOURCE_DIR}/check_panel_text.py)
+  add_test(NAME task_safety COMMAND ${Python3_EXECUTABLE} -I ${CMAKE_CURRENT_SOURCE_DIR}/check_task_safety.py)
+endif()

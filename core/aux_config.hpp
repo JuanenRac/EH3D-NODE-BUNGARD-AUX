@@ -136,9 +136,9 @@ inline bool is_ipv4(const std::string& v) {
 
 }  // namespace detail
 
-/// Reads a settings file. The result starts from the defaults; every line that cannot be used is listed in `problems` and changes nothing.
-inline Settings parse_settings(const std::string& text, std::vector<Problem>& problems) {
-    Settings s;
+/// Reads a settings text on top of `base` (what the panel sends changes only what it names); every line that cannot be used is listed in `problems` and changes nothing.
+inline Settings parse_settings_over(const Settings& base, const std::string& text, std::vector<Problem>& problems) {
+    Settings s = base;
     std::size_t pos = 0;
     int line_no = 0;
     while (pos <= text.size()) {
@@ -265,6 +265,18 @@ inline Settings parse_settings(const std::string& text, std::vector<Problem>& pr
         s.laser_range_max_mm = Settings{}.laser_range_max_mm;
     }
     return s;
+}
+
+/// Reads a settings file. The result starts from the defaults; every line that cannot be used is listed in `problems` and changes nothing.
+inline Settings parse_settings(const std::string& text, std::vector<Problem>& problems) { return parse_settings_over(Settings{}, text, problems); }
+
+inline const char* temp_sensor_text(TempSensor t) {
+    switch (t) {
+        case TempSensor::Ds18b20: return "ds18b20";
+        case TempSensor::Ntc: return "ntc";
+        case TempSensor::Mlx90614: return "mlx90614";
+        default: return "none";
+    }
 }
 
 }  // namespace bungard_aux

@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| Version | `0.0.1` |
+| Version | `0.0.2` |
 | Maturité | Échafaudage |
-| Tests | 2 programmes de test sur l'ordinateur (203 vérifications) |
+| Tests | 10 programmes de test sur l'ordinateur |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
 | Sur du matériel réel | Non : le firmware se compile mais n'a pas été flashé, et rien n'a été branché à une machine |
 
@@ -44,7 +44,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit et se compile ; il n'a pas été flashé. |
-| Tests | 🟢 | 2 programmes de test sur l'ordinateur réussissent (`ctest`) : 203 vérifications du fichier de réglages, de la mesure du laser, de la vitesse et de la température de la broche, de la sortie de protection et des mots du réseau. |
+| Tests | 🟢 | 10 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en huit langues et les piles des tâches. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |
@@ -58,8 +58,9 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 * La **broche** : la vitesse vient des impulsions d'un capteur (capteur à effet Hall ou disque à fentes, n'importe quel nombre d'impulsions par tour) et vaut zéro quand les impulsions cessent ; la température a un avertissement, un niveau critique et une hystérésis pour que l'état ne clignote pas ; un capteur activé qui ne répond pas compte comme chaud.
 * La **sortie de protection** : un GPIO à l'état bas dès que la broche doit s'arrêter (trop rapide, trop chaude, un capteur muet) et aussi tant que le nœud ne tourne pas, à câbler sur la ligne d'arrêt de l'unité de commande par un relais ou un optocoupleur ; elle peut être désactivée dans les réglages.
 * La **caméra et le réseau** : la vidéo de la caméra en MJPEG sur `/stream` et les lectures sur `/api/status`, par un port réseau filaire (W5500 sur SPI) ; le jeton protège la mesure et la caméra.
-* Le **fichier de réglages** `head.cfg` : chaque valeur ajustée (le réseau, la caméra, le laser, la broche, la température, la sortie de protection) est une ligne d'un fichier dans sa propre partition, jamais un nombre dans le code ; une valeur hors plage est signalée et la valeur par défaut reste.
+* Le **fichier de réglages** la page Tête : chaque valeur ajustée (le réseau, la caméra, le laser, la broche, la température, la sortie de protection) est une ligne d'un fichier dans sa propre partition, jamais un nombre dans le code ; une valeur hors plage est signalée et la valeur par défaut reste.
 * La **vidéo comme l'envoie une caméra IP** : RTSP (`rtsp://ADRESSE/stream1`, JPEG sur RTP, en UDP ou dans la connexion TCP, avec connexion Digest ou Basic) et ONVIF (WS-Discovery, pour que enregistreurs et gestionnaires trouvent le nœud, et les services du profil S : profils, encodeurs avec les tailles que la caméra sait faire, l'adresse du flux et de l'instantané, le jeton d'utilisateur) ; les deux utilisent l'utilisateur et le mot de passe des réglages, et sans mot de passe rien n'est servi.
+* **Le panneau et la mise à jour, comme les autres nœuds :** le nœud a le panneau web des nœuds d'A.R.M.O.R. et d'EH3D-NODE-BUNGARD (le menu en groupes avec la langue et la déconnexion en pied ; un Résumé ; une page Wi-Fi avec jusqu'à trois réseaux de secours quand le principal tombe ; une page Tête qui modifie les réglages de la caméra, des flux, du laser et de la broche ; Aide ; À propos ; utilisateurs ; le journal), la copie d'un slot de firmware sur l'autre dans les deux sens et la mise à jour depuis la dernière release GitHub de ce projet (le SHA-256 publié par la release est vérifié, l'adresse doit être celle du projet et seul un administrateur la demande ; les releases ne sont pas signées). Il partage sa base de firmware avec EH3D-NODE-BUNGARD.
 
 ## 🧩 Rôle dans EH3D
 
@@ -81,14 +82,50 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 
 <p align="center"><em>Ce que le nœud répond sur le réseau : l'état (`GET /api/status`), une mesure de la table (`POST /api/measure`) et la ligne que les programmes de bureau lisent comme un point de la carte. Un dessin des formats que vérifient les tests, pas une capture d'une carte.</em></p>
 
+<p align="center">
+  <img src="images/screenshots/panel-overview.png" alt="panel-overview" width="100%">
+</p>
+
+<p align="center"><em>La page Résumé : le nœud, son matériel, son horloge, sa flash avec les deux slots de firmware et son réseau.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-status.png" alt="panel-status" width="100%">
+</p>
+
+<p align="center"><em>La page État, dans le thème Forge des autres programmes EH3D.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-head.png" alt="panel-head" width="100%">
+</p>
+
+<p align="center"><em>La page Tête : la caméra, les flux, le laser, les capteurs de la broche et la sortie de protection (mots de passe et jeton en écriture seule).</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-wifi.png" alt="panel-wifi" width="100%">
+</p>
+
+<p align="center"><em>La page Wi-Fi : le réseau que le nœud rejoint et jusqu'à trois réseaux de secours en cas de perte.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-update.png" alt="panel-update" width="100%">
+</p>
+
+<p align="center"><em>La page Firmware : la mise à jour depuis GitHub, le téléversement d'un fichier et les deux slots, avec la copie de l'un sur l'autre.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-help.png" alt="panel-help" width="100%">
+</p>
+
+<p align="center"><em>La page Aide : un sujet pour chaque page du panneau.</em></p>
+
 ## ✨ Fonctionnalités
 
 * **Une mesure fiable, ou aucune :** plusieurs lectures, les aberrantes écartées, et un refus (avec le motif) quand les lectures se dispersent trop, sortent de la plage ou sont trop peu nombreuses.
 * **Une broche surveillée en permanence :** vitesse à partir des impulsions, température avec un avertissement, un niveau critique et une hystérésis, et une sortie de protection qui s'ouvre toute seule quand quelque chose ne va pas ou que le nœud ne tourne pas.
 * **Vidéo comme une caméra IP :** RTSP et ONVIF avec connexion, pour que n'importe quel lecteur, enregistreur ou gestionnaire ONVIF la prenne ; et la caméra en MJPEG sur `/stream` derrière le jeton.
 * **Sûr par défaut :** sans jeton, ni mesure ni caméra ; chaque limite a un interrupteur dans les réglages et part de sa position conservatrice.
-* **Deux caméras, l'OV2640 et l'OV5640 :** le capteur dit laquelle c'est et le nœud donne la plus grande taille que les réglages permettent et que ce capteur sait faire (l'OV2640 jusqu'à 1600x1200, l'OV5640 jusqu'à 2592x1944), l'indique dans `/api/status` (`camera_model`) et dans les options d'encodeur d'ONVIF ; `camera_model = auto | ov2640 | ov5640` dans `head.cfg`. Les broches du connecteur caméra de la Waveshare ESP32-S3-ETH sont les valeurs par défaut de `menuconfig`.
-* **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans `head.cfg`) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
+* **Deux caméras, l'OV2640 et l'OV5640 :** le capteur dit laquelle c'est et le nœud donne la plus grande taille que les réglages permettent et que ce capteur sait faire (l'OV2640 jusqu'à 1600x1200, l'OV5640 jusqu'à 2592x1944), l'indique dans `/api/status` (`camera_model`) et dans les options d'encodeur d'ONVIF ; `camera_model = auto | ov2640 | ov5640` dans la page Tête. Les broches du connecteur caméra de la Waveshare ESP32-S3-ETH sont les valeurs par défaut de `menuconfig`.
+* **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans la page Tête) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
 
 ## 🔒 Sécurité et protection
 
@@ -107,7 +144,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 
 | Interface | Ce que c'est | Où |
 |---|---|---|
-| Fichier de réglages | `head.cfg` dans la partition `config` : lignes `clé = valeur` ; voir `head.cfg.example` | `core/aux_config.hpp` |
+| Réglages | un document dans la flash, modifié sur la page Tête du panneau web ; les clés sont celles de `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
 | État | `GET /api/status` : le nœud, la caméra, le laser, la vitesse, la température, la sortie de protection et la durée de fonctionnement en une ligne de JSON | `core/protocol.hpp` |
 | Mesure | `POST /api/measure[?samples=N]` avec le jeton : la distance à la table, la dispersion et pourquoi une mesure a été refusée | `core/laser.hpp`, `main/app_main.cpp` |
 | Caméra | `GET /stream` avec le jeton : MJPEG | `main/app_main.cpp` |
@@ -119,7 +156,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 
 ## ⚙️ Configuration
 
-Tout ce qui est réglé est une ligne de `head.cfg` (copiez `head.cfg.example` dans la partition `config`) ; une valeur hors plage est signalée dans le journal et la valeur par défaut reste. Les plus importants :
+Les réglages sont conservés dans la flash comme un seul document et se modifient sur la page Tête du panneau web (les mots de passe et le jeton sont en écriture seule : le panneau ne les montre jamais). Les clés et leurs plages sont celles de `head.cfg.example` ; le fichier la page Tête des versions précédentes n'est plus lu.
 
 | Réglage | Défaut | Plage | Ce que ça fait |
 |---|---|---|---|
@@ -144,11 +181,11 @@ build.bat            # les tests sur l'ordinateur (Windows)  -  ./build.sh sous 
 python -I tools/ci_validate.py
 ```
 
-Le firmware se compile avec ESP-IDF 5.5.5 : `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produit l'image (réglez les broches de votre carte sous `EH3D Bungard AUX`), et une partition nommée `config` contient `head.cfg`.
+Le firmware se compile avec ESP-IDF 5.5.5 : `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` produit l'image (réglez les broches de votre carte sous `EH3D Bungard AUX`), et les réglages se font dans le panneau web une fois le nœud en marche.
 
 ## 🧪 Tests
 
-Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (103 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il se compile, mais les tests tournent sur l'ordinateur. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé).
+Les tests sur l'ordinateur (`build.bat` ou `./build.sh`, puis `ctest`) sont deux programmes et tout passe : `test_aux` (103 vérifications) sur le fichier de réglages (valeurs par défaut, valeurs, valeurs erronées, limites incohérentes entre elles), la mesure du laser (la médiane, la lecture aberrante écartée, le décalage, les lectures marquées mauvaises, la plage, aucune lecture, une dispersion trop grande), la vitesse de la broche (impulsions par tour, une broche qui ralentit, arrêtée quand les impulsions cessent), la température (l'hystérésis, un capteur qui tombe en panne), la sortie de protection et les mots du réseau (la ligne de requête, les routes, le jeton dans l'en-tête ou la requête, le nombre de lectures, le JSON de l'état et de la mesure, la ligne d'un point de la carte). Le firmware n'est pas couvert : il se compile, mais les tests tournent sur l'ordinateur. Le deuxième programme, `test_stream` (100 vérifications), couvre la vidéo : les empreintes des connexions contre leurs vecteurs publiés (MD5, SHA-1, base64 et l'exemple Digest du RFC 2617), les requêtes RTSP et toute la session (connexion, SDP, transport UDP et entrelacé, play, pause, teardown, une session erronée, multicast refusé), la charge RTP de JPEG (les tables dans le premier paquet, l'ordre, le marqueur, le bouclage de la séquence) et ONVIF (découverte, le jeton d'utilisateur avec l'exemple de la norme, les appels ouverts et protégés, les services et un appel non réalisé). En plus de ces deux programmes, `test_head_settings` lit, vérifie et écrit la section de la tête du document de réglages comme le fait le panneau (les mots de passe et le jeton restent en écriture seule), et les tests partagés de la base du firmware couvrent la mise à jour depuis GitHub, l'horloge et les utilisateurs.
 
 ## 🏗️ Compilation et publication
 
@@ -160,8 +197,8 @@ La version se trouve dans `eh3d.project.json`, et chaque version a son entrée d
 |---|---|
 | Une mesure est refusée avec `no_readings` | Aucun VL53L1X ne répond sur le bus I2C : vérifiez les broches SDA et SCL dans `menuconfig` (la caméra prend les GPIO 41 et 42 sur la Waveshare ESP32-S3-ETH) et le câblage ; le reste de la réponse est testé. |
 | Une mesure est refusée avec `too_noisy` | Les lectures se dispersent plus que `laser_sigma_max_mm` : laissez la tête et la table se stabiliser, ou relevez un peu la limite ; vérifiez que rien ne vibre. |
-| Le nœud répond 401 à une mesure ou à la caméra | Réglez `token` dans `head.cfg` (8 à 64 caractères) et envoyez-le dans l'en-tête `Authorization: Bearer ...` ou dans `?token=`. |
-| La sortie de protection est toujours ouverte | Un capteur de température activé qui ne répond pas compte comme chaud : vérifiez son fil et sa broche dans `menuconfig` et `temp_sensor` dans `head.cfg`, ou mettez `temp_sensor = none` au banc. |
+| Le nœud répond 401 à une mesure ou à la caméra | Réglez `token` dans la page Tête (8 à 64 caractères) et envoyez-le dans l'en-tête `Authorization: Bearer ...` ou dans `?token=`. |
+| La sortie de protection est toujours ouverte | Un capteur de température activé qui ne répond pas compte comme chaud : vérifiez son fil et sa broche dans `menuconfig` et `temp_sensor` dans la page Tête, ou mettez `temp_sensor = none` au banc. |
 
 ## 📂 Structure du dépôt
 
@@ -176,6 +213,7 @@ La version se trouve dans `eh3d.project.json`, et chaque version a son entrée d
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
+│   ├── bungard_config.hpp                       les réglages du nœud et la section de la tête
 │   ├── laser.hpp                                la mesure de la hauteur de la table
 │   ├── camera.hpp                               les caméras OV2640 et OV5640 et leurs tailles
 │   ├── spindle.hpp                              vitesse, chaleur et sortie de protection
@@ -183,19 +221,32 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── hash.hpp                                 les connexions : MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP et la charge RTP de JPEG
 │   ├── onvif.hpp                                ONVIF : découverte et services SOAP
-│   └── protocol.hpp                             les mots du réseau : routes, jeton, JSON
+│   ├── protocol.hpp                             les mots du réseau : routes, jeton, JSON
+│   ├── node_settings.hpp auth.hpp               réglages, utilisateurs (base)
+│   ├── netplan.hpp json.hpp                     plan réseau et JSON (base)
+│   └── release_assets.hpp semver.hpp            quel fichier d'une version est l'image de cette carte
 ├── main/
-│   ├── app_main.cpp                             démarrage, réglages, réseau, serveur web, caméra
+│   ├── app_main.cpp                             démarrage, réglages, réseau, panneau
+│   ├── head.cpp head.hpp                        caméra, laser, broche, routes
 │   ├── sensors.cpp sensors.hpp                  les broches : impulsions, sortie de protection, capteurs
 │   ├── stream.cpp stream.hpp                    serveur RTSP, services ONVIF et découverte
-│   └── idf_component.yml Kconfig.projbuild      liste des composants et broches de menuconfig
+│   ├── idf_component.yml Kconfig.projbuild      liste des composants et broches de menuconfig
+│   ├── web_server.cpp network.cpp               serveur du panneau, réseau (base)
+│   ├── node_store.cpp node_guard.cpp            stockage, gardien (base)
+│   └── github_update.cpp entropy.cpp            la mise à jour depuis GitHub et la copie d'un emplacement
+├── panel/
+│   ├── index.html style.css                     la page et la disposition du menu latéral
+│   └── app.js text.js                           les pages et les textes en huit langues
 ├── tests/                                       tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran
 ├── docs/                                        les notes matérielles et les sources des deux images
 ├── tools/                                       contrôle CI, contrôle du README et outils des images
 ├── CMakeLists.txt                               le projet ESP-IDF
 ├── partitions.csv                               la répartition de la flash à deux emplacements
 ├── head.cfg.example                             chaque réglage avec sa valeur par défaut et sa plage
-├── sdkconfig.defaults                           réglages ESP-IDF pour le module ESP32-P4
+├── sdkconfig.defaults                           réglages ESP-IDF communs aux deux cartes
+├── sdkconfig.board.s3-eth                       réglages de la carte filaire
+├── sdkconfig.board.s3-wifi                      réglages de la carte Wi-Fi
+├── dependencies.lock                            les versions exactes des composants
 ├── images/                                      bannière et images d'Architecture et de Structure du dépôt
 ├── .github/                                     workflows de CI et de publication, modèles d'issues et de pull requests
 ├── build.sh build.bat                           compile et exécute les tests sur ordinateur dans un panneau en direct

@@ -1,113 +1,165 @@
-menu "EH3D Bungard AUX"
-    config AUX_CONFIG_PATH
-        string "Settings file in the config partition"
-        default "/config/head.cfg"
+menu "EH3D Bungard AUX node"
 
-    menu "Wired network (W5500 over SPI)"
-        config AUX_ETH_SPI_HOST
-            int "SPI host of the network chip"
-            default 1
-        config AUX_ETH_MISO
-            int "MISO GPIO"
-            default 12
-        config AUX_ETH_MOSI
-            int "MOSI GPIO"
-            default 11
-        config AUX_ETH_SCLK
-            int "SCLK GPIO"
-            default 13
-        config AUX_ETH_CS
-            int "CS GPIO"
-            default 14
-        config AUX_ETH_INT
-            int "Interrupt GPIO"
-            default 10
-        config AUX_ETH_RST
-            int "Reset GPIO (-1: not wired)"
-            default 9
-    endmenu
+# The board the image is for. The build script picks it (sdkconfig.board.<board>); the two profiles differ in the pin table, in the default way in
+# (the cable or Wi-Fi) and in whether the W5500 Ethernet driver is built.
+choice EH3D_BOARD
+    prompt "Board"
+    default EH3D_BOARD_S3_WIFI
 
-    menu "Sensors"
-        config AUX_RPM_GPIO
-            int "GPIO of the pulses of the spindle sensor (-1: not wired)"
-            default -1
-            help
-                A hall sensor or a slotted disc on the spindle; one rising edge for each pulse. Check the pin against the schematic of the board.
-        config AUX_PROTECT_GPIO
-            int "GPIO of the protect output (-1: not wired)"
-            default -1
-            help
-                High while the spindle may run, low when it is too fast or too hot (or when this node is not running). Wire it into the stop line of the control
-                unit through a relay or an opto-coupler: it must open by itself when the node loses power.
-        config AUX_I2C_SDA
-            int "I2C SDA GPIO of the laser (-1: not wired)"
-            default -1
-            help
-                Not 41: on the Waveshare ESP32-S3-ETH the camera connector takes GPIO 41 and 42. Pick two free pins of the board.
-        config AUX_I2C_SCL
-            int "I2C SCL GPIO of the laser (-1: not wired)"
-            default -1
-        config AUX_ONEWIRE_GPIO
-            int "GPIO of the one-wire temperature sensor, a DS18B20 (-1: not wired)"
-            default -1
-            help
-                With a 4.7 k pull-up to 3.3 V. Used when head.cfg says temp_sensor = ds18b20.
-        config AUX_NTC_GPIO
-            int "GPIO (analogue input) of the NTC thermistor divider (-1: not wired)"
-            default -1
-            help
-                The thermistor to ground and a fixed resistor to 3.3 V, the pin between them. Used when head.cfg says temp_sensor = ntc; its values (ntc_series_ohm, ntc_r25_ohm, ntc_beta) are in head.cfg.
-                The infrared thermometer MLX90614 (temp_sensor = mlx90614) uses the I2C pins of the laser: both sit on the same bus.
-    endmenu
+config EH3D_BOARD_S3_WIFI
+    bool "s3-wifi: ESP32-S3-WROOM-1 N16R8 (no Ethernet; Wi-Fi only)"
 
-    menu "Camera pins (the defaults are those of the Waveshare ESP32-S3-ETH camera connector; check them against the schematic of your board)"
-        config AUX_CAM_PWDN
-            int "PWDN GPIO"
-            default -1
-        config AUX_CAM_RESET
-            int "RESET GPIO"
-            default -1
-        config AUX_CAM_XCLK
-            int "XCLK GPIO"
-            default 3
-        config AUX_CAM_SIOD
-            int "SIOD (SDA) GPIO"
-            default 48
-        config AUX_CAM_SIOC
-            int "SIOC (SCL) GPIO"
-            default 47
-        config AUX_CAM_VSYNC
-            int "VSYNC GPIO"
-            default 1
-        config AUX_CAM_HREF
-            int "HREF GPIO"
-            default 2
-        config AUX_CAM_PCLK
-            int "PCLK GPIO"
-            default 39
-        config AUX_CAM_D0
-            int "D0 GPIO"
-            default 41
-        config AUX_CAM_D1
-            int "D1 GPIO"
-            default 45
-        config AUX_CAM_D2
-            int "D2 GPIO"
-            default 46
-        config AUX_CAM_D3
-            int "D3 GPIO"
-            default 42
-        config AUX_CAM_D4
-            int "D4 GPIO"
-            default 40
-        config AUX_CAM_D5
-            int "D5 GPIO"
-            default 38
-        config AUX_CAM_D6
-            int "D6 GPIO"
-            default 15
-        config AUX_CAM_D7
-            int "D7 GPIO"
-            default 18
-    endmenu
+config EH3D_BOARD_S3_ETH
+    bool "s3-eth: Waveshare ESP32-S3-ETH (W5500 Ethernet over SPI, PoE)"
+
+endchoice
+
+# Almost everything a node needs is set in its web panel and stored in flash: its identity, its Wi-Fi, the access token of the control link, the pins and the spindle. The values below are
+# only the FIRST settings of a freshly flashed node (used while the flash holds no configuration), and a build with all of them empty is a generic image that is configured entirely
+# from the panel. The factory values of the machine settings (pins, port, spindle) are in core/bungard_config.hpp.
+
+config EH3D_NODE_ID
+    string "First node identifier (empty: bungard-<last three bytes of the MAC>)"
+    default ""
+    help
+        Lowercase letters, digits, '-' and '_' (1 to 64, not starting with '-' or '_').
+
+config EH3D_SETUP_CODE
+    string "Setup code (empty: a random one made the first time and kept, shown on the USB console)"
+    default ""
+    help
+        The first administrator of a node is created with this code, from the panel. 8 to 32 characters.
+
+config EH3D_BOOT_FACTORY_RESET
+    bool "BOOT button erases the settings (hold it 8 s in the first 30 s after power-up)"
+    default y
+    help
+        Whoever can reach the board can wipe the node's settings and users with the button. Turn it off for a node in a place anyone can open; the reset of the panel (an administrator) stays.
+
+config EH3D_NTP_SERVER
+    string "NTP server (the clock of the log and of the panel)"
+    default "pool.ntp.org"
+    help
+        On a network without Internet access, point this at a server of your own.
+
+menu "Ethernet (W5500 over SPI)"
+    depends on EH3D_BOARD_S3_ETH
+
+config EH3D_ETH_SPI_HOST
+    int "SPI host of the W5500 (1 = SPI2, 2 = SPI3)"
+    range 1 2
+    default 1
+config EH3D_ETH_MOSI
+    int "W5500 MOSI GPIO"
+    default 11
+config EH3D_ETH_MISO
+    int "W5500 MISO GPIO"
+    default 12
+config EH3D_ETH_SCLK
+    int "W5500 SCLK GPIO"
+    default 13
+config EH3D_ETH_CS
+    int "W5500 chip select GPIO"
+    default 14
+config EH3D_ETH_INT
+    int "W5500 interrupt GPIO"
+    default 10
+config EH3D_ETH_RST
+    int "W5500 reset GPIO (-1 if not wired)"
+    default 9
+config EH3D_ETH_SPI_MHZ
+    int "SPI clock in MHz"
+    range 1 40
+    default 20
+    help
+        The W5500 accepts much more; 20 MHz leaves margin on jumper wires.
+
+endmenu
+
+
+# ---- what only the node of the drill head has: its sensors and its camera
+menu "Sensors"
+    config AUX_RPM_GPIO
+        int "GPIO of the pulses of the spindle sensor (-1: not wired)"
+        default -1
+        help
+            A hall sensor or a slotted disc on the spindle; one rising edge for each pulse. Check the pin against the schematic of the board.
+    config AUX_PROTECT_GPIO
+        int "GPIO of the protect output (-1: not wired)"
+        default -1
+        help
+            High while the spindle may run, low when it is too fast or too hot (or when this node is not running). Wire it into the stop line of the control
+            unit through a relay or an opto-coupler: it must open by itself when the node loses power.
+    config AUX_I2C_SDA
+        int "I2C SDA GPIO of the laser (-1: not wired)"
+        default -1
+        help
+            Not 41: on the Waveshare ESP32-S3-ETH the camera connector takes GPIO 41 and 42. Pick two free pins of the board.
+    config AUX_I2C_SCL
+        int "I2C SCL GPIO of the laser (-1: not wired)"
+        default -1
+    config AUX_ONEWIRE_GPIO
+        int "GPIO of the one-wire temperature sensor, a DS18B20 (-1: not wired)"
+        default -1
+        help
+            With a 4.7 k pull-up to 3.3 V. Used when head.cfg says temp_sensor = ds18b20.
+    config AUX_NTC_GPIO
+        int "GPIO (analogue input) of the NTC thermistor divider (-1: not wired)"
+        default -1
+        help
+            The thermistor to ground and a fixed resistor to 3.3 V, the pin between them. Used when head.cfg says temp_sensor = ntc; its values (ntc_series_ohm, ntc_r25_ohm, ntc_beta) are in head.cfg.
+            The infrared thermometer MLX90614 (temp_sensor = mlx90614) uses the I2C pins of the laser: both sit on the same bus.
+endmenu
+
+menu "Camera pins (the defaults are those of the Waveshare ESP32-S3-ETH camera connector; check them against the schematic of your board)"
+    config AUX_CAM_PWDN
+        int "PWDN GPIO"
+        default -1
+    config AUX_CAM_RESET
+        int "RESET GPIO"
+        default -1
+    config AUX_CAM_XCLK
+        int "XCLK GPIO"
+        default 3
+    config AUX_CAM_SIOD
+        int "SIOD (SDA) GPIO"
+        default 48
+    config AUX_CAM_SIOC
+        int "SIOC (SCL) GPIO"
+        default 47
+    config AUX_CAM_VSYNC
+        int "VSYNC GPIO"
+        default 1
+    config AUX_CAM_HREF
+        int "HREF GPIO"
+        default 2
+    config AUX_CAM_PCLK
+        int "PCLK GPIO"
+        default 39
+    config AUX_CAM_D0
+        int "D0 GPIO"
+        default 41
+    config AUX_CAM_D1
+        int "D1 GPIO"
+        default 45
+    config AUX_CAM_D2
+        int "D2 GPIO"
+        default 46
+    config AUX_CAM_D3
+        int "D3 GPIO"
+        default 42
+    config AUX_CAM_D4
+        int "D4 GPIO"
+        default 40
+    config AUX_CAM_D5
+        int "D5 GPIO"
+        default 38
+    config AUX_CAM_D6
+        int "D6 GPIO"
+        default 15
+    config AUX_CAM_D7
+        int "D7 GPIO"
+        default 18
+endmenu
+
 endmenu

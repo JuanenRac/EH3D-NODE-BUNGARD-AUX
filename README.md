@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.1-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,9 +28,9 @@
 
 | | |
 |---|---|
-| Version | `0.0.1` |
+| Version | `0.0.2` |
 | Maturity | Scaffolding |
-| Tests | 2 host test programs (203 checks) |
+| Tests | 10 host test programs |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
 | On real hardware | No: the firmware builds but has not been flashed, and nothing has been connected to a machine |
 
@@ -44,7 +44,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
-| Tests | 🟢 | 2 host test programs pass (`ctest`): 203 checks in the settings file, the measure of the laser, the speed and the temperature of the spindle, the protect output and the words of the network. |
+| Tests | 🟢 | 10 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in eight languages and the stacks of the tasks. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
@@ -58,8 +58,9 @@ Each line is one part of this repository and the light says how far it is today.
 * The **spindle**: the speed comes from the pulses of a sensor (a hall sensor or a slotted disc, any number of pulses per turn) and is zero when the pulses stop; the temperature has a warning, a critical level and a hysteresis so the state does not flicker; a sensor that is switched on and does not answer counts as hot.
 * The **protect output**: a GPIO that is low whenever the spindle must stop (too fast, too hot, a silent sensor) and also while the node is not running, to be wired into the stop line of the control unit through a relay or an opto-coupler; it can be switched off in the settings.
 * The **camera and the network**: the video of the camera as MJPEG on `/stream`, and the readings on `/api/status`, over a wired network port (W5500 over SPI); the token protects the measure and the camera.
-* The **settings file** `head.cfg`: every tuned value (the network, the camera, the laser, the spindle, the temperature, the protect output) is a line of one file in its own partition, never a number in the code; a value out of range is reported and the default stays.
+* The **settings**: every tuned value (the network, the camera, the laser, the spindle, the temperature, the protect output) is a setting of the node, kept in flash and edited on the web panel, never a number in the code; a value out of range is refused with the reason.
 * The **video as an IP camera sends it**: RTSP (`rtsp://ADDRESS/stream1`, JPEG over RTP, over UDP or inside the TCP connection, with the Digest or Basic login) and ONVIF (WS-Discovery, so that recorders and managers find the node, and the services of profile S: profiles, encoders with the sizes the camera can do, the address of the stream and of the snapshot, the user token); both use the user and the password of the settings, and without a password nothing is served.
+* **The panel and the update, as the other nodes have them:** the node has the web panel of the nodes of A.R.M.O.R. and of EH3D-NODE-BUNGARD (the menu in groups with the language and the sign-out at its foot; a Summary; a Wi-Fi page with up to three backup networks for when the main one is lost; a Head page that edits the settings of the camera, the streams, the laser and the spindle; Help; About; users; the log), the copy of one firmware slot over the other in both directions and the update from the newest GitHub release of this project (the SHA-256 that the release publishes is checked, the address must be the project's own and only an administrator asks for it; the releases are not signed). It shares its firmware base with EH3D-NODE-BUNGARD.
 
 ## 🧩 Role in EH3D
 
@@ -81,14 +82,50 @@ How the parts of this repository fit together: who talks to it, what it holds an
 
 <p align="center"><em>What the node answers on the network: the status (`GET /api/status`), a measure of the table (`POST /api/measure`) and the line that the desktop programs read as a point of the map. A drawing of the formats that the tests check, not a capture from a board.</em></p>
 
+<p align="center">
+  <img src="images/screenshots/panel-overview.png" alt="panel-overview" width="100%">
+</p>
+
+<p align="center"><em>The Summary page: the node, its hardware, its clock, its flash with the two firmware slots and its network.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-status.png" alt="panel-status" width="100%">
+</p>
+
+<p align="center"><em>The Status page, in the Forge theme of the other EH3D programs.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-head.png" alt="panel-head" width="100%">
+</p>
+
+<p align="center"><em>The Head page: the camera, the streams, the laser, the spindle sensors and the protect output (the passwords and the token are write-only).</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-wifi.png" alt="panel-wifi" width="100%">
+</p>
+
+<p align="center"><em>The Wi-Fi page: the network the node joins and up to three backup networks for when it is lost.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-update.png" alt="panel-update" width="100%">
+</p>
+
+<p align="center"><em>The Firmware page: the update from GitHub, the upload of a file and the two slots, with the copy of one over the other.</em></p>
+
+<p align="center">
+  <img src="images/screenshots/panel-help.png" alt="panel-help" width="100%">
+</p>
+
+<p align="center"><em>The Help page: a topic for each page of the panel.</em></p>
+
 ## ✨ Features
 
 * **A measure you can trust or no measure:** several readings, the odd ones thrown away, and a refusal (with the reason) when the readings spread too much, are out of the range or are too few.
 * **A spindle that is watched all the time:** speed from the pulses, temperature with a warning, a critical level and a hysteresis, and a protect output that opens by itself when something is wrong or the node is not running.
 * **Video like an IP camera:** RTSP and ONVIF with a login, so any player, recorder or ONVIF manager can take it; and the camera as MJPEG on `/stream` behind the token.
 * **Safe by default:** no token means no measure and no camera; every limit has a switch in the settings and starts in its conservative position.
-* **Two cameras, the OV2640 and the OV5640:** the sensor says which one it is and the node gives the largest size that the settings allow and that sensor can do (the OV2640 up to 1600x1200, the OV5640 up to 2592x1944), reports it on `/api/status` (`camera_model`) and in the encoder options of ONVIF; `camera_model = auto | ov2640 | ov5640` in `head.cfg`. The pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
-* **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in `head.cfg`) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
+* **Two cameras, the OV2640 and the OV5640:** the sensor says which one it is and the node gives the largest size that the settings allow and that sensor can do (the OV2640 up to 1600x1200, the OV5640 up to 2592x1944), reports it on `/api/status` (`camera_model`) and in the encoder options of ONVIF; `camera_model = auto | ov2640 | ov5640` in the Head page. The pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
+* **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in the Head page) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
 
 ## 🔒 Security & Safety
 
@@ -107,7 +144,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 
 | Interface | What it is | Where |
 |---|---|---|
-| Settings file | `head.cfg` in the `config` partition: `key = value` lines; see `head.cfg.example` | `core/aux_config.hpp` |
+| Settings | one document in flash, edited on the Head page of the web panel; the keys are the ones of `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
 | Status | `GET /api/status`: the node, the camera, the laser, the speed, the temperature, the protect output and the uptime as one line of JSON | `core/protocol.hpp` |
 | Measure | `POST /api/measure[?samples=N]` with the token: the distance to the table, the spread and why a measure was refused | `core/laser.hpp`, `main/app_main.cpp` |
 | Camera | `GET /stream` with the token: MJPEG | `main/app_main.cpp` |
@@ -119,7 +156,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 
 ## ⚙️ Configuration
 
-Everything tuned is a line of `head.cfg` (copy `head.cfg.example` to the `config` partition); a value out of range is reported in the log and the default stays. The most important ones:
+The settings are kept in flash as one document and are edited on the Head page of the web panel (the passwords and the token are write-only: the panel never shows them). The keys and their ranges are the ones listed in `head.cfg.example`; the file the Head page of earlier versions is no longer read.
 
 | Setting | Default | Range | What it does |
 |---|---|---|---|
@@ -144,11 +181,11 @@ build.bat            # the host tests (Windows)  -  ./build.sh on Linux
 python -I tools/ci_validate.py
 ```
 
-The firmware builds with ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` makes the image (set the pins of your board under `EH3D Bungard AUX`), and a partition named `config` holds `head.cfg`.
+The firmware builds with ESP-IDF 5.5.5: `idf.py set-target esp32s3 && idf.py menuconfig && idf.py build` makes the image (set the pins of your board under `EH3D Bungard AUX`), and the settings are made on the web panel once the node runs.
 
 ## 🧪 Testing
 
-The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_aux` (103 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it builds, but the tests run on a computer. The second program, `test_stream` (100 checks), covers the video: the hashes of the logins against their published vectors (MD5, SHA-1, base64 and the Digest example of RFC 2617), the RTSP requests and the whole session (login, SDP, UDP and interleaved transport, play, pause, teardown, a wrong session, multicast refused), the RTP payload of JPEG (the tables in the first packet, the order, the marker, the sequence wrapping) and ONVIF (discovery, the user token with the example of the standard, the open and the protected calls, the services and a call that is not done).
+The host tests (`build.bat` or `./build.sh`, then `ctest`) are two programs and all of it passes: `test_aux` (103 checks) on the settings file (defaults, values, wrong values, limits that make no sense together), the measure of the laser (the median, the odd reading thrown away, the offset, readings marked bad, the range, no readings, a spread that is too large), the speed of the spindle (pulses per turn, a slowing spindle, stopped when the pulses stop), the temperature (the hysteresis, a sensor that fails), the protect output, and the words of the network (the request line, the routes, the token in the header or the query, the number of readings, the JSON of the status and of the measure, the line of a point of the map). The firmware is not covered: it builds, but the tests run on a computer. The second program, `test_stream` (100 checks), covers the video: the hashes of the logins against their published vectors (MD5, SHA-1, base64 and the Digest example of RFC 2617), the RTSP requests and the whole session (login, SDP, UDP and interleaved transport, play, pause, teardown, a wrong session, multicast refused), the RTP payload of JPEG (the tables in the first packet, the order, the marker, the sequence wrapping) and ONVIF (discovery, the user token with the example of the standard, the open and the protected calls, the services and a call that is not done). Besides those two programs, `test_head_settings` reads, checks and writes the head section of the settings document the way the panel does (the passwords and the token stay write-only), and the shared tests of the firmware base cover the update from GitHub, the clock and the users.
 
 ## 🏗️ Build & Release
 
@@ -160,8 +197,8 @@ The version lives in `eh3d.project.json`, and each version has its entry in [CHA
 |---|---|
 | A measure is refused with `no_readings` | No VL53L1X answers on the I2C bus: check the pins SDA and SCL in `menuconfig` (the camera takes GPIO 41 and 42 on the Waveshare ESP32-S3-ETH) and the wiring; the rest of the answer is tested. |
 | A measure is refused with `too_noisy` | The readings spread more than `laser_sigma_max_mm`: let the head and the table settle, or raise the limit a little; check that nothing shakes. |
-| The node answers 401 to a measure or to the camera | Set `token` in `head.cfg` (8 to 64 characters) and send it in the header `Authorization: Bearer ...` or in `?token=`. |
-| The protect output is always open | A temperature sensor that is on and does not answer counts as hot: check its wire and its pin in `menuconfig` and `temp_sensor` in `head.cfg`, or set `temp_sensor = none` on the bench. |
+| The node answers 401 to a measure or to the camera | Set `token` in the Head page (8 to 64 characters) and send it in the header `Authorization: Bearer ...` or in `?token=`. |
+| The protect output is always open | A temperature sensor that is on and does not answer counts as hot: check its wire and its pin in `menuconfig` and `temp_sensor` in the Head page, or set `temp_sensor = none` on the bench. |
 
 ## 📂 Repository Structure
 
@@ -176,6 +213,7 @@ The version lives in `eh3d.project.json`, and each version has its entry in [CHA
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
+│   ├── bungard_config.hpp                       the settings of the node and the head section
 │   ├── laser.hpp                                the measure of the height of the table
 │   ├── camera.hpp                               the cameras OV2640 and OV5640 and their sizes
 │   ├── spindle.hpp                              speed, heat and the protect output
@@ -183,19 +221,32 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── hash.hpp                                 the logins: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP and the RTP payload of JPEG
 │   ├── onvif.hpp                                ONVIF: discovery and the SOAP services
-│   └── protocol.hpp                             the words of the network: routes, token, JSON
+│   ├── protocol.hpp                             the words of the network: routes, token, JSON
+│   ├── node_settings.hpp auth.hpp               settings and users (shared base)
+│   ├── netplan.hpp json.hpp                     network plan and JSON (shared base)
+│   └── release_assets.hpp semver.hpp            which file of a release is this board's image
 ├── main/
-│   ├── app_main.cpp                             start, settings, network, web server, camera
+│   ├── app_main.cpp                             start, settings, network, panel
+│   ├── head.cpp head.hpp                        camera, laser, spindle, routes
 │   ├── sensors.cpp sensors.hpp                  the pins: pulses, protect output, sensors
 │   ├── stream.cpp stream.hpp                    RTSP server, ONVIF services and discovery
-│   └── idf_component.yml Kconfig.projbuild      component list and menuconfig pins
+│   ├── idf_component.yml Kconfig.projbuild      component list and menuconfig pins
+│   ├── web_server.cpp network.cpp               panel server, network (base)
+│   ├── node_store.cpp node_guard.cpp            settings store, guard (base)
+│   └── github_update.cpp entropy.cpp            the update from GitHub and the copy of a slot
+├── panel/
+│   ├── index.html style.css                     the page and the side menu layout
+│   └── app.js text.js                           the pages and the texts in eight languages
 ├── tests/                                       host tests of the settings, the gate, the voice and the screen texts
 ├── docs/                                        the hardware notes and the two pictures' sources
 ├── tools/                                       CI check, README check and the picture tools
 ├── CMakeLists.txt                               the ESP-IDF project
 ├── partitions.csv                               the flash layout with two slots
 ├── head.cfg.example                             every setting with its default and range
-├── sdkconfig.defaults                           ESP-IDF settings for the ESP32-P4 module
+├── sdkconfig.defaults                           ESP-IDF settings shared by both boards
+├── sdkconfig.board.s3-eth                       settings of the wired board
+├── sdkconfig.board.s3-wifi                      settings of the Wi-Fi board
+├── dependencies.lock                            the exact versions of the components
 ├── images/                                      banner and the Architecture and Repository Structure pictures
 ├── .github/                                     CI and release workflows, issue and pull-request templates
 ├── build.sh build.bat                           build and run the host tests in a live panel

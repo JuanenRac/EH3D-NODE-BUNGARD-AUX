@@ -37,6 +37,20 @@
         },
         {
           "desc": {
+            "en": "the settings of the node and the head section",
+            "es": "los ajustes del nodo y la sección del cabezal",
+            "it": "le impostazioni del nodo e la sezione della testa",
+            "de": "die Einstellungen des Knotens und der Kopf-Abschnitt",
+            "fr": "les réglages du nœud et la section de la tête",
+            "pt": "as definições do nó e a secção do cabeçote",
+            "zh": "节点设置和钻头部分",
+            "ja": "ノードの設定とヘッドの項目"
+          },
+          "name": "bungard_config.hpp",
+          "tree_name": "bungard_config.hpp"
+        },
+        {
+          "desc": {
             "en": "the measure of the height of the table",
             "es": "la medida de la altura de la mesa",
             "it": "la misura dell'altezza del tavolo",
@@ -141,6 +155,48 @@
             "ja": "ネットワークの言葉：ルート、トークン、JSON"
           },
           "name": "protocol.hpp"
+        },
+        {
+          "desc": {
+            "en": "settings and users (shared base)",
+            "es": "ajustes y usuarios (base común)",
+            "de": "Einstellungen, Benutzer (Basis)",
+            "fr": "réglages, utilisateurs (base)",
+            "it": "impostazioni, utenti (base)",
+            "ja": "設定とユーザー（共有基盤）",
+            "zh": "设置和用户（共享基础）",
+            "pt": "definições, utilizadores (base)"
+          },
+          "name": "node_settings.hpp  auth.hpp",
+          "tree_name": "node_settings.hpp auth.hpp"
+        },
+        {
+          "desc": {
+            "en": "network plan and JSON (shared base)",
+            "es": "plan de red y JSON (base común)",
+            "de": "Netzplan und JSON (Basis)",
+            "fr": "plan réseau et JSON (base)",
+            "it": "piano di rete e JSON (base)",
+            "ja": "ネットワーク計画と JSON（共有基盤）",
+            "zh": "网络方案和 JSON（共享基础）",
+            "pt": "plano de rede e JSON (base)"
+          },
+          "name": "netplan.hpp  json.hpp",
+          "tree_name": "netplan.hpp json.hpp"
+        },
+        {
+          "desc": {
+            "en": "which file of a release is this board's image",
+            "es": "qué fichero de una versión es la imagen de esta placa",
+            "it": "quale file di una versione è l'immagine di questa scheda",
+            "de": "welche Datei eines Releases das Image dieser Platine ist",
+            "fr": "quel fichier d'une version est l'image de cette carte",
+            "pt": "qual ficheiro de uma versão é a imagem desta placa",
+            "zh": "发布中哪个文件是这块板子的镜像",
+            "ja": "リリースのどのファイルがこのボードのイメージか"
+          },
+          "name": "release_assets.hpp  semver.hpp",
+          "tree_name": "release_assets.hpp semver.hpp"
         }
       ],
       "sub": {
@@ -161,16 +217,31 @@
       "rows": [
         {
           "desc": {
-            "en": "start, settings, network, web server, camera",
-            "es": "inicio, ajustes, red, servidor web, cámara",
-            "it": "avvio, impostazioni, rete, server web, telecamera",
-            "de": "Start, Einstellungen, Netz, Webserver, Kamera",
-            "fr": "démarrage, réglages, réseau, serveur web, caméra",
-            "pt": "arranque, definições, rede, servidor web, câmara",
-            "zh": "启动、设置、网络、网页服务器、摄像头",
-            "ja": "起動、設定、ネットワーク、Web サーバー、カメラ"
+            "en": "start, settings, network, panel",
+            "es": "arranque, ajustes, red, panel",
+            "it": "avvio, impostazioni, rete, pannello",
+            "de": "Start, Einstellungen, Netz, Panel",
+            "fr": "démarrage, réglages, réseau, panneau",
+            "pt": "arranque, definições, rede, painel",
+            "zh": "启动、设置、网络、面板",
+            "ja": "起動・設定・ネットワーク・パネル"
           },
-          "name": "app_main.cpp"
+          "name": "app_main.cpp",
+          "tree_name": "app_main.cpp"
+        },
+        {
+          "desc": {
+            "en": "camera, laser, spindle, routes",
+            "es": "cámara, láser, husillo, rutas",
+            "it": "telecamera, laser, mandrino, rotte",
+            "de": "Kamera, Laser, Spindel, Routen",
+            "fr": "caméra, laser, broche, routes",
+            "pt": "câmara, laser, fuso, rotas",
+            "zh": "摄像头、激光、主轴、路由",
+            "ja": "カメラ・レーザー・主軸・ルート"
+          },
+          "name": "head.cpp  head.hpp",
+          "tree_name": "head.cpp head.hpp"
         },
         {
           "desc": {
@@ -213,6 +284,48 @@
           },
           "name": "idf_component.yml  Kconfig.projbuild",
           "tree_name": "idf_component.yml Kconfig.projbuild"
+        },
+        {
+          "desc": {
+            "en": "panel server, network (base)",
+            "es": "servidor del panel, red (base)",
+            "de": "Panel-Server, Netz (Basis)",
+            "fr": "serveur du panneau, réseau (base)",
+            "it": "server pannello, rete (base)",
+            "ja": "パネル サーバーと通信（共有基盤）",
+            "zh": "面板服务器、网络（基础）",
+            "pt": "servidor do painel, rede (base)"
+          },
+          "name": "web_server.cpp  network.cpp",
+          "tree_name": "web_server.cpp network.cpp"
+        },
+        {
+          "desc": {
+            "en": "settings store, guard (base)",
+            "es": "almacén y vigilante (base)",
+            "de": "Speicher, Wächter (Basis)",
+            "fr": "stockage, gardien (base)",
+            "it": "archivio, guardiano (base)",
+            "ja": "設定保存とガード（共有基盤）",
+            "zh": "设置存储、看门狗（基础）",
+            "pt": "armazenamento, guarda (base)"
+          },
+          "name": "node_store.cpp  node_guard.cpp",
+          "tree_name": "node_store.cpp node_guard.cpp"
+        },
+        {
+          "desc": {
+            "en": "the update from GitHub and the copy of a slot",
+            "es": "la actualización desde GitHub y la copia de una ranura",
+            "it": "l'aggiornamento da GitHub e la copia di uno slot",
+            "de": "das Update von GitHub und das Kopieren eines Slots",
+            "fr": "la mise à jour depuis GitHub et la copie d'un emplacement",
+            "pt": "a atualização a partir do GitHub e a cópia de um slot",
+            "zh": "来自 GitHub 的更新和槽位复制",
+            "ja": "GitHub からの更新とスロットのコピー"
+          },
+          "name": "github_update.cpp  entropy.cpp",
+          "tree_name": "github_update.cpp entropy.cpp"
         }
       ],
       "sub": {
@@ -227,23 +340,138 @@
       }
     },
     {
+      "name": "panel/",
+      "span": 3,
+      "accent": "c",
+      "rows": [
+        {
+          "desc": {
+            "en": "the page and the side menu layout",
+            "es": "la página y la disposición del menú lateral",
+            "de": "die Seite und das Layout des Seitenmenüs",
+            "fr": "la page et la disposition du menu latéral",
+            "it": "la pagina e la disposizione del menu laterale",
+            "ja": "ページとサイド メニューのレイアウト",
+            "zh": "页面和侧边菜单布局",
+            "pt": "a página e a disposição do menu lateral"
+          },
+          "name": "index.html  style.css",
+          "tree_name": "index.html style.css"
+        },
+        {
+          "desc": {
+            "en": "the pages and the texts in eight languages",
+            "es": "las páginas y los textos en ocho idiomas",
+            "de": "die Seiten und die Texte in acht Sprachen",
+            "fr": "les pages et les textes en huit langues",
+            "it": "le pagine e i testi in otto lingue",
+            "ja": "ページと 8 言語の文言",
+            "zh": "页面和八种语言的文本",
+            "pt": "as páginas e os textos em oito idiomas"
+          },
+          "name": "app.js  text.js",
+          "tree_name": "app.js text.js"
+        }
+      ],
+      "sub": {
+        "en": "the web panel, packed into the firmware",
+        "es": "el panel web, empaquetado en el firmware",
+        "de": "das Web-Panel, ins Firmware-Abbild gepackt",
+        "fr": "le panneau web, empaqueté dans le firmware",
+        "it": "il pannello web, impacchettato nel firmware",
+        "ja": "ファームウェアに組み込まれる Web パネル",
+        "zh": "打包进固件的网页面板",
+        "pt": "o painel web, empacotado no firmware"
+      }
+    },
+    {
       "name": "tests/",
       "span": 3,
       "accent": "d",
       "rows": [
         {
           "desc": {
-            "en": "host tests of the settings, the laser, the spindle and the network",
-            "es": "pruebas de los ajustes, el láser, el husillo y la red",
-            "it": "prove delle impostazioni, del laser, del mandrino e della rete",
-            "de": "Tests der Einstellungen, des Lasers, der Spindel und des Netzes",
-            "fr": "tests des réglages, du laser, de la broche et du réseau",
-            "pt": "testes das definições, do laser, do fuso e da rede",
-            "zh": "设置、激光、主轴和网络的电脑测试",
-            "ja": "設定・レーザー・スピンドル・ネットワークのテスト"
+            "en": "settings, laser, spindle, video",
+            "es": "ajustes, láser, husillo, vídeo",
+            "it": "impostazioni, laser, mandrino, video",
+            "de": "Einstellungen, Laser, Spindel, Video",
+            "fr": "réglages, laser, broche, vidéo",
+            "pt": "definições, laser, fuso, vídeo",
+            "zh": "设置、激光、主轴、视频",
+            "ja": "設定・レーザー・主軸・映像"
           },
           "name": "test_aux.cpp  test_stream.cpp",
           "tree_name": "test_aux.cpp test_stream.cpp"
+        },
+        {
+          "desc": {
+            "en": "the settings of the head",
+            "es": "los ajustes del cabezal",
+            "it": "le impostazioni della testa",
+            "de": "die Einstellungen des Kopfes",
+            "fr": "les réglages de la tête",
+            "pt": "as definições do cabeçote",
+            "zh": "钻头设置",
+            "ja": "ヘッドの設定"
+          },
+          "name": "test_head_settings.cpp",
+          "tree_name": "test_head_settings.cpp"
+        },
+        {
+          "desc": {
+            "en": "GitHub update, the clock",
+            "es": "actualización GitHub, reloj",
+            "it": "aggiornamento GitHub, orologio",
+            "de": "GitHub-Update, die Uhr",
+            "fr": "mise à jour GitHub, horloge",
+            "pt": "atualização GitHub, relógio",
+            "zh": "GitHub 更新、时钟",
+            "ja": "GitHub 更新・時計"
+          },
+          "name": "test_release.cpp  test_clock.cpp",
+          "tree_name": "test_release.cpp test_clock.cpp"
+        },
+        {
+          "desc": {
+            "en": "what the nodes share",
+            "es": "lo que comparten los nodos",
+            "it": "ciò che i nodi condividono",
+            "de": "was die Knoten teilen",
+            "fr": "ce que les nœuds partagent",
+            "pt": "o que os nós partilham",
+            "zh": "各节点共有部分",
+            "ja": "ノード共通部分"
+          },
+          "name": "test_base.cpp  test_shared.cpp",
+          "tree_name": "test_base.cpp test_shared.cpp"
+        },
+        {
+          "desc": {
+            "en": "the panel texts, 8 languages",
+            "es": "textos del panel, 8 idiomas",
+            "it": "testi del pannello, 8 lingue",
+            "de": "Panel-Texte, 8 Sprachen",
+            "fr": "textes du panneau, 8 langues",
+            "pt": "textos do painel, 8 idiomas",
+            "zh": "面板文本，8 种语言",
+            "ja": "パネルの文言（8言語）"
+          },
+          "name": "check_panel_text.py",
+          "tree_name": "check_panel_text.py"
+        },
+        {
+          "desc": {
+            "en": "the stacks of the tasks",
+            "es": "las pilas de las tareas",
+            "it": "gli stack dei task",
+            "de": "die Stacks der Tasks",
+            "fr": "les piles des tâches",
+            "pt": "as pilhas das tarefas",
+            "zh": "任务栈",
+            "ja": "タスクのスタック"
+          },
+          "name": "check_task_safety.py",
+          "tree_name": "check_task_safety.py"
         }
       ],
       "tree": {
@@ -339,16 +567,58 @@
         },
         {
           "desc": {
-            "en": "ESP-IDF settings for the ESP32-P4 module",
-            "es": "ajustes de ESP-IDF para el módulo ESP32-P4",
-            "it": "impostazioni ESP-IDF per il modulo ESP32-P4",
-            "de": "ESP-IDF-Einstellungen für das ESP32-P4-Modul",
-            "fr": "réglages ESP-IDF pour le module ESP32-P4",
-            "pt": "definições do ESP-IDF para o módulo ESP32-P4",
-            "zh": "ESP32-P4 模块的 ESP-IDF 设置",
-            "ja": "ESP32-P4 モジュール向けの ESP-IDF 設定"
+            "en": "ESP-IDF settings shared by both boards",
+            "es": "ajustes de ESP-IDF comunes a las dos placas",
+            "it": "impostazioni ESP-IDF comuni alle due schede",
+            "de": "ESP-IDF-Einstellungen für beide Platinen",
+            "fr": "réglages ESP-IDF communs aux deux cartes",
+            "pt": "definições do ESP-IDF comuns às duas placas",
+            "zh": "两块板共用的 ESP-IDF 设置",
+            "ja": "両ボード共通の ESP-IDF 設定"
           },
           "name": "sdkconfig.defaults"
+        },
+        {
+          "desc": {
+            "en": "settings of the wired board",
+            "es": "ajustes de la placa con cable",
+            "it": "impostazioni della scheda cablata",
+            "de": "Einstellungen der Kabel-Platine",
+            "fr": "réglages de la carte filaire",
+            "pt": "definições da placa com cabo",
+            "zh": "有线板设置",
+            "ja": "有線ボードの設定"
+          },
+          "name": "sdkconfig.board.s3-eth",
+          "tree_name": "sdkconfig.board.s3-eth"
+        },
+        {
+          "desc": {
+            "en": "settings of the Wi-Fi board",
+            "es": "ajustes de la placa Wi-Fi",
+            "it": "impostazioni della scheda Wi-Fi",
+            "de": "Einstellungen der WLAN-Platine",
+            "fr": "réglages de la carte Wi-Fi",
+            "pt": "definições da placa Wi-Fi",
+            "zh": "Wi-Fi 板设置",
+            "ja": "Wi-Fi ボードの設定"
+          },
+          "name": "sdkconfig.board.s3-wifi",
+          "tree_name": "sdkconfig.board.s3-wifi"
+        },
+        {
+          "desc": {
+            "en": "the exact versions of the components",
+            "es": "las versiones exactas de los componentes",
+            "it": "le versioni esatte dei componenti",
+            "de": "die genauen Versionen der Komponenten",
+            "fr": "les versions exactes des composants",
+            "pt": "as versões exatas dos componentes",
+            "zh": "组件的确切版本",
+            "ja": "コンポーネントの正確なバージョン"
+          },
+          "name": "dependencies.lock",
+          "tree_name": "dependencies.lock"
         },
         {
           "name": "images/",
