@@ -1,0 +1,418 @@
+# Norsk (no): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	EH3D Bungard-hodenode
+grpNode	Node
+grpNetwork	Nettverk
+grpSystem	System
+navMenu	Hovedmeny
+navStatus	Status
+navUpdate	Firmware
+navLog	Logg
+skip	Hopp til innholdet
+themeToLight	Lyst tema
+themeToDark	Mørkt tema
+showShort	Vis
+e_other	Noden svarte med en feil: {0}
+statusNoControl	Denne siden viser hva hodet leser: kameraet, laseren, spindelens turtall og temperatur og beskyttelsesutgangen. Panelet flytter ingenting; det eneste det ber hodet om, er én måling av bordet.
+stLost	Ingen svar fra noden
+stSpindle	Spindel
+stSpindleBar	Turtall i forhold til maksimum
+spMax	Maksimalt turtall: {0} rpm
+stNode	Node
+fToken	Adgangstoken
+fTokenHint	Skrives til noden og vises aldri igjen. Skriv inn et nytt eller generer ett, og trykk deretter Lagre.
+noTokenNote	Uten adgangstoken kan ikke programmer lese kameraet, statusen eller målingen. Sett ett før du bruker hodet.
+netNow	Gjeldende tilkobling
+netTitle	Adresse
+hostnameHint	tomt: noden velger et navn ut fra identifikatoren sin
+netRestartNote	En endring av vertsnavnet eller tilkoblingen trer i kraft etter en omstart av noden.
+apNote	Oppsettstilgangspunktet er nodens eget Wi-Fi-nettverk, for å nå den fra en telefon når den ikke har adresse på ditt.
+setupWifiHelp	Noden har ingen kabel. Oppgi nå Wi-Fi-nettverket den skal koble til, eller la feltet stå tomt og bruk nodens eget oppsettsnettverk, hvor passordet er oppsettskoden (du kan endre det senere under Nettverk).
+rolesHelp	Administratorer kan endre alt. Lesere kan se status og innstillinger, men endrer ingenting.
+slotVersion	versjon {0}
+slotsUnknown	Noden rapporterte ikke firmwareplassene sine.
+chooseFirst	Velg en firmwarefil først.
+p_out_of_range	utenfor området
+p_duplicate_pin	denne pinnen brukes to ganger
+p_reserved_pin	reservert av kortet
+p_not_a_number	ikke et heltall
+staError	Siste Wi-Fi-feil
+se_failed	tilkoblingen mislyktes
+se_network_not_found	nettverket ble ikke funnet
+se_wrong_password	passordet ble avvist
+navNetwork	Nettverk
+navUsers	Brukere
+navSystem	System
+language	Språk
+signOut	Logg ut
+loading	Laster…
+unreachable	Noden svarer ikke.
+signIn	Logg inn
+rememberMe	Hold meg innlogget i denne nettleseren
+rememberUser	Husk brukernavnet mitt på denne enheten
+loginNote	Bare brukernavnet kan huskes, og bare hvis du krysser av i ruten. Passordet lagres, hvis du ønsker det, kun av nettleserens eller systemets egen passordbehandler; panelet lagrer det aldri.
+user	Bruker
+password	Passord
+showPassword	Vis passordet
+setupTitle	Sett opp denne noden
+setupCode	Oppsettskode
+adminName	Administratorens navn
+createAdmin	Opprett administrator
+setupWifi	Oppsetts-Wi-Fi for denne noden
+setupIntro	Denne noden har ingen bruker ennå. Skriv inn oppsettskoden noden viser på USB-konsollen sin hvert 15. sekund, og velg administrator.
+setupWifiTitle	Wi-Fi-nettverk noden skal koble til (valgfritt)
+setupWifiOptionalTitle	Wi-Fi-nettverk (valgfritt)
+setupWifiOptionalHelp	Dette kortet har en Ethernet-port: med en kabel tilkoblet lar du dette stå tomt. For å bruke noden over Wi-Fi i stedet (for eksempel på en benk uten kabel) oppgir du her nettverket den skal koble til. Hvis den ender opp uten adresse, åpner den oppsettsnettverket sitt igjen etter 90 sekunder, slik at den kan nås.
+save	Lagre
+saveRestart	Lagre og start på nytt
+restart	Start på nytt
+discard	Forkast endringer
+saved	Lagret.
+savedRestart	Lagret. Start noden på nytt for å ta det i bruk.
+unsaved	Det finnes ulagrede endringer.
+restarting	Noden starter på nytt…
+adminOnly	Bare en administrator kan endre dette.
+yes	ja
+no	nei
+add	Legg til
+delete	Slett
+refresh	Oppdater
+working	Jobber…
+confirmAsk	Er du sikker?
+nodeId	Identifikator
+firmware	Firmware
+uptime	Har vært i gang i
+address	Adresse
+netmask	Nettmaske
+gateway	Gateway
+mac	MAC
+link	Lenke
+linkUp	oppe
+linkDown	nede
+nodeTitle	Node
+uplink	Tilkobling til nettverket
+uplinkEthernet	Ethernet-kabel (PoE)
+uplinkWifi	Wi-Fi (kobler til et annet nettverk)
+dhcp	Hent adressen automatisk (DHCP)
+dns1	DNS-server 1
+dns2	DNS-server 2
+hostname	Vertsnavn
+wifiAp	Tilgangspunkt (Wi-Fi som denne noden tilbyr)
+apEnable	Tilby et Wi-Fi-nettverk
+ssid	Nettverksnavn (SSID)
+security	Sikkerhet
+secOpen	åpent (uten passord)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Wi-Fi-passord (8 til 63 tegn)
+passwordSet	et passord er lagret; la stå tomt for å beholde det
+hidden	Skjul nettverksnavnet
+wifiChannel	Kanal
+channelAuto	automatisk (1, 6 eller 11 etter node)
+channelNow	Denne noden ville brukt kanal {0}.
+wifiSta	Wi-Fi-stasjon (denne noden kobler til et Wi-Fi-nettverk)
+staEnable	Koble til et Wi-Fi-nettverk
+scanNetworks	Søk etter nettverk
+scanning	Søker…
+noNetworks	Ingen nettverk ble hørt.
+scanNote	Mens den søker, kan nodens eget tilgangspunkt kort koble fra klientene sine.
+useNetwork	Bruk
+signal	signal
+wiredNote	På kabelen ber noden om adressen sin via DHCP med mindre du setter den fast her. Dens eget Wi-Fi-nettverk, hvis du beholder det, er et eget nettverk (192.168.4.x) for å nå noden fra en telefon; det er ikke koblet til det kablede. Endringer trer i kraft etter en omstart.
+staNote	Noden har ingen kabel: gi den Wi-Fi-nettverket i huset eller anlegget ditt. Hvis du lar stasjonen være av, bruk dens eget tilgangspunkt.
+noWifiWarn	Noden har ingen kabel: la minst én av de to, tilgangspunktet eller stasjonen, være på, ellers kan den ikke nås.
+ethernetMissing	Ethernet-brikken svarer ikke (se koblingsveiledningen).
+station	Wi-Fi-stasjon
+notConnected	ikke tilkoblet
+apActive	Tilgangspunkt
+apClients	klienter
+channel	kanal
+setupNetwork	oppsettsnettverk
+usersTitle	Brukere av dette panelet
+role	Rolle
+roleAdmin	administrator
+roleViewer	leser (skrivebeskyttet)
+addUser	Legg til en bruker
+newPassword	Nytt passord (8 tegn eller mer)
+setPassword	Sett passord
+myAccount	Mitt passord
+currentPassword	Nåværende passord
+changePassword	Endre passordet mitt
+passwordChanged	Passordet er endret. Logg inn på nytt.
+you	du
+updateTitle	Oppdater firmware
+updateHelp	Velg firmwarefilen (en .bin bygget for dette prosjektet, ikke det sammenslåtte avbildet). Den kontrolleres før bruk, og hvis den nye versjonen ikke starter, går noden tilbake til den forrige av seg selv.
+chooseFile	Firmwarefil
+upload	Last opp og installer
+uploading	Laster opp… {0} %
+updateDone	Versjon {0} installert. Noden starter på nytt nå.
+slot	Kjører fra
+slotsTitle	Firmwareplasser
+slotsHelp	Noden har to firmwareplasser, ota_0 og ota_1. En oppdatering skrives til den som ikke kjører. Her kan du starte den andre når som helst, for å gå tilbake til forrige versjon eller fram til den som nettopp ble installert. Innstillingene beholdes.
+slotRunning	kjører nå
+slotNextBoot	starter neste gang
+slotEmpty	tom - ingen firmware
+switchSlot	Start {0}
+switchSlotNone	Den andre plassen inneholder ingen firmware
+switchAsk	Starte noden på nytt og starte {0} (versjon {1})?
+logTitle	Nodens logg
+copyLog	Kopier loggen
+copied	Kopiert
+copyFailed	Kunne ikke kopiere - marker teksten og kopier den for hånd
+maintenance	Vedlikehold
+rebootNode	Start noden på nytt
+factoryTitle	Tilbakestilling til fabrikkinnstillinger
+factoryHelp	Sletter alle innstillinger og alle brukere; noden starter på nytt i oppsett. Skriv RESET for å bekrefte.
+author	Opphavsperson
+license	Lisens
+e_unauthorized	Økten din er avsluttet. Logg inn på nytt.
+e_wrong_credentials	Feil bruker eller passord.
+e_too_many_attempts	For mange forsøk. Vent et øyeblikk.
+e_wrong_code	Oppsettskoden er feil.
+e_invalid_name	Navnet er ikke gyldig (3 til 32 tegn: a til z, 0 til 9, . _ -).
+e_weak_password	Passordet må ha 8 til 64 tegn.
+e_exists	Den brukeren finnes allerede.
+e_not_found	Ikke funnet.
+e_too_many_users	Det kan være høyst fire brukere.
+e_last_admin	Den siste administratoren kan ikke fjernes eller nedgraderes.
+e_wrong_password	Det nåværende passordet er feil.
+e_invalid_role	Rollen er ikke gyldig.
+e_forbidden	Du kan ikke gjøre det.
+e_storage	Flashminnet kunne ikke skrives til.
+e_invalid	Noen verdier er ikke gyldige; de er markert i skjemaet.
+e_not_json	Forespørselen ble ikke forstått.
+e_too_large	Forespørselen er for stor.
+e_bad_size	Filstørrelsen er ikke gyldig for en firmware.
+e_not_firmware	Den filen er ikke en ESP32-firmware.
+e_image_invalid	Firmwareavbildet er skadet eller ufullstendig.
+e_wrong_firmware	Den firmwaren tilhører et annet prosjekt.
+e_upload_interrupted	Opplastingen ble avbrutt.
+e_upload_stalled	Opplastingen stoppet opp og ble avbrutt: prøv igjen.
+e_network	Kunne ikke nå noden.
+e_setup_required	Sett opp noden først: opprett administratoren.
+e_confirm_required	Bekreftelse kreves: send ordet RESET.
+e_bad_host	Den adressen er ikke gyldig.
+e_invalid_time	Det tidspunktet er ikke gyldig.
+e_would_lock_out	Den listen ville låse deg ute fra panelet: legg til nettverket du bruker nå.
+e_slot_empty	Den andre plassen inneholder ingen firmware.
+e_ota_begin	Oppdateringen kunne ikke begynne å skrive.
+e_ota_boot	Den nye firmwaren kunne ikke velges for neste oppstart.
+e_ota_write	Oppdateringen kunne ikke skrives til flashminnet.
+e_no_partition	Det finnes ingen ledig plass for oppdateringen.
+e_outside_network	Dette nettverket har ikke lov til å bruke panelet: bruk hjemmenettverket eller VPN.
+e_wifi_busy	Radioen er opptatt; prøv igjen om et øyeblikk.
+e_scan_failed	Søket mislyktes.
+e_wifi_unavailable	Wi-Fi kunne ikke startes.
+p_required	påkrevd
+p_invalid	ikke gyldig
+p_range	utenfor området
+p_too_long	for lang
+p_conflict	allerede i bruk
+p_reserved	reservert av kortet
+p_invalid_key	8 til 63 skrivbare tegn
+p_outside_subnet	utenfor undernettet
+addBackupNetwork	Legg til reservenettverk
+appIdf	ESP-IDF (firmware)
+backupNetworksHint	Prøves i rekkefølge hvis nettverket ovenfor ikke kan nås på en stund.
+backupNetworksTitle	Reservenettverk
+board	Kort
+bootloaderIdf	ESP-IDF (bootloader)
+brownoutLevel	Nivå for brown-out-detektoren
+checkGithub	Sjekk nå
+checking	Sjekker…
+chip	Brikke
+clockNotSet	ikke stilt
+copyAsk	Kopiere firmwaren som kjører ({0}, versjon {1}) over den andre plassen ({2})? Det den inneholder nå, slettes. Noden starter ikke på nytt.
+copyDone	Kopiert: begge plassene inneholder nå versjon {0}.
+copyRunning	Kopierer… {0} %
+copySlot	Kopier {0} til {1}
+cores	kjerner
+cpuFreq	CPU-frekvens
+dns	DNS
+flash	Flash
+flashAllocated	Reservert av partisjonene
+flashEncryption	Flashkryptering
+flashFree	ledig
+flashTotal	Totalt
+flashUnallocated	Ikke tildelt noen partisjon
+githubAvailable	Versjon {0} er tilgjengelig.
+githubDownloading	Laster ned firmwaren fra GitHub… {0} %
+githubUpToDate	Dette er allerede den nyeste versjonen på GitHub.
+githubUpdateNote	Laster ned det frittstående app-avbildet som GitHubs egen release publiserer (aldri bootloaderen) og installerer det på samme måte som en opplastet fil. Den manuelle opplastingen ovenfor fungerer akkurat som før - dette er et tillegg, ikke en erstatning, for en node uten grunn til å nå internett.
+githubUpdateTitle	Sjekk GitHub for en ny versjon
+githubVerifying	Kontrollerer avbildet mot hashen til releasen…
+installUpdate	Last ned og installer
+installing	Installerer…
+layout	Oppsett
+localTime	Lokal tid
+memory	Ledig minne
+navAbout	Om
+navHelp	Hjelp
+navOverview	Oversikt
+navWifi	Wi-Fi
+nodeName	Navn
+none	ingen
+ovFlash	Flashminne
+ovHardware	Maskinvare
+ovNetwork	Nettverk
+ovNode	Denne noden
+ovTime	Dato og klokkeslett
+ownNetwork	eget nettverk
+psram	PSRAM
+radios	Radioer
+reasonOther	annet
+removeNetwork	Fjern
+resetReason	Siste omstart
+secureBoot	Sikker oppstart
+timeFromNtp	Tidsserver på internett (synkronisert)
+timeManual	stilt for hånd
+timeNtpWaiting	venter på tidsserveren på internett
+timeSource	Tidskilde
+timeZone	Tidssone
+aboutDescription	en node i EH3D-familien for borehodet på en Bungard CCD-maskin: den serverer kameraet, måler bordet med en laser, leser spindelens turtall og temperatur og styrer beskyttelsesutgangen.
+aboutIndependent	Prosjektet er uavhengig: det er ikke laget, godkjent eller støttet av Bungard Elektronik.
+wifiMoved	Wi-Fi-nettverkene ligger på sin egen side, Wi-Fi.
+navHelpTab_overview	Oversikt
+help_overview_title	Oversikt
+help_overview_text	Dette panelet setter opp og overvåker noden. Oversikten viser hva noden er og hvordan den har det; Status følger det den gjør mens den gjør det; sidene Nettverk og Wi-Fi inneholder hvordan den er koblet til; Brukere, Firmware og Logg er for systemet.\n\nAlt lagres i noden og trer i kraft når linjen nederst sier det. En endring som krever omstart, sier det før du forlater siden.
+navHelpTab_status	Status
+help_status_title	Status
+help_status_text	Status viser kameraet, laseren, spindelens turtall og temperatur og beskyttelsesutgangen, oppdatert hvert sekund. Knappen Mål bordet tar én måling av bordet med laseren.
+navHelpTab_machine	Maskin
+help_machine_title	Maskin
+help_machine_text	Maskin inneholder det som binder noden til styreenheten: de serielle pinnene og hastigheten, adgangstokenet til styrelenken, porten og grensene for køen. En endring trer i kraft ved lagring; noen krever omstart, og linjen sier fra.\n\nTokenet er bare skrivbart: det vises aldri igjen. Et program som kobler til, trenger det; uten det nekter noden å flytte maskinen.
+navHelpTab_network	Nettverk
+help_network_title	Nettverk
+help_network_text	Nettverk viser hvordan noden er koblet til nå og setter navnet og adressen: DHCP eller en fast adresse. På et kort med kabel velger du kabelen eller Wi-Fi som innfallsport.\n\nEn adresseendring trer i kraft etter en omstart. Hvis du mister noden etter en endring, kommer du fortsatt til panelet via nodens eget tilgangspunkt (når det er på) eller kabelen.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	Wi-Fi setter nettverket noden kobler til og tilgangspunktet den kan åpne. Under hovednettverket kan du legge til opptil tre reservenettverk: hvis hovednettverket går tapt, prøver noden dem etter tur, slik at den ikke faller av nettverket. Søk lister nettverkene innen rekkevidde.\n\nPassordene er bare skrivbare: panelet viser dem aldri igjen, og et tomt felt beholder det lagrede.
+navHelpTab_users	Brukere
+help_users_title	Brukere
+help_users_text	Administratorer endrer innstillinger; lesere ser bare. Hver person har et navn og et passord. En administrator legger til personer, endrer passord og fjerner dem; den siste administratoren kan ikke fjernes.\n\nFor mange gale passord blokkerer et navn en stund. Ditt eget passord endrer du på samme side.
+navHelpTab_update	Firmware
+help_update_title	Firmware
+help_update_text	Firmwaren kan oppdateres på tre måter. Fra GitHub: noden finner den nyeste releasen av sitt eget prosjekt, laster den ned, sjekker at hashen stemmer med den releasen publiserer, og installerer den på den andre plassen. Ved å laste opp en .bin-fil for dette prosjektet. Eller ved å bytte til den andre plassen, som fortsatt har versjonen som kjørte før.\n\nKopier skriver firmwaren som kjører til den andre plassen, slik at begge har samme versjon (en kopi å falle tilbake på). Etter en oppdatering starter noden på nytt.
+navHelpTab_log	Logg
+help_log_title	Logg
+help_log_text	Loggen er det noden sier mens den arbeider: nettverket, styrelenken, oppdateringene og feilene. Den holdes i minnet, så den er tom etter en omstart.\n\nKopier den når du ber om hjelp: den inneholder det som skjedde, i rekkefølge.
+navHelpTab_system	System
+help_system_title	System
+help_system_text	System har omstart av noden og tilbakestilling til fabrikkinnstillinger, som sletter alle innstillinger og alle brukere (skriv RESET for å bekrefte). Start på nytt først hvis du bare vil se om et problem forsvinner.\n\nEn omstart avbryter lenken til maskinen et øyeblikk: gjør det når ingen jobb kjører.
+reasonPower_on	påslått strøm
+reasonSoftware	omstart fra panelet
+reasonCrash	KRASJ
+reasonWatchdog	watchdog
+reasonBrownout	lav spenning
+reasonDeep_sleep	dyp søvn
+e_bad_json	Forespørselen er ikke gyldig JSON.
+e_bad_url	Adressen til oppdateringen er ikke den offisielle.
+e_checksum_mismatch	Den nedlastede firmwaren stemmer ikke med sjekksummen til releasen: den ble avvist og ingenting ble endret.
+e_client_init	Nedlastingen kunne ikke startes.
+e_connect_failed	Nedlastingen koblet ikke til: sjekk nodens nettverk og prøv igjen.
+e_no_asset	Releasen har ingen firmware for dette kortet.
+e_no_asset_for_board	Det finnes en nyere release, men den har ikke noe firmwareavbilde for dette kortet.
+e_no_checksum	Releasen har ingen sjekksumfil ved siden av firmwareavbildet, så den installeres ikke.
+e_no_memory	Noden gikk tom for minne.
+e_no_release	Ingen release ble funnet.
+e_no_slot	Det finnes ingen annen plass å kopiere til.
+e_no_task	Oppdateringen kunne ikke startes (ingen ledig oppgave).
+e_not_newer	Den firmwaren er ikke nyere enn den som kjører.
+e_ota_busy	En installasjon fra GitHub pågår allerede.
+e_read_error	Nedlastingen ble avbrutt under lesing.
+e_read_failed	Plassen som kjører, kunne ikke leses.
+e_short_read	Nedlastingen ble avsluttet før filen var komplett.
+e_source_invalid	Firmwaren som kjører, kunne ikke verifiseres, så den ble ikke kopiert.
+e_up_to_date	Firmwaren er allerede oppdatert.
+e_version_mismatch	Filens versjon er ikke releasens.
+navHead	Hode
+stCamera	Kamera
+stCameraHelp	Bildet ligger på /stream (MJPEG) og over RTSP og ONVIF når de er på.
+stLaser	Laser
+stLaserHelp	Måler avstanden til bordet under hodet. Resultatet er medianen av de gode målingene.
+stMeasure	Mål bordet
+stMeasureResult	Avstand {0} mm (spredning {1} mm, {2} av {3} målinger brukt)
+stMeasureFail	Ingen brukbar måling ({0})
+stOn	På
+stOff	Av
+stNoTemp	Ingen temperatursensor
+stTemp	Temperatur
+stHeatOk	Normal temperatur
+stHeatWarn	Spindelen er varm
+stHeatCritical	Spindelen er for varm
+spNoSensor	Ingen hastighetssensor er på.
+stProtect	Beskyttelsesutgang
+stProtectOpen	Åpen: beskyttelsen lar spindelen gå bare hvis noden tillater det
+stProtectClosed	Lukket: spindelen kan gå
+stProtectHelp	Utgangen bryter enable til spindelens frekvensomformer når turtallet eller temperaturen går utenfor grensene.
+ovHead	Hode
+hRestartNote	Kameraet, sensorene og strømmene starter med noden: en endring her krever omstart.
+hCamera	Kamera
+hCameraIntro	En OV2640 (opptil 1600x1200) eller en OV5640 (opptil 2592x1944) på kamerakontakten. Med "auto" spør noden sensoren hvilken det er.
+modelAuto	auto
+fCameraOn	Kamera på
+fCameraModel	Sensor
+fWidth	Bredde (px)
+fHeight	Høyde (px)
+fQuality	JPEG-kvalitet
+fQualityHint	4 er det beste bildet, 63 det minste.
+fFps	Bilder per sekund (maksimum)
+hStream	Strømmer og tilgang
+hStreamIntro	Programmer leser kameraet, statusen og målingen med adgangstokenet; RTSP- og ONVIF-strømmene ber om brukeren og passordet nedenfor.
+fRtspOn	RTSP-strøm på
+fRtspPort	RTSP-port
+fOnvifOn	ONVIF-oppdagelse på
+fStreamUser	Strømmens bruker
+fStreamPassword	Strømmens passord
+fStreamPasswordHint	Bare skrivbart: la stå tomt for å beholde det lagrede.
+fSecretClear	Slett den lagrede verdien
+hLaser	Laser
+hLaserIntro	En VL53L1X-avstandssensor ser på bordet under hodet. Forskyvningen legges til hver avstand; målinger utenfor området, eller for spredte, kastes.
+fLaserOn	Laser på
+fSamples	Målinger per måling
+fLaserTimeout	Tidsgrense (ms)
+fLaserOffset	Forskyvning (mm)
+fLaserSigma	Største spredning (mm)
+fLaserMin	Nærmeste avstand (mm)
+fLaserMax	Fjerneste avstand (mm)
+hSpindle	Spindelsensorer og beskyttelse
+hSpindleIntro	Turtallet kommer fra pulser fra en sensor på spindelen; temperaturen fra en DS18B20, en NTC eller en MLX90614. Beskyttelsesutgangen åpnes når en av dem går utenfor grensene.
+fRpmOn	Turtallssensor på
+fPulses	Pulser per omdreining
+fRpmMax	Høyeste turtall (rpm)
+fRpmStale	Turtallet er utdatert etter (ms)
+fTempSensor	Temperatursensor
+hLight	Lysring
+hLightIntro	En ring av RGB-lysdioder (WS2812) rundt kameraet lyser opp arbeidsområdet. Hvitt er lyset for kameraet; grønt og rødt forteller hvordan en kontroll gikk. Lyset går aldri over taket og slår seg av etter en stund.
+fLightOn	Lysring montert
+fLightLeds	Lysdioder på ringen
+fLightLevel	Nivå ved påslag (%)
+fLightMax	Tak (%)
+fLightTone	Lysets farge
+toneWhite	Hvit (for kameraet)
+toneCool	Kaldhvit
+toneWarm	Varmhvit
+toneRed	Rød
+toneGreen	Grønn
+toneBlue	Blå
+fLightAutoOff	Slår seg av etter (s, 0: aldri)
+fLightAtStart	På når noden starter
+fLightOrder	Rekkefølgen på fargene i lysdiodene
+lightBtnOn	Prøv lyset
+lightBtnOff	Slå det av
+lightBtnOk	Vis OK
+lightBtnNok	Vis IKKE OK
+lightTestFailed	Noden gjorde det ikke. Sjekk at ringen er montert og slått på ovenfor.
+tempNone	ingen
+fNtcSeries	Seriemotstand (ohm)
+fNtcR25	NTC ved 25 °C (ohm)
+fNtcBeta	NTC-beta
+fTempWarn	Advarsel (°C)
+fTempCritical	Kritisk (°C)
+fTempHyst	Hysterese (°C)
+fProtect	Beskyttelsesutgang på
+fProtectHint	Av: utgangen forblir lukket uansett hva sensorene leser.
+hSpindleSafety	Test beskyttelsen med spindelens frekvensomformer frakoblet før du stoler på den. En sensor som slutter å svare, åpner utgangen.
+navHelpTab_head	Hode
+help_head_title	Hode
+help_head_text	Hode inneholder det bare denne noden har: kameraet med størrelse og kvalitet, RTSP- og ONVIF-strømmene, laseren som måler bordet, spindelens sensorer og beskyttelsesutgangen. Adgangstokenet er det programmer bruker for å lese kameraet, statusen og målingen.\n\nPassordene og tokenet er bare skrivbare: panelet viser dem aldri, en tom boks beholder den lagrede verdien og avkrysningsboksen sletter den. En endring krever omstart.

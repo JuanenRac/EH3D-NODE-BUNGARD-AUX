@@ -1,0 +1,418 @@
+# Eesti (et): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	EH3D Bungardi pea sõlm
+grpNode	Sõlm
+grpNetwork	Võrk
+grpSystem	Süsteem
+navMenu	Peamenüü
+navStatus	Olek
+navUpdate	Püsivara
+navLog	Logi
+skip	Mine sisu juurde
+themeToLight	Hele teema
+themeToDark	Tume teema
+showShort	Näita
+e_other	Sõlm vastas veaga: {0}
+statusNoControl	See leht näitab, mida pea loeb: kaamerat, laserit, spindli kiirust ja temperatuuri ning kaitseväljundit. Paneel ei liiguta midagi; ainus, mida see pea käest küsib, on üks laua mõõtmine.
+stLost	Sõlm ei vasta
+stSpindle	Spindel
+stSpindleBar	Kiirus maksimumi suhtes
+spMax	Maksimaalne kiirus: {0} p/min
+stNode	Sõlm
+fToken	Juurdepääsutoken
+fTokenHint	Kirjutatakse sõlme ja seda ei näidata enam kunagi. Sisesta uus või loo uus ning vajuta Salvesta.
+noTokenNote	Ilma juurdepääsutokenita ei saa programmid lugeda kaamerat, olekut ega mõõtmist. Sea see enne pea kasutamist.
+netNow	Praegune ühendus
+netTitle	Aadress
+hostnameHint	tühi: sõlm valib nime oma identifikaatori järgi
+netRestartNote	Hostinime või ühenduse muudatus jõustub pärast sõlme taaskäivitamist.
+apNote	Seadistuse pääsupunkt on sõlme oma Wi-Fi-võrk, millega saab sellega telefonist ühenduda, kui sellel pole teie võrgus aadressi.
+setupWifiHelp	Sõlmel pole kaablit. Sisesta Wi-Fi-võrk, millega see peaks nüüd ühenduma, või jäta tühjaks ja kasuta sõlme enda seadistusvõrku, mille parool on seadistuskood (saad seda hiljem muuta jaotises Võrk).
+rolesHelp	Administraatorid saavad kõike muuta. Vaatajad näevad olekut ja seadeid, kuid ei muuda midagi.
+slotVersion	versioon {0}
+slotsUnknown	Sõlm ei teatanud oma püsivara pesasid.
+chooseFirst	Vali kõigepealt püsivara fail.
+p_out_of_range	vahemikust väljas
+p_duplicate_pin	seda viiku kasutatakse kaks korda
+p_reserved_pin	plaadi poolt reserveeritud
+p_not_a_number	pole täisarv
+staError	Viimane Wi-Fi viga
+se_failed	ühendus ebaõnnestus
+se_network_not_found	võrku ei leitud
+se_wrong_password	parool lükati tagasi
+navNetwork	Võrk
+navUsers	Kasutajad
+navSystem	Süsteem
+language	Keel
+signOut	Logi välja
+loading	Laadimine…
+unreachable	Sõlm ei vasta.
+signIn	Logi sisse
+rememberMe	Hoia mind selles brauseris sisse logituna
+rememberUser	Jäta minu kasutajanimi sellesse seadmesse meelde
+loginNote	Meelde saab jätta ainult kasutajanime ja ainult siis, kui märgid ruudu. Parooli salvestab soovi korral ainult sinu brauseri või süsteemi enda paroolihaldur; paneel ei salvesta seda kunagi.
+user	Kasutaja
+password	Parool
+showPassword	Näita parooli
+setupTitle	Seadista see sõlm
+setupCode	Seadistuskood
+adminName	Administraatori nimi
+createAdmin	Loo administraator
+setupWifi	Selle sõlme seadistus-Wi-Fi
+setupIntro	Sellel sõlmel pole veel kasutajat. Sisesta seadistuskood, mida sõlm näitab oma USB-konsoolil iga 15 sekundi järel, ja vali administraator.
+setupWifiTitle	Wi-Fi võrk, millega sõlm ühendub (valikuline)
+setupWifiOptionalTitle	Wi-Fi võrk (valikuline)
+setupWifiOptionalHelp	Sellel plaadil on Etherneti port: kui kaabel on ühendatud, jäta see tühjaks. Kui soovid sõlme kasutada hoopis Wi-Fi kaudu (näiteks kaablita katsepingil), sisesta siia võrk, millega see peaks ühenduma. Kui sellel pole lõpuks aadressi, avab see 90 sekundi pärast uuesti oma seadistusvõrgu, et sellega saaks ühendust.
+save	Salvesta
+saveRestart	Salvesta ja taaskäivita
+restart	Taaskäivita
+discard	Loobu muudatustest
+saved	Salvestatud.
+savedRestart	Salvestatud. Rakendamiseks taaskäivita sõlm.
+unsaved	Salvestamata muudatusi.
+restarting	Sõlm taaskäivitub…
+adminOnly	Seda saab muuta ainult administraator.
+yes	jah
+no	ei
+add	Lisa
+delete	Kustuta
+refresh	Värskenda
+working	Töötab…
+confirmAsk	Kas oled kindel?
+nodeId	Identifikaator
+firmware	Püsivara
+uptime	Töötanud
+address	Aadress
+netmask	Alamvõrgu mask
+gateway	Lüüs
+mac	MAC
+link	Ühendus
+linkUp	aktiivne
+linkDown	katkenud
+nodeTitle	Sõlm
+uplink	Ühendus võrku
+uplinkEthernet	Ethernet-kaabel (PoE)
+uplinkWifi	Wi-Fi (ühineb teise võrguga)
+dhcp	Hangi aadress automaatselt (DHCP)
+dns1	DNS-server 1
+dns2	DNS-server 2
+hostname	Hostinimi
+wifiAp	Pääsupunkt (Wi-Fi, mida see sõlm pakub)
+apEnable	Paku Wi-Fi võrku
+ssid	Võrgu nimi (SSID)
+security	Turvalisus
+secOpen	avatud (ilma paroolita)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Wi-Fi parool (8 kuni 63 märki)
+passwordSet	parool on salvestatud; jäta tühjaks, et see alles jätta
+hidden	Peida võrgu nimi
+wifiChannel	Kanal
+channelAuto	automaatne (1, 6 või 11 sõltuvalt sõlmest)
+channelNow	See sõlm kasutaks kanalit {0}.
+wifiSta	Wi-Fi jaam (see sõlm ühineb Wi-Fi võrguga)
+staEnable	Ühine Wi-Fi võrguga
+scanNetworks	Otsi võrke
+scanning	Otsimine…
+noNetworks	Ühtegi võrku ei kuulda.
+scanNote	Otsimise ajal võib sõlme enda pääsupunkt hetkeks oma kliendid kaotada.
+useNetwork	Kasuta
+signal	signaal
+wiredNote	Kaabli kaudu küsib sõlm oma aadressi DHCP-ga, kui sa seda siin ei fikseeri. Selle enda Wi-Fi võrk, kui sa selle alles hoiad, on eraldi võrk (192.168.4.x), millega saab sõlmega telefonist ühendust; see ei ole ühendatud juhtmega võrguga. Muudatused jõustuvad pärast taaskäivitamist.
+staNote	Sõlmel pole kaablit: anna talle oma kodu või asukoha Wi-Fi võrk. Kui jaam jääb välja lülitatuks, kasuta selle enda pääsupunkti.
+noWifiWarn	Sõlmel pole kaablit: hoia sisse lülitatud vähemalt üks kahest, pääsupunkt või jaam, muidu pole sellega võimalik ühendust saada.
+ethernetMissing	Etherneti kiip ei vasta (vaata ühendusjuhendit).
+station	Wi-Fi jaam
+notConnected	pole ühendatud
+apActive	Pääsupunkt
+apClients	klienti
+channel	kanal
+setupNetwork	seadistusvõrk
+usersTitle	Selle paneeli kasutajad
+role	Roll
+roleAdmin	administraator
+roleViewer	vaataja (ainult lugemine)
+addUser	Lisa kasutaja
+newPassword	Uus parool (8 märki või rohkem)
+setPassword	Sea parool
+myAccount	Minu parool
+currentPassword	Praegune parool
+changePassword	Muuda minu parooli
+passwordChanged	Parool muudetud. Logi uuesti sisse.
+you	sina
+updateTitle	Uuenda püsivara
+updateHelp	Vali püsivara fail (selle projekti jaoks kompileeritud .bin, mitte liidetud kujutis). See kontrollitakse enne kasutamist ja kui uus versioon ei käivitu, naaseb sõlm ise eelmise juurde.
+chooseFile	Püsivara fail
+upload	Laadi üles ja installi
+uploading	Üleslaadimine… {0}%
+updateDone	Versioon {0} paigaldatud. Sõlm taaskäivitub nüüd.
+slot	Töötab pesast
+slotsTitle	Püsivara pesad
+slotsHelp	Sõlm hoiab kahte püsivara pesa, ota_0 ja ota_1. Uuendus kirjutatakse sellesse, mis ei tööta. Siin saad igal ajal käivitada teise - et naaseda eelmise versiooni juurde või liikuda edasi just paigaldatud versioonile. Seaded säilivad.
+slotRunning	töötab praegu
+slotNextBoot	käivitub järgmisena
+slotEmpty	tühi - püsivara puudub
+switchSlot	Käivita {0}
+switchSlotNone	Teises pesas pole püsivara
+switchAsk	Kas taaskäivitada sõlm ja käivitada {0} (versioon {1})?
+logTitle	Sõlme logi
+copyLog	Kopeeri logi
+copied	Kopeeritud
+copyFailed	Kopeerimine ebaõnnestus - vali tekst ja kopeeri käsitsi
+maintenance	Hooldus
+rebootNode	Taaskäivita sõlm
+factoryTitle	Tehaseseadete taastamine
+factoryHelp	Kustutab kõik seaded ja kõik kasutajad; sõlm alustab uuesti seadistusest. Kinnitamiseks kirjuta RESET.
+author	Autor
+license	Litsents
+e_unauthorized	Sinu seanss lõppes. Logi uuesti sisse.
+e_wrong_credentials	Vale kasutaja või parool.
+e_too_many_attempts	Liiga palju katseid. Oota hetk.
+e_wrong_code	Seadistuskood on vale.
+e_invalid_name	Nimi ei kehti (3 kuni 32 märki: a kuni z, 0 kuni 9, . _ -).
+e_weak_password	Parool peab olema 8 kuni 64 märki.
+e_exists	See kasutaja on juba olemas.
+e_not_found	Ei leitud.
+e_too_many_users	Kasutajaid võib olla kõige rohkem neli.
+e_last_admin	Viimast administraatorit ei saa eemaldada ega alandada.
+e_wrong_password	Praegune parool on vale.
+e_invalid_role	Roll ei kehti.
+e_forbidden	Seda ei tohi sa teha.
+e_storage	Flashi ei saanud kirjutada.
+e_invalid	Mõned väärtused ei kehti; need on vormil märgitud.
+e_not_json	Päringust ei saadud aru.
+e_too_large	Päring on liiga suur.
+e_bad_size	Faili suurus ei sobi püsivarale.
+e_not_firmware	See fail ei ole ESP32 püsivara.
+e_image_invalid	Püsivara kujutis on kahjustatud või poolik.
+e_wrong_firmware	See püsivara kuulub teisele projektile.
+e_upload_interrupted	Üleslaadimine katkestati.
+e_upload_stalled	Üleslaadimine takerdus ja peatati: proovi uuesti.
+e_network	Sõlmega ei saanud ühendust.
+e_setup_required	Seadista kõigepealt sõlm: loo selle administraator.
+e_confirm_required	Vaja on kinnitust: saada sõna RESET.
+e_bad_host	See aadress ei kehti.
+e_invalid_time	See kellaaeg ei kehti.
+e_would_lock_out	See loend lukustaks sind paneelist välja: lisa võrk, mida praegu kasutad.
+e_slot_empty	Teises pesas pole püsivara.
+e_ota_begin	Uuendus ei saanud kirjutamist alustada.
+e_ota_boot	Uut püsivara ei saanud valida järgmiseks käivituseks.
+e_ota_write	Uuendust ei saanud flashi kirjutada.
+e_no_partition	Uuenduse jaoks pole vaba pesa.
+e_outside_network	Sellel võrgul pole paneeli kasutamise luba: kasuta kodu võrku või VPN-i.
+e_wifi_busy	Raadio on hõivatud; proovi hetke pärast uuesti.
+e_scan_failed	Otsing ebaõnnestus.
+e_wifi_unavailable	Wi-Fi-d ei saanud käivitada.
+p_required	kohustuslik
+p_invalid	ei kehti
+p_range	vahemikust väljas
+p_too_long	liiga pikk
+p_conflict	juba kasutusel
+p_reserved	plaadi poolt reserveeritud
+p_invalid_key	8 kuni 63 prinditavat märki
+p_outside_subnet	alamvõrgust väljas
+addBackupNetwork	Lisa varuvõrk
+appIdf	ESP-IDF (püsivara)
+backupNetworksHint	Proovitakse järjekorras, kui ülaltoodud võrguga ei õnnestu mõnda aega ühenduda.
+backupNetworksTitle	Varuvõrgud
+board	Plaat
+bootloaderIdf	ESP-IDF (käivituslaadur)
+brownoutLevel	Pingelanguse detektori tase
+checkGithub	Kontrolli kohe
+checking	Kontrollimine…
+chip	Kiip
+clockNotSet	pole seatud
+copyAsk	Kas kopeerida töötav püsivara ({0}, versioon {1}) üle teise pesa ({2})? Selle praegune sisu kustutatakse. Sõlm ei taaskäivitu.
+copyDone	Kopeeritud: mõlemas pesas on nüüd versioon {0}.
+copyRunning	Kopeerimine… {0}%
+copySlot	Kopeeri {0} pessa {1}
+cores	tuuma
+cpuFreq	Protsessori sagedus
+dns	DNS
+flash	Flash
+flashAllocated	Partitsioonidele reserveeritud
+flashEncryption	Flashi krüpteerimine
+flashFree	vaba
+flashTotal	Kokku
+flashUnallocated	Ühelegi partitsioonile määramata
+githubAvailable	Saadaval on versioon {0}.
+githubDownloading	Püsivara allalaadimine GitHubist… {0}%
+githubUpToDate	See on GitHubis juba uusim versioon.
+githubUpdateNote	Laadib alla iseseisva rakenduse kujutise, mille GitHubi väljalase avaldab (mitte kunagi käivituslaadurit), ja paigaldab selle samamoodi nagu üleslaaditud faili. Ülaltoodud käsitsi üleslaadimine töötab täpselt nagu varem - see on täiendus, mitte asendus sõlmele, millel pole põhjust Internetti pöörduda.
+githubUpdateTitle	Otsi GitHubist uut versiooni
+githubVerifying	Kujutise kontrollimine väljalaske räsi vastu…
+installUpdate	Laadi alla ja installi
+installing	Installimine…
+layout	Paigutus
+localTime	Kohalik aeg
+memory	Vaba mälu
+navAbout	Teave
+navHelp	Abi
+navOverview	Ülevaade
+navWifi	Wi-Fi
+nodeName	Nimi
+none	puudub
+ovFlash	Flash-mälu
+ovHardware	Riistvara
+ovNetwork	Võrk
+ovNode	See sõlm
+ovTime	Kuupäev ja kellaaeg
+ownNetwork	oma võrk
+psram	PSRAM
+radios	Raadiod
+reasonOther	muu
+removeNetwork	Eemalda
+resetReason	Viimane taaskäivitus
+secureBoot	Turvaline käivitus
+timeFromNtp	Interneti ajaserver (sünkroonitud)
+timeManual	käsitsi seatud
+timeNtpWaiting	ootab Interneti ajaserverit
+timeSource	Aja allikas
+timeZone	Ajavöönd
+aboutDescription	EH3D perekonna sõlm Bungard CCD masina puurpea jaoks: edastab kaamerapilti, mõõdab lauda laseriga, loeb spindli kiirust ja temperatuuri ning juhib kaitseväljundit.
+aboutIndependent	Projekt on sõltumatu: Bungard Elektronik ei ole seda teinud, heaks kiitnud ega toeta.
+wifiMoved	Wi-Fi võrgud asuvad oma lehel, Wi-Fi.
+navHelpTab_overview	Kokkuvõte
+help_overview_title	Kokkuvõte
+help_overview_text	See paneel seadistab ja jälgib sõlme. Kokkuvõte näitab, mis sõlm on ja mis seisus see on; Olek jälgib, mida see parajasti teeb; lehed Võrk ja Wi-Fi hoiavad sõlme ühendust; Kasutajad, Püsivara ja Logi on süsteemi jaoks.\n\nKõik salvestatakse sõlme ja rakendub siis, kui alumine riba nii ütleb. Muudatus, mis vajab taaskäivitust, ütleb seda enne lehelt lahkumist.
+navHelpTab_status	Olek
+help_status_title	Olek
+help_status_text	Olek näitab kaamerat, laserit, spindli kiirust ja temperatuuri ning kaitseväljundit, värskendatuna iga sekund. Nupp Mõõda lauda teeb laseriga ühe laua mõõtmise.
+navHelpTab_machine	Masin
+help_machine_title	Masin
+help_machine_text	Masin hoiab seda, mis seob sõlme juhtseadmega: jadaviigud ja kiirus, juhtühenduse juurdepääsutoken, port ja järjekorra piirid. Muudatus rakendub salvestamisel; mõni vajab taaskäivitust ja riba ütleb seda.\n\nToken on ainult kirjutatav: seda ei näidata enam kunagi. Ühenduv programm vajab seda; ilma selleta keeldub sõlm masinat liigutamast.
+navHelpTab_network	Võrk
+help_network_title	Võrk
+help_network_text	Võrk näitab, kuidas sõlm on praegu ühendatud, ning seab selle nime ja aadressi: DHCP või fikseeritud aadress. Kaabliga plaadil valid sisenemisviisiks kaabli või Wi-Fi.\n\nAadressi muudatus rakendub pärast taaskäivitust. Kui kaotad pärast muudatust sõlmega ühenduse, jõuavad paneelini endiselt selle enda pääsupunkt (kui see on sees) või kaabel.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	Wi-Fi seab võrgu, millega sõlm ühineb, ja pääsupunkti, mille see võib avada. Põhivõrgu alla saab lisada kuni kolm varuvõrku: kui põhivõrk kaob, proovib sõlm neid järjest, et see võrgust välja ei kukuks. Otsing loetleb leviulatuses olevad võrgud.\n\nParoolid on ainult kirjutatavad: paneel ei näita neid enam kunagi ja tühi väli jätab salvestatud parooli alles.
+navHelpTab_users	Kasutajad
+help_users_title	Kasutajad
+help_users_text	Administraatorid muudavad seadeid; vaatajad ainult vaatavad. Igal inimesel on nimi ja parool. Administraator lisab inimesi, muudab paroole ja eemaldab neid; viimast administraatorit ei saa eemaldada.\n\nLiiga palju valesid paroole blokeerib nime mõneks ajaks. Oma parooli muudad samal lehel.
+navHelpTab_update	Püsivara
+help_update_title	Püsivara
+help_update_text	Püsivara saab uuendada kolmel viisil. GitHubist: sõlm otsib oma projekti uusima väljalaske, laadib selle alla, kontrollib, et selle räsi on sama, mille väljalase avaldab, ja paigaldab selle teise pessa. Selle projekti .bin faili üleslaadimisega. Või lülitudes teisele pesale, mis hoiab veel eelnevalt töötanud versiooni.\n\nKopeeri kirjutab töötava püsivara teise pessa, et mõlemas oleks sama versioon (koopia, mille juurde tagasi pöörduda). Pärast uuendust sõlm taaskäivitub.
+navHelpTab_log	Logi
+help_log_title	Logi
+help_log_text	Logi on see, mida sõlm töötades ütleb: võrk, juhtühendus, uuendused ja vead. See hoitakse mälus, seega on see pärast taaskäivitust tühi.\n\nKopeeri see, kui küsid abi: see sisaldab toimunut järjekorras.
+navHelpTab_system	Süsteem
+help_system_title	Süsteem
+help_system_text	Süsteem sisaldab sõlme taaskäivitamist ja tehaseseadete taastamist, mis kustutab kõik seaded ja kõik kasutajad (kinnitamiseks kirjuta RESET). Taaskäivita kõigepealt, kui tahad lihtsalt näha, kas probleem kaob.\n\nTaaskäivitus katkestab hetkeks ühenduse masinaga: tee seda, kui ükski töö ei jookse.
+reasonPower_on	toite sisselülitamine
+reasonSoftware	taaskäivitus paneelilt
+reasonCrash	VIGA
+reasonWatchdog	valvekoer
+reasonBrownout	madal pinge
+reasonDeep_sleep	sügav uni
+e_bad_json	Päring ei ole kehtiv JSON.
+e_bad_url	Uuenduse aadress ei ole ametlik.
+e_checksum_mismatch	Allalaaditud püsivara ei vasta väljalaske kontrollsummale: see lükati tagasi ja midagi ei muudetud.
+e_client_init	Allalaadimist ei saanud alustada.
+e_connect_failed	Allalaadimine ei ühendunud: kontrolli sõlme võrku ja proovi uuesti.
+e_no_asset	Väljalase ei sisalda selle plaadi jaoks püsivara.
+e_no_asset_for_board	Uuem väljalase on olemas, kuid see ei sisalda selle plaadi jaoks püsivara kujutist.
+e_no_checksum	Väljalase ei sisalda püsivara kujutise kõrval kontrollsumma faili, seega seda ei paigaldata.
+e_no_memory	Sõlmel sai mälu otsa.
+e_no_release	Ühtegi väljalaset ei leitud.
+e_no_slot	Pole teist pesa, kuhu kopeerida.
+e_no_task	Uuendust ei saanud alustada (vaba tööülesannet pole).
+e_not_newer	See püsivara ei ole töötavast uuem.
+e_ota_busy	GitHubist installimine juba käib.
+e_read_error	Allalaadimine katkes lugemise ajal.
+e_read_failed	Töötavat pesa ei saanud lugeda.
+e_short_read	Allalaadimine lõppes enne, kui fail oli täielik.
+e_source_invalid	Töötavat püsivara ei saanud kontrollida, seega seda ei kopeeritud.
+e_up_to_date	Püsivara on juba ajakohane.
+e_version_mismatch	Faili versioon ei ole väljalaske oma.
+navHead	Pea
+stCamera	Kaamera
+stCameraHelp	Pilt on aadressil /stream (MJPEG) ning RTSP ja ONVIF kaudu, kui need on sees.
+stLaser	Laser
+stLaserHelp	Mõõdab kaugust lauani pea all. Tulemus on heade lugemite mediaan.
+stMeasure	Mõõda lauda
+stMeasureResult	Kaugus {0} mm (hajuvus {1} mm, kasutati {2} lugemist {3}-st)
+stMeasureFail	Kasutatavat mõõtmist pole ({0})
+stOn	Sees
+stOff	Väljas
+stNoTemp	Temperatuuriandurit pole
+stTemp	Temperatuur
+stHeatOk	Temperatuur normaalne
+stHeatWarn	Spindel on kuum
+stHeatCritical	Spindel on liiga kuum
+spNoSensor	Kiiruseandur ei ole sees.
+stProtect	Kaitseväljund
+stProtectOpen	Avatud: kaitse lubab spindlil pöörelda ainult siis, kui sõlm seda lubab
+stProtectClosed	Suletud: spindel võib pöörelda
+stProtectHelp	Väljund katkestab spindli muunduri loa, kui kiirus või temperatuur väljub piiridest.
+ovHead	Pea
+hRestartNote	Kaamera, andurid ja voogedastused käivituvad sõlmega: muudatus siin vajab taaskäivitust.
+hCamera	Kaamera
+hCameraIntro	OV2640 (kuni 1600x1200) või OV5640 (kuni 2592x1944) kaamerapistikul. Valikuga «auto» küsib sõlm andurilt, milline see on.
+modelAuto	auto
+fCameraOn	Kaamera sees
+fCameraModel	Andur
+fWidth	Laius (px)
+fHeight	Kõrgus (px)
+fQuality	JPEG kvaliteet
+fQualityHint	4 on parim pilt, 63 väikseim.
+fFps	Kaadrit sekundis (maksimum)
+hStream	Voogedastused ja juurdepääs
+hStreamIntro	Programmid loevad kaamerat, olekut ja mõõtmist juurdepääsutokeniga; RTSP ja ONVIF voogedastused küsivad allolevat kasutajat ja parooli.
+fRtspOn	RTSP voog sees
+fRtspPort	RTSP port
+fOnvifOn	ONVIF avastamine sees
+fStreamUser	Voo kasutaja
+fStreamPassword	Voo parool
+fStreamPasswordHint	Ainult kirjutatav: jäta tühjaks, et salvestatud väärtus alles jätta.
+fSecretClear	Kustuta salvestatud väärtus
+hLaser	Laser
+hLaserIntro	VL53L1X kaugusandur vaatab lauda pea all. Nihe lisatakse igale kaugusele; vahemikust väljas või liiga hajuvad lugemid visatakse ära.
+fLaserOn	Laser sees
+fSamples	Lugemeid mõõtmise kohta
+fLaserTimeout	Ajalimiit (ms)
+fLaserOffset	Nihe (mm)
+fLaserSigma	Suurim hajuvus (mm)
+fLaserMin	Lähim kaugus (mm)
+fLaserMax	Kaugeim kaugus (mm)
+hSpindle	Spindli andurid ja kaitse
+hSpindleIntro	Kiirus tuleb spindlil oleva anduri impulssidest; temperatuur DS18B20, NTC või MLX90614 anduri käest. Kaitseväljund avaneb, kui kumbki väljub oma piiridest.
+fRpmOn	Kiiruseandur sees
+fPulses	Impulsse pöörde kohta
+fRpmMax	Suurim kiirus (p/min)
+fRpmStale	Kiirus aegub pärast (ms)
+fTempSensor	Temperatuuriandur
+hLight	Valgusrõngas
+hLightIntro	RGB LED-ide (WS2812) rõngas kaamera ümber valgustab tööala. Valge on kaamera valgus; roheline ja punane ütlevad, kuidas kontroll läks. Valgus ei ületa kunagi ülempiiri ja lülitub mõne aja pärast ise välja.
+fLightOn	Valgusrõngas paigaldatud
+fLightLeds	Rõnga LED-id
+fLightLevel	Tase sisselülitamisel (%)
+fLightMax	Ülempiir (%)
+fLightTone	Valguse värv
+toneWhite	Valge (kaamera jaoks)
+toneCool	Külm valge
+toneWarm	Soe valge
+toneRed	Punane
+toneGreen	Roheline
+toneBlue	Sinine
+fLightAutoOff	Lülitub ise välja pärast (s, 0: mitte kunagi)
+fLightAtStart	Sees sõlme käivitumisel
+fLightOrder	Värvide järjekord LED-idel
+lightBtnOn	Proovi valgust
+lightBtnOff	Lülita välja
+lightBtnOk	Näita OK
+lightBtnNok	Näita MITTE OK
+lightTestFailed	Sõlm ei teinud seda. Kontrolli, et rõngas on paigaldatud ja ülal sisse lülitatud.
+tempNone	puudub
+fNtcSeries	Järjestikune takisti (oom)
+fNtcR25	NTC 25 °C juures (oom)
+fNtcBeta	NTC beeta
+fTempWarn	Hoiatus (°C)
+fTempCritical	Kriitiline (°C)
+fTempHyst	Hüsterees (°C)
+fProtect	Kaitseväljund sees
+fProtectHint	Väljas: väljund jääb suletuks, mida andurid ka ei loeks.
+hSpindleSafety	Testi kaitset spindli muunduri lahtiühendatuna, enne kui sellele loodad. Andur, mis lakkab vastamast, avab väljundi.
+navHelpTab_head	Pea
+help_head_title	Pea
+help_head_text	Pea hoiab seda, mis on ainult sellel sõlmel: kaamera ning selle suurus ja kvaliteet, RTSP ja ONVIF voogedastused, lauda mõõtev laser, spindli andurid ja kaitseväljund. Juurdepääsutoken on see, millega programmid loevad kaamerat, olekut ja mõõtmist.\n\nParoolid ja token on ainult kirjutatavad: paneel ei näita neid kunagi, tühi väli jätab salvestatu alles ja märkeruut kustutab selle. Muudatus vajab taaskäivitust.

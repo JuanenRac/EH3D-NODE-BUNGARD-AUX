@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,7 +28,7 @@
 
 | | |
 |---|---|
-| 版本 | `0.0.3` |
+| 版本 | `0.0.4` |
 | 成熟度 | 脚手架 |
 | 测试 | 11 个电脑端测试程序 |
 | 技术栈 | C++17、ESP-IDF 5.5、ESP32-S3、W5500 网络 |
@@ -44,7 +44,7 @@
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
 | 软件 | 🟠 | ESP-IDF 工程（基于 W5500 的有线网络、网页服务器、摄像头、主轴脉冲、保护输出、独立分区中的设置文件）已编写并能编译，但尚未烧录。 |
-| 测试 | 🟢 | 11 个测试程序通过（`ctest`）：设置、激光测量、主轴转速和温度、保护输出、网络报文、视频（RTSP、ONVIF）、钻头设置文档、从 GitHub 更新、时钟、所有节点共有的部分、面板八种语言的文本以及任务栈。 |
+| 测试 | 🟢 | 11 个测试程序通过（`ctest`）：设置、激光测量、主轴转速和温度、保护输出、网络报文、视频（RTSP、ONVIF）、钻头设置文档、从 GitHub 更新、时钟、所有节点共有的部分、面板37 种语言的文本以及任务栈。 |
 | 激光（工作台高度） | 🟡 | 由多次读数得出的测量（中位数、丢弃异常读数、检查离散度、量程和偏移）已测试；VL53L1X 的驱动已编写但从未运行，因此尚未做过任何测量。 |
 | 主轴 | 🟡 | 由传感器脉冲得出的转速（每转任意脉冲数，脉冲停止即视为停转）、带警告、临界值和回差的温度以及保护输出已测试；DS18B20、NTC 和 MLX90614 的驱动已编写但从未运行。 |
 | 摄像头 | 🟠 | MJPEG 视频流已按板子的摄像头接口编写，需要在 menuconfig 中填写板子的引脚；尚未运行。 |
@@ -127,6 +127,7 @@ EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-B
 * **两种摄像头，OV2640 和 OV5640：** 传感器会说明自己是哪一种，节点给出设置允许且该传感器能做到的最大尺寸（OV2640 最大 1600x1200，OV5640 最大 2592x1944），并在 `/api/status`（`camera_model`）和 ONVIF 编码器选项中报告；“钻头”页 中的 `camera_model = auto | ov2640 | ov5640`。Waveshare ESP32-S3-ETH 摄像头接口的引脚是 `menuconfig` 的默认值。
 * **三种温度传感器：** 单总线的 DS18B20、接在模拟输入上的 NTC 热敏电阻（“钻头”页 中的 `ntc_series_ohm`、`ntc_r25_ohm`、`ntc_beta`），或不接触主轴就能测温的红外测温仪 MLX90614（接在激光的 I2C 总线上）；校验和与换算已在电脑上测试。
 * **摄像头周围的 LED 环形灯：** 一根数据线上的八颗 WS2812 型 RGB LED 照亮钻头下方区域，让摄像头看得清楚。白光是供摄像头使用的光；亮度按人眼感受变化，且不会超过上限；只点亮一侧可得到斜射光；可指定任意颜色，环形灯还用颜色显示检查结果（绿色、红色闪烁、旋转的蓝点、琥珀色、快速红色）。一段时间后会自动熄灭。`GET` 和 `POST /api/light` 以及 `GET /api/snapshot` 为程序提供服务；设置在面板和 `head.cfg`（`light_*`）中，引脚在固件菜单（`AUX_LIGHT_GPIO`）中。
+* **37 种语言：** 节点的网页面板支持英语、西班牙语、意大利语、德语、法语、葡萄牙语、中文、日语、保加利亚语、克罗地亚语、捷克语、丹麦语、荷兰语、爱沙尼亚语、芬兰语、希腊语、匈牙利语、爱尔兰语、拉脱维亚语、立陶宛语、马耳他语、波兰语、罗马尼亚语、斯洛伐克语、斯洛文尼亚语、瑞典语、挪威语、冰岛语、乌克兰语、俄语、塞尔维亚语、阿尔巴尼亚语、加泰罗尼亚语、加利西亚语、巴斯克语、巴西葡萄牙语和加拿大法语。 前八种之外的 29 种语言由模型翻译，等待母语者审校；某种语言缺少的文本以英文显示。
 
 ## 🔒 安全与防护
 
@@ -239,7 +240,8 @@ EH3D-NODE-BUNGARD-AUX/
 │   └── github_update.cpp entropy.cpp            来自 GitHub 的更新和槽位复制
 ├── panel/
 │   ├── index.html style.css                     页面和侧边菜单布局
-│   └── app.js text.js                           页面和八种语言的文本
+│   ├── app.js text.js                           页面和37 种语言的文本
+│   └── locales/                                 另外 29 种语言的文字，每种一个文件
 ├── tests/                                       设置、闸门、语音和界面文本的主机测试
 ├── docs/                                        硬件说明和两幅图的源文件
 ├── tools/                                       CI 检查、README 检查和绘图工具

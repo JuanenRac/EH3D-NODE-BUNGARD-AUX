@@ -1,0 +1,418 @@
+# Hrvatski (hr): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	EH3D čvor glave Bungard
+grpNode	Čvor
+grpNetwork	Mreža
+grpSystem	Sustav
+navMenu	Glavni izbornik
+navStatus	Stanje
+navUpdate	Firmware
+navLog	Zapisnik
+skip	Preskoči na sadržaj
+themeToLight	Svijetla tema
+themeToDark	Tamna tema
+showShort	Prikaži
+e_other	Čvor je odgovorio pogreškom: {0}
+statusNoControl	Ova stranica prikazuje što glava očitava: kameru, laser, brzinu i temperaturu vretena te izlaz zaštite. Ploča ne pomiče ništa; jedino što traži od glave jest jedno mjerenje stola.
+stLost	Čvor ne odgovara
+stSpindle	Vreteno
+stSpindleBar	Brzina u odnosu na maksimalnu
+spMax	Maksimalna brzina: {0} rpm
+stNode	Čvor
+fToken	Pristupni token
+fTokenHint	Upisuje se u čvor i više se ne prikazuje. Upišite novi ili ga generirajte, zatim Spremi.
+noTokenNote	Bez pristupnog tokena programi ne mogu čitati kameru, stanje ni mjerenje. Postavite ga prije korištenja glave.
+netNow	Trenutna veza
+netTitle	Adresa
+hostnameHint	prazno: čvor bira naziv iz svog identifikatora
+netRestartNote	Promjena naziva računala ili veze primjenjuje se nakon ponovnog pokretanja čvora.
+apNote	Pristupna točka za postavljanje vlastita je Wi-Fi mreža čvora, za pristup s telefona kad nema adresu u vašoj mreži.
+setupWifiHelp	Čvor nema kabel. Navedite Wi-Fi mrežu kojoj se treba sada pridružiti ili je ostavite praznom i koristite vlastitu mrežu čvora za postavljanje, čija je lozinka kôd za postavljanje (kasnije je možete promijeniti u Mreži).
+rolesHelp	Administratori mogu mijenjati sve. Promatrači vide stanje i postavke, ali ništa ne mijenjaju.
+slotVersion	verzija {0}
+slotsUnknown	Čvor nije javio svoje slotove firmwarea.
+chooseFirst	Prvo odaberite datoteku firmwarea.
+p_out_of_range	izvan raspona
+p_duplicate_pin	ovaj pin je upotrijebljen dvaput
+p_reserved_pin	rezerviran od ploče
+p_not_a_number	nije cijeli broj
+staError	Posljednja pogreška Wi-Fija
+se_failed	spajanje nije uspjelo
+se_network_not_found	mreža nije pronađena
+se_wrong_password	lozinka je odbijena
+navNetwork	Mreža
+navUsers	Korisnici
+navSystem	Sustav
+language	Jezik
+signOut	Odjava
+loading	Učitavanje…
+unreachable	Čvor ne odgovara.
+signIn	Prijava
+rememberMe	Zapamti me u ovom pregledniku
+rememberUser	Zapamti moje korisničko ime na ovom uređaju
+loginNote	Može se zapamtiti samo korisničko ime, i to samo ako označite okvir. Lozinku, ako želite, sprema samo upravitelj lozinki vašeg preglednika ili sustava; ploča je nikada ne pohranjuje.
+user	Korisnik
+password	Lozinka
+showPassword	Prikaži lozinku
+setupTitle	Postavljanje ovog čvora
+setupCode	Kôd za postavljanje
+adminName	Ime administratora
+createAdmin	Izradi administratora
+setupWifi	Wi-Fi za postavljanje ovog čvora
+setupIntro	Ovaj čvor još nema korisnika. Unesite kôd za postavljanje koji čvor prikazuje na svojoj USB konzoli svakih 15 sekundi i odaberite administratora.
+setupWifiTitle	Wi-Fi mreža kojoj se čvor treba pridružiti (neobavezno)
+setupWifiOptionalTitle	Wi-Fi mreža (neobavezno)
+setupWifiOptionalHelp	Ova ploča ima Ethernet priključak: s uključenim kabelom ostavite ovo prazno. Za korištenje čvora preko Wi-Fija (primjerice na radnom stolu bez kabela) ovdje navedite mrežu kojoj se treba pridružiti. Ako ostane bez adrese, ponovno otvara svoju mrežu za postavljanje nakon 90 sekundi kako bi mu se moglo pristupiti.
+save	Spremi
+saveRestart	Spremi i ponovno pokreni
+restart	Ponovno pokreni
+discard	Odbaci promjene
+saved	Spremljeno.
+savedRestart	Spremljeno. Ponovno pokrenite čvor da se primijeni.
+unsaved	Postoje nespremljene promjene.
+restarting	Čvor se ponovno pokreće…
+adminOnly	Ovo može promijeniti samo administrator.
+yes	da
+no	ne
+add	Dodaj
+delete	Izbriši
+refresh	Osvježi
+working	U tijeku…
+confirmAsk	Jeste li sigurni?
+nodeId	Identifikator
+firmware	Firmware
+uptime	Radi već
+address	Adresa
+netmask	Maska podmreže
+gateway	Pristupnik
+mac	MAC
+link	Veza
+linkUp	aktivna
+linkDown	prekinuta
+nodeTitle	Čvor
+uplink	Veza s mrežom
+uplinkEthernet	Ethernet kabel (PoE)
+uplinkWifi	Wi-Fi (pridružuje se drugoj mreži)
+dhcp	Dobij adresu automatski (DHCP)
+dns1	DNS poslužitelj 1
+dns2	DNS poslužitelj 2
+hostname	Naziv računala
+wifiAp	Pristupna točka (Wi-Fi koji ovaj čvor nudi)
+apEnable	Nudi Wi-Fi mrežu
+ssid	Naziv mreže (SSID)
+security	Zaštita
+secOpen	otvorena (bez lozinke)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Wi-Fi lozinka (8 do 63 znaka)
+passwordSet	lozinka je spremljena; ostavite prazno da je zadržite
+hidden	Sakrij naziv mreže
+wifiChannel	Kanal
+channelAuto	automatski (1, 6 ili 11 prema čvoru)
+channelNow	Ovaj čvor koristio bi kanal {0}.
+wifiSta	Wi-Fi stanica (ovaj čvor se pridružuje Wi-Fi mreži)
+staEnable	Pridruži se Wi-Fi mreži
+scanNetworks	Traži mreže
+scanning	Traženje…
+noNetworks	Nijedna mreža nije uočena.
+scanNote	Dok traži, vlastita pristupna točka čvora može na trenutak odbaciti svoje klijente.
+useNetwork	Koristi
+signal	signal
+wiredNote	Na kabelu čvor traži adresu putem DHCP-a, osim ako je ovdje ne postavite. Njegova vlastita Wi-Fi mreža, ako je zadržite, zasebna je mreža (192.168.4.x) za pristup čvoru s telefona; nije spojena na žičanu. Promjene se primjenjuju nakon ponovnog pokretanja.
+staNote	Čvor nema kabel: dajte mu Wi-Fi mrežu svoje kuće ili lokacije. Ako stanicu ostavite isključenu, koristite njegovu vlastitu pristupnu točku.
+noWifiWarn	Čvor nema kabel: ostavite uključeno barem jedno od dvoje, pristupnu točku ili stanicu, inače mu se ne može pristupiti.
+ethernetMissing	Ethernet čip ne odgovara (pogledajte vodič za ožičenje).
+station	Wi-Fi stanica
+notConnected	nije spojeno
+apActive	Pristupna točka
+apClients	klijenti
+channel	kanal
+setupNetwork	mreža za postavljanje
+usersTitle	Korisnici ove ploče
+role	Uloga
+roleAdmin	administrator
+roleViewer	promatrač (samo čitanje)
+addUser	Dodaj korisnika
+newPassword	Nova lozinka (8 znakova ili više)
+setPassword	Postavi lozinku
+myAccount	Moja lozinka
+currentPassword	Trenutna lozinka
+changePassword	Promijeni moju lozinku
+passwordChanged	Lozinka je promijenjena. Prijavite se ponovno.
+you	vi
+updateTitle	Ažuriranje firmwarea
+updateHelp	Odaberite datoteku firmwarea (.bin izrađen za ovaj projekt, ne spojena slika). Provjerava se prije uporabe, a ako se nova verzija ne podigne, čvor se sam vraća na prethodnu.
+chooseFile	Datoteka firmwarea
+upload	Učitaj i instaliraj
+uploading	Učitavanje… {0}%
+updateDone	Instalirana verzija {0}. Čvor se sada ponovno pokreće.
+slot	Radi iz
+slotsTitle	Slotovi firmwarea
+slotsHelp	Čvor drži dva slota firmwarea, ota_0 i ota_1. Ažuriranje se upisuje u onaj koji ne radi. Ovdje u svakom trenutku možete pokrenuti drugi - da se vratite na prethodnu verziju ili pređete na upravo instaliranu. Postavke se zadržavaju.
+slotRunning	radi sada
+slotNextBoot	pokreće se sljedeći
+slotEmpty	prazan - nema firmwarea
+switchSlot	Pokreni {0}
+switchSlotNone	Drugi slot ne sadrži firmware
+switchAsk	Ponovno pokrenuti čvor i pokrenuti {0} (verzija {1})?
+logTitle	Zapisnik čvora
+copyLog	Kopiraj zapisnik
+copied	Kopirano
+copyFailed	Kopiranje nije uspjelo - označite tekst i kopirajte ga ručno
+maintenance	Održavanje
+rebootNode	Ponovno pokreni čvor
+factoryTitle	Tvorničke postavke
+factoryHelp	Briše sve postavke i sve korisnike; čvor se ponovno pokreće u postavljanju. Upišite RESET za potvrdu.
+author	Autor
+license	Licenca
+e_unauthorized	Vaša je sesija završila. Prijavite se ponovno.
+e_wrong_credentials	Pogrešan korisnik ili lozinka.
+e_too_many_attempts	Previše pokušaja. Pričekajte trenutak.
+e_wrong_code	Kôd za postavljanje je pogrešan.
+e_invalid_name	Naziv nije valjan (3 do 32 znaka: a do z, 0 do 9, . _ -).
+e_weak_password	Lozinka mora imati 8 do 64 znaka.
+e_exists	Taj korisnik već postoji.
+e_not_found	Nije pronađeno.
+e_too_many_users	Može biti najviše četiri korisnika.
+e_last_admin	Posljednji administrator ne može se ukloniti ni degradirati.
+e_wrong_password	Trenutna lozinka je pogrešna.
+e_invalid_role	Uloga nije valjana.
+e_forbidden	To ne možete učiniti.
+e_storage	Flash se nije mogao upisati.
+e_invalid	Neke vrijednosti nisu valjane; označene su u obrascu.
+e_not_json	Zahtjev nije razumljiv.
+e_too_large	Zahtjev je prevelik.
+e_bad_size	Veličina datoteke nije valjana za firmware.
+e_not_firmware	Ta datoteka nije firmware za ESP32.
+e_image_invalid	Slika firmwarea je oštećena ili nepotpuna.
+e_wrong_firmware	Taj firmware pripada drugom projektu.
+e_upload_interrupted	Učitavanje je prekinuto.
+e_upload_stalled	Učitavanje je zapelo i zaustavljeno je: pokušajte ponovno.
+e_network	Čvor nije dostupan.
+e_setup_required	Prvo postavite čvor: izradite njegova administratora.
+e_confirm_required	Potrebna je potvrda: pošaljite riječ RESET.
+e_bad_host	Ta adresa nije valjana.
+e_invalid_time	To vrijeme nije valjano.
+e_would_lock_out	Taj popis zaključao bi vas iz ploče: dodajte mrežu koju trenutno koristite.
+e_slot_empty	Drugi slot ne sadrži firmware.
+e_ota_begin	Ažuriranje nije moglo započeti upisivanje.
+e_ota_boot	Novi firmware nije se mogao odabrati za sljedeće pokretanje.
+e_ota_write	Ažuriranje se nije moglo upisati u flash.
+e_no_partition	Nema slobodnog slota za ažuriranje.
+e_outside_network	Ovoj mreži nije dopušteno koristiti ploču: koristite mrežu kuće ili VPN.
+e_wifi_busy	Radio je zauzet; pokušajte ponovno za trenutak.
+e_scan_failed	Traženje nije uspjelo.
+e_wifi_unavailable	Wi-Fi se nije mogao pokrenuti.
+p_required	obavezno
+p_invalid	nije valjano
+p_range	izvan raspona
+p_too_long	predugo
+p_conflict	već u uporabi
+p_reserved	rezerviran od ploče
+p_invalid_key	8 do 63 znaka koja se mogu ispisati
+p_outside_subnet	izvan podmreže
+addBackupNetwork	Dodaj pričuvnu mrežu
+appIdf	ESP-IDF (firmware)
+backupNetworksHint	Isprobavaju se redom ako se gornjoj mreži ne može pridružiti neko vrijeme.
+backupNetworksTitle	Pričuvne mreže
+board	Ploča
+bootloaderIdf	ESP-IDF (bootloader)
+brownoutLevel	Razina detektora pada napona
+checkGithub	Provjeri sada
+checking	Provjera…
+chip	Čip
+clockNotSet	nije postavljeno
+copyAsk	Kopirati firmware koji radi ({0}, verzija {1}) preko drugog slota ({2})? Ono što sada sadrži bit će izbrisano. Čvor se ne pokreće ponovno.
+copyDone	Kopirano: oba slota sada sadrže verziju {0}.
+copyRunning	Kopiranje… {0}%
+copySlot	Kopiraj {0} u {1}
+cores	jezgre
+cpuFreq	Frekvencija procesora
+dns	DNS
+flash	Flash
+flashAllocated	Rezervirano particijama
+flashEncryption	Šifriranje flasha
+flashFree	slobodno
+flashTotal	Ukupno
+flashUnallocated	Nije dodijeljeno nijednoj particiji
+githubAvailable	Dostupna je verzija {0}.
+githubDownloading	Preuzimanje firmwarea s GitHuba… {0}%
+githubUpToDate	Ovo je već najnovija verzija na GitHubu.
+githubUpdateNote	Preuzima samostalnu sliku aplikacije koju objavljuje sam GitHub release (nikada bootloader) i instalira je na isti način kao učitanu datoteku. Ručno učitavanje gore i dalje radi posve jednako - ovo je dodatak, ne zamjena, za čvor koji nema razloga dosezati Internet.
+githubUpdateTitle	Provjeri ima li na GitHubu nove verzije
+githubVerifying	Provjera slike prema hashu releasea…
+installUpdate	Preuzmi i instaliraj
+installing	Instaliranje…
+layout	Raspored
+localTime	Lokalno vrijeme
+memory	Slobodna memorija
+navAbout	O programu
+navHelp	Pomoć
+navOverview	Pregled
+navWifi	Wi-Fi
+nodeName	Naziv
+none	nema
+ovFlash	Flash memorija
+ovHardware	Hardver
+ovNetwork	Mreža
+ovNode	Ovaj čvor
+ovTime	Datum i vrijeme
+ownNetwork	vlastita mreža
+psram	PSRAM
+radios	Radiji
+reasonOther	drugo
+removeNetwork	Ukloni
+resetReason	Zadnje ponovno pokretanje
+secureBoot	Sigurno pokretanje
+timeFromNtp	Internetski poslužitelj vremena (sinkronizirano)
+timeManual	postavljeno ručno
+timeNtpWaiting	čeka se internetski poslužitelj vremena
+timeSource	Izvor vremena
+timeZone	Vremenska zona
+aboutDescription	čvor obitelji EH3D za bušaću glavu stroja Bungard CCD: poslužuje kameru, mjeri stol laserom, čita brzinu i temperaturu vretena i upravlja izlazom zaštite.
+aboutIndependent	Projekt je neovisan: nije izrađen, odobren niti podržan od strane Bungard Elektronik.
+wifiMoved	Wi-Fi mreže nalaze se na vlastitoj stranici, Wi-Fi.
+navHelpTab_overview	Sažetak
+help_overview_title	Sažetak
+help_overview_text	Ova ploča postavlja i nadzire čvor. Sažetak prikazuje što je čvor i kakav je; Stanje prati što radi dok se događa; stranice Mreža i Wi-Fi sadrže kako je spojen; Korisnici, Firmware i Zapisnik namijenjeni su sustavu.\n\nSve se sprema u čvor i primjenjuje kad to kaže traka pri dnu. Promjena koja traži ponovno pokretanje to kaže prije nego napustite stranicu.
+navHelpTab_status	Stanje
+help_status_title	Stanje
+help_status_text	Stanje prikazuje kameru, laser, brzinu i temperaturu vretena te izlaz zaštite, osvježavano svake sekunde. Gumb Izmjeri radi jedno mjerenje stola laserom.
+navHelpTab_machine	Stroj
+help_machine_title	Stroj
+help_machine_text	Stroj sadrži ono što veže čvor s upravljačkom jedinicom: serijske pinove i brzinu, pristupni token upravljačke veze, priključak i ograničenja reda. Promjena se primjenjuje nakon spremanja; neke traže ponovno pokretanje i traka to kaže.\n\nToken je samo za upis: nikada se više ne prikazuje. Program koji se spaja treba ga; bez njega čvor odbija pomicati stroj.
+navHelpTab_network	Mreža
+help_network_title	Mreža
+help_network_text	Mreža prikazuje kako je čvor sada spojen i postavlja njegov naziv i adresu: DHCP ili fiksna adresa. Na ploči s kabelom birate kabel ili Wi-Fi kao put ulaza.\n\nPromjena adrese primjenjuje se nakon ponovnog pokretanja. Ako nakon promjene izgubite čvor, ploči se i dalje može pristupiti preko njegove pristupne točke (kad je uključena) ili kabela.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	Wi-Fi postavlja mrežu kojoj se čvor pridružuje i pristupnu točku koju može otvoriti. Ispod glavne mreže možete dodati do tri pričuvne mreže: ako se glavna izgubi, čvor ih isprobava redom, pa ne ispada iz mreže. Traženje navodi mreže u dometu.\n\nLozinke su samo za upis: ploča ih nikada više ne prikazuje, a prazno polje zadržava spremljenu.
+navHelpTab_users	Korisnici
+help_users_title	Korisnici
+help_users_text	Administratori mijenjaju postavke; promatrači samo gledaju. Svaka osoba ima ime i lozinku. Administrator dodaje osobe, mijenja lozinke i uklanja ih; posljednji administrator ne može se ukloniti.\n\nPreviše pogrešnih lozinki blokira ime na neko vrijeme. Vlastita lozinka mijenja se na istoj stranici.
+navHelpTab_update	Firmware
+help_update_title	Firmware
+help_update_text	Firmware se može ažurirati na tri načina. S GitHuba: čvor traži najnoviji release svog projekta, preuzima ga, provjerava podudara li se hash s onim koji release objavljuje i instalira ga u drugi slot. Učitavanjem .bin datoteke ovog projekta. Ili prebacivanjem na drugi slot, koji još sadrži verziju koja je radila prije.\n\nKopiraj upisuje firmware koji radi u drugi slot, tako da oba sadrže istu verziju (kopija za povratak). Nakon ažuriranja čvor se ponovno pokreće.
+navHelpTab_log	Zapisnik
+help_log_title	Zapisnik
+help_log_text	Zapisnik je ono što čvor govori dok radi: mreža, upravljačka veza, ažuriranja i pogreške. Čuva se u memoriji, pa nakon ponovnog pokretanja počinje prazan.\n\nKopirajte ga kad tražite pomoć: sadrži što se dogodilo, redom.
+navHelpTab_system	Sustav
+help_system_title	Sustav
+help_system_text	Sustav sadrži ponovno pokretanje čvora i tvorničke postavke, koje brišu sve postavke i sve korisnike (upišite RESET za potvrdu). Prvo ponovno pokrenite ako samo želite vidjeti nestaje li problem.\n\nPonovno pokretanje na trenutak prekida vezu stroja: učinite to kad nijedan posao ne teče.
+reasonPower_on	uključivanje napajanja
+reasonSoftware	ponovno pokretanje s ploče
+reasonCrash	PAD
+reasonWatchdog	watchdog
+reasonBrownout	nizak napon
+reasonDeep_sleep	duboki san
+e_bad_json	Zahtjev nije valjan JSON.
+e_bad_url	Adresa ažuriranja nije službena.
+e_checksum_mismatch	Preuzeti firmware ne odgovara kontrolnom zbroju releasea: odbijen je i ništa nije promijenjeno.
+e_client_init	Preuzimanje se nije moglo pokrenuti.
+e_connect_failed	Preuzimanje se nije spojilo: provjerite mrežu čvora i pokušajte ponovno.
+e_no_asset	Release nema firmware za ovu ploču.
+e_no_asset_for_board	Postoji noviji release, ali nema sliku firmwarea za ovu ploču.
+e_no_checksum	Release ne sadrži datoteku kontrolnog zbroja uz sliku firmwarea, pa se ne instalira.
+e_no_memory	Čvoru je ponestalo memorije.
+e_no_release	Nije pronađen nijedan release.
+e_no_slot	Nema drugog slota u koji bi se kopiralo.
+e_no_task	Ažuriranje se nije moglo pokrenuti (nema slobodnog zadatka).
+e_not_newer	Taj firmware nije noviji od onog koji radi.
+e_ota_busy	Instalacija s GitHuba već je u tijeku.
+e_read_error	Preuzimanje je prekinuto tijekom čitanja.
+e_read_failed	Slot koji radi nije se mogao pročitati.
+e_short_read	Preuzimanje je završilo prije nego što je datoteka bila potpuna.
+e_source_invalid	Firmware koji radi nije se mogao provjeriti, pa nije kopiran.
+e_up_to_date	Firmware je već ažuran.
+e_version_mismatch	Verzija datoteke nije ona releasea.
+navHead	Glava
+stCamera	Kamera
+stCameraHelp	Slika je na /stream (MJPEG) te preko RTSP-a i ONVIF-a kad su uključeni.
+stLaser	Laser
+stLaserHelp	Mjeri udaljenost do stola ispod glave. Rezultat je medijan dobrih očitanja.
+stMeasure	Izmjeri stol
+stMeasureResult	Udaljenost {0} mm (raspršenje {1} mm, korišteno {2} od {3} očitanja)
+stMeasureFail	Nema upotrebljivog mjerenja ({0})
+stOn	Uklj.
+stOff	Isklj.
+stNoTemp	Nema senzora temperature
+stTemp	Temperatura
+stHeatOk	Temperatura normalna
+stHeatWarn	Vreteno je vruće
+stHeatCritical	Vreteno je prevruće
+spNoSensor	Senzor brzine nije uključen.
+stProtect	Izlaz zaštite
+stProtectOpen	Otvoren: zaštita dopušta vretenu rad samo ako čvor dopusti
+stProtectClosed	Zatvoren: vreteno smije raditi
+stProtectHelp	Izlaz prekida omogućavanje pretvarača vretena kad brzina ili temperatura izađu iz svojih granica.
+ovHead	Glava
+hRestartNote	Kamera, senzori i tokovi pokreću se s čvorom: promjena ovdje traži ponovno pokretanje.
+hCamera	Kamera
+hCameraIntro	OV2640 (do 1600x1200) ili OV5640 (do 2592x1944) na priključku kamere. S "auto" čvor pita senzor koji je.
+modelAuto	auto
+fCameraOn	Kamera uključena
+fCameraModel	Senzor
+fWidth	Širina (px)
+fHeight	Visina (px)
+fQuality	Kvaliteta JPEG-a
+fQualityHint	4 je najbolja slika, 63 najmanja.
+fFps	Sličica u sekundi (maksimum)
+hStream	Tokovi i pristup
+hStreamIntro	Programi čitaju kameru, stanje i mjerenje pristupnim tokenom; tokovi RTSP i ONVIF traže korisnika i lozinku u nastavku.
+fRtspOn	RTSP tok uključen
+fRtspPort	RTSP priključak
+fOnvifOn	ONVIF otkrivanje uključeno
+fStreamUser	Korisnik toka
+fStreamPassword	Lozinka toka
+fStreamPasswordHint	Samo za upis: ostavite prazno da zadržite spremljenu.
+fSecretClear	Izbriši spremljenu vrijednost
+hLaser	Laser
+hLaserIntro	Senzor udaljenosti VL53L1X gleda stol ispod glave. Pomak se dodaje svakoj udaljenosti; očitanja izvan raspona ili previše raspršena odbacuju se.
+fLaserOn	Laser uključen
+fSamples	Očitanja po mjerenju
+fLaserTimeout	Vremensko ograničenje (ms)
+fLaserOffset	Pomak (mm)
+fLaserSigma	Najveće raspršenje (mm)
+fLaserMin	Najbliža udaljenost (mm)
+fLaserMax	Najdalja udaljenost (mm)
+hSpindle	Senzori i zaštita vretena
+hSpindleIntro	Brzina dolazi iz impulsa senzora na vretenu; temperatura iz DS18B20, NTC-a ili MLX90614. Izlaz zaštite otvara se kad jedno od to dvoje izađe iz granica.
+fRpmOn	Senzor brzine uključen
+fPulses	Impulsa po okretaju
+fRpmMax	Najveća brzina (rpm)
+fRpmStale	Brzina je zastarjela nakon (ms)
+fTempSensor	Senzor temperature
+hLight	Svjetlosni prsten
+hLightIntro	Prsten RGB LED dioda (WS2812) oko kamere osvjetljava radno područje. Bijela je svjetlo za kameru; zelena i crvena govore kako je prošla provjera. Svjetlo nikada ne prelazi strop i samo se isključuje nakon nekog vremena.
+fLightOn	Svjetlosni prsten ugrađen
+fLightLeds	LED diode na prstenu
+fLightLevel	Razina pri uključivanju (%)
+fLightMax	Strop (%)
+fLightTone	Boja svjetla
+toneWhite	Bijela (za kameru)
+toneCool	Hladna bijela
+toneWarm	Topla bijela
+toneRed	Crvena
+toneGreen	Zelena
+toneBlue	Plava
+fLightAutoOff	Isključuje se samo nakon (s, 0: nikad)
+fLightAtStart	Uključeno pri pokretanju čvora
+fLightOrder	Redoslijed boja u LED diodama
+lightBtnOn	Isprobaj svjetlo
+lightBtnOff	Isključi
+lightBtnOk	Prikaži OK
+lightBtnNok	Prikaži NIJE OK
+lightTestFailed	Čvor to nije učinio. Provjerite je li prsten ugrađen i uključen gore.
+tempNone	nema
+fNtcSeries	Serijski otpornik (ohm)
+fNtcR25	NTC na 25 °C (ohm)
+fNtcBeta	NTC beta
+fTempWarn	Upozorenje (°C)
+fTempCritical	Kritično (°C)
+fTempHyst	Histereza (°C)
+fProtect	Izlaz zaštite uključen
+fProtectHint	Isklj.: izlaz ostaje zatvoren što god senzori očitavali.
+hSpindleSafety	Isprobajte zaštitu s odspojenim pretvaračem vretena prije nego se pouzdate u nju. Senzor koji prestane odgovarati otvara izlaz.
+navHelpTab_head	Glava
+help_head_title	Glava
+help_head_text	Glava sadrži ono što ima samo ovaj čvor: kameru i njezinu veličinu i kvalitetu, tokove RTSP i ONVIF, laser koji mjeri stol, senzore vretena i izlaz zaštite. Pristupni token je ono čime programi čitaju kameru, stanje i mjerenje.\n\nLozinke i token samo su za upis: ploča ih nikada ne prikazuje, prazan okvir zadržava spremljenu vrijednost, a potvrdni okvir je briše. Promjena traži ponovno pokretanje.

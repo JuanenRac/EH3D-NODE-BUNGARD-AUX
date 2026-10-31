@@ -1,0 +1,418 @@
+# Magyar (hu): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	EH3D Bungard fej csomópont
+grpNode	Csomópont
+grpNetwork	Hálózat
+grpSystem	Rendszer
+navMenu	Főmenü
+navStatus	Állapot
+navUpdate	Firmware
+navLog	Napló
+skip	Ugrás a tartalomra
+themeToLight	Világos téma
+themeToDark	Sötét téma
+showShort	Mutat
+e_other	A csomópont hibával válaszolt: {0}
+statusNoControl	Ez az oldal azt mutatja, amit a fej olvas: a kamerát, a lézert, az orsó sebességét és hőmérsékletét, valamint a védelmi kimenetet. A panel nem mozgat semmit; egyetlen dolgot kér a fejtől: egy asztalmérést.
+stLost	A csomópont nem válaszol
+stSpindle	Orsó
+stSpindleBar	Sebesség a maximumhoz képest
+spMax	Maximális sebesség: {0} ford./perc
+stNode	Csomópont
+fToken	Hozzáférési token
+fTokenHint	A csomópontba íródik, és soha többé nem jelenik meg. Írj be egy újat, vagy generálj egyet, majd kattints a Mentés gombra.
+noTokenNote	Hozzáférési token nélkül a programok nem tudják olvasni a kamerát, az állapotot és a mérést. Állíts be egyet a fej használata előtt.
+netNow	Jelenlegi kapcsolat
+netTitle	Cím
+hostnameHint	üres: a csomópont az azonosítójából választ nevet
+netRestartNote	A gépnév vagy a kapcsolat módosítása a csomópont újraindítása után lép életbe.
+apNote	A beállítási hozzáférési pont a csomópont saját Wi-Fi hálózata, amellyel telefonról el lehet érni, ha nincs címe a te hálózatodon.
+setupWifiHelp	A csomópontnak nincs kábele. Add meg a Wi-Fi hálózatot, amelyhez csatlakoznia kell, vagy hagyd üresen, és használd a csomópont saját beállítási hálózatát, amelynek jelszava a beállítási kód (később módosíthatod a Hálózat oldalon).
+rolesHelp	A rendszergazdák mindent módosíthatnak. A megtekintők látják az állapotot és a beállításokat, de semmit sem módosítanak.
+slotVersion	{0} verzió
+slotsUnknown	A csomópont nem jelentette a firmware-tárhelyeit.
+chooseFirst	Először válassz egy firmware-fájlt.
+p_out_of_range	tartományon kívül
+p_duplicate_pin	ez a láb kétszer van használva
+p_reserved_pin	a lap fenntartja
+p_not_a_number	nem egész szám
+staError	Utolsó Wi-Fi hiba
+se_failed	a kapcsolat sikertelen volt
+se_network_not_found	a hálózat nem található
+se_wrong_password	a jelszót elutasították
+navNetwork	Hálózat
+navUsers	Felhasználók
+navSystem	Rendszer
+language	Nyelv
+signOut	Kijelentkezés
+loading	Betöltés…
+unreachable	A csomópont nem válaszol.
+signIn	Bejelentkezés
+rememberMe	Maradjak bejelentkezve ebben a böngészőben
+rememberUser	Jegyezd meg a felhasználónevemet ezen az eszközön
+loginNote	Csak a felhasználónév jegyezhető meg, és csak akkor, ha bejelölöd a négyzetet. A jelszót, ha szeretnéd, kizárólag a böngésződ vagy a rendszered saját jelszókezelője menti; a panel soha nem tárolja.
+user	Felhasználó
+password	Jelszó
+showPassword	Jelszó megjelenítése
+setupTitle	A csomópont beállítása
+setupCode	Beállítási kód
+adminName	A rendszergazda neve
+createAdmin	Rendszergazda létrehozása
+setupWifi	A csomópont beállítási Wi-Fi hálózata
+setupIntro	Ennek a csomópontnak még nincs felhasználója. Add meg a beállítási kódot, amelyet a csomópont 15 másodpercenként kiír az USB-konzoljára, és válaszd ki a rendszergazdát.
+setupWifiTitle	Wi-Fi hálózat, amelyhez a csomópont csatlakozik (opcionális)
+setupWifiOptionalTitle	Wi-Fi hálózat (opcionális)
+setupWifiOptionalHelp	Ennek a lapnak van Ethernet-portja: csatlakoztatott kábellel hagyd ezt üresen. Ha a csomópontot inkább Wi-Fi-n szeretnéd használni (például kábel nélküli próbapadon), add meg itt a hálózatot, amelyhez csatlakoznia kell. Ha cím nélkül marad, 90 másodperc múlva újra megnyitja a beállítási hálózatát, hogy elérhető legyen.
+save	Mentés
+saveRestart	Mentés és újraindítás
+restart	Újraindítás
+discard	Módosítások elvetése
+saved	Mentve.
+savedRestart	Mentve. Az alkalmazáshoz indítsd újra a csomópontot.
+unsaved	Mentetlen módosítások vannak.
+restarting	A csomópont újraindul…
+adminOnly	Ezt csak rendszergazda módosíthatja.
+yes	igen
+no	nem
+add	Hozzáadás
+delete	Törlés
+refresh	Frissítés
+working	Folyamatban…
+confirmAsk	Biztos vagy benne?
+nodeId	Azonosító
+firmware	Firmware
+uptime	Működési idő
+address	Cím
+netmask	Alhálózati maszk
+gateway	Átjáró
+mac	MAC
+link	Kapcsolat
+linkUp	aktív
+linkDown	megszakadt
+nodeTitle	Csomópont
+uplink	Kapcsolat a hálózattal
+uplinkEthernet	Ethernet-kábel (PoE)
+uplinkWifi	Wi-Fi (másik hálózathoz csatlakozik)
+dhcp	A cím automatikus lekérése (DHCP)
+dns1	DNS-szerver 1
+dns2	DNS-szerver 2
+hostname	Gépnév
+wifiAp	Hozzáférési pont (a csomópont által kínált Wi-Fi)
+apEnable	Wi-Fi hálózat kínálása
+ssid	Hálózat neve (SSID)
+security	Biztonság
+secOpen	nyílt (jelszó nélkül)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Wi-Fi jelszó (8–63 karakter)
+passwordSet	jelszó van mentve; hagyd üresen a megtartásához
+hidden	A hálózat nevének elrejtése
+wifiChannel	Csatorna
+channelAuto	automatikus (1, 6 vagy 11 csomópontonként)
+channelNow	Ez a csomópont a(z) {0}. csatornát használná.
+wifiSta	Wi-Fi állomás (a csomópont Wi-Fi hálózathoz csatlakozik)
+staEnable	Csatlakozás Wi-Fi hálózathoz
+scanNetworks	Hálózatok keresése
+scanning	Keresés…
+noNetworks	Egy hálózat sem hallható.
+scanNote	Keresés közben a csomópont saját hozzáférési pontja egy pillanatra elveszítheti a klienseit.
+useNetwork	Használ
+signal	jel
+wiredNote	Kábelen a csomópont DHCP-vel kéri a címét, hacsak itt nem rögzíted. A saját Wi-Fi hálózata, ha megtartod, külön hálózat (192.168.4.x), amellyel telefonról elérhető a csomópont; nincs összekötve a vezetékessel. A módosítások újraindítás után lépnek életbe.
+staNote	A csomópontnak nincs kábele: add meg neki az otthonod vagy a telephelyed Wi-Fi hálózatát. Ha az állomást kikapcsolva hagyod, használd a saját hozzáférési pontját.
+noWifiWarn	A csomópontnak nincs kábele: tartsd bekapcsolva legalább az egyiket a kettő közül, a hozzáférési pontot vagy az állomást, különben nem érhető el.
+ethernetMissing	Az Ethernet-chip nem válaszol (lásd a bekötési útmutatót).
+station	Wi-Fi állomás
+notConnected	nincs csatlakoztatva
+apActive	Hozzáférési pont
+apClients	kliens
+channel	csatorna
+setupNetwork	beállítási hálózat
+usersTitle	A panel felhasználói
+role	Szerepkör
+roleAdmin	rendszergazda
+roleViewer	megtekintő (csak olvasás)
+addUser	Felhasználó hozzáadása
+newPassword	Új jelszó (legalább 8 karakter)
+setPassword	Jelszó beállítása
+myAccount	Saját jelszavam
+currentPassword	Jelenlegi jelszó
+changePassword	Jelszavam módosítása
+passwordChanged	A jelszó megváltozott. Jelentkezz be újra.
+you	te
+updateTitle	A firmware frissítése
+updateHelp	Válaszd ki a firmware-fájlt (egy ehhez a projekthez fordított .bin, nem az egyesített image). Használat előtt ellenőrzi, és ha az új verzió nem indul el, a csomópont magától visszatér az előzőre.
+chooseFile	Firmware-fájl
+upload	Feltöltés és telepítés
+uploading	Feltöltés… {0}%
+updateDone	A(z) {0} verzió telepítve. A csomópont most újraindul.
+slot	Futtatás innen
+slotsTitle	Firmware-tárhelyek
+slotsHelp	A csomópont két firmware-tárhelyet tart, az ota_0-t és az ota_1-et. A frissítés abba íródik, amelyik nem fut. Itt bármikor elindíthatod a másikat - hogy visszatérj az előző verzióra, vagy előre lépj a most telepítettre. A beállítások megmaradnak.
+slotRunning	jelenleg fut
+slotNextBoot	következőnek indul
+slotEmpty	üres - nincs firmware
+switchSlot	{0} indítása
+switchSlotNone	A másik tárhelyen nincs firmware
+switchAsk	Újraindítod a csomópontot és elindítod a(z) {0} tárhelyet ({1} verzió)?
+logTitle	A csomópont naplója
+copyLog	Napló másolása
+copied	Másolva
+copyFailed	A másolás nem sikerült - jelöld ki a szöveget, és másold kézzel
+maintenance	Karbantartás
+rebootNode	A csomópont újraindítása
+factoryTitle	Gyári visszaállítás
+factoryHelp	Töröl minden beállítást és minden felhasználót; a csomópont újra a beállításnál indul. A megerősítéshez írd be: RESET.
+author	Szerző
+license	Licenc
+e_unauthorized	A munkameneted véget ért. Jelentkezz be újra.
+e_wrong_credentials	Hibás felhasználó vagy jelszó.
+e_too_many_attempts	Túl sok próbálkozás. Várj egy kicsit.
+e_wrong_code	A beállítási kód hibás.
+e_invalid_name	A név érvénytelen (3–32 karakter: a–z, 0–9, . _ -).
+e_weak_password	A jelszónak 8–64 karakterből kell állnia.
+e_exists	Ez a felhasználó már létezik.
+e_not_found	Nem található.
+e_too_many_users	Legfeljebb négy felhasználó lehet.
+e_last_admin	Az utolsó rendszergazda nem távolítható el és nem fokozható le.
+e_wrong_password	A jelenlegi jelszó hibás.
+e_invalid_role	A szerepkör érvénytelen.
+e_forbidden	Ezt nem teheted meg.
+e_storage	A flash-re nem sikerült írni.
+e_invalid	Egyes értékek érvénytelenek; az űrlapon meg vannak jelölve.
+e_not_json	A kérést nem sikerült értelmezni.
+e_too_large	A kérés túl nagy.
+e_bad_size	A fájl mérete nem érvényes firmware-hez.
+e_not_firmware	Ez a fájl nem ESP32 firmware.
+e_image_invalid	A firmware image sérült vagy hiányos.
+e_wrong_firmware	Ez a firmware egy másik projekté.
+e_upload_interrupted	A feltöltés megszakadt.
+e_upload_stalled	A feltöltés elakadt és leállt: próbáld újra.
+e_network	A csomópont nem érhető el.
+e_setup_required	Először állítsd be a csomópontot: hozd létre a rendszergazdáját.
+e_confirm_required	Megerősítés szükséges: küldd el a RESET szót.
+e_bad_host	Ez a cím érvénytelen.
+e_invalid_time	Ez az időpont érvénytelen.
+e_would_lock_out	Ez a lista kizárna a panelből: add hozzá a hálózatot, amelyet most használsz.
+e_slot_empty	A másik tárhelyen nincs firmware.
+e_ota_begin	A frissítés nem tudta megkezdeni az írást.
+e_ota_boot	Az új firmware-t nem lehetett kiválasztani a következő indításhoz.
+e_ota_write	A frissítést nem sikerült a flash-re írni.
+e_no_partition	Nincs szabad tárhely a frissítéshez.
+e_outside_network	Ez a hálózat nem használhatja a panelt: használd az otthoni hálózatot vagy a VPN-t.
+e_wifi_busy	A rádió foglalt; próbáld újra egy pillanat múlva.
+e_scan_failed	A keresés sikertelen volt.
+e_wifi_unavailable	A Wi-Fi nem indítható el.
+p_required	kötelező
+p_invalid	érvénytelen
+p_range	tartományon kívül
+p_too_long	túl hosszú
+p_conflict	már használatban van
+p_reserved	a lap fenntartja
+p_invalid_key	8–63 nyomtatható karakter
+p_outside_subnet	az alhálózaton kívül
+addBackupNetwork	Tartalék hálózat hozzáadása
+appIdf	ESP-IDF (firmware)
+backupNetworksHint	Sorrendben próbálja őket, ha a fenti hálózathoz egy ideig nem lehet csatlakozni.
+backupNetworksTitle	Tartalék hálózatok
+board	Lap
+bootloaderIdf	ESP-IDF (bootloader)
+brownoutLevel	Feszültségesés-érzékelő szintje
+checkGithub	Keresés most
+checking	Keresés…
+chip	Chip
+clockNotSet	nincs beállítva
+copyAsk	Átmásolod a futó firmware-t ({0}, {1} verzió) a másik tárhelyre ({2})? Ami most azon van, törlődik. A csomópont nem indul újra.
+copyDone	Átmásolva: mindkét tárhelyen a(z) {0} verzió van.
+copyRunning	Másolás… {0}%
+copySlot	{0} másolása ide: {1}
+cores	mag
+cpuFreq	Processzor frekvenciája
+dns	DNS
+flash	Flash
+flashAllocated	A partíciók által lefoglalt
+flashEncryption	Flash titkosítás
+flashFree	szabad
+flashTotal	Összesen
+flashUnallocated	Egyetlen partícióhoz sincs rendelve
+githubAvailable	A(z) {0} verzió elérhető.
+githubDownloading	A firmware letöltése a GitHubról… {0}%
+githubUpToDate	Ez már a legújabb verzió a GitHubon.
+githubUpdateNote	Letölti a GitHub kiadása által közzétett önálló alkalmazás-image-et (soha nem a bootloadert), és ugyanúgy telepíti, mint egy feltöltött fájlt. A fenti kézi feltöltés pontosan úgy működik, mint eddig - ez kiegészítés, nem csere, olyan csomópontnak, amelynek nincs oka az internetet elérni.
+githubUpdateTitle	Új verzió keresése a GitHubon
+githubVerifying	Az image ellenőrzése a kiadás hash-éhez képest…
+installUpdate	Letöltés és telepítés
+installing	Telepítés…
+layout	Elrendezés
+localTime	Helyi idő
+memory	Szabad memória
+navAbout	Névjegy
+navHelp	Súgó
+navOverview	Áttekintés
+navWifi	Wi-Fi
+nodeName	Név
+none	nincs
+ovFlash	Flash memória
+ovHardware	Hardver
+ovNetwork	Hálózat
+ovNode	Ez a csomópont
+ovTime	Dátum és idő
+ownNetwork	saját hálózat
+psram	PSRAM
+radios	Rádiók
+reasonOther	egyéb
+removeNetwork	Eltávolítás
+resetReason	Utolsó újraindítás
+secureBoot	Biztonságos indítás
+timeFromNtp	Internetes időszerver (szinkronizálva)
+timeManual	kézzel beállítva
+timeNtpWaiting	várakozás az internetes időszerverre
+timeSource	Az idő forrása
+timeZone	Időzóna
+aboutDescription	az EH3D család egy csomópontja egy Bungard CCD gép fúrófejéhez: kiszolgálja a kamerát, lézerrel méri az asztalt, olvassa az orsó sebességét és hőmérsékletét, és vezérli a védelmi kimenetet.
+aboutIndependent	A projekt független: nem a Bungard Elektronik készítette, hagyta jóvá vagy támogatja.
+wifiMoved	A Wi-Fi hálózatok a saját oldalukon vannak, a Wi-Fi oldalon.
+navHelpTab_overview	Összefoglaló
+help_overview_title	Összefoglaló
+help_overview_text	Ez a panel beállítja és figyeli a csomópontot. Az Összefoglaló megmutatja, mi a csomópont és milyen állapotban van; az Állapot követi, mit csinál, miközben csinálja; a Hálózat és a Wi-Fi oldal tartalmazza a csatlakozását; a Felhasználók, a Firmware és a Napló a rendszerhez tartozik.\n\nMinden a csomópontban tárolódik, és akkor lép életbe, amikor az alsó sáv ezt jelzi. Az újraindítást igénylő módosítás ezt jelzi, mielőtt elhagynád az oldalt.
+navHelpTab_status	Állapot
+help_status_title	Állapot
+help_status_text	Az Állapot megmutatja a kamerát, a lézert, az orsó sebességét és hőmérsékletét, valamint a védelmi kimenetet, másodpercenként frissítve. Az Asztal mérése gomb egy mérést végez az asztalon a lézerrel.
+navHelpTab_machine	Gép
+help_machine_title	Gép
+help_machine_text	A Gép azt tartalmazza, ami a csomópontot a vezérlőegységhez köti: a soros lábakat és a sebességet, a vezérlőkapcsolat hozzáférési tokenjét, a portot és a sor korlátait. A módosítás mentéskor lép életbe; néhány újraindítást igényel, és a sáv ezt jelzi.\n\nA token csak írható: soha többé nem jelenik meg. A csatlakozó programnak szüksége van rá; nélküle a csomópont megtagadja a gép mozgatását.
+navHelpTab_network	Hálózat
+help_network_title	Hálózat
+help_network_text	A Hálózat megmutatja, hogyan csatlakozik most a csomópont, és beállítja a nevét és a címét: DHCP vagy rögzített cím. Kábeles lapon a kábelt vagy a Wi-Fi-t választod bejáratként.\n\nA cím módosítása újraindítás után lép életbe. Ha módosítás után elveszíted a csomópontot, a saját hozzáférési pontja (ha be van kapcsolva) vagy a kábel még elér a panelhez.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	A Wi-Fi beállítja a hálózatot, amelyhez a csomópont csatlakozik, és a hozzáférési pontot, amelyet megnyithat. A fő hálózat alatt legfeljebb három tartalék hálózat adható hozzá: ha a fő elvész, a csomópont sorban próbálja őket, így nem esik ki a hálózatból. A Keresés felsorolja a hatókörben lévő hálózatokat.\n\nA jelszavak csak írhatók: a panel soha többé nem mutatja őket, és az üresen hagyott mező megtartja a tároltat.
+navHelpTab_users	Felhasználók
+help_users_title	Felhasználók
+help_users_text	A rendszergazdák módosítják a beállításokat; a megtekintők csak nézelődnek. Mindenkinek van neve és jelszava. A rendszergazda személyeket ad hozzá, jelszavakat módosít és eltávolít; az utolsó rendszergazda nem távolítható el.\n\nTúl sok hibás jelszó egy időre letilt egy nevet. A saját jelszavad ugyanazon az oldalon módosítható.
+navHelpTab_update	Firmware
+help_update_title	Firmware
+help_update_text	A firmware háromféleképpen frissíthető. A GitHubról: a csomópont megkeresi saját projektjének legújabb kiadását, letölti, ellenőrzi, hogy a hash-e megegyezik a kiadás által közzétettel, és telepíti a másik tárhelyre. Ehhez a projekthez tartozó .bin fájl feltöltésével. Vagy a másik tárhelyre váltással, amely még az azelőtt futó verziót őrzi.\n\nA Másolás a futó firmware-t a másik tárhelyre írja, hogy mindkettőn ugyanaz a verzió legyen (egy másolat, amelyre vissza lehet térni). Frissítés után a csomópont újraindul.
+navHelpTab_log	Napló
+help_log_title	Napló
+help_log_text	A napló az, amit a csomópont munka közben mond: a hálózat, a vezérlőkapcsolat, a frissítések és a hibák. A memóriában tárolódik, így újraindítás után üres.\n\nMásold ki, amikor segítséget kérsz: sorrendben tartalmazza, mi történt.
+navHelpTab_system	Rendszer
+help_system_title	Rendszer
+help_system_text	A Rendszer tartalmazza a csomópont újraindítását és a gyári visszaállítást, amely töröl minden beállítást és minden felhasználót (a megerősítéshez írd be: RESET). Előbb indítsd újra, ha csak azt akarod látni, megszűnik-e a probléma.\n\nAz újraindítás egy pillanatra megszakítja a gép kapcsolatát: akkor tedd, amikor nem fut munka.
+reasonPower_on	bekapcsolás
+reasonSoftware	újraindítás a panelről
+reasonCrash	ÖSSZEOMLÁS
+reasonWatchdog	watchdog
+reasonBrownout	alacsony feszültség
+reasonDeep_sleep	mély alvás
+e_bad_json	A kérés nem érvényes JSON.
+e_bad_url	A frissítés címe nem a hivatalos.
+e_checksum_mismatch	A letöltött firmware nem egyezik a kiadás ellenőrző összegével: elutasítva, semmi sem változott.
+e_client_init	A letöltést nem sikerült elindítani.
+e_connect_failed	A letöltés nem tudott csatlakozni: ellenőrizd a csomópont hálózatát, és próbáld újra.
+e_no_asset	A kiadás nem tartalmaz firmware-t ehhez a laphoz.
+e_no_asset_for_board	Létezik újabb kiadás, de nem tartalmaz firmware-image-et ehhez a laphoz.
+e_no_checksum	A kiadás nem tartalmaz ellenőrző összeg fájlt a firmware-image mellett, ezért nem telepíti.
+e_no_memory	A csomópontnak elfogyott a memóriája.
+e_no_release	Nem található kiadás.
+e_no_slot	Nincs másik tárhely, ahová másolni lehetne.
+e_no_task	A frissítést nem sikerült elindítani (nincs szabad feladat).
+e_not_newer	Ez a firmware nem újabb a futónál.
+e_ota_busy	Egy GitHubról történő telepítés már folyamatban van.
+e_read_error	A letöltés olvasás közben megszakadt.
+e_read_failed	A futó tárhelyet nem sikerült beolvasni.
+e_short_read	A letöltés befejeződött, mielőtt a fájl teljes lett volna.
+e_source_invalid	A futó firmware-t nem sikerült ellenőrizni, ezért nem másolta.
+e_up_to_date	A firmware már naprakész.
+e_version_mismatch	A fájl verziója nem a kiadásé.
+navHead	Fej
+stCamera	Kamera
+stCameraHelp	A kép a /stream címen (MJPEG), valamint RTSP-n és ONVIF-on érhető el, ha azok be vannak kapcsolva.
+stLaser	Lézer
+stLaserHelp	Méri a fej alatti asztal távolságát. Az eredmény a jó olvasatok mediánja.
+stMeasure	Asztal mérése
+stMeasureResult	Távolság {0} mm (szórás {1} mm, {3} olvasatból {2} felhasználva)
+stMeasureFail	Nincs használható mérés ({0})
+stOn	Be
+stOff	Ki
+stNoTemp	Nincs hőmérséklet-érzékelő
+stTemp	Hőmérséklet
+stHeatOk	A hőmérséklet normális
+stHeatWarn	Az orsó forró
+stHeatCritical	Az orsó túl forró
+spNoSensor	Nincs bekapcsolt sebességérzékelő.
+stProtect	Védelmi kimenet
+stProtectOpen	Nyitva: a védelem csak akkor engedi forogni az orsót, ha a csomópont engedi
+stProtectClosed	Zárva: az orsó foroghat
+stProtectHelp	A kimenet megszakítja az orsó meghajtójának engedélyét, ha a sebesség vagy a hőmérséklet kilép a határai közül.
+ovHead	Fej
+hRestartNote	A kamera, az érzékelők és a streamek a csomóponttal indulnak: az itteni módosításhoz újraindítás kell.
+hCamera	Kamera
+hCameraIntro	Egy OV2640 (legfeljebb 1600x1200) vagy egy OV5640 (legfeljebb 2592x1944) a kamera csatlakozóján. «auto» esetén a csomópont megkérdezi az érzékelőtől, melyik az.
+modelAuto	auto
+fCameraOn	Kamera bekapcsolva
+fCameraModel	Érzékelő
+fWidth	Szélesség (px)
+fHeight	Magasság (px)
+fQuality	JPEG-minőség
+fQualityHint	A 4 a legjobb kép, a 63 a legkisebb.
+fFps	Képkocka másodpercenként (maximum)
+hStream	Streamek és hozzáférés
+hStreamIntro	A programok a hozzáférési tokennel olvassák a kamerát, az állapotot és a mérést; az RTSP és ONVIF streamek az alábbi felhasználót és jelszót kérik.
+fRtspOn	RTSP stream bekapcsolva
+fRtspPort	RTSP-port
+fOnvifOn	ONVIF felderítés bekapcsolva
+fStreamUser	A stream felhasználója
+fStreamPassword	A stream jelszava
+fStreamPasswordHint	Csak írható: hagyd üresen a tárolt megtartásához.
+fSecretClear	A tárolt érték törlése
+hLaser	Lézer
+hLaserIntro	Egy VL53L1X távolságérzékelő nézi az asztalt a fej alatt. Az eltolás minden távolsághoz hozzáadódik; a tartományon kívüli vagy túl szórt olvasatok eldobásra kerülnek.
+fLaserOn	Lézer bekapcsolva
+fSamples	Olvasatok mérésenként
+fLaserTimeout	Időkorlát (ms)
+fLaserOffset	Eltolás (mm)
+fLaserSigma	Legnagyobb szórás (mm)
+fLaserMin	Legkisebb távolság (mm)
+fLaserMax	Legnagyobb távolság (mm)
+hSpindle	Az orsó érzékelői és védelme
+hSpindleIntro	A sebesség az orsón lévő érzékelő impulzusaiból származik; a hőmérséklet egy DS18B20-ból, NTC-ből vagy MLX90614-ből. A védelmi kimenet kinyit, ha bármelyik kilép a határai közül.
+fRpmOn	Sebességérzékelő bekapcsolva
+fPulses	Impulzus fordulatonként
+fRpmMax	Legnagyobb sebesség (ford./perc)
+fRpmStale	A sebesség elévül ennyi után (ms)
+fTempSensor	Hőmérséklet-érzékelő
+hLight	Fénygyűrű
+hLightIntro	A kamera körüli RGB LED-gyűrű (WS2812) megvilágítja a munkaterületet. A fehér a kamera fénye; a zöld és a piros azt jelzi, hogyan sikerült egy ellenőrzés. A fény soha nem lépi túl a plafont, és egy idő után magától kikapcsol.
+fLightOn	Fénygyűrű beszerelve
+fLightLeds	A gyűrű LED-jei
+fLightLevel	Szint bekapcsoláskor (%)
+fLightMax	Plafon (%)
+fLightTone	A fény színe
+toneWhite	Fehér (a kamerának)
+toneCool	Hideg fehér
+toneWarm	Meleg fehér
+toneRed	Piros
+toneGreen	Zöld
+toneBlue	Kék
+fLightAutoOff	Magától kikapcsol ennyi után (mp, 0: soha)
+fLightAtStart	Bekapcsolva a csomópont indulásakor
+fLightOrder	A színek sorrendje a LED-eken
+lightBtnOn	Fény kipróbálása
+lightBtnOff	Kikapcsolás
+lightBtnOk	OK megjelenítése
+lightBtnNok	NEM OK megjelenítése
+lightTestFailed	A csomópont nem tette meg. Ellenőrizd, hogy a gyűrű be van szerelve és fent be van kapcsolva.
+tempNone	nincs
+fNtcSeries	Soros ellenállás (ohm)
+fNtcR25	NTC 25 °C-on (ohm)
+fNtcBeta	NTC béta
+fTempWarn	Figyelmeztetés (°C)
+fTempCritical	Kritikus (°C)
+fTempHyst	Hiszterézis (°C)
+fProtect	Védelmi kimenet bekapcsolva
+fProtectHint	Ki: a kimenet zárva marad, bármit olvasnak is az érzékelők.
+hSpindleSafety	Teszteld a védelmet az orsó meghajtójának leválasztásával, mielőtt megbízol benne. Az az érzékelő, amely nem válaszol többé, kinyitja a kimenetet.
+navHelpTab_head	Fej
+help_head_title	Fej
+help_head_text	A Fej azt tartalmazza, ami csak ennek a csomópontnak van: a kamerát a méretével és minőségével, az RTSP és ONVIF streameket, az asztalt mérő lézert, az orsó érzékelőit és a védelmi kimenetet. A hozzáférési token az, amellyel a programok olvassák a kamerát, az állapotot és a mérést.\n\nA jelszavak és a token csak írhatók: a panel soha nem mutatja őket, az üres mező megtartja a tároltat, a jelölőnégyzet pedig törli. A módosításhoz újraindítás kell.

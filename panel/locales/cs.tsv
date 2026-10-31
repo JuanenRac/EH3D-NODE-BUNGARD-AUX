@@ -1,0 +1,418 @@
+# Čeština (cs): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	Uzel hlavy EH3D Bungard
+grpNode	Uzel
+grpNetwork	Síť
+grpSystem	Systém
+navMenu	Hlavní nabídka
+navStatus	Stav
+navUpdate	Firmware
+navLog	Protokol
+skip	Přeskočit na obsah
+themeToLight	Světlý motiv
+themeToDark	Tmavý motiv
+showShort	Zobrazit
+e_other	Uzel odpověděl chybou: {0}
+statusNoControl	Tato stránka zobrazuje, co hlava čte: kameru, laser, otáčky a teplotu vřetena a výstup ochrany. Panel nic nepohybuje; jediné, co od hlavy žádá, je jedno změření stolu.
+stLost	Uzel neodpovídá
+stSpindle	Vřeteno
+stSpindleBar	Otáčky vůči maximu
+spMax	Maximální otáčky: {0} rpm
+stNode	Uzel
+fToken	Přístupový token
+fTokenHint	Zapíše se do uzlu a už se nezobrazí. Zadejte nový nebo jej vygenerujte, pak Uložit.
+noTokenNote	Bez přístupového tokenu programy nemohou číst kameru, stav ani měření. Nastavte jej před použitím hlavy.
+netNow	Aktuální připojení
+netTitle	Adresa
+hostnameHint	prázdné: uzel zvolí název podle svého identifikátoru
+netRestartNote	Změna názvu hostitele nebo připojení se projeví po restartu uzlu.
+apNote	Přístupový bod pro nastavení je vlastní síť Wi-Fi uzlu, k níž se lze připojit z telefonu, když uzel nemá adresu ve vaší síti.
+setupWifiHelp	Uzel nemá kabel. Zadejte síť Wi-Fi, ke které se má nyní připojit, nebo pole nechte prázdné a použijte vlastní síť uzlu pro nastavení, jejímž heslem je kód nastavení (později je můžete změnit v Síti).
+rolesHelp	Správci mohou měnit vše. Pozorovatelé vidí stav a nastavení, ale nic nemění.
+slotVersion	verze {0}
+slotsUnknown	Uzel nenahlásil sloty svého firmwaru.
+chooseFirst	Nejprve vyberte soubor firmwaru.
+p_out_of_range	mimo rozsah
+p_duplicate_pin	tento vývod je použit dvakrát
+p_reserved_pin	vyhrazeno deskou
+p_not_a_number	není celé číslo
+staError	Poslední chyba Wi-Fi
+se_failed	připojení se nezdařilo
+se_network_not_found	síť nebyla nalezena
+se_wrong_password	heslo bylo odmítnuto
+navNetwork	Síť
+navUsers	Uživatelé
+navSystem	Systém
+language	Jazyk
+signOut	Odhlásit
+loading	Načítání…
+unreachable	Uzel neodpovídá.
+signIn	Přihlásit
+rememberMe	Zůstat přihlášen v tomto prohlížeči
+rememberUser	Pamatovat si moje uživatelské jméno na tomto zařízení
+loginNote	Zapamatovat lze jen uživatelské jméno, a to jen po zaškrtnutí políčka. Heslo, pokud chcete, ukládá pouze správce hesel vašeho prohlížeče či systému; panel je nikdy neukládá.
+user	Uživatel
+password	Heslo
+showPassword	Zobrazit heslo
+setupTitle	Nastavení tohoto uzlu
+setupCode	Kód nastavení
+adminName	Jméno správce
+createAdmin	Vytvořit správce
+setupWifi	Wi-Fi pro nastavení tohoto uzlu
+setupIntro	Tento uzel zatím nemá žádného uživatele. Zadejte kód nastavení, který uzel zobrazuje na své konzoli USB každých 15 sekund, a zvolte správce.
+setupWifiTitle	Síť Wi-Fi, ke které se má uzel připojit (volitelné)
+setupWifiOptionalTitle	Síť Wi-Fi (volitelné)
+setupWifiOptionalHelp	Tato deska má port Ethernet: s připojeným kabelem nechte prázdné. Chcete-li uzel používat přes Wi-Fi (například na pracovním stole bez kabelu), zadejte zde síť, ke které se má připojit. Pokud zůstane bez adresy, po 90 sekundách znovu otevře svou síť pro nastavení, aby byl dosažitelný.
+save	Uložit
+saveRestart	Uložit a restartovat
+restart	Restartovat
+discard	Zahodit změny
+saved	Uloženo.
+savedRestart	Uloženo. Restartujte uzel, aby se změna projevila.
+unsaved	Jsou zde neuložené změny.
+restarting	Uzel se restartuje…
+adminOnly	Toto může změnit jen správce.
+yes	ano
+no	ne
+add	Přidat
+delete	Smazat
+refresh	Obnovit
+working	Pracuje se…
+confirmAsk	Jste si jisti?
+nodeId	Identifikátor
+firmware	Firmware
+uptime	Běží již
+address	Adresa
+netmask	Maska podsítě
+gateway	Brána
+mac	MAC
+link	Spojení
+linkUp	aktivní
+linkDown	nepřipojeno
+nodeTitle	Uzel
+uplink	Připojení k síti
+uplinkEthernet	Kabel Ethernet (PoE)
+uplinkWifi	Wi-Fi (připojí se k jiné síti)
+dhcp	Získat adresu automaticky (DHCP)
+dns1	Server DNS 1
+dns2	Server DNS 2
+hostname	Název hostitele
+wifiAp	Přístupový bod (Wi-Fi, kterou tento uzel nabízí)
+apEnable	Nabízet síť Wi-Fi
+ssid	Název sítě (SSID)
+security	Zabezpečení
+secOpen	otevřená (bez hesla)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Heslo Wi-Fi (8 až 63 znaků)
+passwordSet	heslo je uloženo; nechte prázdné, aby zůstalo
+hidden	Skrýt název sítě
+wifiChannel	Kanál
+channelAuto	automaticky (1, 6 nebo 11 podle uzlu)
+channelNow	Tento uzel by použil kanál {0}.
+wifiSta	Stanice Wi-Fi (tento uzel se připojuje k síti Wi-Fi)
+staEnable	Připojit k síti Wi-Fi
+scanNetworks	Hledat sítě
+scanning	Hledání…
+noNetworks	Nebyla slyšet žádná síť.
+scanNote	Během hledání může vlastní přístupový bod uzlu na okamžik odpojit své klienty.
+useNetwork	Použít
+signal	signál
+wiredNote	Na kabelu si uzel žádá adresu přes DHCP, pokud ji zde nezadáte napevno. Jeho vlastní síť Wi-Fi, pokud ji ponecháte, je samostatná síť (192.168.4.x) pro přístup k uzlu z telefonu; není spojena s kabelovou. Změny se projeví po restartu.
+staNote	Uzel nemá kabel: zadejte mu síť Wi-Fi svého domova nebo pracoviště. Pokud stanici necháte vypnutou, použijte jeho vlastní přístupový bod.
+noWifiWarn	Uzel nemá kabel: nechte zapnuté alespoň jedno z obou, přístupový bod nebo stanici, jinak nebude dosažitelný.
+ethernetMissing	Čip Ethernet neodpovídá (viz průvodce zapojením).
+station	Stanice Wi-Fi
+notConnected	nepřipojeno
+apActive	Přístupový bod
+apClients	klienti
+channel	kanál
+setupNetwork	síť pro nastavení
+usersTitle	Uživatelé tohoto panelu
+role	Role
+roleAdmin	správce
+roleViewer	pozorovatel (jen čtení)
+addUser	Přidat uživatele
+newPassword	Nové heslo (8 a více znaků)
+setPassword	Nastavit heslo
+myAccount	Moje heslo
+currentPassword	Současné heslo
+changePassword	Změnit moje heslo
+passwordChanged	Heslo bylo změněno. Přihlaste se znovu.
+you	vy
+updateTitle	Aktualizace firmwaru
+updateHelp	Vyberte soubor firmwaru (.bin sestavený pro tento projekt, ne sloučený obraz). Před použitím se zkontroluje a pokud se nová verze nespustí, uzel se sám vrátí k předchozí.
+chooseFile	Soubor firmwaru
+upload	Nahrát a nainstalovat
+uploading	Nahrávání… {0}%
+updateDone	Nainstalována verze {0}. Uzel se nyní restartuje.
+slot	Běží z
+slotsTitle	Sloty firmwaru
+slotsHelp	Uzel drží dva sloty firmwaru, ota_0 a ota_1. Aktualizace se zapíše do toho, který neběží. Zde můžete kdykoli zavést druhý - pro návrat k předchozí verzi nebo k právě nainstalované. Nastavení se zachovají.
+slotRunning	právě běží
+slotNextBoot	spustí se příště
+slotEmpty	prázdný - žádný firmware
+switchSlot	Zavést {0}
+switchSlotNone	Druhý slot neobsahuje firmware
+switchAsk	Restartovat uzel a zavést {0} (verze {1})?
+logTitle	Protokol uzlu
+copyLog	Kopírovat protokol
+copied	Zkopírováno
+copyFailed	Kopírování se nezdařilo - označte text a zkopírujte jej ručně
+maintenance	Údržba
+rebootNode	Restartovat uzel
+factoryTitle	Tovární nastavení
+factoryHelp	Smaže všechna nastavení a všechny uživatele; uzel se znovu spustí v nastavení. Pro potvrzení napište RESET.
+author	Autor
+license	Licence
+e_unauthorized	Vaše relace skončila. Přihlaste se znovu.
+e_wrong_credentials	Chybný uživatel nebo heslo.
+e_too_many_attempts	Příliš mnoho pokusů. Chvíli počkejte.
+e_wrong_code	Kód nastavení je chybný.
+e_invalid_name	Jméno není platné (3 až 32 znaků: a až z, 0 až 9, . _ -).
+e_weak_password	Heslo musí mít 8 až 64 znaků.
+e_exists	Tento uživatel již existuje.
+e_not_found	Nenalezeno.
+e_too_many_users	Uživatelé mohou být nejvýše čtyři.
+e_last_admin	Posledního správce nelze odebrat ani degradovat.
+e_wrong_password	Současné heslo je chybné.
+e_invalid_role	Role není platná.
+e_forbidden	To nemůžete provést.
+e_storage	Do flash paměti nelze zapisovat.
+e_invalid	Některé hodnoty nejsou platné; jsou označeny ve formuláři.
+e_not_json	Požadavku nebylo rozuměno.
+e_too_large	Požadavek je příliš velký.
+e_bad_size	Velikost souboru není platná pro firmware.
+e_not_firmware	Tento soubor není firmware ESP32.
+e_image_invalid	Obraz firmwaru je poškozený nebo neúplný.
+e_wrong_firmware	Tento firmware patří jinému projektu.
+e_upload_interrupted	Nahrávání bylo přerušeno.
+e_upload_stalled	Nahrávání uvázlo a bylo zastaveno: zkuste to znovu.
+e_network	Uzel se nepodařilo zastihnout.
+e_setup_required	Nejprve uzel nastavte: vytvořte jeho správce.
+e_confirm_required	Je nutné potvrzení: odešlete slovo RESET.
+e_bad_host	Tato adresa není platná.
+e_invalid_time	Tento čas není platný.
+e_would_lock_out	Tento seznam by vás z panelu vyloučil: přidejte síť, kterou právě používáte.
+e_slot_empty	Druhý slot neobsahuje firmware.
+e_ota_begin	Aktualizaci se nepodařilo začít zapisovat.
+e_ota_boot	Nový firmware se nepodařilo zvolit pro příští spuštění.
+e_ota_write	Aktualizaci se nepodařilo zapsat do flash paměti.
+e_no_partition	Pro aktualizaci není volný slot.
+e_outside_network	Tato síť nesmí panel používat: použijte domácí síť nebo VPN.
+e_wifi_busy	Rádio je zaneprázdněné; zkuste to za chvíli znovu.
+e_scan_failed	Hledání se nezdařilo.
+e_wifi_unavailable	Wi-Fi se nepodařilo spustit.
+p_required	povinné
+p_invalid	neplatné
+p_range	mimo rozsah
+p_too_long	příliš dlouhé
+p_conflict	již použito
+p_reserved	vyhrazeno deskou
+p_invalid_key	8 až 63 tisknutelných znaků
+p_outside_subnet	mimo podsíť
+addBackupNetwork	Přidat záložní síť
+appIdf	ESP-IDF (firmware)
+backupNetworksHint	Zkoušejí se v pořadí, pokud se nelze po nějakou dobu připojit k síti výše.
+backupNetworksTitle	Záložní sítě
+board	Deska
+bootloaderIdf	ESP-IDF (bootloader)
+brownoutLevel	Úroveň detektoru poklesu napětí
+checkGithub	Zkontrolovat nyní
+checking	Kontrola…
+chip	Čip
+clockNotSet	nenastaveno
+copyAsk	Zkopírovat běžící firmware ({0}, verze {1}) přes druhý slot ({2})? To, co v něm je nyní, bude smazáno. Uzel se nerestartuje.
+copyDone	Zkopírováno: oba sloty nyní obsahují verzi {0}.
+copyRunning	Kopírování… {0}%
+copySlot	Kopírovat {0} do {1}
+cores	jádra
+cpuFreq	Frekvence procesoru
+dns	DNS
+flash	Flash
+flashAllocated	Vyhrazeno oddíly
+flashEncryption	Šifrování flash
+flashFree	volné
+flashTotal	Celkem
+flashUnallocated	Nepřiřazeno žádnému oddílu
+githubAvailable	K dispozici je verze {0}.
+githubDownloading	Stahování firmwaru z GitHubu… {0}%
+githubUpToDate	Toto je již nejnovější verze na GitHubu.
+githubUpdateNote	Stáhne samostatný obraz aplikace, který publikuje samotný release na GitHubu (nikdy bootloader), a nainstaluje jej stejně jako nahraný soubor. Ruční nahrání výše funguje přesně jako dřív - toto je doplněk, ne náhrada, pro uzel, který nemá důvod sahat na Internet.
+githubUpdateTitle	Zjistit na GitHubu novou verzi
+githubVerifying	Kontrola obrazu proti otisku releasu…
+installUpdate	Stáhnout a nainstalovat
+installing	Instalace…
+layout	Rozložení
+localTime	Místní čas
+memory	Volná paměť
+navAbout	O aplikaci
+navHelp	Nápověda
+navOverview	Přehled
+navWifi	Wi-Fi
+nodeName	Název
+none	žádné
+ovFlash	Paměť flash
+ovHardware	Hardware
+ovNetwork	Síť
+ovNode	Tento uzel
+ovTime	Datum a čas
+ownNetwork	vlastní síť
+psram	PSRAM
+radios	Rádia
+reasonOther	jiný
+removeNetwork	Odebrat
+resetReason	Poslední restart
+secureBoot	Zabezpečené spuštění
+timeFromNtp	Internetový časový server (synchronizováno)
+timeManual	nastaveno ručně
+timeNtpWaiting	čeká se na internetový časový server
+timeSource	Zdroj času
+timeZone	Časové pásmo
+aboutDescription	uzel rodiny EH3D pro vrtací hlavu stroje Bungard CCD: poskytuje kameru, měří stůl laserem, čte otáčky a teplotu vřetena a ovládá výstup ochrany.
+aboutIndependent	Projekt je nezávislý: nevytvořila, neschválila ani nepodporuje jej společnost Bungard Elektronik.
+wifiMoved	Sítě Wi-Fi mají vlastní stránku, Wi-Fi.
+navHelpTab_overview	Souhrn
+help_overview_title	Souhrn
+help_overview_text	Tento panel uzel nastavuje a sleduje. Souhrn ukazuje, co uzel je a v jakém je stavu; Stav sleduje, co dělá, jak se to děje; stránky Síť a Wi-Fi obsahují, jak je připojen; Uživatelé, Firmware a Protokol jsou pro systém.\n\nVše se ukládá do uzlu a projeví se, když to řekne lišta dole. Změna, která vyžaduje restart, to oznámí, než stránku opustíte.
+navHelpTab_status	Stav
+help_status_title	Stav
+help_status_text	Stav ukazuje kameru, laser, otáčky a teplotu vřetena a výstup ochrany, obnovované každou sekundu. Tlačítko Změřit provede jedno změření stolu laserem.
+navHelpTab_machine	Stroj
+help_machine_title	Stroj
+help_machine_text	Stroj obsahuje to, co váže uzel k řídicí jednotce: sériové vývody a rychlost, přístupový token řídicího spojení, port a limity fronty. Změna se projeví po uložení; některé vyžadují restart a lišta to oznámí.\n\nToken je jen pro zápis: už se nikdy nezobrazí. Připojující se program jej potřebuje; bez něj uzel odmítá stroj pohybovat.
+navHelpTab_network	Síť
+help_network_title	Síť
+help_network_text	Síť ukazuje, jak je uzel nyní připojen, a nastavuje jeho název a adresu: DHCP, nebo pevnou adresu. U desky s kabelem zvolíte jako cestu dovnitř kabel, nebo Wi-Fi.\n\nZměna adresy se projeví po restartu. Pokud po změně uzel ztratíte, k panelu se stále dostanete přes jeho vlastní přístupový bod (je-li zapnutý) nebo kabelem.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	Wi-Fi nastavuje síť, ke které se uzel připojuje, a přístupový bod, který může otevřít. Pod hlavní sítí můžete přidat až tři záložní sítě: pokud se hlavní ztratí, uzel je zkouší postupně, aby z sítě nevypadl. Hledání vypíše sítě v dosahu.\n\nHesla jsou jen pro zápis: panel je už nikdy nezobrazí a prázdné pole ponechá uložené.
+navHelpTab_users	Uživatelé
+help_users_title	Uživatelé
+help_users_text	Správci mění nastavení; pozorovatelé se jen dívají. Každá osoba má jméno a heslo. Správce přidává osoby, mění hesla a odebírá je; posledního správce odebrat nelze.\n\nPříliš mnoho chybných hesel zablokuje jméno na určitou dobu. Vlastní heslo se mění na téže stránce.
+navHelpTab_update	Firmware
+help_update_title	Firmware
+help_update_text	Firmware lze aktualizovat třemi způsoby. Z GitHubu: uzel vyhledá nejnovější release svého projektu, stáhne jej, ověří, že jeho otisk odpovídá publikovanému v releasu, a nainstaluje jej do druhého slotu. Nahráním souboru .bin tohoto projektu. Nebo přepnutím na druhý slot, který stále obsahuje verzi, jež běžela dříve.\n\nKopírovat zapíše běžící firmware do druhého slotu, takže oba obsahují stejnou verzi (záloha, ke které se lze vrátit). Po aktualizaci se uzel restartuje.
+navHelpTab_log	Protokol
+help_log_title	Protokol
+help_log_text	Protokol je to, co uzel říká při práci: síť, řídicí spojení, aktualizace a chyby. Uchovává se v paměti, takže po restartu začíná prázdný.\n\nZkopírujte jej, když žádáte o pomoc: obsahuje, co se stalo, popořadě.
+navHelpTab_system	Systém
+help_system_title	Systém
+help_system_text	Systém obsahuje restart uzlu a tovární nastavení, které smaže všechna nastavení a všechny uživatele (pro potvrzení napište RESET). Nejprve restartujte, pokud chcete jen zjistit, zda problém zmizí.\n\nRestart na okamžik přeruší spojení stroje: udělejte to, když neběží žádná úloha.
+reasonPower_on	zapnutí napájení
+reasonSoftware	restart z panelu
+reasonCrash	PÁD
+reasonWatchdog	watchdog
+reasonBrownout	nízké napětí
+reasonDeep_sleep	hluboký spánek
+e_bad_json	Požadavek není platný JSON.
+e_bad_url	Adresa aktualizace není oficiální.
+e_checksum_mismatch	Stažený firmware neodpovídá kontrolnímu součtu releasu: byl odmítnut a nic se nezměnilo.
+e_client_init	Stahování se nepodařilo spustit.
+e_connect_failed	Stahování se nepřipojilo: zkontrolujte síť uzlu a zkuste to znovu.
+e_no_asset	Release nemá firmware pro tuto desku.
+e_no_asset_for_board	Existuje novější release, ale nemá obraz firmwaru pro tuto desku.
+e_no_checksum	Release nenese vedle obrazu firmwaru soubor s kontrolním součtem, proto se neinstaluje.
+e_no_memory	Uzlu došla paměť.
+e_no_release	Nebyl nalezen žádný release.
+e_no_slot	Není žádný další slot, do kterého by se kopírovalo.
+e_no_task	Aktualizaci se nepodařilo spustit (není volná úloha).
+e_not_newer	Tento firmware není novější než běžící.
+e_ota_busy	Instalace z GitHubu již probíhá.
+e_read_error	Stahování bylo při čtení přerušeno.
+e_read_failed	Běžící slot se nepodařilo přečíst.
+e_short_read	Stahování skončilo dříve, než byl soubor úplný.
+e_source_invalid	Běžící firmware se nepodařilo ověřit, proto nebyl zkopírován.
+e_up_to_date	Firmware je již aktuální.
+e_version_mismatch	Verze souboru není verzí releasu.
+navHead	Hlava
+stCamera	Kamera
+stCameraHelp	Obraz je na /stream (MJPEG) a přes RTSP a ONVIF, když jsou zapnuty.
+stLaser	Laser
+stLaserHelp	Měří vzdálenost ke stolu pod hlavou. Výsledkem je medián dobrých odečtů.
+stMeasure	Změřit stůl
+stMeasureResult	Vzdálenost {0} mm (rozptyl {1} mm, použito {2} z {3} odečtů)
+stMeasureFail	Žádné použitelné měření ({0})
+stOn	Zap.
+stOff	Vyp.
+stNoTemp	Žádný teplotní senzor
+stTemp	Teplota
+stHeatOk	Teplota v normě
+stHeatWarn	Vřeteno je horké
+stHeatCritical	Vřeteno je příliš horké
+spNoSensor	Není zapnut senzor otáček.
+stProtect	Výstup ochrany
+stProtectOpen	Otevřený: ochrana nechá vřeteno běžet, jen pokud to uzel povolí
+stProtectClosed	Zavřený: vřeteno smí běžet
+stProtectHelp	Výstup přeruší povolení měniče vřetena, když otáčky nebo teplota překročí své meze.
+ovHead	Hlava
+hRestartNote	Kamera, senzory a proudy se spouštějí s uzlem: změna zde vyžaduje restart.
+hCamera	Kamera
+hCameraIntro	OV2640 (až 1600x1200) nebo OV5640 (až 2592x1944) na konektoru kamery. S "auto" se uzel senzoru zeptá, který to je.
+modelAuto	auto
+fCameraOn	Kamera zapnuta
+fCameraModel	Senzor
+fWidth	Šířka (px)
+fHeight	Výška (px)
+fQuality	Kvalita JPEG
+fQualityHint	4 je nejlepší obraz, 63 nejmenší.
+fFps	Snímků za sekundu (maximum)
+hStream	Proudy a přístup
+hStreamIntro	Programy čtou kameru, stav a měření s přístupovým tokenem; proudy RTSP a ONVIF žádají o uživatele a heslo níže.
+fRtspOn	Proud RTSP zapnut
+fRtspPort	Port RTSP
+fOnvifOn	Zjišťování ONVIF zapnuto
+fStreamUser	Uživatel proudu
+fStreamPassword	Heslo proudu
+fStreamPasswordHint	Jen pro zápis: nechte prázdné, aby zůstalo uložené.
+fSecretClear	Smazat uloženou hodnotu
+hLaser	Laser
+hLaserIntro	Snímač vzdálenosti VL53L1X sleduje stůl pod hlavou. Offset se přičítá ke každé vzdálenosti; odečty mimo rozsah nebo příliš rozptýlené se zahazují.
+fLaserOn	Laser zapnut
+fSamples	Odečtů na měření
+fLaserTimeout	Časový limit (ms)
+fLaserOffset	Offset (mm)
+fLaserSigma	Největší rozptyl (mm)
+fLaserMin	Nejbližší vzdálenost (mm)
+fLaserMax	Nejvzdálenější vzdálenost (mm)
+hSpindle	Senzory a ochrana vřetena
+hSpindleIntro	Otáčky pocházejí z impulzů senzoru na vřetenu; teplota z DS18B20, NTC nebo MLX90614. Výstup ochrany se otevře, když kterákoli z veličin překročí své meze.
+fRpmOn	Senzor otáček zapnut
+fPulses	Impulzů na otáčku
+fRpmMax	Nejvyšší otáčky (rpm)
+fRpmStale	Otáčky jsou zastaralé po (ms)
+fTempSensor	Teplotní senzor
+hLight	Světelný kruh
+hLightIntro	Kruh RGB LED (WS2812) kolem kamery osvětluje pracovní oblast. Bílá je světlo pro kameru; zelená a červená říkají, jak kontrola dopadla. Světlo nikdy nepřekročí strop a po čase se samo vypne.
+fLightOn	Světelný kruh osazen
+fLightLeds	LED na kruhu
+fLightLevel	Úroveň po zapnutí (%)
+fLightMax	Strop (%)
+fLightTone	Barva světla
+toneWhite	Bílá (pro kameru)
+toneCool	Studená bílá
+toneWarm	Teplá bílá
+toneRed	Červená
+toneGreen	Zelená
+toneBlue	Modrá
+fLightAutoOff	Samo se vypne po (s, 0: nikdy)
+fLightAtStart	Zapnuto při spuštění uzlu
+fLightOrder	Pořadí barev v LED
+lightBtnOn	Vyzkoušet světlo
+lightBtnOff	Vypnout
+lightBtnOk	Zobrazit OK
+lightBtnNok	Zobrazit NENÍ OK
+lightTestFailed	Uzel to neprovedl. Zkontrolujte, zda je kruh osazen a nahoře zapnut.
+tempNone	žádný
+fNtcSeries	Sériový rezistor (ohm)
+fNtcR25	NTC při 25 °C (ohm)
+fNtcBeta	Beta NTC
+fTempWarn	Varování (°C)
+fTempCritical	Kritická (°C)
+fTempHyst	Hystereze (°C)
+fProtect	Výstup ochrany zapnut
+fProtectHint	Vyp.: výstup zůstane zavřený, ať senzory čtou cokoli.
+hSpindleSafety	Než se na ochranu spolehnete, vyzkoušejte ji s odpojeným měničem vřetena. Senzor, který přestane odpovídat, výstup otevře.
+navHelpTab_head	Hlava
+help_head_title	Hlava
+help_head_text	Hlava obsahuje to, co má jen tento uzel: kameru a její velikost a kvalitu, proudy RTSP a ONVIF, laser měřicí stůl, senzory vřetena a výstup ochrany. Přístupový token je to, čím programy čtou kameru, stav a měření.\n\nHesla a token jsou jen pro zápis: panel je nikdy nezobrazí, prázdné pole ponechá uloženou hodnotu a zaškrtávací políčko ji smaže. Změna vyžaduje restart.

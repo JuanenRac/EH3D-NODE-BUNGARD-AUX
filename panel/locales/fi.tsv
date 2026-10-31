@@ -1,0 +1,418 @@
+# Suomi (fi): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+appName	EH3D Bungardin työstöpään solmu
+grpNode	Solmu
+grpNetwork	Verkko
+grpSystem	Järjestelmä
+navMenu	Päävalikko
+navStatus	Tila
+navUpdate	Laiteohjelmisto
+navLog	Loki
+skip	Siirry sisältöön
+themeToLight	Vaalea teema
+themeToDark	Tumma teema
+showShort	Näytä
+e_other	Solmu vastasi virheellä: {0}
+statusNoControl	Tämä sivu näyttää, mitä työstöpää lukee: kameran, laserin, karan nopeuden ja lämpötilan sekä suojalähdön. Paneeli ei liikuta mitään; ainoa asia, jota se pyytää työstöpäältä, on yksi pöydän mittaus.
+stLost	Solmu ei vastaa
+stSpindle	Kara
+stSpindleBar	Nopeus suhteessa enimmäisnopeuteen
+spMax	Enimmäisnopeus: {0} rpm
+stNode	Solmu
+fToken	Pääsytunnus
+fTokenHint	Kirjoitetaan solmuun, eikä sitä näytetä enää koskaan. Kirjoita uusi tai luo sellainen ja valitse Tallenna.
+noTokenNote	Ilman pääsytunnusta ohjelmat eivät voi lukea kameraa, tilaa tai mittausta. Aseta tunnus ennen työstöpään käyttöä.
+netNow	Nykyinen yhteys
+netTitle	Osoite
+hostnameHint	tyhjä: solmu valitsee nimen tunnisteensa perusteella
+netRestartNote	Isäntänimen tai yhteyden muutos tulee voimaan solmun uudelleenkäynnistyksen jälkeen.
+apNote	Asennuksen tukiasema on solmun oma Wi-Fi-verkko, jonka kautta siihen pääsee puhelimesta, kun sillä ei ole osoitetta sinun verkossasi.
+setupWifiHelp	Solmulla ei ole kaapelia. Anna Wi-Fi-verkko, johon sen pitäisi nyt liittyä, tai jätä tyhjäksi ja käytä solmun omaa asennusverkkoa, jonka salasana on asennuskoodi (voit vaihtaa sen myöhemmin kohdassa Verkko).
+rolesHelp	Ylläpitäjät voivat muuttaa kaiken. Katselijat näkevät tilan ja asetukset mutta eivät muuta mitään.
+slotVersion	versio {0}
+slotsUnknown	Solmu ei ilmoittanut laiteohjelmistopaikkojaan.
+chooseFirst	Valitse ensin laiteohjelmistotiedosto.
+p_out_of_range	alueen ulkopuolella
+p_duplicate_pin	tätä nastaa käytetään kahdesti
+p_reserved_pin	kortin varaama
+p_not_a_number	ei ole kokonaisluku
+staError	Viimeisin Wi-Fi-virhe
+se_failed	yhteys epäonnistui
+se_network_not_found	verkkoa ei löytynyt
+se_wrong_password	salasana hylättiin
+navNetwork	Verkko
+navUsers	Käyttäjät
+navSystem	Järjestelmä
+language	Kieli
+signOut	Kirjaudu ulos
+loading	Ladataan…
+unreachable	Solmu ei vastaa.
+signIn	Kirjaudu sisään
+rememberMe	Pidä minut kirjautuneena tässä selaimessa
+rememberUser	Muista käyttäjänimeni tällä laitteella
+loginNote	Vain käyttäjänimen voi muistaa, ja vain jos rastitat ruudun. Salasanan tallentaa, jos haluat, vain selaimesi tai järjestelmäsi oma salasanahallinta; paneeli ei koskaan tallenna sitä.
+user	Käyttäjä
+password	Salasana
+showPassword	Näytä salasana
+setupTitle	Määritä tämä solmu
+setupCode	Asennuskoodi
+adminName	Ylläpitäjän nimi
+createAdmin	Luo ylläpitäjä
+setupWifi	Tämän solmun asennus-Wi-Fi
+setupIntro	Tällä solmulla ei ole vielä käyttäjää. Syötä asennuskoodi, jonka solmu näyttää USB-konsolillaan 15 sekunnin välein, ja valitse ylläpitäjä.
+setupWifiTitle	Wi-Fi-verkko, johon solmu liittyy (valinnainen)
+setupWifiOptionalTitle	Wi-Fi-verkko (valinnainen)
+setupWifiOptionalHelp	Tässä kortissa on Ethernet-portti: kun kaapeli on kytketty, jätä tämä tyhjäksi. Jos haluat käyttää solmua Wi-Fi-yhteydellä (esimerkiksi koepenkillä ilman kaapelia), anna tähän verkko, johon sen pitäisi liittyä. Jos se jää ilman osoitetta, se avaa asennusverkkonsa uudelleen 90 sekunnin kuluttua, jotta siihen pääsee yhteyden.
+save	Tallenna
+saveRestart	Tallenna ja käynnistä uudelleen
+restart	Käynnistä uudelleen
+discard	Hylkää muutokset
+saved	Tallennettu.
+savedRestart	Tallennettu. Ota käyttöön käynnistämällä solmu uudelleen.
+unsaved	Tallentamattomia muutoksia.
+restarting	Solmu käynnistyy uudelleen…
+adminOnly	Vain ylläpitäjä voi muuttaa tätä.
+yes	kyllä
+no	ei
+add	Lisää
+delete	Poista
+refresh	Päivitä
+working	Työskennellään…
+confirmAsk	Oletko varma?
+nodeId	Tunniste
+firmware	Laiteohjelmisto
+uptime	Käynnissä
+address	Osoite
+netmask	Aliverkon peite
+gateway	Yhdyskäytävä
+mac	MAC
+link	Yhteys
+linkUp	toiminnassa
+linkDown	poikki
+nodeTitle	Solmu
+uplink	Yhteys verkkoon
+uplinkEthernet	Ethernet-kaapeli (PoE)
+uplinkWifi	Wi-Fi (liittyy toiseen verkkoon)
+dhcp	Hae osoite automaattisesti (DHCP)
+dns1	DNS-palvelin 1
+dns2	DNS-palvelin 2
+hostname	Isäntänimi
+wifiAp	Tukiasema (Wi-Fi, jota tämä solmu tarjoaa)
+apEnable	Tarjoa Wi-Fi-verkkoa
+ssid	Verkon nimi (SSID)
+security	Suojaus
+secOpen	avoin (ei salasanaa)
+secWpa2	WPA2
+secWpa3	WPA3
+secWpa2Wpa3	WPA2 + WPA3
+wifiPassword	Wi-Fi-salasana (8–63 merkkiä)
+passwordSet	salasana on tallennettu; jätä tyhjäksi säilyttääksesi sen
+hidden	Piilota verkon nimi
+wifiChannel	Kanava
+channelAuto	automaattinen (1, 6 tai 11 solmun mukaan)
+channelNow	Tämä solmu käyttäisi kanavaa {0}.
+wifiSta	Wi-Fi-asema (tämä solmu liittyy Wi-Fi-verkkoon)
+staEnable	Liity Wi-Fi-verkkoon
+scanNetworks	Hae verkkoja
+scanning	Haetaan…
+noNetworks	Verkkoja ei kuulunut.
+scanNote	Haun aikana solmun oma tukiasema voi hetkeksi pudottaa asiakkaansa.
+useNetwork	Käytä
+signal	signaali
+wiredNote	Kaapelilla solmu pyytää osoitteensa DHCP:llä, ellet määritä sitä tässä. Sen oma Wi-Fi-verkko, jos pidät sen, on erillinen verkko (192.168.4.x), jolla solmuun pääsee puhelimesta; se ei ole yhdistetty langalliseen verkkoon. Muutokset tulevat voimaan uudelleenkäynnistyksen jälkeen.
+staNote	Solmulla ei ole kaapelia: anna sille kotisi tai työpaikkasi Wi-Fi-verkko. Jos jätät aseman pois käytöstä, käytä sen omaa tukiasemaa.
+noWifiWarn	Solmulla ei ole kaapelia: pidä vähintään toinen kahdesta, tukiasema tai asema, päällä, tai siihen ei saa yhteyttä.
+ethernetMissing	Ethernet-piiri ei vastaa (katso kytkentäopas).
+station	Wi-Fi-asema
+notConnected	ei yhdistetty
+apActive	Tukiasema
+apClients	asiakasta
+channel	kanava
+setupNetwork	asennusverkko
+usersTitle	Tämän paneelin käyttäjät
+role	Rooli
+roleAdmin	ylläpitäjä
+roleViewer	katselija (vain luku)
+addUser	Lisää käyttäjä
+newPassword	Uusi salasana (vähintään 8 merkkiä)
+setPassword	Aseta salasana
+myAccount	Oma salasanani
+currentPassword	Nykyinen salasana
+changePassword	Vaihda salasanani
+passwordChanged	Salasana vaihdettu. Kirjaudu sisään uudelleen.
+you	sinä
+updateTitle	Päivitä laiteohjelmisto
+updateHelp	Valitse laiteohjelmistotiedosto (tätä projektia varten käännetty .bin, ei yhdistetty levykuva). Se tarkistetaan ennen käyttöä, ja jos uusi versio ei käynnisty, solmu palaa itsestään edelliseen.
+chooseFile	Laiteohjelmistotiedosto
+upload	Lähetä ja asenna
+uploading	Lähetetään… {0} %
+updateDone	Versio {0} asennettu. Solmu käynnistyy nyt uudelleen.
+slot	Käynnissä paikasta
+slotsTitle	Laiteohjelmistopaikat
+slotsHelp	Solmu pitää kahta laiteohjelmistopaikkaa, ota_0 ja ota_1. Päivitys kirjoitetaan siihen, joka ei ole käynnissä. Täällä voit milloin tahansa käynnistää toisen - palataksesi edelliseen versioon tai siirtyäksesi juuri asennettuun. Asetukset säilyvät.
+slotRunning	käynnissä nyt
+slotNextBoot	käynnistyy seuraavaksi
+slotEmpty	tyhjä - ei laiteohjelmistoa
+switchSlot	Käynnistä {0}
+switchSlotNone	Toisessa paikassa ei ole laiteohjelmistoa
+switchAsk	Käynnistetäänkö solmu uudelleen ja käynnistetäänkö {0} (versio {1})?
+logTitle	Solmun loki
+copyLog	Kopioi loki
+copied	Kopioitu
+copyFailed	Kopiointi ei onnistunut - valitse teksti ja kopioi se käsin
+maintenance	Huolto
+rebootNode	Käynnistä solmu uudelleen
+factoryTitle	Tehdasasetusten palautus
+factoryHelp	Poistaa kaikki asetukset ja kaikki käyttäjät; solmu aloittaa uudelleen asennuksesta. Vahvista kirjoittamalla RESET.
+author	Tekijä
+license	Lisenssi
+e_unauthorized	Istuntosi päättyi. Kirjaudu sisään uudelleen.
+e_wrong_credentials	Väärä käyttäjä tai salasana.
+e_too_many_attempts	Liian monta yritystä. Odota hetki.
+e_wrong_code	Asennuskoodi on väärä.
+e_invalid_name	Nimi ei kelpaa (3–32 merkkiä: a–z, 0–9, . _ -).
+e_weak_password	Salasanassa on oltava 8–64 merkkiä.
+e_exists	Tämä käyttäjä on jo olemassa.
+e_not_found	Ei löytynyt.
+e_too_many_users	Käyttäjiä voi olla enintään neljä.
+e_last_admin	Viimeistä ylläpitäjää ei voi poistaa eikä alentaa.
+e_wrong_password	Nykyinen salasana on väärä.
+e_invalid_role	Rooli ei kelpaa.
+e_forbidden	Et voi tehdä sitä.
+e_storage	Flashiin ei voitu kirjoittaa.
+e_invalid	Jotkin arvot eivät kelpaa; ne on merkitty lomakkeeseen.
+e_not_json	Pyyntöä ei ymmärretty.
+e_too_large	Pyyntö on liian suuri.
+e_bad_size	Tiedoston koko ei kelpaa laiteohjelmistolle.
+e_not_firmware	Tämä tiedosto ei ole ESP32-laiteohjelmisto.
+e_image_invalid	Laiteohjelmistokuva on vioittunut tai vaillinainen.
+e_wrong_firmware	Tämä laiteohjelmisto kuuluu toiselle projektille.
+e_upload_interrupted	Lähetys keskeytyi.
+e_upload_stalled	Lähetys juuttui ja pysäytettiin: yritä uudelleen.
+e_network	Solmuun ei saatu yhteyttä.
+e_setup_required	Määritä solmu ensin: luo sen ylläpitäjä.
+e_confirm_required	Vahvistus vaaditaan: lähetä sana RESET.
+e_bad_host	Tämä osoite ei kelpaa.
+e_invalid_time	Tämä aika ei kelpaa.
+e_would_lock_out	Tämä luettelo lukitsisi sinut ulos paneelista: lisää verkko, jota käytät nyt.
+e_slot_empty	Toisessa paikassa ei ole laiteohjelmistoa.
+e_ota_begin	Päivitys ei päässyt alkamaan kirjoitusta.
+e_ota_boot	Uutta laiteohjelmistoa ei voitu valita seuraavaksi käynnistettäväksi.
+e_ota_write	Päivitystä ei voitu kirjoittaa flashiin.
+e_no_partition	Päivitykselle ei ole vapaata paikkaa.
+e_outside_network	Tämä verkko ei saa käyttää paneelia: käytä kodin verkkoa tai VPN:ää.
+e_wifi_busy	Radio on varattu; yritä hetken kuluttua uudelleen.
+e_scan_failed	Haku epäonnistui.
+e_wifi_unavailable	Wi-Fiä ei voitu käynnistää.
+p_required	pakollinen
+p_invalid	ei kelpaa
+p_range	alueen ulkopuolella
+p_too_long	liian pitkä
+p_conflict	jo käytössä
+p_reserved	kortin varaama
+p_invalid_key	8–63 tulostettavaa merkkiä
+p_outside_subnet	aliverkon ulkopuolella
+addBackupNetwork	Lisää varaverkko
+appIdf	ESP-IDF (laiteohjelmisto)
+backupNetworksHint	Kokeillaan järjestyksessä, jos yllä olevaan verkkoon ei saada yhteyttä jonkin aikaa.
+backupNetworksTitle	Varaverkot
+board	Kortti
+bootloaderIdf	ESP-IDF (bootloader)
+brownoutLevel	Jännitekatkon tunnistimen taso
+checkGithub	Tarkista nyt
+checking	Tarkistetaan…
+chip	Piiri
+clockNotSet	ei asetettu
+copyAsk	Kopioidaanko käynnissä oleva laiteohjelmisto ({0}, versio {1}) toisen paikan ({2}) päälle? Sen nykyinen sisältö poistetaan. Solmu ei käynnisty uudelleen.
+copyDone	Kopioitu: molemmissa paikoissa on nyt versio {0}.
+copyRunning	Kopioidaan… {0} %
+copySlot	Kopioi {0} paikkaan {1}
+cores	ydintä
+cpuFreq	Suorittimen taajuus
+dns	DNS
+flash	Flash
+flashAllocated	Osioiden varaama
+flashEncryption	Flashin salaus
+flashFree	vapaa
+flashTotal	Yhteensä
+flashUnallocated	Ei osoitettu millekään osiolle
+githubAvailable	Versio {0} on saatavilla.
+githubDownloading	Ladataan laiteohjelmistoa GitHubista… {0} %
+githubUpToDate	Tämä on jo uusin versio GitHubissa.
+githubUpdateNote	Lataa itsenäisen sovelluskuvan, jonka GitHubin julkaisu tarjoaa (ei koskaan bootloaderia), ja asentaa sen samalla tavalla kuin lähetetyn tiedoston. Yllä oleva manuaalinen lähetys toimii täsmälleen kuten ennenkin - tämä on lisäys, ei korvaus, solmulle, jolla ei ole syytä ottaa yhteyttä Internetiin.
+githubUpdateTitle	Etsi uutta versiota GitHubista
+githubVerifying	Tarkistetaan kuvaa julkaisun tiivisteeseen verraten…
+installUpdate	Lataa ja asenna
+installing	Asennetaan…
+layout	Asettelu
+localTime	Paikallinen aika
+memory	Vapaa muisti
+navAbout	Tietoja
+navHelp	Ohje
+navOverview	Yleiskatsaus
+navWifi	Wi-Fi
+nodeName	Nimi
+none	ei mitään
+ovFlash	Flash-muisti
+ovHardware	Laitteisto
+ovNetwork	Verkko
+ovNode	Tämä solmu
+ovTime	Päivämäärä ja kellonaika
+ownNetwork	oma verkko
+psram	PSRAM
+radios	Radiot
+reasonOther	muu
+removeNetwork	Poista
+resetReason	Edellinen uudelleenkäynnistys
+secureBoot	Suojattu käynnistys
+timeFromNtp	Internetin aikapalvelin (synkronoitu)
+timeManual	asetettu käsin
+timeNtpWaiting	odottaa Internetin aikapalvelinta
+timeSource	Ajan lähde
+timeZone	Aikavyöhyke
+aboutDescription	EH3D-perheen solmu Bungard CCD -koneen porauspäähän: se tarjoaa kameran kuvan, mittaa pöydän laserilla, lukee karan nopeuden ja lämpötilan ja ohjaa suojalähtöä.
+aboutIndependent	Projekti on riippumaton: Bungard Elektronik ei ole tehnyt, hyväksynyt tai tue sitä.
+wifiMoved	Wi-Fi-verkot ovat omalla sivullaan, Wi-Fi.
+navHelpTab_overview	Yhteenveto
+help_overview_title	Yhteenveto
+help_overview_text	Tämä paneeli määrittää ja valvoo solmua. Yhteenveto näyttää, mikä solmu on ja missä kunnossa se on; Tila seuraa, mitä se tekee sen tapahtuessa; Verkko- ja Wi-Fi-sivut sisältävät sen yhteyden; Käyttäjät, Laiteohjelmisto ja Loki kuuluvat järjestelmälle.\n\nKaikki tallennetaan solmuun ja tulee voimaan, kun alapalkki niin sanoo. Muutos, joka vaatii uudelleenkäynnistyksen, kertoo siitä ennen sivulta poistumista.
+navHelpTab_status	Tila
+help_status_title	Tila
+help_status_text	Tila näyttää kameran, laserin, karan nopeuden ja lämpötilan sekä suojalähdön päivitettynä sekunnin välein. Mittaa pöytä -painike tekee yhden pöydän mittauksen laserilla.
+navHelpTab_machine	Kone
+help_machine_title	Kone
+help_machine_text	Kone sisältää sen, mikä yhdistää solmun ohjausyksikköön: sarjanastat ja nopeuden, ohjausyhteyden pääsytunnuksen, portin ja jonon rajat. Muutos tulee voimaan tallennettaessa; jotkin vaativat uudelleenkäynnistyksen, ja palkki kertoo siitä.\n\nTunnus on vain kirjoitettava: sitä ei näytetä enää koskaan. Yhdistyvä ohjelma tarvitsee sen; ilman sitä solmu kieltäytyy liikuttamasta konetta.
+navHelpTab_network	Verkko
+help_network_title	Verkko
+help_network_text	Verkko näyttää, miten solmu on nyt yhdistetty, ja asettaa sen nimen ja osoitteen: DHCP tai kiinteä osoite. Kaapelilla varustetussa kortissa valitset kaapelin tai Wi-Fin yhteystavaksi.\n\nOsoitteen muutos tulee voimaan uudelleenkäynnistyksen jälkeen. Jos menetät yhteyden solmuun muutoksen jälkeen, sen oma tukiasema (kun se on päällä) tai kaapeli ulottuu silti paneeliin.
+navHelpTab_wifi	Wi-Fi
+help_wifi_title	Wi-Fi
+help_wifi_text	Wi-Fi määrittää verkon, johon solmu liittyy, ja tukiaseman, jonka se voi avata. Pääverkon alle voi lisätä enintään kolme varaverkkoa: jos pääverkko katoaa, solmu kokeilee niitä vuorotellen, jotta se ei putoa verkosta. Haku luettelee kantaman sisällä olevat verkot.\n\nSalasanat ovat vain kirjoitettavia: paneeli ei näytä niitä enää koskaan, ja tyhjä kenttä säilyttää tallennetun.
+navHelpTab_users	Käyttäjät
+help_users_title	Käyttäjät
+help_users_text	Ylläpitäjät muuttavat asetuksia; katselijat vain katsovat. Jokaisella on nimi ja salasana. Ylläpitäjä lisää henkilöitä, vaihtaa salasanoja ja poistaa henkilöitä; viimeistä ylläpitäjää ei voi poistaa.\n\nLiian monta väärää salasanaa lukitsee nimen hetkeksi. Oma salasanasi vaihdetaan samalla sivulla.
+navHelpTab_update	Laiteohjelmisto
+help_update_title	Laiteohjelmisto
+help_update_text	Laiteohjelmiston voi päivittää kolmella tavalla. GitHubista: solmu etsii oman projektinsa uusimman julkaisun, lataa sen, tarkistaa, että sen tiiviste on sama kuin julkaisun ilmoittama, ja asentaa sen toiseen paikkaan. Lähettämällä tämän projektin .bin-tiedoston. Tai vaihtamalla toiseen paikkaan, jossa on vielä aiemmin käynnissä ollut versio.\n\nKopioi kirjoittaa käynnissä olevan laiteohjelmiston toiseen paikkaan, jolloin molemmissa on sama versio (kopio, johon palata). Päivityksen jälkeen solmu käynnistyy uudelleen.
+navHelpTab_log	Loki
+help_log_title	Loki
+help_log_text	Loki on se, mitä solmu kertoo työskennellessään: verkko, ohjausyhteys, päivitykset ja virheet. Se säilytetään muistissa, joten se on tyhjä uudelleenkäynnistyksen jälkeen.\n\nKopioi se, kun pyydät apua: siinä on tapahtunut järjestyksessä.
+navHelpTab_system	Järjestelmä
+help_system_title	Järjestelmä
+help_system_text	Järjestelmässä on solmun uudelleenkäynnistys ja tehdasasetusten palautus, joka poistaa kaikki asetukset ja kaikki käyttäjät (vahvista kirjoittamalla RESET). Käynnistä ensin uudelleen, jos haluat vain nähdä, katoaako ongelma.\n\nUudelleenkäynnistys katkaisee koneen yhteyden hetkeksi: tee se, kun mikään työ ei ole käynnissä.
+reasonPower_on	virran kytkentä
+reasonSoftware	uudelleenkäynnistys paneelista
+reasonCrash	VIRHE
+reasonWatchdog	vahtikoira
+reasonBrownout	alhainen jännite
+reasonDeep_sleep	syvä lepo
+e_bad_json	Pyyntö ei ole kelvollista JSONia.
+e_bad_url	Päivityksen osoite ei ole virallinen.
+e_checksum_mismatch	Ladattu laiteohjelmisto ei vastaa julkaisun tarkistussummaa: se hylättiin eikä mitään muutettu.
+e_client_init	Latausta ei voitu aloittaa.
+e_connect_failed	Lataus ei yhdistänyt: tarkista solmun verkko ja yritä uudelleen.
+e_no_asset	Julkaisussa ei ole laiteohjelmistoa tälle kortille.
+e_no_asset_for_board	Uudempi julkaisu on olemassa, mutta siinä ei ole laiteohjelmistokuvaa tälle kortille.
+e_no_checksum	Julkaisussa ei ole tarkistussummatiedostoa laiteohjelmistokuvan vieressä, joten sitä ei asenneta.
+e_no_memory	Solmun muisti loppui.
+e_no_release	Julkaisua ei löytynyt.
+e_no_slot	Toista paikkaa, johon kopioida, ei ole.
+e_no_task	Päivitystä ei voitu aloittaa (ei vapaata tehtävää).
+e_not_newer	Tämä laiteohjelmisto ei ole käynnissä olevaa uudempi.
+e_ota_busy	Asennus GitHubista on jo käynnissä.
+e_read_error	Lataus keskeytyi luvun aikana.
+e_read_failed	Käynnissä olevaa paikkaa ei voitu lukea.
+e_short_read	Lataus päättyi ennen kuin tiedosto oli täydellinen.
+e_source_invalid	Käynnissä olevaa laiteohjelmistoa ei voitu tarkistaa, joten sitä ei kopioitu.
+e_up_to_date	Laiteohjelmisto on jo ajan tasalla.
+e_version_mismatch	Tiedoston versio ei ole julkaisun versio.
+navHead	Työstöpää
+stCamera	Kamera
+stCameraHelp	Kuva on osoitteessa /stream (MJPEG) sekä RTSP:llä ja ONVIFilla, kun ne ovat päällä.
+stLaser	Laser
+stLaserHelp	Mittaa etäisyyden työstöpään alla olevaan pöytään. Tulos on hyvien lukemien mediaani.
+stMeasure	Mittaa pöytä
+stMeasureResult	Etäisyys {0} mm (hajonta {1} mm, {2}/{3} lukemaa käytetty)
+stMeasureFail	Ei käyttökelpoista mittausta ({0})
+stOn	Päällä
+stOff	Pois
+stNoTemp	Ei lämpötila-anturia
+stTemp	Lämpötila
+stHeatOk	Lämpötila normaali
+stHeatWarn	Kara on kuuma
+stHeatCritical	Kara on liian kuuma
+spNoSensor	Nopeusanturi ei ole päällä.
+stProtect	Suojalähtö
+stProtectOpen	Auki: suoja sallii karan pyöriä vain, jos solmu sen sallii
+stProtectClosed	Kiinni: kara saa pyöriä
+stProtectHelp	Lähtö katkaisee karan taajuusmuuttajan käyttöluvan, kun nopeus tai lämpötila ylittää rajansa.
+ovHead	Työstöpää
+hRestartNote	Kamera, anturit ja suoratoistot käynnistyvät solmun mukana: muutos tässä vaatii uudelleenkäynnistyksen.
+hCamera	Kamera
+hCameraIntro	OV2640 (enintään 1600x1200) tai OV5640 (enintään 2592x1944) kameraliittimessä. Asetuksella «auto» solmu kysyy anturilta, kumpi se on.
+modelAuto	auto
+fCameraOn	Kamera päällä
+fCameraModel	Anturi
+fWidth	Leveys (px)
+fHeight	Korkeus (px)
+fQuality	JPEG-laatu
+fQualityHint	4 on paras kuva, 63 pienin.
+fFps	Kuvaa sekunnissa (enintään)
+hStream	Suoratoistot ja pääsy
+hStreamIntro	Ohjelmat lukevat kameran, tilan ja mittauksen pääsytunnuksella; RTSP- ja ONVIF-suoratoistot pyytävät alla olevaa käyttäjää ja salasanaa.
+fRtspOn	RTSP-suoratoisto päällä
+fRtspPort	RTSP-portti
+fOnvifOn	ONVIF-etsintä päällä
+fStreamUser	Suoratoiston käyttäjä
+fStreamPassword	Suoratoiston salasana
+fStreamPasswordHint	Vain kirjoitettava: jätä tyhjäksi säilyttääksesi tallennetun.
+fSecretClear	Poista tallennettu arvo
+hLaser	Laser
+hLaserIntro	VL53L1X-etäisyysanturi katsoo työstöpään alla olevaa pöytää. Poikkeama lisätään jokaiseen etäisyyteen; alueen ulkopuoliset tai liian hajanaiset lukemat hylätään.
+fLaserOn	Laser päällä
+fSamples	Lukemia mittausta kohden
+fLaserTimeout	Aikaraja (ms)
+fLaserOffset	Poikkeama (mm)
+fLaserSigma	Suurin hajonta (mm)
+fLaserMin	Lähin etäisyys (mm)
+fLaserMax	Kaukaisin etäisyys (mm)
+hSpindle	Karan anturit ja suojaus
+hSpindleIntro	Nopeus tulee karassa olevan anturin pulsseista; lämpötila DS18B20-, NTC- tai MLX90614-anturista. Suojalähtö avautuu, kun jompikumpi ylittää rajansa.
+fRpmOn	Nopeusanturi päällä
+fPulses	Pulsseja kierrosta kohden
+fRpmMax	Suurin nopeus (rpm)
+fRpmStale	Nopeus vanhenee, kun on kulunut (ms)
+fTempSensor	Lämpötila-anturi
+hLight	Valorengas
+hLightIntro	RGB-LEDien (WS2812) rengas kameran ympärillä valaisee työalueen. Valkoinen on kameran valo; vihreä ja punainen kertovat, miten tarkistus meni. Valo ei koskaan ylitä enimmäisrajaa ja sammuu itsestään jonkin ajan kuluttua.
+fLightOn	Valorengas asennettu
+fLightLeds	Renkaan LEDit
+fLightLevel	Taso päälle kytkettäessä (%)
+fLightMax	Enimmäisraja (%)
+fLightTone	Valon väri
+toneWhite	Valkoinen (kameralle)
+toneCool	Kylmä valkoinen
+toneWarm	Lämmin valkoinen
+toneRed	Punainen
+toneGreen	Vihreä
+toneBlue	Sininen
+fLightAutoOff	Sammuu itsestään kuluttua (s, 0: ei koskaan)
+fLightAtStart	Päällä solmun käynnistyessä
+fLightOrder	Värien järjestys LEDeissä
+lightBtnOn	Kokeile valoa
+lightBtnOff	Sammuta
+lightBtnOk	Näytä OK
+lightBtnNok	Näytä EI OK
+lightTestFailed	Solmu ei tehnyt sitä. Tarkista, että rengas on asennettu ja kytketty päälle yllä.
+tempNone	ei mitään
+fNtcSeries	Sarjavastus (ohmia)
+fNtcR25	NTC 25 °C:ssa (ohmia)
+fNtcBeta	NTC:n beeta
+fTempWarn	Varoitus (°C)
+fTempCritical	Kriittinen (°C)
+fTempHyst	Hystereesi (°C)
+fProtect	Suojalähtö päällä
+fProtectHint	Pois: lähtö pysyy kiinni riippumatta antureiden lukemista.
+hSpindleSafety	Testaa suojaus karan taajuusmuuttaja irrotettuna, ennen kuin luotat siihen. Anturi, joka lakkaa vastaamasta, avaa lähdön.
+navHelpTab_head	Työstöpää
+help_head_title	Työstöpää
+help_head_text	Työstöpää sisältää sen, mikä on vain tällä solmulla: kameran ja sen koon ja laadun, RTSP- ja ONVIF-suoratoistot, pöytää mittaavan laserin, karan anturit ja suojalähdön. Pääsytunnus on se, jolla ohjelmat lukevat kameran, tilan ja mittauksen.\n\nSalasanat ja tunnus ovat vain kirjoitettavia: paneeli ei koskaan näytä niitä, tyhjä kenttä säilyttää tallennetun ja valintaruutu poistaa sen. Muutos vaatii uudelleenkäynnistyksen.

@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,7 +28,7 @@
 
 | | |
 |---|---|
-| Version | `0.0.3` |
+| Version | `0.0.4` |
 | Maturité | Échafaudage |
 | Tests | 11 programmes de test sur l'ordinateur |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
@@ -44,7 +44,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit et se compile ; il n'a pas été flashé. |
-| Tests | 🟢 | 11 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en huit langues et les piles des tâches. |
+| Tests | 🟢 | 11 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en 37 langues et les piles des tâches. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |
@@ -127,6 +127,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **Deux caméras, l'OV2640 et l'OV5640 :** le capteur dit laquelle c'est et le nœud donne la plus grande taille que les réglages permettent et que ce capteur sait faire (l'OV2640 jusqu'à 1600x1200, l'OV5640 jusqu'à 2592x1944), l'indique dans `/api/status` (`camera_model`) et dans les options d'encodeur d'ONVIF ; `camera_model = auto | ov2640 | ov5640` dans la page Tête. Les broches du connecteur caméra de la Waveshare ESP32-S3-ETH sont les valeurs par défaut de `menuconfig`.
 * **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans la page Tête) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
 * **Un anneau de LED autour de la caméra :** huit LED RVB de type WS2812 sur un seul fil éclairent la zone sous la tête pour que la caméra voie bien. Le blanc est la lumière pour la caméra ; les niveaux suivent l'œil et ne dépassent jamais un plafond ; un seul côté donne une lumière rasante ; on peut demander n'importe quelle couleur, et l'anneau dit comment un contrôle s'est passé (vert, rouge clignotant, un point bleu qui tourne, ambre, rouge rapide). Il s'éteint seul au bout d'un moment. `GET` et `POST /api/light` et `GET /api/snapshot` servent les programmes ; les réglages sont dans le panneau et dans `head.cfg` (`light_*`), la broche dans le menu du firmware (`AUX_LIGHT_GPIO`).
+* **37 langues :** le panneau web du nœud parle anglais, espagnol, italien, allemand, français, portugais, chinois, japonais, bulgare, croate, tchèque, danois, néerlandais, estonien, finnois, grec, hongrois, irlandais, letton, lituanien, maltais, polonais, roumain, slovaque, slovène, suédois, norvégien, islandais, ukrainien, russe, serbe, albanais, catalan, galicien, basque, portugais du Brésil et français du Canada. Les mots des 29 langues au-delà des huit premières sont traduits par le modèle et attendent la relecture de locuteurs natifs ; un texte qu'une langue n'a pas s'affiche en anglais.
 
 ## 🔒 Sécurité et protection
 
@@ -239,7 +240,8 @@ EH3D-NODE-BUNGARD-AUX/
 │   └── github_update.cpp entropy.cpp            la mise à jour depuis GitHub et la copie d'un emplacement
 ├── panel/
 │   ├── index.html style.css                     la page et la disposition du menu latéral
-│   └── app.js text.js                           les pages et les textes en huit langues
+│   ├── app.js text.js                           les pages et les textes en 37 langues
+│   └── locales/                                 les mots de 29 autres langues, un fichier chacune
 ├── tests/                                       tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran
 ├── docs/                                        les notes matérielles et les sources des deux images
 ├── tools/                                       contrôle CI, contrôle du README et outils des images

@@ -1,0 +1,25 @@
+# Français (Canada) (fr-ca): Key<TAB>text, one per line; a text that is missing is shown in English (or in Portuguese / French for the two variants).
+apNote	Le point d'accès de configuration est le réseau Wi-Fi propre du nœud, pour l'atteindre depuis un cellulaire quand il n'a pas d'adresse sur le vôtre.
+rolesHelp	Les administrateurs peuvent tout modifier. Les lecteurs voient l'état et les paramètres, mais ne changent rien.
+signOut	Fermer la session
+signIn	Ouvrir une session
+rememberMe	Rester connecté dans ce navigateur
+wiredNote	Sur le câble, le nœud demande son adresse par DHCP sauf si vous la fixez ici. Son propre réseau Wi-Fi, si vous le gardez, est un réseau séparé (192.168.4.x) pour joindre le nœud depuis un cellulaire; il n'est pas relié au réseau filaire. Les changements s'appliquent après un redémarrage.
+upload	Téléverser et installer
+uploading	Téléversement… {0} %
+slotsHelp	Le nœud garde deux emplacements de firmware, ota_0 et ota_1. Une mise à jour s'écrit dans celui qui ne tourne pas. Ici, vous pouvez démarrer l'autre à tout moment, pour revenir à la version précédente ou passer à celle qui vient d'être installée. Les paramètres sont conservés.
+copyFailed	Copie impossible - sélectionnez le texte et copiez-le manuellement
+factoryTitle	Réinitialisation aux paramètres d'usine
+factoryHelp	Efface tous les paramètres et tous les utilisateurs; le nœud redémarre en configuration. Tapez RESET pour confirmer.
+e_unauthorized	Votre session a pris fin. Ouvrez une session de nouveau.
+e_upload_interrupted	Le téléversement a été interrompu.
+clockNotSet	non définie
+copyRunning	Copie… {0} %
+githubDownloading	Téléchargement du firmware depuis GitHub… {0} %
+timeManual	définie manuellement
+help_machine_text	Machine contient ce qui lie le nœud à l'unité de commande : les broches et la vitesse série, le jeton d'accès de la liaison de commande, le port et les limites de la file. Un changement s'applique à l'enregistrement; certains demandent un redémarrage et la barre l'indique.\n\nLe jeton est en écriture seule : il n'est plus jamais montré. Un programme qui se connecte en a besoin; sans lui, le nœud refuse de bouger la machine.
+help_users_text	Les administrateurs changent les paramètres; les observateurs regardent seulement. Chaque personne a un nom et un mot de passe. Un administrateur ajoute des personnes, change les mots de passe et les retire; le dernier administrateur ne peut pas être retiré.\n\nTrop de mots de passe erronés bloquent un nom pendant un moment. Votre propre mot de passe se change dans la même page.
+hLightIntro	Un anneau de DEL RVB (WS2812) autour de la caméra éclaire la zone de travail. Le blanc est la lumière pour la caméra; le vert et le rouge indiquent comment s'est déroulé un contrôle. La lumière ne dépasse jamais le plafond et s'éteint seule au bout d'un moment.
+fLightLeds	DEL de l'anneau
+fLightOrder	Ordre des couleurs dans les DEL
+lightTestFailed	Le nœud ne l'a pas fait. Vérifiez que l'anneau est installé et activé ci-dessus.

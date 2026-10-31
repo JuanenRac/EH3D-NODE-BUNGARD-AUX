@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,7 +28,7 @@
 
 | | |
 |---|---|
-| Version | `0.0.3` |
+| Version | `0.0.4` |
 | Maturity | Scaffolding |
 | Tests | 11 host test programs |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
@@ -44,7 +44,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
-| Tests | 🟢 | 11 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in eight languages and the stacks of the tasks. |
+| Tests | 🟢 | 11 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in 37 languages and the stacks of the tasks. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
@@ -127,6 +127,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **Two cameras, the OV2640 and the OV5640:** the sensor says which one it is and the node gives the largest size that the settings allow and that sensor can do (the OV2640 up to 1600x1200, the OV5640 up to 2592x1944), reports it on `/api/status` (`camera_model`) and in the encoder options of ONVIF; `camera_model = auto | ov2640 | ov5640` in the Head page. The pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
 * **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in the Head page) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
 * **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire light the area under the head so the camera sees well. White is the light for the camera; the levels follow the eye and never go over a ceiling; one side only gives a raking light; any colour can be asked, and the ring says how a check went (green, red blinking, a blue spot turning, amber, fast red). It turns itself off after a while. `GET` and `POST /api/light` and `GET /api/snapshot` serve the programs; the settings are in the panel and in `head.cfg` (`light_*`), and the pin in the menu of the firmware (`AUX_LIGHT_GPIO`).
+* **37 languages:** the web panel of the node speaks English, Spanish, Italian, German, French, Portuguese, Chinese, Japanese, Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French. The words of the 29 languages beyond the first eight are translated by the model and wait for a review by native speakers; a text that a language does not have is shown in English.
 
 ## 🔒 Security & Safety
 
@@ -239,7 +240,8 @@ EH3D-NODE-BUNGARD-AUX/
 │   └── github_update.cpp entropy.cpp            the update from GitHub and the copy of a slot
 ├── panel/
 │   ├── index.html style.css                     the page and the side menu layout
-│   └── app.js text.js                           the pages and the texts in eight languages
+│   ├── app.js text.js                           the pages and the texts in 37 languages
+│   └── locales/                                 the words of 29 more languages, one file each
 ├── tests/                                       host tests of the settings, the gate, the voice and the screen texts
 ├── docs/                                        the hardware notes and the two pictures' sources
 ├── tools/                                       CI check, README check and the picture tools

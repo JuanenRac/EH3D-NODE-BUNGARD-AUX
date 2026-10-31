@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.4] - The panel in 37 languages
+
+- **The panel in 37 languages:** Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French join the first eight. The words of the new ones are in `panel/locales/CODE.tsv` and are packed into one file, `/langs.js`, that the browser asks for only when one of them is chosen (about 250 KB packed; the panel of the first eight languages is as light as before); a text that a language does not have is shown in English, or in Portuguese or French for the two variants. The node accepts the new codes in `ui.language`. `tests/check_panel_text.py` checks the files (known keys, placeholders, all the texts, the size). The translations are the work of the model and wait for a review by native speakers.
+
 ## [0.0.3] - A ring of RGB LEDs around the camera, colour signals and one picture on request
 
 - **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire (`AUX_LIGHT_GPIO` in the menu of the firmware, the RMT peripheral, no new component). The light has a level from 0 to 100 that follows the eye, a ceiling it never goes over, a tone (white for the camera, cool, warm, red, green, blue) or any colour (`color=RRGGBB`), the sectors that are lit (one side gives a raking light), and a timer that turns a forgotten light off. `GET` and `POST /api/light` and the status carry it; the panel has its settings and four buttons to try it.

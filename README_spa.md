@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-C%2B%2B17%20%2B%20ESP--IDF-00599C.svg" alt="C++17 and ESP-IDF">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -28,7 +28,7 @@
 
 | | |
 |---|---|
-| Versión | `0.0.3` |
+| Versión | `0.0.4` |
 | Madurez | Andamiaje |
 | Pruebas | 11 programas de prueba en el ordenador |
 | Pila tecnológica | C++17, ESP-IDF 5.5, ESP32-S3, red W5500 |
@@ -44,7 +44,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito y se compila; no se ha grabado. |
-| Pruebas | 🟢 | 11 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en ocho idiomas y las pilas de las tareas. |
+| Pruebas | 🟢 | 11 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en 37 idiomas y las pilas de las tareas. |
 | Láser (altura de la mesa) | 🟡 | La medida a partir de varias lecturas (mediana, lecturas raras descartadas, dispersión comprobada, rango y desplazamiento) está probada; el controlador del VL53L1X está escrito pero nunca se ha ejecutado, así que aún no se ha hecho ninguna medida. |
 | Husillo | 🟡 | La velocidad a partir de los pulsos de un sensor (cualquier número por vuelta, parado cuando cesan los pulsos), la temperatura con aviso, nivel crítico e histéresis y la salida de protección están probadas; los controladores del DS18B20, del NTC y del MLX90614 están escritos pero nunca se han ejecutado. |
 | Cámara | 🟠 | El flujo MJPEG está escrito para el conector de cámara de la placa y necesita los pines de la placa en menuconfig; no se ha ejecutado. |
@@ -127,6 +127,7 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 * **Dos cámaras, la OV2640 y la OV5640:** el sensor dice cuál es y el nodo da el mayor tamaño que permiten los ajustes y que ese sensor puede dar (la OV2640 hasta 1600x1200, la OV5640 hasta 2592x1944), lo informa en `/api/status` (`camera_model`) y en las opciones del codificador de ONVIF; `camera_model = auto | ov2640 | ov5640` en la página Cabezal. Los pines del conector de cámara de la Waveshare ESP32-S3-ETH son los valores por defecto de `menuconfig`.
 * **Tres sensores de temperatura:** un DS18B20 en un hilo, un termistor NTC en una entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` en la página Cabezal) o un termómetro infrarrojo MLX90614 que mira el husillo sin tocarlo (en el bus I2C del láser); las sumas de comprobación y las conversiones están probadas en un ordenador.
 * **Un aro de LEDs alrededor de la cámara:** ocho LEDs RGB del tipo WS2812 en un solo hilo iluminan la zona bajo el cabezal para que la cámara vea bien. El blanco es la luz para la cámara; los niveles siguen al ojo y nunca pasan de un techo; un solo lado da una luz rasante; se puede pedir cualquier color, y el aro dice cómo fue una verificación (verde, rojo parpadeando, un punto azul que gira, ámbar, rojo rápido). Se apaga solo pasado un tiempo. `GET` y `POST /api/light` y `GET /api/snapshot` sirven a los programas; los ajustes están en el panel y en `head.cfg` (`light_*`), y el pin en el menú del firmware (`AUX_LIGHT_GPIO`).
+* **37 idiomas:** el panel web del nodo habla inglés, español, italiano, alemán, francés, portugués, chino, japonés, búlgaro, croata, checo, danés, neerlandés, estonio, finés, griego, húngaro, irlandés, letón, lituano, maltés, polaco, rumano, eslovaco, esloveno, sueco, noruego, islandés, ucraniano, ruso, serbio, albanés, catalán, gallego, euskera, portugués de Brasil y francés de Canadá. Las palabras de los 29 idiomas posteriores a los ocho primeros están traducidas por el modelo y esperan la revisión de hablantes nativos; un texto que a un idioma le falta se muestra en inglés.
 
 ## 🔒 Seguridad y protección
 
@@ -239,7 +240,8 @@ EH3D-NODE-BUNGARD-AUX/
 │   └── github_update.cpp entropy.cpp            la actualización desde GitHub y la copia de una ranura
 ├── panel/
 │   ├── index.html style.css                     la página y la disposición del menú lateral
-│   └── app.js text.js                           las páginas y los textos en ocho idiomas
+│   ├── app.js text.js                           las páginas y los textos en 37 idiomas
+│   └── locales/                                 las palabras de 29 idiomas más, un fichero cada uno
 ├── tests/                                       pruebas en el ordenador de los ajustes, la compuerta, la voz y los textos de pantalla
 ├── docs/                                        las notas de hardware y las fuentes de los dos dibujos
 ├── tools/                                       comprobación de CI, de README y herramientas de dibujos
