@@ -129,6 +129,7 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 * **Ein LED-Ring um die Kamera:** Acht RGB-LEDs vom Typ WS2812 an einer Leitung beleuchten den Bereich unter dem Kopf, damit die Kamera gut sieht. Weiß ist das Licht für die Kamera; die Stufen folgen dem Auge und gehen nie über eine Obergrenze; eine einzelne Seite gibt Streiflicht; jede Farbe kann verlangt werden, und der Ring zeigt, wie eine Prüfung ausging (grün, rot blinkend, ein kreisender blauer Punkt, bernstein, schnelles Rot). Nach einer Weile schaltet er sich selbst aus. `GET` und `POST /api/light` sowie `GET /api/snapshot` bedienen die Programme; die Einstellungen stehen im Panel und in `head.cfg` (`light_*`), der Pin im Menü der Firmware (`AUX_LIGHT_GPIO`).
 * **37 Sprachen:** das Web-Panel des Knotens spricht Englisch, Spanisch, Italienisch, Deutsch, Französisch, Portugiesisch, Chinesisch, Japanisch, Bulgarisch, Kroatisch, Tschechisch, Dänisch, Niederländisch, Estnisch, Finnisch, Griechisch, Ungarisch, Irisch, Lettisch, Litauisch, Maltesisch, Polnisch, Rumänisch, Slowakisch, Slowenisch, Schwedisch, Norwegisch, Isländisch, Ukrainisch, Russisch, Serbisch, Albanisch, Katalanisch, Galicisch, Baskisch, brasilianisches Portugiesisch und kanadisches Französisch. Die Wörter der 29 Sprachen nach den ersten acht stammen vom Modell und warten auf die Durchsicht durch Muttersprachler; ein fehlender Text wird auf Englisch gezeigt.
 * **Der Laser, auf die Arbeit abgestimmt:** Der VL53L1X hat einen Entfernungsmodus (kurz oder lang) und ein Zeitbudget, einen Empfangsbereich, der sich auf einen kleinen Punkt verengen lässt, einen Filter, der Messwerte weit vom Median verwirft, einen Zustand je Messwert (gültig, schwaches Signal, hohe Streuung, außer Reichweite) und eine Kalibrierung bei bekannter Entfernung (Offset und Übersprechen), die ein Administrator zuerst einschalten muss. Noch an keinem Sensor erprobt.
+* **Mehrere DS18B20 an demselben Draht:** Der Knoten sucht am Draht alle Sensoren (mit der Prüfsumme jeder Adresse), nimmt den der Spindel über seine Adresse (`temp_rom`, oder den einzigen, oder den ersten gefundenen mit Hinweis auf der Statusseite), stellt die Auflösung von 9 bis 12 Bit ein (`temp_resolution`) und wartet nur so lange, wie diese Auflösung braucht. Auf einem Rechner mit simuliertem Bus getestet; an einem echten Draht noch nicht erprobt.
 
 ## 🔒 Sicherheit und Schutz
 
@@ -223,6 +224,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── camera.hpp                               die Kameras OV2640 und OV5640 und ihre Größen
 │   ├── spindle.hpp                              Drehzahl, Wärme und Schutzausgang
 │   ├── thermo.hpp                               die Temperatur: DS18B20, NTC, MLX90614
+│   ├── onewire.hpp                              der 1-Wire-Bus: Suche, Adresse, Auflösung
 │   ├── hash.hpp                                 die Anmeldungen: MD5, SHA-1, Base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP und die RTP-Nutzlast von JPEG
 │   ├── onvif.hpp                                ONVIF: Erkennung und SOAP-Dienste

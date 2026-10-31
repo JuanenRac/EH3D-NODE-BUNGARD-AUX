@@ -450,3 +450,9 @@ lr_disabled	kalibracja jest wyłączona
 lr_bad_target	odległość spoza zakresu 10 do 4000 mm
 lr_offset_limit	cel dalej niż 50 mm od tego, co widzi czujnik
 lr_no_signal	brak sygnału z celu
+fTempRes	Rozdzielczość DS18B20 (bity)
+fTempRom	Adres czujnika (auto lub 16 cyfr szesnastkowych)
+hTempRom	Przy kilku czujnikach na przewodzie wpisz adres czujnika wrzeciona (zob. stronę stanu). Auto bierze jedyny lub pierwszy znaleziony.
+stTempWire	Czujniki temperatury na przewodzie
+stTempWireValue	Znaleziono {0}, odczyt z {1}
+stTempGuess	zgadywanie: ustaw adres

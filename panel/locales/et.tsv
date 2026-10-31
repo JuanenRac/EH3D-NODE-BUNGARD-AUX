@@ -450,3 +450,9 @@ lr_disabled	kalibreerimine on välja lülitatud
 lr_bad_target	kaugus pole vahemikus 10 kuni 4000 mm
 lr_offset_limit	sihtmärk on üle 50 mm kaugusel sellest, mida andur näeb
 lr_no_signal	sihtmärgilt pole signaali
+fTempRes	DS18B20 eraldusvõime (bitti)
+fTempRom	Anduri aadress (auto või 16 hex-numbrit)
+hTempRom	Kui juhtmel on mitu andurit, sisesta spindli anduri aadress (vt olekulehte). Auto võtab ainsa või esimese leitud anduri.
+stTempWire	Temperatuuriandurid juhtmel
+stTempWireValue	Leitud {0}, loetakse {1}
+stTempGuess	oletus: määra aadress

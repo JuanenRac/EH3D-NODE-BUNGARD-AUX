@@ -450,3 +450,9 @@ lr_disabled	a kalibrálás ki van kapcsolva
 lr_bad_target	a távolság nem 10 és 4000 mm között van
 lr_offset_limit	a célpont több mint 50 mm-re van attól, amit az érzékelő lát
 lr_no_signal	nincs jel a célpontról
+fTempRes	DS18B20 felbontása (bit)
+fTempRom	Az érzékelő címe (auto vagy 16 hexa számjegy)
+hTempRom	Ha több érzékelő van a vezetéken, add meg az orsóét (lásd az állapotoldalt). Az auto az egyetlent, vagy az elsőként talált érzékelőt veszi.
+stTempWire	Hőmérséklet-érzékelők a vezetéken
+stTempWireValue	{0} található, olvasott: {1}
+stTempGuess	találgatás: add meg a címet

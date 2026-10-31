@@ -450,3 +450,9 @@ lr_disabled	kalibrēšana ir izslēgta
 lr_bad_target	attālums nav starp 10 un 4000 mm
 lr_offset_limit	mērķis ir vairāk nekā 50 mm no tā, ko redz sensors
 lr_no_signal	nav signāla no mērķa
+fTempRes	DS18B20 izšķirtspēja (biti)
+fTempRom	Sensora adrese (auto vai 16 heksadecimālie cipari)
+hTempRom	Ja uz vada ir vairāki sensori, ievadiet vārpstas sensora adresi (skatiet stāvokļa lapu). Auto ņem vienīgo vai pirmo atrasto.
+stTempWire	Temperatūras sensori uz vada
+stTempWireValue	Atrasti {0}, tiek lasīts {1}
+stTempGuess	minējums: iestatiet adresi

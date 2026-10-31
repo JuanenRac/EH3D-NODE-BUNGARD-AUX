@@ -450,3 +450,9 @@ lr_disabled	umerjanje je izklopljeno
 lr_bad_target	razdalja ni med 10 in 4000 mm
 lr_offset_limit	tarča je več kot 50 mm od tega, kar vidi senzor
 lr_no_signal	ni signala s tarče
+fTempRes	Ločljivost DS18B20 (biti)
+fTempRom	Naslov tipala (auto ali 16 šestnajstiških števk)
+hTempRom	Pri več tipalih na žici vnesite naslov tipala vretena (glej stran stanja). Auto vzame edino ali prvo najdeno.
+stTempWire	Temperaturna tipala na žici
+stTempWireValue	Najdenih {0}, bere se {1}
+stTempGuess	ugibanje: nastavite naslov

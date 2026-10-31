@@ -10,6 +10,7 @@
 
 #include "camera.hpp"
 #include "laser_hw.hpp"
+#include "onewire.hpp"
 
 namespace bungard_aux {
 
@@ -98,6 +99,8 @@ struct Settings {
 
     // the temperature of the spindle
     TempSensor temp_sensor = TempSensor::None;
+    int temp_resolution = 12;               // the DS18B20: 9, 10, 11 or 12 bits (a conversion takes 94 to 750 ms)
+    std::string temp_rom = "auto";          // the DS18B20 of the spindle: auto (the only one on the wire, or the first found) or the 16 hex digits of its address
     double ntc_series_ohm = 10000.0;        // the NTC thermistor: the fixed resistor of the divider, 100..1000000
     double ntc_r25_ohm = 10000.0;           // its resistance at 25 degrees, 100..1000000
     double ntc_beta = 3950.0;               // its beta, 1000..10000
@@ -309,6 +312,15 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             else if (val == "ntc") s.temp_sensor = TempSensor::Ntc;
             else if (val == "mlx90614") s.temp_sensor = TempSensor::Mlx90614;
             else bad("not none, ds18b20, ntc or mlx90614");
+        } else if (key == "temp_resolution") {
+            if (num(9, 12)) s.temp_resolution = static_cast<int>(n);
+        } else if (key == "temp_rom") {
+            if (temp_rom_setting_valid(val)) {
+                s.temp_rom = val;
+                if (val != "auto") for (char& ch : s.temp_rom) if (ch >= 'a' && ch <= 'f') ch = static_cast<char>(ch - 'a' + 'A');
+            } else {
+                bad("auto or the 16 hex digits of an address");
+            }
         } else if (key == "ntc_series_ohm") {
             if (real(100.0, 1000000.0)) s.ntc_series_ohm = d;
         } else if (key == "ntc_r25_ohm") {

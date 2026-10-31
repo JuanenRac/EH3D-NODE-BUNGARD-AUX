@@ -450,3 +450,9 @@ lr_disabled	kalibrácia je vypnutá
 lr_bad_target	vzdialenosť nie je medzi 10 a 4000 mm
 lr_offset_limit	cieľ je viac ako 50 mm od toho, čo snímač vidí
 lr_no_signal	žiadny signál z cieľa
+fTempRes	Rozlíšenie DS18B20 (bity)
+fTempRom	Adresa snímača (auto alebo 16 hex číslic)
+hTempRom	Ak je na vodiči viac snímačov, zadajte adresu snímača vretena (pozri stránku stavu). Auto vezme jediný alebo prvý nájdený.
+stTempWire	Teplotné snímače na vodiči
+stTempWireValue	Nájdených {0}, číta sa {1}
+stTempGuess	odhad: nastavte adresu

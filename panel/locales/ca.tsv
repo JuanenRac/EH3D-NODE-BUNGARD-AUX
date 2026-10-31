@@ -450,3 +450,9 @@ lr_disabled	el calibratge està desactivat
 lr_bad_target	distància fora de 10 a 4000 mm
 lr_offset_limit	objectiu a més de 50 mm del que veu el sensor
 lr_no_signal	cap senyal de l'objectiu
+fTempRes	Resolució del DS18B20 (bits)
+fTempRom	Adreça del sensor (auto o 16 dígits hex)
+hTempRom	Amb diversos sensors al cable, escriviu l'adreça del del broquer (vegeu la pàgina d'estat). Auto pren l'únic o el primer que trobi.
+stTempWire	Sensors de temperatura al cable
+stTempWireValue	{0} trobats, es llegeix {1}
+stTempGuess	triat a l'atzar: indiqueu l'adreça

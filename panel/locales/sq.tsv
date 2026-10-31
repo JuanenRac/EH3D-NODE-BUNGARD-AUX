@@ -450,3 +450,9 @@ lr_disabled	kalibrimi është i fikur
 lr_bad_target	largësia nuk është mes 10 dhe 4000 mm
 lr_offset_limit	objektivi është më shumë se 50 mm nga ajo që sheh sensori
 lr_no_signal	asnjë sinjal nga objektivi
+fTempRes	Rezolucioni i DS18B20 (bit)
+fTempRom	Adresa e sensorit (auto ose 16 shifra hex)
+hTempRom	Me disa sensorë në tel, shkruaj adresën e atij të boshtit (shih faqen e gjendjes). Auto merr të vetmin, ose të parin e gjetur.
+stTempWire	Sensorët e temperaturës në tel
+stTempWireValue	U gjetën {0}, lexohet {1}
+stTempGuess	hamendje: vendos adresën

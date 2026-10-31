@@ -2,6 +2,8 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <vector>
 
 #include <vector>
 
@@ -32,6 +34,12 @@ double rpm_now();
 /// The temperature of the spindle in degrees. False when the sensor does not answer.
 /// The DS18B20, the NTC and the MLX90614 are read as head.cfg says; a sensor that is on in the settings and does not answer counts as hot.
 bool temperature_read(double& celsius);
+
+/// The DS18B20 found on the wire, as 16 hex digits each (empty when none answers or the sensor is not a DS18B20), the one that is read ("" when none), and whether the choice
+/// was a guess (several sensors and `temp_rom` = auto).
+std::vector<std::string> temp_sensors_found();
+std::string temp_sensor_used();
+bool temp_sensor_ambiguous();
 
 /// Opens (true) or closes the protect output: low means the spindle must stop.
 void protect_set(bool open);

@@ -450,3 +450,9 @@ lr_disabled	kalibrering er slået fra
 lr_bad_target	afstanden er ikke mellem 10 og 4000 mm
 lr_offset_limit	målet er mere end 50 mm fra det, sensoren ser
 lr_no_signal	intet signal fra målet
+fTempRes	DS18B20-opløsning (bit)
+fTempRom	Sensoradresse (auto eller 16 hex-cifre)
+hTempRom	Med flere sensorer på ledningen angives adressen på spindlens (se statussiden). Auto tager den eneste eller den første fundne.
+stTempWire	Temperatursensorer på ledningen
+stTempWireValue	{0} fundet, læser {1}
+stTempGuess	et gæt: angiv adressen

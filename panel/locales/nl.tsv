@@ -450,3 +450,9 @@ lr_disabled	kalibratie staat uit
 lr_bad_target	afstand niet tussen 10 en 4000 mm
 lr_offset_limit	doel meer dan 50 mm van wat de sensor ziet
 lr_no_signal	geen signaal van het doel
+fTempRes	Resolutie van de DS18B20 (bits)
+fTempRom	Sensoradres (auto of 16 hex-cijfers)
+hTempRom	Met meerdere sensoren op de draad vult u het adres van die van de spindel in (zie de statuspagina). Auto neemt de enige of de eerst gevonden.
+stTempWire	Temperatuursensoren op de draad
+stTempWireValue	{0} gevonden, uitgelezen wordt {1}
+stTempGuess	een gok: stel het adres in

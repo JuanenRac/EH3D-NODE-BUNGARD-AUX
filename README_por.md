@@ -129,6 +129,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 * **Um anel de LEDs à volta da câmara:** oito LEDs RGB do tipo WS2812 num só fio iluminam a zona sob a cabeça para a câmara ver bem. O branco é a luz para a câmara; os níveis seguem o olho e nunca passam de um limite; um só lado dá luz rasante; pode pedir-se qualquer cor, e o anel diz como correu uma verificação (verde, vermelho a piscar, um ponto azul a girar, âmbar, vermelho rápido). Apaga-se sozinho ao fim de algum tempo. `GET` e `POST /api/light` e `GET /api/snapshot` servem os programas; as definições estão no painel e em `head.cfg` (`light_*`), e o pino no menu do firmware (`AUX_LIGHT_GPIO`).
 * **37 línguas:** o painel web do nó fala inglês, espanhol, italiano, alemão, francês, português, chinês, japonês, búlgaro, croata, checo, dinamarquês, neerlandês, estónio, finlandês, grego, húngaro, irlandês, letão, lituano, maltês, polaco, romeno, eslovaco, esloveno, sueco, norueguês, islandês, ucraniano, russo, sérvio, albanês, catalão, galego, basco, português do Brasil e francês do Canadá. As palavras das 29 línguas além das oito primeiras foram traduzidas pelo modelo e aguardam a revisão de falantes nativos; um texto que falte numa língua aparece em inglês.
 * **O laser, ajustado ao trabalho:** o VL53L1X tem modo de distância (curto ou longo) e orçamento de tempo, uma área de receção que se pode estreitar para olhar um ponto pequeno, um filtro que descarta leituras longe da mediana, um estado para cada leitura (válida, sinal fraco, dispersão alta, fora de alcance) e uma calibração a distância conhecida (desvio e diafonia) que um administrador tem de ativar primeiro. Ainda não experimentado num sensor.
+* **Vários DS18B20 no mesmo fio:** o nó procura no fio todos os sensores (com o CRC de cada endereço), usa o do fuso pelo seu endereço (`temp_rom`, ou o único, ou o primeiro encontrado com um aviso na página de estado), define a resolução de 9 a 12 bits (`temp_resolution`) e espera só o que essa resolução precisa. Testado num computador com um bus simulado; ainda não experimentado num fio real.
 
 ## 🔒 Segurança e proteção
 
@@ -223,6 +224,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── camera.hpp                               as câmaras OV2640 e OV5640 e os seus tamanhos
 │   ├── spindle.hpp                              velocidade, calor e saída de proteção
 │   ├── thermo.hpp                               a temperatura: DS18B20, NTC, MLX90614
+│   ├── onewire.hpp                              o bus 1-Wire: pesquisa, endereço, resolução
 │   ├── hash.hpp                                 os acessos: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP e a carga RTP de JPEG
 │   ├── onvif.hpp                                ONVIF: descoberta e serviços SOAP

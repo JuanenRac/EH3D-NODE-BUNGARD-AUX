@@ -128,6 +128,11 @@ struct Status {
     double laser_last_mm = 0.0;
     std::string laser_last_status = "none";  // valid, sigma_high, signal_low, out_of_range, sensor_fault, other or none
     long laser_age_ms = -1;
+    // the DS18B20 of the spindle: the addresses on the wire (16 hex digits each, separated by commas), the one that is read, and whether it was a guess among several
+    std::string temp_roms;
+    std::string temp_rom_used;
+    int temp_resolution = 12;
+    bool temp_guess = false;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -150,7 +155,11 @@ inline std::string json_status(const Status& s) {
                   heat_text(s.heat), s.protect_open ? "true" : "false", static_cast<unsigned>(s.uptime_s), s.light ? "true" : "false", s.light_on ? "true" : "false",
                   static_cast<unsigned>(s.light_level), json_escape(s.laser_mode).c_str(), s.laser_budget_ms, json_escape(s.laser_roi).c_str(), s.laser_cal_offset_mm, s.laser_cal_xtalk_cps,
                   s.laser_cal_allowed ? "true" : "false", s.laser_last_mm, json_escape(s.laser_last_status).c_str(), s.laser_age_ms);
-    return buf;
+    std::string out = buf;
+    out.pop_back();  // the closing brace: the sensors of the temperature go after it
+    out += ",\"temp_roms\":\"" + json_escape(s.temp_roms) + "\",\"temp_rom_used\":\"" + json_escape(s.temp_rom_used) + "\",\"temp_resolution\":" + std::to_string(s.temp_resolution) +
+           ",\"temp_guess\":" + (s.temp_guess ? "true" : "false") + "}";
+    return out;
 }
 
 inline std::string json_measure(const Measure& m) {

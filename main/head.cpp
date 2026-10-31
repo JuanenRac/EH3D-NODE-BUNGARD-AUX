@@ -144,6 +144,12 @@ std::string live_json_now() {
     s.heat = thermal.state();
     s.has_temp = temp_now_valid;
     s.temp_c = temp_now_c;
+    if (settings.temp_sensor == bungard_aux::TempSensor::Ds18b20) {
+        for (const std::string& rom : sensors::temp_sensors_found()) s.temp_roms += (s.temp_roms.empty() ? "" : ",") + rom;
+        s.temp_rom_used = sensors::temp_sensor_used();
+        s.temp_guess = sensors::temp_sensor_ambiguous();
+        s.temp_resolution = settings.temp_resolution;
+    }
     s.protect_open = protect_is_open;
     s.uptime_s = static_cast<std::uint32_t>(esp_timer_get_time() / 1000000);
     s.light = light::present();

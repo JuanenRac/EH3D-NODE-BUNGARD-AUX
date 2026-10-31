@@ -129,6 +129,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire light the area under the head so the camera sees well. White is the light for the camera; the levels follow the eye and never go over a ceiling; one side only gives a raking light; any colour can be asked, and the ring says how a check went (green, red blinking, a blue spot turning, amber, fast red). It turns itself off after a while. `GET` and `POST /api/light` and `GET /api/snapshot` serve the programs; the settings are in the panel and in `head.cfg` (`light_*`), and the pin in the menu of the firmware (`AUX_LIGHT_GPIO`).
 * **37 languages:** the web panel of the node speaks English, Spanish, Italian, German, French, Portuguese, Chinese, Japanese, Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French. The words of the 29 languages beyond the first eight are translated by the model and wait for a review by native speakers; a text that a language does not have is shown in English.
 * **The laser, set to the job:** the VL53L1X has a distance mode (short or long) and a timing budget, a receiving area that can be narrowed to look at a small spot, a filter that throws away readings far from the median, a state for each reading (valid, weak signal, high spread, out of range), and a calibration at a known distance (offset and crosstalk) that an administrator has to switch on first. Not tried on a sensor yet.
+* **Several DS18B20 on the same wire:** the node searches the wire for every sensor (with the checksum of each address), takes the one of the spindle by its address (`temp_rom`, or the only one, or the first found with a warning in the status page), sets the resolution of 9 to 12 bits (`temp_resolution`) and waits only as long as that resolution needs. Tested on a computer with a simulated bus; not tried on a real wire yet.
 
 ## 🔒 Security & Safety
 
@@ -223,6 +224,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── camera.hpp                               the cameras OV2640 and OV5640 and their sizes
 │   ├── spindle.hpp                              speed, heat and the protect output
 │   ├── thermo.hpp                               the temperature: DS18B20, NTC, MLX90614
+│   ├── onewire.hpp                              the one-wire bus: search, address, resolution
 │   ├── hash.hpp                                 the logins: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP and the RTP payload of JPEG
 │   ├── onvif.hpp                                ONVIF: discovery and the SOAP services

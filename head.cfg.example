@@ -38,6 +38,9 @@ rpm_stale_ms = 1500
 
 # the temperature of the spindle: none, ds18b20, ntc or mlx90614
 temp_sensor = none
+# the DS18B20: its resolution (9, 10, 11 or 12 bits; a conversion takes 94 to 750 ms) and which sensor of the wire is the spindle's: auto (the only one, or the first found) or the 16 hex digits of its address (the status page lists them)
+temp_resolution = 12
+temp_rom = auto
 # the thermistor when temp_sensor = ntc: the resistor of the divider, the resistance at 25 degrees and the beta of the data sheet
 ntc_series_ohm = 10000
 ntc_r25_ohm = 10000

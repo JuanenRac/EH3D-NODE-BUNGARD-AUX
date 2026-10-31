@@ -129,6 +129,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **Un anneau de LED autour de la caméra :** huit LED RVB de type WS2812 sur un seul fil éclairent la zone sous la tête pour que la caméra voie bien. Le blanc est la lumière pour la caméra ; les niveaux suivent l'œil et ne dépassent jamais un plafond ; un seul côté donne une lumière rasante ; on peut demander n'importe quelle couleur, et l'anneau dit comment un contrôle s'est passé (vert, rouge clignotant, un point bleu qui tourne, ambre, rouge rapide). Il s'éteint seul au bout d'un moment. `GET` et `POST /api/light` et `GET /api/snapshot` servent les programmes ; les réglages sont dans le panneau et dans `head.cfg` (`light_*`), la broche dans le menu du firmware (`AUX_LIGHT_GPIO`).
 * **37 langues :** le panneau web du nœud parle anglais, espagnol, italien, allemand, français, portugais, chinois, japonais, bulgare, croate, tchèque, danois, néerlandais, estonien, finnois, grec, hongrois, irlandais, letton, lituanien, maltais, polonais, roumain, slovaque, slovène, suédois, norvégien, islandais, ukrainien, russe, serbe, albanais, catalan, galicien, basque, portugais du Brésil et français du Canada. Les mots des 29 langues au-delà des huit premières sont traduits par le modèle et attendent la relecture de locuteurs natifs ; un texte qu'une langue n'a pas s'affiche en anglais.
 * **Le laser, réglé pour le travail :** le VL53L1X a un mode de distance (court ou long) et un budget de temps, une zone de réception qui peut se resserrer pour viser un petit point, un filtre qui écarte les mesures éloignées de la médiane, un état pour chaque mesure (valide, signal faible, dispersion élevée, hors portée) et un étalonnage à distance connue (décalage et diaphonie) qu'un administrateur doit d'abord activer. Pas encore essayé sur un capteur.
+* **Plusieurs DS18B20 sur le même fil :** le nœud cherche sur le fil tous les capteurs (avec le CRC de chaque adresse), prend celui de la broche par son adresse (`temp_rom`, ou le seul, ou le premier trouvé avec un avertissement sur la page d'état), règle la résolution de 9 à 12 bits (`temp_resolution`) et n'attend que ce que cette résolution demande. Testé sur un ordinateur avec un bus simulé ; pas encore essayé sur un vrai fil.
 
 ## 🔒 Sécurité et protection
 
@@ -223,6 +224,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── camera.hpp                               les caméras OV2640 et OV5640 et leurs tailles
 │   ├── spindle.hpp                              vitesse, chaleur et sortie de protection
 │   ├── thermo.hpp                               la température : DS18B20, CTN, MLX90614
+│   ├── onewire.hpp                              le bus 1-Wire : recherche, adresse, résolution
 │   ├── hash.hpp                                 les connexions : MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP et la charge RTP de JPEG
 │   ├── onvif.hpp                                ONVIF : découverte et services SOAP

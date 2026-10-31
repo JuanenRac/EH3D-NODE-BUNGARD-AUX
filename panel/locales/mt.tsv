@@ -450,3 +450,9 @@ lr_disabled	il-kalibrazzjoni hija mitfija
 lr_bad_target	id-distanza mhix bejn 10 u 4000 mm
 lr_offset_limit	il-mira hija aktar minn 50 mm minn dak li jara s-sensor
 lr_no_signal	l-ebda sinjal mill-mira
+fTempRes	Riżoluzzjoni tad-DS18B20 (bits)
+fTempRom	Indirizz tas-sensor (auto jew 16-il ċifra heks)
+hTempRom	B'diversi sensors fuq il-wajer, daħħal l-indirizz ta' dak tal-ispindlu (ara l-paġna tal-istat). Auto jieħu l-uniku wieħed, jew l-ewwel li jinstab.
+stTempWire	Sensors tat-temperatura fuq il-wajer
+stTempWireValue	Instabu {0}, qed jinqara {1}
+stTempGuess	tbassir: issettja l-indirizz

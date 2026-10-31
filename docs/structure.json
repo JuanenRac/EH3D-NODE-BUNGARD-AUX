@@ -131,6 +131,19 @@
           "tree_name": "thermo.hpp"
         },
         {
+          "name": "onewire.hpp",
+          "desc": {
+            "en": "the one-wire bus: search, address, resolution",
+            "es": "el bus 1-Wire: búsqueda, dirección, resolución",
+            "it": "il bus 1-Wire: ricerca, indirizzo, risoluzione",
+            "de": "der 1-Wire-Bus: Suche, Adresse, Auflösung",
+            "fr": "le bus 1-Wire : recherche, adresse, résolution",
+            "pt": "o bus 1-Wire: pesquisa, endereço, resolução",
+            "zh": "1-Wire 总线：搜索、地址、分辨率",
+            "ja": "1-Wire バス：検索・アドレス・分解能"
+          }
+        },
+        {
           "desc": {
             "en": "the logins: MD5, SHA-1, base64",
             "es": "los accesos: MD5, SHA-1, base64",
@@ -482,6 +495,19 @@
             "pt": "o laser com um sensor simulado",
             "zh": "用模拟传感器测试激光",
             "ja": "模擬センサーでのレーザー試験"
+          }
+        },
+        {
+          "name": "test_onewire.cpp",
+          "desc": {
+            "en": "several DS18B20 on a simulated bus",
+            "es": "varios DS18B20 en un bus simulado",
+            "it": "più DS18B20 su un bus simulato",
+            "de": "mehrere DS18B20 an einem simulierten Bus",
+            "fr": "plusieurs DS18B20 sur un bus simulé",
+            "pt": "vários DS18B20 num bus simulado",
+            "zh": "模拟总线上的多个 DS18B20",
+            "ja": "模擬バス上の複数の DS18B20"
           }
         },
         {

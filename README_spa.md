@@ -129,6 +129,7 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 * **Un aro de LEDs alrededor de la cámara:** ocho LEDs RGB del tipo WS2812 en un solo hilo iluminan la zona bajo el cabezal para que la cámara vea bien. El blanco es la luz para la cámara; los niveles siguen al ojo y nunca pasan de un techo; un solo lado da una luz rasante; se puede pedir cualquier color, y el aro dice cómo fue una verificación (verde, rojo parpadeando, un punto azul que gira, ámbar, rojo rápido). Se apaga solo pasado un tiempo. `GET` y `POST /api/light` y `GET /api/snapshot` sirven a los programas; los ajustes están en el panel y en `head.cfg` (`light_*`), y el pin en el menú del firmware (`AUX_LIGHT_GPIO`).
 * **37 idiomas:** el panel web del nodo habla inglés, español, italiano, alemán, francés, portugués, chino, japonés, búlgaro, croata, checo, danés, neerlandés, estonio, finés, griego, húngaro, irlandés, letón, lituano, maltés, polaco, rumano, eslovaco, esloveno, sueco, noruego, islandés, ucraniano, ruso, serbio, albanés, catalán, gallego, euskera, portugués de Brasil y francés de Canadá. Las palabras de los 29 idiomas posteriores a los ocho primeros están traducidas por el modelo y esperan la revisión de hablantes nativos; un texto que a un idioma le falta se muestra en inglés.
 * **El láser, ajustado al trabajo:** el VL53L1X tiene modo de distancia (corto o largo) y presupuesto de tiempo, un área de recepción que se puede estrechar para mirar un punto pequeño, un filtro que descarta lecturas lejos de la mediana, un estado para cada lectura (válida, señal débil, dispersión alta, fuera de rango) y una calibración a distancia conocida (desfase y diafonía) que un administrador debe activar antes. Aún no probado con un sensor.
+* **Varios DS18B20 en el mismo cable:** el nodo busca en el cable todos los sensores (con el CRC de cada dirección), toma el del husillo por su dirección (`temp_rom`, o el único, o el primero que encuentre con un aviso en la página de estado), fija la resolución de 9 a 12 bits (`temp_resolution`) y espera solo lo que esa resolución necesita. Probado en un ordenador con un bus simulado; aún no probado en un cable real.
 
 ## 🔒 Seguridad y protección
 
@@ -223,6 +224,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── camera.hpp                               las cámaras OV2640 y OV5640 y sus tamaños
 │   ├── spindle.hpp                              velocidad, calor y salida de protección
 │   ├── thermo.hpp                               la temperatura: DS18B20, NTC, MLX90614
+│   ├── onewire.hpp                              el bus 1-Wire: búsqueda, dirección, resolución
 │   ├── hash.hpp                                 los accesos: MD5, SHA-1, base64
 │   ├── rtsp.hpp rtsp_session.hpp rtp_jpeg.hpp   RTSP y la carga RTP de JPEG
 │   ├── onvif.hpp                                ONVIF: descubrimiento y servicios SOAP

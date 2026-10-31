@@ -450,3 +450,9 @@ lr_disabled	slökkt er á kvörðun
 lr_bad_target	fjarlægðin er ekki milli 10 og 4000 mm
 lr_offset_limit	skotmarkið er meira en 50 mm frá því sem skynjarinn sér
 lr_no_signal	ekkert merki frá skotmarkinu
+fTempRes	Upplausn DS18B20 (bitar)
+fTempRom	Heimilisfang nema (auto eða 16 sextándakerfistölur)
+hTempRom	Með mörgum nemum á vírnum skaltu setja inn heimilisfang nemans á snældunni (sjá stöðusíðuna). Auto tekur þann eina eða fyrsta sem finnst.
+stTempWire	Hitanemar á vírnum
+stTempWireValue	{0} fundust, les {1}
+stTempGuess	ágiskun: stilltu heimilisfangið

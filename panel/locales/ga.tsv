@@ -450,3 +450,9 @@ lr_disabled	tá an calabrú múchta
 lr_bad_target	níl an t-achar idir 10 agus 4000 mm
 lr_offset_limit	tá an sprioc níos mó ná 50 mm ón rud a fheiceann an braiteoir
 lr_no_signal	gan comhartha ón sprioc
+fTempRes	Taifeach an DS18B20 (giotán)
+fTempRom	Seoladh an braiteora (auto nó 16 dhigit heics)
+hTempRom	Le roinnt braiteoirí ar an sreang, cuir isteach seoladh bhraiteoir na fearsaide (féach leathanach an stádais). Roghnaíonn auto an t-aon cheann, nó an chéad cheann a aimsítear.
+stTempWire	Braiteoirí teochta ar an sreang
+stTempWireValue	{0} aimsithe, á léamh: {1}
+stTempGuess	buille faoi thuairim: socraigh an seoladh

@@ -450,3 +450,9 @@ lr_disabled	kalibracija je isključena
 lr_bad_target	udaljenost nije između 10 i 4000 mm
 lr_offset_limit	meta je više od 50 mm od onoga što senzor vidi
 lr_no_signal	nema signala s mete
+fTempRes	Rezolucija DS18B20 (bita)
+fTempRom	Adresa senzora (auto ili 16 hex znamenki)
+hTempRom	S više senzora na žici upišite adresu senzora vretena (vidi stranicu stanja). Auto uzima jedini ili prvi pronađeni.
+stTempWire	Temperaturni senzori na žici
+stTempWireValue	Pronađeno: {0}, čita se {1}
+stTempGuess	nagađanje: postavite adresu

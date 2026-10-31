@@ -450,3 +450,9 @@ lr_disabled	calibrarea este oprită
 lr_bad_target	distanța nu e între 10 și 4000 mm
 lr_offset_limit	ținta e la mai mult de 50 mm de ce vede senzorul
 lr_no_signal	niciun semnal de la țintă
+fTempRes	Rezoluția DS18B20 (biți)
+fTempRom	Adresa senzorului (auto sau 16 cifre hex)
+hTempRom	Cu mai mulți senzori pe fir, introduceți adresa celui al axului (vezi pagina de stare). Auto îl ia pe singurul sau pe primul găsit.
+stTempWire	Senzori de temperatură pe fir
+stTempWireValue	{0} găsiți, se citește {1}
+stTempGuess	o presupunere: setați adresa

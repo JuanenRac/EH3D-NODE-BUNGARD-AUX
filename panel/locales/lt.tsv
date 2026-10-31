@@ -450,3 +450,9 @@ lr_disabled	kalibravimas išjungtas
 lr_bad_target	atstumas ne tarp 10 ir 4000 mm
 lr_offset_limit	taikinys daugiau nei 50 mm nuo to, ką mato jutiklis
 lr_no_signal	nėra signalo iš taikinio
+fTempRes	DS18B20 skiriamoji geba (bitai)
+fTempRom	Jutiklio adresas (auto arba 16 šešioliktainių skaitmenų)
+hTempRom	Jei ant laido yra keli jutikliai, įveskite verpstės jutiklio adresą (žr. būsenos puslapį). Auto paima vienintelį arba pirmą rastą.
+stTempWire	Temperatūros jutikliai ant laido
+stTempWireValue	Rasta {0}, skaitomas {1}
+stTempGuess	spėjimas: nustatykite adresą

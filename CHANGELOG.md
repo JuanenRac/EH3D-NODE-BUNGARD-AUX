@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Several DS18B20 on the same wire:** the search of every sensor (`core/onewire.hpp`: the algorithm of the search of one-wire devices, with the checksum of each address and the families DS18B20, DS1822 and DS18S20), the choice of the spindle's sensor by address (`temp_rom` = `auto` or the 16 hex digits; with several sensors and `auto` the first found is read and the status page says it is a guess), the resolution (`temp_resolution`, 9 to 12 bits, written into the sensor) and a wait that follows the resolution (94 ms at 9 bits, 750 ms at 12). The status of the head lists the sensors found (`temp_roms`), the one in use and the resolution; the panel shows them and has the two settings. Tested on a computer with a simulated bus (`tests/test_onewire.cpp`); not tried on a real wire yet.
+
 - **The laser, set to the job:** the VL53L1X distance mode (`laser_distance_mode`, short or long) and timing budget (`laser_timing_budget_ms`), the receiving area (`laser_roi`, `laser_roi_center`), the filter of outliers (`laser_outlier_k`, `laser_outlier_floor_mm`), the state of every reading (valid, weak signal, high spread, out of range, shown in the panel) and the calibration at a known distance (`POST /api/v1/head/laser/calibrate`, kinds `offset`, `xtalk` and `reset`; stored in the settings of the node, administrators only, and only when `laser_calibration_enabled` is on, which it is not by default). The registers are a plain list in `core/laser_hw.hpp`, tested on a computer with a simulated sensor (`tests/test_laser.cpp`). Not tried on a sensor yet.
 
 ## [0.0.4] - The panel in 37 languages

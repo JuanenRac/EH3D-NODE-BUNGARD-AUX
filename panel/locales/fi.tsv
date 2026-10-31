@@ -450,3 +450,9 @@ lr_disabled	kalibrointi on pois päältä
 lr_bad_target	etäisyys ei ole välillä 10–4000 mm
 lr_offset_limit	kohde yli 50 mm päässä siitä, minkä anturi näkee
 lr_no_signal	ei signaalia kohteesta
+fTempRes	DS18B20:n tarkkuus (bittiä)
+fTempRom	Anturin osoite (auto tai 16 heksanumeroa)
+hTempRom	Jos johdossa on useita antureita, anna karan anturin osoite (katso tilasivu). Auto ottaa ainoan tai ensimmäisen löytyneen.
+stTempWire	Lämpötila-anturit johdossa
+stTempWireValue	{0} löytyi, luetaan {1}
+stTempGuess	arvaus: aseta osoite

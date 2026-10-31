@@ -19,8 +19,11 @@
 #include "vl53l1x.h"
 
 #include <mutex>
+#include <string>
+#include <vector>
 
 #include "../core/laser_hw.hpp"
+#include "../core/onewire.hpp"
 #include "../core/spindle.hpp"
 #include "../core/thermo.hpp"
 
@@ -205,18 +208,63 @@ std::uint8_t wire_read() {
     return b;
 }
 
-/// One conversion of the only DS18B20 on the wire (the ROM is skipped): it takes 750 ms at 12 bits.
+/// The wire as the search of core/onewire.hpp wants it.
+struct Wire {
+    bool reset() { return wire_reset(); }
+    void write_byte(std::uint8_t b) { wire_write(b); }
+    bool read_bit() { return wire_read_bit(); }
+    void write_bit(bool b) { wire_write_bit(b); }
+};
+
+std::vector<bungard_aux::Rom> wire_roms;
+bool wire_chosen = false;
+bool wire_guess = false;
+bungard_aux::Rom wire_rom{};
+
+/// Addresses the sensor of the spindle (MATCH ROM) or, when it is the only one on the wire, all of them (SKIP ROM).
+bool wire_select() {
+    if (!wire_reset()) return false;
+    if (wire_roms.size() <= 1 && !wire_chosen) return false;
+    if (wire_roms.size() == 1) {
+        wire_write(0xCC);
+    } else {
+        wire_write(0x55);
+        for (std::uint8_t b : wire_rom) wire_write(b);
+    }
+    return true;
+}
+
+/// Looks for the sensors, takes the spindle's and writes the resolution of the settings into it. Called once, when the wire starts and again when no sensor answers.
+void wire_discover() {
+    Wire bus;
+    wire_roms.clear();
+    wire_chosen = false;
+    bungard_aux::search_roms(bus, wire_roms);
+    wire_chosen = bungard_aux::choose_sensor(wire_roms, cfg.temp_rom, wire_rom, wire_guess);
+    ESP_LOGI(TAG, "one-wire: %u DS18B20 found, %s", static_cast<unsigned>(wire_roms.size()), wire_chosen ? bungard_aux::rom_text(wire_rom).c_str() : "none chosen");
+    if (!wire_chosen || !wire_select()) return;
+    wire_write(0x4E);  // WRITE SCRATCHPAD: the alarm bytes and the configuration (the resolution)
+    wire_write(0x7F);
+    wire_write(0x80);
+    wire_write(bungard_aux::resolution_config(cfg.temp_resolution));
+}
+
+/// One conversion of the DS18B20 of the spindle: 94 ms at 9 bits, 750 ms at 12.
 bool ds18b20_read(double& celsius) {
-    if (!wire_reset()) return false;
-    wire_write(0xCC);
+    if (wire_roms.empty() || !wire_chosen) wire_discover();
+    if (!wire_chosen) return false;
+    if (!wire_select()) {
+        wire_roms.clear();  // nobody answers: it is looked for again at the next reading
+        wire_chosen = false;
+        return false;
+    }
     wire_write(0x44);
-    vTaskDelay(pdMS_TO_TICKS(800));
-    if (!wire_reset()) return false;
-    wire_write(0xCC);
+    vTaskDelay(pdMS_TO_TICKS(bungard_aux::conversion_ms(cfg.temp_resolution) + 20));
+    if (!wire_select()) return false;
     wire_write(0xBE);
     std::uint8_t pad[9];
     for (auto& b : pad) b = wire_read();
-    return bungard_aux::ds18b20_celsius(pad, celsius);
+    return bungard_aux::thermometer_celsius(wire_rom, pad, celsius);
 }
 #endif
 
@@ -372,6 +420,30 @@ double rpm_now() {
         ++tail;
     }
     return meter->rpm(static_cast<std::uint64_t>(esp_timer_get_time()));
+}
+
+std::vector<std::string> temp_sensors_found() {
+    std::vector<std::string> out;
+#if CONFIG_AUX_ONEWIRE_GPIO >= 0
+    for (const auto& r : wire_roms) out.push_back(bungard_aux::rom_text(r));
+#endif
+    return out;
+}
+
+std::string temp_sensor_used() {
+#if CONFIG_AUX_ONEWIRE_GPIO >= 0
+    return wire_chosen ? bungard_aux::rom_text(wire_rom) : std::string();
+#else
+    return std::string();
+#endif
+}
+
+bool temp_sensor_ambiguous() {
+#if CONFIG_AUX_ONEWIRE_GPIO >= 0
+    return wire_chosen && wire_guess;
+#else
+    return false;
+#endif
 }
 
 bool temperature_read(double& celsius) {

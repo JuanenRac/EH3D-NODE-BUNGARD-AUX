@@ -450,3 +450,9 @@ lr_disabled	kalibrazioa itzalita dago
 lr_bad_target	distantzia ez dago 10 eta 4000 mm artean
 lr_offset_limit	helburua sentsoreak ikusten duenetik 50 mm baino urrunago dago
 lr_no_signal	ez dago seinalerik helburutik
+fTempRes	DS18B20ren bereizmena (bit)
+fTempRom	Sentsorearen helbidea (auto edo 16 digitu hex)
+hTempRom	Hari berean sentsore bat baino gehiago badaude, idatzi ardatzarenaren helbidea (ikusi egoera-orria). Autok bakarra hartzen du, edo aurkitutako lehena.
+stTempWire	Hariko tenperatura-sentsoreak
+stTempWireValue	{0} aurkitu dira, {1} irakurtzen
+stTempGuess	asmakizuna: ezarri helbidea
