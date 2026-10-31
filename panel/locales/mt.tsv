@@ -469,3 +469,11 @@ rq_good	impulsi nodfa
 rq_noisy	impulsi storbjużi
 rq_none	l-ebda impuls
 stRpmLevel	Livell analogu (limitu baxx-għoli)
+fCamMirror	Mera mix-xellug għal-lemin
+fCamFlip	Aqleb
+fCamBrightness	Qawwa tad-dawl (-2 sa 2)
+fCamContrast	Kuntrast (-2 sa 2)
+fCamSaturation	Saturazzjoni (-2 sa 2)
+fCamAutoExp	Espożizzjoni awtomatika
+fCamExposure	Espożizzjoni bl-idejn (0 sa 1200)
+fCamAwb	Bilanċ tal-abjad awtomatiku

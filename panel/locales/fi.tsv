@@ -469,3 +469,11 @@ rq_good	puhtaat pulssit
 rq_noisy	kohinaiset pulssit
 rq_none	ei pulsseja
 stRpmLevel	Analoginen taso (alempi-ylempi kynnys)
+fCamMirror	Peilaa vasemmalta oikealle
+fCamFlip	Käännä ylösalaisin
+fCamBrightness	Kirkkaus (-2...2)
+fCamContrast	Kontrasti (-2...2)
+fCamSaturation	Kylläisyys (-2...2)
+fCamAutoExp	Automaattinen valotus
+fCamExposure	Valotus käsin (0...1200)
+fCamAwb	Automaattinen valkotasapaino

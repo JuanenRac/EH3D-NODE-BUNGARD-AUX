@@ -469,3 +469,11 @@ rq_good	чистые импульсы
 rq_noisy	шумные импульсы
 rq_none	нет импульсов
 stRpmLevel	Аналоговый уровень (нижний-верхний порог)
+fCamMirror	Зеркально слева направо
+fCamFlip	Перевернуть
+fCamBrightness	Яркость (от -2 до 2)
+fCamContrast	Контраст (от -2 до 2)
+fCamSaturation	Насыщенность (от -2 до 2)
+fCamAutoExp	Автоматическая экспозиция
+fCamExposure	Экспозиция вручную (0–1200)
+fCamAwb	Автоматический баланс белого

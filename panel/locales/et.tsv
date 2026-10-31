@@ -469,3 +469,11 @@ rq_good	puhtad impulsid
 rq_noisy	mürarikkad impulsid
 rq_none	impulsse pole
 stRpmLevel	Analoogtase (alumine-ülemine lävend)
+fCamMirror	Peegelda vasakult paremale
+fCamFlip	Pööra tagurpidi
+fCamBrightness	Heledus (-2 kuni 2)
+fCamContrast	Kontrast (-2 kuni 2)
+fCamSaturation	Küllastus (-2 kuni 2)
+fCamAutoExp	Automaatne särituse seadistus
+fCamExposure	Käsitsi säritus (0 kuni 1200)
+fCamAwb	Automaatne valge tasakaal

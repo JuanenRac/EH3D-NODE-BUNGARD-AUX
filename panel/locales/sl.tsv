@@ -469,3 +469,11 @@ rq_good	čisti impulzi
 rq_noisy	šumni impulzi
 rq_none	ni impulzov
 stRpmLevel	Analogna raven (spodnji-zgornji prag)
+fCamMirror	Zrcaljenje levo-desno
+fCamFlip	Obrni na glavo
+fCamBrightness	Svetlost (-2 do 2)
+fCamContrast	Kontrast (-2 do 2)
+fCamSaturation	Nasičenost (-2 do 2)
+fCamAutoExp	Samodejna osvetlitev
+fCamExposure	Ročna osvetlitev (0 do 1200)
+fCamAwb	Samodejno ravnovesje beline

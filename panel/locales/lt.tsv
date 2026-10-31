@@ -469,3 +469,11 @@ rq_good	švarūs impulsai
 rq_noisy	triukšmingi impulsai
 rq_none	nėra impulsų
 stRpmLevel	Analoginis lygis (apatinis-viršutinis slenkstis)
+fCamMirror	Veidrodinis atspindys kairė-dešinė
+fCamFlip	Apversti
+fCamBrightness	Ryškumas (nuo -2 iki 2)
+fCamContrast	Kontrastas (nuo -2 iki 2)
+fCamSaturation	Sodrumas (nuo -2 iki 2)
+fCamAutoExp	Automatinė ekspozicija
+fCamExposure	Ekspozicija rankiniu būdu (0–1200)
+fCamAwb	Automatinis baltos spalvos balansas

@@ -97,6 +97,17 @@ bool camera_start() {
     camera_model_seen = model_text(model);
     esp_camera_deinit();
     if (camera_init(FRAME_OF[index]) != ESP_OK) return false;
+    // the picture as head.cfg wants it (a setting that this sensor does not have answers -1 and is left alone)
+    if (sensor_t* sn = esp_camera_sensor_get()) {
+        if (sn->set_hmirror) sn->set_hmirror(sn, settings.camera_hmirror ? 1 : 0);
+        if (sn->set_vflip) sn->set_vflip(sn, settings.camera_vflip ? 1 : 0);
+        if (sn->set_brightness) sn->set_brightness(sn, settings.camera_brightness);
+        if (sn->set_contrast) sn->set_contrast(sn, settings.camera_contrast);
+        if (sn->set_saturation) sn->set_saturation(sn, settings.camera_saturation);
+        if (sn->set_exposure_ctrl) sn->set_exposure_ctrl(sn, settings.camera_auto_exposure ? 1 : 0);
+        if (!settings.camera_auto_exposure && sn->set_aec_value) sn->set_aec_value(sn, static_cast<int>(settings.camera_exposure));
+        if (sn->set_whitebal) sn->set_whitebal(sn, settings.camera_auto_whitebalance ? 1 : 0);
+    }
     ESP_LOGI(TAG, "camera %s at %ux%u", camera_model_seen.c_str(), static_cast<unsigned>(settings.camera_width), static_cast<unsigned>(settings.camera_height));
     return true;
 #else

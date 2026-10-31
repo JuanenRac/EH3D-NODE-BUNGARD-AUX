@@ -68,6 +68,15 @@ struct Settings {
     std::uint16_t camera_width = 640;       // 160..2592 (the nearest size the camera can give, not larger)
     std::uint16_t camera_height = 480;      // 120..1944
     std::uint16_t camera_quality = 12;      // JPEG quality, 4 (best) .. 63 (smallest)
+    // the picture: what the sensor does to it before it is sent (the two cameras take all of these)
+    bool camera_hmirror = false;            // mirror left to right
+    bool camera_vflip = false;              // turn upside down (a camera that is mounted the other way up)
+    int camera_brightness = 0;              // -2..2
+    int camera_contrast = 0;                // -2..2
+    int camera_saturation = 0;              // -2..2
+    bool camera_auto_exposure = true;       // the sensor chooses the exposure (the usual: the ring of LEDs changes the light)
+    std::uint32_t camera_exposure = 300;    // with the exposure by hand: 0..1200 (units of the sensor, about lines of the picture)
+    bool camera_auto_whitebalance = true;   // the sensor chooses the balance of white
     std::uint16_t camera_fps_max = 10;      // 1..30
 
     // the video as an IP camera sends it: RTSP (JPEG over RTP, over UDP or inside the TCP connection) and ONVIF (discovery and the services of profile S).
@@ -242,6 +251,15 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             bad("expected on or off");
             return false;
         };
+        int sn = 0;
+        auto inum = [&](int lo, int hi) {
+            if (detail::to_double(val, lo, hi, d) && d == static_cast<double>(static_cast<int>(d))) {
+                sn = static_cast<int>(d);
+                return true;
+            }
+            bad("a whole number in the range");
+            return false;
+        };
         if (key == "name") {
             if (!val.empty() && val.size() <= 32) s.name = val; else bad("1 to 32 characters");
         } else if (key == "address") {
@@ -263,6 +281,22 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             if (num(120, 1944)) s.camera_height = static_cast<std::uint16_t>(n);
         } else if (key == "camera_quality") {
             if (num(4, 63)) s.camera_quality = static_cast<std::uint16_t>(n);
+        } else if (key == "camera_hmirror") {
+            if (flag()) s.camera_hmirror = b;
+        } else if (key == "camera_vflip") {
+            if (flag()) s.camera_vflip = b;
+        } else if (key == "camera_brightness") {
+            if (inum(-2, 2)) s.camera_brightness = static_cast<int>(sn);
+        } else if (key == "camera_contrast") {
+            if (inum(-2, 2)) s.camera_contrast = static_cast<int>(sn);
+        } else if (key == "camera_saturation") {
+            if (inum(-2, 2)) s.camera_saturation = static_cast<int>(sn);
+        } else if (key == "camera_auto_exposure") {
+            if (flag()) s.camera_auto_exposure = b;
+        } else if (key == "camera_exposure") {
+            if (num(0, 1200)) s.camera_exposure = n;
+        } else if (key == "camera_auto_whitebalance") {
+            if (flag()) s.camera_auto_whitebalance = b;
         } else if (key == "camera_fps_max") {
             if (num(1, 30)) s.camera_fps_max = static_cast<std::uint16_t>(n);
         } else if (key == "rtsp_enabled") {

@@ -469,3 +469,11 @@ rq_good	чисти импулси
 rq_noisy	шумни импулси
 rq_none	няма импулси
 stRpmLevel	Аналогово ниво (долен-горен праг)
+fCamMirror	Огледално отляво надясно
+fCamFlip	Обръщане наопаки
+fCamBrightness	Яркост (от -2 до 2)
+fCamContrast	Контраст (от -2 до 2)
+fCamSaturation	Наситеност (от -2 до 2)
+fCamAutoExp	Автоматична експозиция
+fCamExposure	Експозиция ръчно (0 до 1200)
+fCamAwb	Автоматичен баланс на бялото

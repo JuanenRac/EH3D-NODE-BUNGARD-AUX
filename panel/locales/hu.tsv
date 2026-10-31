@@ -469,3 +469,11 @@ rq_good	tiszta impulzusok
 rq_noisy	zajos impulzusok
 rq_none	nincs impulzus
 stRpmLevel	Analóg szint (alsó-felső küszöb)
+fCamMirror	Tükrözés balról jobbra
+fCamFlip	Fejjel lefelé fordítás
+fCamBrightness	Fényerő (-2 és 2 között)
+fCamContrast	Kontraszt (-2 és 2 között)
+fCamSaturation	Telítettség (-2 és 2 között)
+fCamAutoExp	Automatikus expozíció
+fCamExposure	Kézi expozíció (0 és 1200 között)
+fCamAwb	Automatikus fehéregyensúly

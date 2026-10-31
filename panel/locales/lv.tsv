@@ -469,3 +469,11 @@ rq_good	tīri impulsi
 rq_noisy	trokšņaini impulsi
 rq_none	nav impulsu
 stRpmLevel	Analogais līmenis (apakšējais-augšējais slieksnis)
+fCamMirror	Spoguļot no kreisās uz labo
+fCamFlip	Apgriezt otrādi
+fCamBrightness	Spilgtums (no -2 līdz 2)
+fCamContrast	Kontrasts (no -2 līdz 2)
+fCamSaturation	Piesātinājums (no -2 līdz 2)
+fCamAutoExp	Automātiska ekspozīcija
+fCamExposure	Ekspozīcija ar roku (0 līdz 1200)
+fCamAwb	Automātisks baltā balanss

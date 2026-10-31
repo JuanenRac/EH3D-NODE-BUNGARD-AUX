@@ -469,3 +469,11 @@ rq_good	schone pulsen
 rq_noisy	ruisende pulsen
 rq_none	geen pulsen
 stRpmLevel	Analoog niveau (onderste-bovenste drempel)
+fCamMirror	Links-rechts spiegelen
+fCamFlip	Ondersteboven draaien
+fCamBrightness	Helderheid (-2 tot 2)
+fCamContrast	Contrast (-2 tot 2)
+fCamSaturation	Verzadiging (-2 tot 2)
+fCamAutoExp	Automatische belichting
+fCamExposure	Belichting handmatig (0 tot 1200)
+fCamAwb	Automatische witbalans

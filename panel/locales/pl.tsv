@@ -469,3 +469,11 @@ rq_good	czyste impulsy
 rq_noisy	zaszumione impulsy
 rq_none	brak impulsów
 stRpmLevel	Poziom analogowy (próg dolny-górny)
+fCamMirror	Odbicie lustrzane lewo-prawo
+fCamFlip	Obróć do góry nogami
+fCamBrightness	Jasność (od -2 do 2)
+fCamContrast	Kontrast (od -2 do 2)
+fCamSaturation	Nasycenie (od -2 do 2)
+fCamAutoExp	Automatyczna ekspozycja
+fCamExposure	Ekspozycja ręczna (0 do 1200)
+fCamAwb	Automatyczny balans bieli

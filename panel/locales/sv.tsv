@@ -469,3 +469,11 @@ rq_good	rena pulser
 rq_noisy	brusiga pulser
 rq_none	inga pulser
 stRpmLevel	Analog nivå (nedre-övre tröskel)
+fCamMirror	Spegla vänster-höger
+fCamFlip	Vänd upp och ned
+fCamBrightness	Ljusstyrka (-2 till 2)
+fCamContrast	Kontrast (-2 till 2)
+fCamSaturation	Färgmättnad (-2 till 2)
+fCamAutoExp	Automatisk exponering
+fCamExposure	Manuell exponering (0 till 1200)
+fCamAwb	Automatisk vitbalans

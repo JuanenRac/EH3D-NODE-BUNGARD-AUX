@@ -469,3 +469,11 @@ rq_good	čisti impulsi
 rq_noisy	bučni impulsi
 rq_none	nema impulsa
 stRpmLevel	Analogna razina (donji-gornji prag)
+fCamMirror	Zrcaljenje lijevo-desno
+fCamFlip	Okreni naopako
+fCamBrightness	Svjetlina (-2 do 2)
+fCamContrast	Kontrast (-2 do 2)
+fCamSaturation	Zasićenost (-2 do 2)
+fCamAutoExp	Automatska ekspozicija
+fCamExposure	Ručna ekspozicija (0 do 1200)
+fCamAwb	Automatski balans bijele

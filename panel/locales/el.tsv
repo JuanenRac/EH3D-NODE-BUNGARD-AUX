@@ -469,3 +469,11 @@ rq_good	καθαροί παλμοί
 rq_noisy	θορυβώδεις παλμοί
 rq_none	χωρίς παλμούς
 stRpmLevel	Αναλογικό επίπεδο (κάτω-άνω όριο)
+fCamMirror	Καθρέφτης αριστερά-δεξιά
+fCamFlip	Αναστροφή
+fCamBrightness	Φωτεινότητα (-2 έως 2)
+fCamContrast	Αντίθεση (-2 έως 2)
+fCamSaturation	Κορεσμός (-2 έως 2)
+fCamAutoExp	Αυτόματη έκθεση
+fCamExposure	Χειροκίνητη έκθεση (0 έως 1200)
+fCamAwb	Αυτόματη ισορροπία λευκού

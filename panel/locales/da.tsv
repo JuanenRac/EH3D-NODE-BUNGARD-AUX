@@ -469,3 +469,11 @@ rq_good	rene pulser
 rq_noisy	støjende pulser
 rq_none	ingen pulser
 stRpmLevel	Analogt niveau (nedre-øvre tærskel)
+fCamMirror	Spejl venstre-højre
+fCamFlip	Vend på hovedet
+fCamBrightness	Lysstyrke (-2 til 2)
+fCamContrast	Kontrast (-2 til 2)
+fCamSaturation	Farvemætning (-2 til 2)
+fCamAutoExp	Automatisk eksponering
+fCamExposure	Manuel eksponering (0 til 1200)
+fCamAwb	Automatisk hvidbalance

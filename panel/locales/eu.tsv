@@ -469,3 +469,11 @@ rq_good	pultsu garbiak
 rq_noisy	zaratadun pultsuak
 rq_none	pultsurik ez
 stRpmLevel	Maila analogikoa (beheko-goiko atalasea)
+fCamMirror	Ispilua ezkerretik eskuinera
+fCamFlip	Buruz behera jarri
+fCamBrightness	Distira (-2tik 2ra)
+fCamContrast	Kontrastea (-2tik 2ra)
+fCamSaturation	Saturazioa (-2tik 2ra)
+fCamAutoExp	Esposizio automatikoa
+fCamExposure	Esposizioa eskuz (0tik 1200ra)
+fCamAwb	Zuri-balantze automatikoa

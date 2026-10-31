@@ -469,3 +469,11 @@ rq_good	pulsos limpos
 rq_noisy	pulsos con ruído
 rq_none	sen pulsos
 stRpmLevel	Nivel analóxico (limiar baixo-alto)
+fCamMirror	Espello esquerda-dereita
+fCamFlip	Virar de cabeza para abaixo
+fCamBrightness	Brillo (-2 a 2)
+fCamContrast	Contraste (-2 a 2)
+fCamSaturation	Saturación (-2 a 2)
+fCamAutoExp	Exposición automática
+fCamExposure	Exposición manual (0 a 1200)
+fCamAwb	Balance de brancos automático

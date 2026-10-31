@@ -469,3 +469,11 @@ rq_good	polsos nets
 rq_noisy	polsos amb soroll
 rq_none	sense polsos
 stRpmLevel	Nivell analògic (llindar baix-alt)
+fCamMirror	Mirall esquerra-dreta
+fCamFlip	Girar cap per avall
+fCamBrightness	Brillantor (-2 a 2)
+fCamContrast	Contrast (-2 a 2)
+fCamSaturation	Saturació (-2 a 2)
+fCamAutoExp	Exposició automàtica
+fCamExposure	Exposició manual (0 a 1200)
+fCamAwb	Equilibri de blancs automàtic

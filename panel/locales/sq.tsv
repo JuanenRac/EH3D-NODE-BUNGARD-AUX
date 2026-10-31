@@ -469,3 +469,11 @@ rq_good	impulse të pastra
 rq_noisy	impulse me zhurmë
 rq_none	pa impulse
 stRpmLevel	Niveli analog (pragu i poshtëm-sipërm)
+fCamMirror	Pasqyrim majtas-djathtas
+fCamFlip	Rrotulloje përmbys
+fCamBrightness	Ndriçimi (-2 deri 2)
+fCamContrast	Kontrasti (-2 deri 2)
+fCamSaturation	Ngopja (-2 deri 2)
+fCamAutoExp	Ekspozim automatik
+fCamExposure	Ekspozim me dorë (0 deri 1200)
+fCamAwb	Balanca e bardhë automatike

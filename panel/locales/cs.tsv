@@ -469,3 +469,11 @@ rq_good	čisté impulsy
 rq_noisy	zašuměné impulsy
 rq_none	žádné impulsy
 stRpmLevel	Analogová úroveň (dolní-horní práh)
+fCamMirror	Zrcadlit zleva doprava
+fCamFlip	Otočit vzhůru nohama
+fCamBrightness	Jas (-2 až 2)
+fCamContrast	Kontrast (-2 až 2)
+fCamSaturation	Sytost (-2 až 2)
+fCamAutoExp	Automatická expozice
+fCamExposure	Ruční expozice (0 až 1200)
+fCamAwb	Automatické vyvážení bílé

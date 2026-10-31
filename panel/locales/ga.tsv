@@ -469,3 +469,11 @@ rq_good	bíoga glana
 rq_noisy	bíoga torannacha
 rq_none	gan bíoga
 stRpmLevel	Leibhéal analógach (tairseach íochtarach-uachtarach)
+fCamMirror	Scáthán ó chlé go deas
+fCamFlip	Cuir bun os cionn
+fCamBrightness	Gile (-2 go 2)
+fCamContrast	Codarsnacht (-2 go 2)
+fCamSaturation	Sáithiú (-2 go 2)
+fCamAutoExp	Nochtadh uathoibríoch
+fCamExposure	Nochtadh de láimh (0 go 1200)
+fCamAwb	Cothromaíocht bháin uathoibríoch

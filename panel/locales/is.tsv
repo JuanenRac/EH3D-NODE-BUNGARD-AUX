@@ -469,3 +469,11 @@ rq_good	hreinir púlsar
 rq_noisy	suðandi púlsar
 rq_none	engir púlsar
 stRpmLevel	Hliðrænt stig (neðra-efra mark)
+fCamMirror	Spegla til vinstri og hægri
+fCamFlip	Snúa á hvolf
+fCamBrightness	Birtustig (-2 til 2)
+fCamContrast	Birtuskil (-2 til 2)
+fCamSaturation	Mettun (-2 til 2)
+fCamAutoExp	Sjálfvirk lýsing
+fCamExposure	Lýsing handvirkt (0 til 1200)
+fCamAwb	Sjálfvirkt hvítjafnvægi

@@ -477,7 +477,10 @@ function headPage() {
         h.camera_enabled ? [
           hf("fCameraModel", "camera_model", { type: "select", options: [["auto", t("modelAuto")], ["ov2640", "OV2640"], ["ov5640", "OV5640"]] }),
           el("div", { class: "row" }, num("fWidth", "camera_width", 160, 2592, "640"), num("fHeight", "camera_height", 120, 1944, "480")),
-          el("div", { class: "row" }, num("fQuality", "camera_quality", 4, 63, "12", { hint: t("fQualityHint") }), num("fFps", "camera_fps_max", 1, 30, "10"))] : null),
+          el("div", { class: "row" }, num("fQuality", "camera_quality", 4, 63, "12", { hint: t("fQualityHint") }), num("fFps", "camera_fps_max", 1, 30, "10")),
+          el("div", { class: "row" }, hf("fCamMirror", "camera_hmirror", { type: "checkbox" }), hf("fCamFlip", "camera_vflip", { type: "checkbox" }), hf("fCamAwb", "camera_auto_whitebalance", { type: "checkbox" })),
+          el("div", { class: "row" }, num("fCamBrightness", "camera_brightness", -2, 2, "0"), num("fCamContrast", "camera_contrast", -2, 2, "0"), num("fCamSaturation", "camera_saturation", -2, 2, "0")),
+          el("div", { class: "row" }, hf("fCamAutoExp", "camera_auto_exposure", { type: "checkbox", rerender: true }), h.camera_auto_exposure ? null : num("fCamExposure", "camera_exposure", 0, 1200, "300"))] : null),
       card(t("hStream"), el("p", { class: "muted" }, t("hStreamIntro")),
         hf("fRtspOn", "rtsp_enabled", { type: "checkbox", rerender: true }),
         h.rtsp_enabled ? num("fRtspPort", "rtsp_port", 1, 65535, "8554") : null,

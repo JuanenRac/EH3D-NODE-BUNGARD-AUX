@@ -469,3 +469,11 @@ rq_good	impulsuri curate
 rq_noisy	impulsuri zgomotoase
 rq_none	fără impulsuri
 stRpmLevel	Nivel analogic (prag inferior-superior)
+fCamMirror	Oglindire stânga-dreapta
+fCamFlip	Întoarce cu susul în jos
+fCamBrightness	Luminozitate (-2 la 2)
+fCamContrast	Contrast (-2 la 2)
+fCamSaturation	Saturație (-2 la 2)
+fCamAutoExp	Expunere automată
+fCamExposure	Expunere manuală (0 la 1200)
+fCamAwb	Balans de alb automat
