@@ -456,3 +456,16 @@ hTempRom	Con varios sensores no cable, escribe o enderezo do do husillo (mira a 
 stTempWire	Sensores de temperatura no cable
 stTempWireValue	{0} atopados, lese {1}
 stTempGuess	escollido ao chou: indica o enderezo
+fRpmInput	Entrada do sensor
+rpmDigital	Dixital (DO)
+rpmAnalog	Analóxica (AO, ADC rápido)
+fRpmEdge	Pulso no flanco
+edgeRising	Ascendente
+edgeFalling	Descendente
+fRpmAuto	Os limiares seguen o sinal
+fRpmThHi	Limiar alto (mV)
+fRpmThLo	Limiar baixo (mV)
+rq_good	pulsos limpos
+rq_noisy	pulsos con ruído
+rq_none	sen pulsos
+stRpmLevel	Nivel analóxico (limiar baixo-alto)

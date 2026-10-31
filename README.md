@@ -130,6 +130,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **37 languages:** the web panel of the node speaks English, Spanish, Italian, German, French, Portuguese, Chinese, Japanese, Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French. The words of the 29 languages beyond the first eight are translated by the model and wait for a review by native speakers; a text that a language does not have is shown in English.
 * **The laser, set to the job:** the VL53L1X has a distance mode (short or long) and a timing budget, a receiving area that can be narrowed to look at a small spot, a filter that throws away readings far from the median, a state for each reading (valid, weak signal, high spread, out of range), and a calibration at a known distance (offset and crosstalk) that an administrator has to switch on first. Not tried on a sensor yet.
 * **Several DS18B20 on the same wire:** the node searches the wire for every sensor (with the checksum of each address), takes the one of the spindle by its address (`temp_rom`, or the only one, or the first found with a warning in the status page), sets the resolution of 9 to 12 bits (`temp_resolution`) and waits only as long as that resolution needs. Tested on a computer with a simulated bus; not tried on a real wire yet.
+* **A speed sensor that tells noise from turns:** the TCRT5000 (reflective, with its mark on the spindle) works on its digital output with an interrupt, or on its analogue output with a fast ADC and a Schmitt trigger whose thresholds follow the signal; pulses that come faster than the spindle can turn, spikes in the middle of a turn and missed pulses are filtered, and the status says whether the pulses are clean or noisy. Tested with simulated pulse trains at 400 Hz and 1 kHz; not tried on a spindle yet.
 
 ## 🔒 Security & Safety
 
@@ -222,7 +223,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── laser_hw.hpp                             the registers of the laser
 │   ├── light.hpp                                the ring of LEDs: levels, colours, signals
 │   ├── camera.hpp                               the cameras OV2640 and OV5640 and their sizes
-│   ├── spindle.hpp                              speed, heat and the protect output
+│   ├── spindle.hpp                              the speed sensor: pulses, noise filter, Schmitt trigger
 │   ├── thermo.hpp                               the temperature: DS18B20, NTC, MLX90614
 │   ├── onewire.hpp                              the one-wire bus: search, address, resolution
 │   ├── hash.hpp                                 the logins: MD5, SHA-1, base64

@@ -33,6 +33,13 @@ laser_sigma_max_mm = 0.15
 # the speed of the spindle: pulses of the sensor per turn, the speed that counts as an alarm, how long without a pulse means stopped
 rpm_enabled = on
 rpm_pulses_per_rev = 1
+# the input of the sensor: digital (the output DO of the module, on an interrupt) or analog (the output AO, read by a fast ADC with a Schmitt trigger; pin AUX_RPM_ANALOG_GPIO), and the edge that is a pulse
+rpm_input = digital
+rpm_edge = rising
+# analog input: the thresholds follow the signal (35 % and 65 % between its extremes), or these two levels in mV
+rpm_auto_threshold = yes
+rpm_threshold_hi_mv = 2000
+rpm_threshold_lo_mv = 1000
 rpm_max = 65000
 rpm_stale_ms = 1500
 

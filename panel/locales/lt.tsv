@@ -456,3 +456,16 @@ hTempRom	Jei ant laido yra keli jutikliai, įveskite verpstės jutiklio adresą 
 stTempWire	Temperatūros jutikliai ant laido
 stTempWireValue	Rasta {0}, skaitomas {1}
 stTempGuess	spėjimas: nustatykite adresą
+fRpmInput	Jutiklio įvestis
+rpmDigital	Skaitmeninė (DO)
+rpmAnalog	Analoginė (AO, greitasis ADC)
+fRpmEdge	Impulsas ties briauna
+edgeRising	Kylanti
+edgeFalling	Krintanti
+fRpmAuto	Slenksčiai seka signalą
+fRpmThHi	Viršutinis slenkstis (mV)
+fRpmThLo	Apatinis slenkstis (mV)
+rq_good	švarūs impulsai
+rq_noisy	triukšmingi impulsai
+rq_none	nėra impulsų
+stRpmLevel	Analoginis lygis (apatinis-viršutinis slenkstis)

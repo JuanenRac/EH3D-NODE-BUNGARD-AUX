@@ -456,3 +456,16 @@ hTempRom	Amb diversos sensors al cable, escriviu l'adreça del del broquer (vege
 stTempWire	Sensors de temperatura al cable
 stTempWireValue	{0} trobats, es llegeix {1}
 stTempGuess	triat a l'atzar: indiqueu l'adreça
+fRpmInput	Entrada del sensor
+rpmDigital	Digital (DO)
+rpmAnalog	Analògica (AO, ADC ràpid)
+fRpmEdge	Pols al flanc
+edgeRising	Ascendent
+edgeFalling	Descendent
+fRpmAuto	Els llindars segueixen el senyal
+fRpmThHi	Llindar alt (mV)
+fRpmThLo	Llindar baix (mV)
+rq_good	polsos nets
+rq_noisy	polsos amb soroll
+rq_none	sense polsos
+stRpmLevel	Nivell analògic (llindar baix-alt)

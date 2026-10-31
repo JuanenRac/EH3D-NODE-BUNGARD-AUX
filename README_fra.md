@@ -130,6 +130,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **37 langues :** le panneau web du nœud parle anglais, espagnol, italien, allemand, français, portugais, chinois, japonais, bulgare, croate, tchèque, danois, néerlandais, estonien, finnois, grec, hongrois, irlandais, letton, lituanien, maltais, polonais, roumain, slovaque, slovène, suédois, norvégien, islandais, ukrainien, russe, serbe, albanais, catalan, galicien, basque, portugais du Brésil et français du Canada. Les mots des 29 langues au-delà des huit premières sont traduits par le modèle et attendent la relecture de locuteurs natifs ; un texte qu'une langue n'a pas s'affiche en anglais.
 * **Le laser, réglé pour le travail :** le VL53L1X a un mode de distance (court ou long) et un budget de temps, une zone de réception qui peut se resserrer pour viser un petit point, un filtre qui écarte les mesures éloignées de la médiane, un état pour chaque mesure (valide, signal faible, dispersion élevée, hors portée) et un étalonnage à distance connue (décalage et diaphonie) qu'un administrateur doit d'abord activer. Pas encore essayé sur un capteur.
 * **Plusieurs DS18B20 sur le même fil :** le nœud cherche sur le fil tous les capteurs (avec le CRC de chaque adresse), prend celui de la broche par son adresse (`temp_rom`, ou le seul, ou le premier trouvé avec un avertissement sur la page d'état), règle la résolution de 9 à 12 bits (`temp_resolution`) et n'attend que ce que cette résolution demande. Testé sur un ordinateur avec un bus simulé ; pas encore essayé sur un vrai fil.
+* **Un capteur de vitesse qui distingue le bruit des tours :** le TCRT5000 (réflectif, avec sa marque sur la broche) fonctionne avec sa sortie numérique par interruption, ou avec sa sortie analogique lue par un CAN rapide et un trigger de Schmitt dont les seuils suivent le signal ; les impulsions plus rapides que la broche ne peut tourner, les pointes au milieu d'un tour et les impulsions manquées sont filtrées, et l'état dit si les impulsions sont propres ou bruitées. Testé avec des trains d'impulsions simulés à 400 Hz et 1 kHz ; pas encore essayé sur une broche.
 
 ## 🔒 Sécurité et protection
 
@@ -222,7 +223,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── laser_hw.hpp                             les registres du laser
 │   ├── light.hpp                                l'anneau de LED : niveaux, couleurs, signaux
 │   ├── camera.hpp                               les caméras OV2640 et OV5640 et leurs tailles
-│   ├── spindle.hpp                              vitesse, chaleur et sortie de protection
+│   ├── spindle.hpp                              le capteur de vitesse : impulsions, bruit, Schmitt
 │   ├── thermo.hpp                               la température : DS18B20, CTN, MLX90614
 │   ├── onewire.hpp                              le bus 1-Wire : recherche, adresse, résolution
 │   ├── hash.hpp                                 les connexions : MD5, SHA-1, base64

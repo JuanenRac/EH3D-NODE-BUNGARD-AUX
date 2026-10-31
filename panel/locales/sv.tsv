@@ -456,3 +456,16 @@ hTempRom	Med flera sensorer på tråden anger du spindelns adress (se statussida
 stTempWire	Temperatursensorer på tråden
 stTempWireValue	{0} hittades, läser {1}
 stTempGuess	en gissning: ange adressen
+fRpmInput	Sensoringång
+rpmDigital	Digital (DO)
+rpmAnalog	Analog (AO, snabb ADC)
+fRpmEdge	Puls på flanken
+edgeRising	Stigande
+edgeFalling	Fallande
+fRpmAuto	Trösklarna följer signalen
+fRpmThHi	Övre tröskel (mV)
+fRpmThLo	Nedre tröskel (mV)
+rq_good	rena pulser
+rq_noisy	brusiga pulser
+rq_none	inga pulser
+stRpmLevel	Analog nivå (nedre-övre tröskel)

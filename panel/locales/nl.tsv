@@ -456,3 +456,16 @@ hTempRom	Met meerdere sensoren op de draad vult u het adres van die van de spind
 stTempWire	Temperatuursensoren op de draad
 stTempWireValue	{0} gevonden, uitgelezen wordt {1}
 stTempGuess	een gok: stel het adres in
+fRpmInput	Sensoringang
+rpmDigital	Digitaal (DO)
+rpmAnalog	Analoog (AO, snelle ADC)
+fRpmEdge	Puls op de flank
+edgeRising	Stijgend
+edgeFalling	Dalend
+fRpmAuto	Drempels volgen het signaal
+fRpmThHi	Bovenste drempel (mV)
+fRpmThLo	Onderste drempel (mV)
+rq_good	schone pulsen
+rq_noisy	ruisende pulsen
+rq_none	geen pulsen
+stRpmLevel	Analoog niveau (onderste-bovenste drempel)

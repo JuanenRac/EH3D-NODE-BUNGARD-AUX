@@ -456,3 +456,16 @@ hTempRom	B'diversi sensors fuq il-wajer, daħħal l-indirizz ta' dak tal-ispindl
 stTempWire	Sensors tat-temperatura fuq il-wajer
 stTempWireValue	Instabu {0}, qed jinqara {1}
 stTempGuess	tbassir: issettja l-indirizz
+fRpmInput	Input tas-sensor
+rpmDigital	Diġitali (DO)
+rpmAnalog	Analogu (AO, ADC mgħaġġel)
+fRpmEdge	Impuls fuq it-tarf
+edgeRising	Dieħel
+edgeFalling	Nieżel
+fRpmAuto	Il-limiti jsegwu s-sinjal
+fRpmThHi	Limitu għoli (mV)
+fRpmThLo	Limitu baxx (mV)
+rq_good	impulsi nodfa
+rq_noisy	impulsi storbjużi
+rq_none	l-ebda impuls
+stRpmLevel	Livell analogu (limitu baxx-għoli)

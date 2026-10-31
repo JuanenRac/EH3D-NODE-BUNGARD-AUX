@@ -130,6 +130,7 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 * **37 Sprachen:** das Web-Panel des Knotens spricht Englisch, Spanisch, Italienisch, Deutsch, Französisch, Portugiesisch, Chinesisch, Japanisch, Bulgarisch, Kroatisch, Tschechisch, Dänisch, Niederländisch, Estnisch, Finnisch, Griechisch, Ungarisch, Irisch, Lettisch, Litauisch, Maltesisch, Polnisch, Rumänisch, Slowakisch, Slowenisch, Schwedisch, Norwegisch, Isländisch, Ukrainisch, Russisch, Serbisch, Albanisch, Katalanisch, Galicisch, Baskisch, brasilianisches Portugiesisch und kanadisches Französisch. Die Wörter der 29 Sprachen nach den ersten acht stammen vom Modell und warten auf die Durchsicht durch Muttersprachler; ein fehlender Text wird auf Englisch gezeigt.
 * **Der Laser, auf die Arbeit abgestimmt:** Der VL53L1X hat einen Entfernungsmodus (kurz oder lang) und ein Zeitbudget, einen Empfangsbereich, der sich auf einen kleinen Punkt verengen lässt, einen Filter, der Messwerte weit vom Median verwirft, einen Zustand je Messwert (gültig, schwaches Signal, hohe Streuung, außer Reichweite) und eine Kalibrierung bei bekannter Entfernung (Offset und Übersprechen), die ein Administrator zuerst einschalten muss. Noch an keinem Sensor erprobt.
 * **Mehrere DS18B20 an demselben Draht:** Der Knoten sucht am Draht alle Sensoren (mit der Prüfsumme jeder Adresse), nimmt den der Spindel über seine Adresse (`temp_rom`, oder den einzigen, oder den ersten gefundenen mit Hinweis auf der Statusseite), stellt die Auflösung von 9 bis 12 Bit ein (`temp_resolution`) und wartet nur so lange, wie diese Auflösung braucht. Auf einem Rechner mit simuliertem Bus getestet; an einem echten Draht noch nicht erprobt.
+* **Ein Drehzahlsensor, der Rauschen von Umdrehungen unterscheidet:** Der TCRT5000 (reflektierend, mit seiner Marke auf der Spindel) arbeitet mit dem digitalen Ausgang per Interrupt oder mit dem analogen Ausgang über einen schnellen ADC und einen Schmitt-Trigger, dessen Schwellen dem Signal folgen; Impulse, die schneller kommen als die Spindel drehen kann, Spitzen mitten in einer Umdrehung und verpasste Impulse werden gefiltert, und der Status sagt, ob die Impulse sauber oder verrauscht sind. Mit simulierten Impulsfolgen bei 400 Hz und 1 kHz getestet; an einer Spindel noch nicht erprobt.
 
 ## 🔒 Sicherheit und Schutz
 
@@ -222,7 +223,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── laser_hw.hpp                             die Register des Lasers
 │   ├── light.hpp                                der LED-Ring: Stufen, Farben, Signale
 │   ├── camera.hpp                               die Kameras OV2640 und OV5640 und ihre Größen
-│   ├── spindle.hpp                              Drehzahl, Wärme und Schutzausgang
+│   ├── spindle.hpp                              der Drehzahlsensor: Impulse, Rauschen, Schmitt
 │   ├── thermo.hpp                               die Temperatur: DS18B20, NTC, MLX90614
 │   ├── onewire.hpp                              der 1-Wire-Bus: Suche, Adresse, Auflösung
 │   ├── hash.hpp                                 die Anmeldungen: MD5, SHA-1, Base64

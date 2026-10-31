@@ -456,3 +456,16 @@ hTempRom	S više senzora na žici upišite adresu senzora vretena (vidi stranicu
 stTempWire	Temperaturni senzori na žici
 stTempWireValue	Pronađeno: {0}, čita se {1}
 stTempGuess	nagađanje: postavite adresu
+fRpmInput	Ulaz senzora
+rpmDigital	Digitalni (DO)
+rpmAnalog	Analogni (AO, brzi ADC)
+fRpmEdge	Impuls na bridu
+edgeRising	Uzlazni
+edgeFalling	Silazni
+fRpmAuto	Pragovi prate signal
+fRpmThHi	Gornji prag (mV)
+fRpmThLo	Donji prag (mV)
+rq_good	čisti impulsi
+rq_noisy	bučni impulsi
+rq_none	nema impulsa
+stRpmLevel	Analogna razina (donji-gornji prag)

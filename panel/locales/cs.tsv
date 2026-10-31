@@ -456,3 +456,16 @@ hTempRom	Je-li na vodiči více čidel, zadejte adresu čidla vřetena (viz str�
 stTempWire	Teplotní čidla na vodiči
 stTempWireValue	Nalezeno {0}, čte se {1}
 stTempGuess	odhad: nastavte adresu
+fRpmInput	Vstup čidla
+rpmDigital	Digitální (DO)
+rpmAnalog	Analogový (AO, rychlý ADC)
+fRpmEdge	Impuls na hraně
+edgeRising	Náběžná
+edgeFalling	Sestupná
+fRpmAuto	Prahy sledují signál
+fRpmThHi	Horní práh (mV)
+fRpmThLo	Dolní práh (mV)
+rq_good	čisté impulsy
+rq_noisy	zašuměné impulsy
+rq_none	žádné impulsy
+stRpmLevel	Analogová úroveň (dolní-horní práh)

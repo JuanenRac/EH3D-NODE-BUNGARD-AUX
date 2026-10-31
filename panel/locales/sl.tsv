@@ -456,3 +456,16 @@ hTempRom	Pri več tipalih na žici vnesite naslov tipala vretena (glej stran sta
 stTempWire	Temperaturna tipala na žici
 stTempWireValue	Najdenih {0}, bere se {1}
 stTempGuess	ugibanje: nastavite naslov
+fRpmInput	Vhod tipala
+rpmDigital	Digitalni (DO)
+rpmAnalog	Analogni (AO, hiter ADC)
+fRpmEdge	Impulz na robu
+edgeRising	Naraščajoči
+edgeFalling	Padajoči
+fRpmAuto	Pragovi sledijo signalu
+fRpmThHi	Zgornji prag (mV)
+fRpmThLo	Spodnji prag (mV)
+rq_good	čisti impulzi
+rq_noisy	šumni impulzi
+rq_none	ni impulzov
+stRpmLevel	Analogna raven (spodnji-zgornji prag)

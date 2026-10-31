@@ -41,6 +41,10 @@ std::vector<std::string> temp_sensors_found();
 std::string temp_sensor_used();
 bool temp_sensor_ambiguous();
 
+/// How the speed sensor is doing: the quality of its pulses (none, good, noisy), how many pulses were refused as noise, and, on the analogue input, the level now and the two
+/// thresholds of the trigger, in mV (0 on the digital input).
+void rpm_diagnostics(std::string& quality, std::uint64_t& rejected, int& level_mv, int& threshold_hi_mv, int& threshold_lo_mv);
+
 /// Opens (true) or closes the protect output: low means the spindle must stop.
 void protect_set(bool open);
 

@@ -456,3 +456,16 @@ hTempRom	Cu mai mulți senzori pe fir, introduceți adresa celui al axului (vezi
 stTempWire	Senzori de temperatură pe fir
 stTempWireValue	{0} găsiți, se citește {1}
 stTempGuess	o presupunere: setați adresa
+fRpmInput	Intrarea senzorului
+rpmDigital	Digitală (DO)
+rpmAnalog	Analogică (AO, ADC rapid)
+fRpmEdge	Impuls pe front
+edgeRising	Crescător
+edgeFalling	Descrescător
+fRpmAuto	Pragurile urmăresc semnalul
+fRpmThHi	Prag superior (mV)
+fRpmThLo	Prag inferior (mV)
+rq_good	impulsuri curate
+rq_noisy	impulsuri zgomotoase
+rq_none	fără impulsuri
+stRpmLevel	Nivel analogic (prag inferior-superior)

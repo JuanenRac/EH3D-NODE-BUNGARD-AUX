@@ -456,3 +456,16 @@ hTempRom	Με πολλούς αισθητήρες στο καλώδιο, γρά�
 stTempWire	Αισθητήρες θερμοκρασίας στο καλώδιο
 stTempWireValue	Βρέθηκαν {0}, διαβάζεται ο {1}
 stTempGuess	εικασία: ορίστε τη διεύθυνση
+fRpmInput	Είσοδος αισθητήρα
+rpmDigital	Ψηφιακή (DO)
+rpmAnalog	Αναλογική (AO, γρήγορος ADC)
+fRpmEdge	Παλμός στο μέτωπο
+edgeRising	Ανοδικό
+edgeFalling	Καθοδικό
+fRpmAuto	Τα όρια ακολουθούν το σήμα
+fRpmThHi	Άνω όριο (mV)
+fRpmThLo	Κάτω όριο (mV)
+rq_good	καθαροί παλμοί
+rq_noisy	θορυβώδεις παλμοί
+rq_none	χωρίς παλμούς
+stRpmLevel	Αναλογικό επίπεδο (κάτω-άνω όριο)

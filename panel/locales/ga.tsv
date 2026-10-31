@@ -456,3 +456,16 @@ hTempRom	Le roinnt braiteoirí ar an sreang, cuir isteach seoladh bhraiteoir na 
 stTempWire	Braiteoirí teochta ar an sreang
 stTempWireValue	{0} aimsithe, á léamh: {1}
 stTempGuess	buille faoi thuairim: socraigh an seoladh
+fRpmInput	Ionchur an braiteora
+rpmDigital	Digiteach (DO)
+rpmAnalog	Analógach (AO, ADC tapa)
+fRpmEdge	Bíog ar an imeall
+edgeRising	ag ardú
+edgeFalling	ag titim
+fRpmAuto	Leanann na tairseacha an comhartha
+fRpmThHi	Tairseach uachtarach (mV)
+fRpmThLo	Tairseach íochtarach (mV)
+rq_good	bíoga glana
+rq_noisy	bíoga torannacha
+rq_none	gan bíoga
+stRpmLevel	Leibhéal analógach (tairseach íochtarach-uachtarach)

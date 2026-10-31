@@ -142,6 +142,8 @@ std::string live_json_now() {
     s.rpm_on = settings.rpm_enabled;
     s.rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
     s.heat = thermal.state();
+    s.rpm_input = bungard_aux::rpm_input_text(settings.rpm_input);
+    sensors::rpm_diagnostics(s.rpm_quality, s.rpm_rejected, s.rpm_level_mv, s.rpm_th_hi_mv, s.rpm_th_lo_mv);
     s.has_temp = temp_now_valid;
     s.temp_c = temp_now_c;
     if (settings.temp_sensor == bungard_aux::TempSensor::Ds18b20) {

@@ -456,3 +456,16 @@ hTempRom	Ja uz vada ir vairāki sensori, ievadiet vārpstas sensora adresi (skat
 stTempWire	Temperatūras sensori uz vada
 stTempWireValue	Atrasti {0}, tiek lasīts {1}
 stTempGuess	minējums: iestatiet adresi
+fRpmInput	Sensora ieeja
+rpmDigital	Digitāla (DO)
+rpmAnalog	Analogā (AO, ātrais ADC)
+fRpmEdge	Impulss uz fronti
+edgeRising	Augošā
+edgeFalling	Krītošā
+fRpmAuto	Sliekšņi seko signālam
+fRpmThHi	Augšējais slieksnis (mV)
+fRpmThLo	Apakšējais slieksnis (mV)
+rq_good	tīri impulsi
+rq_noisy	trokšņaini impulsi
+rq_none	nav impulsu
+stRpmLevel	Analogais līmenis (apakšējais-augšējais slieksnis)

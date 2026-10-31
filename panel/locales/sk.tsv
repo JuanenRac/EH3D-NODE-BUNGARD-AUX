@@ -456,3 +456,16 @@ hTempRom	Ak je na vodiči viac snímačov, zadajte adresu snímača vretena (poz
 stTempWire	Teplotné snímače na vodiči
 stTempWireValue	Nájdených {0}, číta sa {1}
 stTempGuess	odhad: nastavte adresu
+fRpmInput	Vstup snímača
+rpmDigital	Digitálny (DO)
+rpmAnalog	Analógový (AO, rýchly ADC)
+fRpmEdge	Impulz na hrane
+edgeRising	Nábežná
+edgeFalling	Zostupná
+fRpmAuto	Prahy sledujú signál
+fRpmThHi	Horný prah (mV)
+fRpmThLo	Dolný prah (mV)
+rq_good	čisté impulzy
+rq_noisy	zašumené impulzy
+rq_none	žiadne impulzy
+stRpmLevel	Analógová úroveň (dolný-horný prah)

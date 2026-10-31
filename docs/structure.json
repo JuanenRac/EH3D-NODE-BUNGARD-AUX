@@ -105,14 +105,14 @@
         },
         {
           "desc": {
-            "en": "speed, heat and the protect output",
-            "es": "velocidad, calor y salida de protección",
-            "it": "velocità, calore e uscita di protezione",
-            "de": "Drehzahl, Wärme und Schutzausgang",
-            "fr": "vitesse, chaleur et sortie de protection",
-            "pt": "velocidade, calor e saída de proteção",
-            "zh": "转速、温度和保护输出",
-            "ja": "回転数、温度、保護出力"
+            "en": "the speed sensor: pulses, noise filter, Schmitt trigger",
+            "es": "el sensor de velocidad: pulsos, ruido, Schmitt",
+            "it": "il sensore di velocità: impulsi, rumore, Schmitt",
+            "de": "der Drehzahlsensor: Impulse, Rauschen, Schmitt",
+            "fr": "le capteur de vitesse : impulsions, bruit, Schmitt",
+            "pt": "o sensor de velocidade: impulsos, ruído, Schmitt",
+            "zh": "转速传感器：脉冲、噪声、施密特",
+            "ja": "回転数センサー：パルス・ノイズ・シュミット"
           },
           "name": "spindle.hpp"
         },
@@ -508,6 +508,19 @@
             "pt": "vários DS18B20 num bus simulado",
             "zh": "模拟总线上的多个 DS18B20",
             "ja": "模擬バス上の複数の DS18B20"
+          }
+        },
+        {
+          "name": "test_rpm.cpp",
+          "desc": {
+            "en": "the speed sensor on simulated pulses",
+            "es": "el sensor de velocidad con pulsos simulados",
+            "it": "il sensore di velocità con impulsi simulati",
+            "de": "der Drehzahlsensor mit simulierten Impulsen",
+            "fr": "le capteur de vitesse sur impulsions simulées",
+            "pt": "o sensor de velocidade com impulsos simulados",
+            "zh": "用模拟脉冲测试转速传感器",
+            "ja": "模擬パルスでの回転数センサー試験"
           }
         },
         {

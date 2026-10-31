@@ -130,6 +130,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 * **37 línguas:** o painel web do nó fala inglês, espanhol, italiano, alemão, francês, português, chinês, japonês, búlgaro, croata, checo, dinamarquês, neerlandês, estónio, finlandês, grego, húngaro, irlandês, letão, lituano, maltês, polaco, romeno, eslovaco, esloveno, sueco, norueguês, islandês, ucraniano, russo, sérvio, albanês, catalão, galego, basco, português do Brasil e francês do Canadá. As palavras das 29 línguas além das oito primeiras foram traduzidas pelo modelo e aguardam a revisão de falantes nativos; um texto que falte numa língua aparece em inglês.
 * **O laser, ajustado ao trabalho:** o VL53L1X tem modo de distância (curto ou longo) e orçamento de tempo, uma área de receção que se pode estreitar para olhar um ponto pequeno, um filtro que descarta leituras longe da mediana, um estado para cada leitura (válida, sinal fraco, dispersão alta, fora de alcance) e uma calibração a distância conhecida (desvio e diafonia) que um administrador tem de ativar primeiro. Ainda não experimentado num sensor.
 * **Vários DS18B20 no mesmo fio:** o nó procura no fio todos os sensores (com o CRC de cada endereço), usa o do fuso pelo seu endereço (`temp_rom`, ou o único, ou o primeiro encontrado com um aviso na página de estado), define a resolução de 9 a 12 bits (`temp_resolution`) e espera só o que essa resolução precisa. Testado num computador com um bus simulado; ainda não experimentado num fio real.
+* **Um sensor de velocidade que distingue o ruído das voltas:** o TCRT5000 (refletivo, com a sua marca no fuso) funciona com a saída digital por interrupção, ou com a saída analógica lida por um ADC rápido e um disparador Schmitt cujos limiares seguem o sinal; filtram-se os impulsos mais rápidos do que o fuso pode rodar, os picos a meio de uma volta e os impulsos perdidos, e o estado diz se os impulsos são limpos ou ruidosos. Testado com comboios de impulsos simulados a 400 Hz e 1 kHz; ainda não experimentado num fuso.
 
 ## 🔒 Segurança e proteção
 
@@ -222,7 +223,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── laser_hw.hpp                             os registos do laser
 │   ├── light.hpp                                o anel de LEDs: níveis, cores, sinais
 │   ├── camera.hpp                               as câmaras OV2640 e OV5640 e os seus tamanhos
-│   ├── spindle.hpp                              velocidade, calor e saída de proteção
+│   ├── spindle.hpp                              o sensor de velocidade: impulsos, ruído, Schmitt
 │   ├── thermo.hpp                               a temperatura: DS18B20, NTC, MLX90614
 │   ├── onewire.hpp                              o bus 1-Wire: pesquisa, endereço, resolução
 │   ├── hash.hpp                                 os acessos: MD5, SHA-1, base64

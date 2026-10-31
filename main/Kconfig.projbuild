@@ -84,6 +84,12 @@ menu "Sensors"
         default -1
         help
             A hall sensor or a slotted disc on the spindle; one rising edge for each pulse. Check the pin against the schematic of the board.
+    config AUX_RPM_ANALOG_GPIO
+        int "GPIO of the analogue output (AO) of the spindle sensor, an ADC1 pin (-1: not wired)"
+        default -1
+        help
+            For the TCRT5000 module read by the fast ADC (head.cfg rpm_input = analog), in place of the digital output on the pin above. The ADC runs at 20 kHz, with a
+            Schmitt trigger and thresholds that follow the signal. The pin must be one of ADC1 (GPIO 1 to 10 of the ESP32-S3) and the NTC thermistor cannot be on the same ADC.
     config AUX_PROTECT_GPIO
         int "GPIO of the protect output (-1: not wired)"
         default -1

@@ -456,3 +456,16 @@ hTempRom	Якщо на дроті кілька датчиків, вкажіть 
 stTempWire	Датчики температури на дроті
 stTempWireValue	Знайдено {0}, читається {1}
 stTempGuess	припущення: вкажіть адресу
+fRpmInput	Вхід датчика
+rpmDigital	Цифровий (DO)
+rpmAnalog	Аналоговий (AO, швидкий АЦП)
+fRpmEdge	Імпульс за фронтом
+edgeRising	Наростаючий
+edgeFalling	Спадний
+fRpmAuto	Пороги стежать за сигналом
+fRpmThHi	Верхній поріг (мВ)
+fRpmThLo	Нижній поріг (мВ)
+rq_good	чисті імпульси
+rq_noisy	шумні імпульси
+rq_none	немає імпульсів
+stRpmLevel	Аналоговий рівень (нижній-верхній поріг)

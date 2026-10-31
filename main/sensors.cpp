@@ -7,6 +7,7 @@
 #include "driver/i2c_master.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
+#include "esp_adc/adc_continuous.h"
 #include "esp_adc/adc_oneshot.h"
 #include "esp_attr.h"
 #include "esp_log.h"
@@ -33,12 +34,85 @@ namespace {
 const char* TAG = "aux-sensors";
 
 // the interrupt only stores the time of the pulse; the meter is fed from the task that asks for the speed
-constexpr int kRing = 32;
+constexpr int kRing = 512;  // at 60000 rpm with one mark a thousand pulses a second come: the ring holds half a second of them between two readings
 volatile std::uint64_t ring[kRing];
 volatile int ring_head = 0;
 portMUX_TYPE ring_lock = portMUX_INITIALIZER_UNLOCKED;
 bungard_aux::RpmMeter* meter = nullptr;
 int tail = 0;
+
+void push_pulse(std::uint64_t t_us) {
+    portENTER_CRITICAL(&ring_lock);
+    ring[ring_head % kRing] = t_us;
+    ring_head = ring_head + 1;
+    portEXIT_CRITICAL(&ring_lock);
+}
+
+#if CONFIG_AUX_RPM_ANALOG_GPIO >= 0
+// ---- the analogue output of the sensor: the ADC reads it at 20 kHz and a Schmitt trigger turns the signal into pulses
+constexpr int kAdcRate = 20000;  // samples a second (the ESP32-S3 takes 20 kHz to 83 kHz)
+constexpr int kAdcFrame = 400;   // bytes a read: 100 samples of 4 bytes, 5 ms
+adc_continuous_handle_t rpm_adc = nullptr;
+bungard_aux::Schmitt* rpm_trigger = nullptr;
+volatile int rpm_level_mv_now = 0;
+volatile int rpm_th_hi_now = 0;
+volatile int rpm_th_lo_now = 0;
+
+void rpm_adc_task(void*) {
+    static std::uint8_t buf[kAdcFrame];
+    while (true) {
+        std::uint32_t got = 0;
+        if (adc_continuous_read(rpm_adc, buf, kAdcFrame, &got, 100) != ESP_OK || got == 0) continue;
+        const int n = static_cast<int>(got / SOC_ADC_DIGI_RESULT_BYTES);
+        const std::uint64_t now = static_cast<std::uint64_t>(esp_timer_get_time());
+        for (int i = 0; i < n; ++i) {
+            const auto* sample = reinterpret_cast<const adc_digi_output_data_t*>(&buf[i * SOC_ADC_DIGI_RESULT_BYTES]);
+            const int mv = static_cast<int>(sample->type2.data) * 3100 / 4095;  // 12 dB: about 0 to 3.1 V
+            rpm_level_mv_now = mv;
+            const int crossing = rpm_trigger->feed(mv);
+            rpm_th_hi_now = rpm_trigger->high_mv();
+            rpm_th_lo_now = rpm_trigger->low_mv();
+            const bool wanted = (cfg.rpm_edge == bungard_aux::RpmEdge::Rising) ? crossing > 0 : crossing < 0;
+            if (wanted) push_pulse(now - static_cast<std::uint64_t>(n - 1 - i) * (1000000 / kAdcRate));  // the sample is a little older than the read
+        }
+    }
+}
+
+void rpm_adc_start() {
+    adc_unit_t unit;
+    adc_channel_t channel;
+    if (adc_oneshot_io_to_channel(CONFIG_AUX_RPM_ANALOG_GPIO, &unit, &channel) != ESP_OK || unit != ADC_UNIT_1) {
+        ESP_LOGE(TAG, "GPIO %d is not an input of ADC1: the analogue speed sensor is off", CONFIG_AUX_RPM_ANALOG_GPIO);
+        return;
+    }
+    adc_continuous_handle_cfg_t handle_cfg = {};
+    handle_cfg.max_store_buf_size = 4096;
+    handle_cfg.conv_frame_size = kAdcFrame;
+    if (adc_continuous_new_handle(&handle_cfg, &rpm_adc) != ESP_OK) {
+        ESP_LOGE(TAG, "the fast ADC did not start (the NTC thermistor on the same ADC?)");
+        return;
+    }
+    adc_digi_pattern_config_t pattern = {};
+    pattern.atten = ADC_ATTEN_DB_12;
+    pattern.channel = static_cast<std::uint8_t>(channel);
+    pattern.unit = static_cast<std::uint8_t>(unit);
+    pattern.bit_width = ADC_BITWIDTH_12;
+    adc_continuous_config_t dig = {};
+    dig.pattern_num = 1;
+    dig.adc_pattern = &pattern;
+    dig.sample_freq_hz = kAdcRate;
+    dig.conv_mode = ADC_CONV_SINGLE_UNIT_1;
+    dig.format = ADC_DIGI_OUTPUT_FORMAT_TYPE2;
+    if (adc_continuous_config(rpm_adc, &dig) != ESP_OK || adc_continuous_start(rpm_adc) != ESP_OK) {
+        ESP_LOGE(TAG, "the fast ADC did not start");
+        return;
+    }
+    static bungard_aux::Schmitt trigger(static_cast<int>(cfg.rpm_threshold_hi_mv), static_cast<int>(cfg.rpm_threshold_lo_mv), cfg.rpm_auto_threshold);
+    rpm_trigger = &trigger;
+    xTaskCreate(rpm_adc_task, "rpm_adc", 4096, nullptr, 6, nullptr);
+    ESP_LOGI(TAG, "analogue speed sensor on GPIO %d at %d Hz", CONFIG_AUX_RPM_ANALOG_GPIO, kAdcRate);
+}
+#endif
 
 #if CONFIG_AUX_RPM_GPIO >= 0
 void IRAM_ATTR on_pulse(void*) {
@@ -338,14 +412,18 @@ bool mlx_read(double& celsius) {
 void init(const bungard_aux::Settings& s) {
     cfg = s;
     static bungard_aux::RpmMeter m(s.rpm_pulses_per_rev, s.rpm_stale_ms);
+    m.set_limit_rpm(s.rpm_max);
     meter = &m;
+#if CONFIG_AUX_RPM_ANALOG_GPIO >= 0
+    if (s.rpm_enabled && s.rpm_input == bungard_aux::RpmInput::Analog) rpm_adc_start();
+#endif
 #if CONFIG_AUX_RPM_GPIO >= 0
-    if (s.rpm_enabled) {
+    if (s.rpm_enabled && s.rpm_input == bungard_aux::RpmInput::Digital) {
         gpio_config_t io = {};
         io.pin_bit_mask = 1ULL << CONFIG_AUX_RPM_GPIO;
         io.mode = GPIO_MODE_INPUT;
         io.pull_up_en = GPIO_PULLUP_ENABLE;
-        io.intr_type = GPIO_INTR_POSEDGE;
+        io.intr_type = (s.rpm_edge == bungard_aux::RpmEdge::Falling) ? GPIO_INTR_NEGEDGE : GPIO_INTR_POSEDGE;
         gpio_config(&io);
         gpio_install_isr_service(0);
         gpio_isr_handler_add(static_cast<gpio_num_t>(CONFIG_AUX_RPM_GPIO), on_pulse, nullptr);
@@ -415,11 +493,27 @@ double rpm_now() {
     portENTER_CRITICAL(&ring_lock);
     head = ring_head;
     portEXIT_CRITICAL(&ring_lock);
+    if (head - tail > kRing) tail = head - kRing;  // more pulses than the ring holds: the oldest are lost
     while (tail < head) {
         meter->pulse(ring[tail % kRing]);
         ++tail;
     }
     return meter->rpm(static_cast<std::uint64_t>(esp_timer_get_time()));
+}
+
+void rpm_diagnostics(std::string& quality, std::uint64_t& rejected, int& level_mv, int& threshold_hi_mv, int& threshold_lo_mv) {
+    quality = meter ? bungard_aux::rpm_quality_text(meter->quality()) : "none";
+    rejected = meter ? meter->pulses_rejected() : 0;
+    level_mv = 0;
+    threshold_hi_mv = 0;
+    threshold_lo_mv = 0;
+#if CONFIG_AUX_RPM_ANALOG_GPIO >= 0
+    if (cfg.rpm_input == bungard_aux::RpmInput::Analog && rpm_trigger) {
+        level_mv = rpm_level_mv_now;
+        threshold_hi_mv = rpm_th_hi_now;
+        threshold_lo_mv = rpm_th_lo_now;
+    }
+#endif
 }
 
 std::vector<std::string> temp_sensors_found() {

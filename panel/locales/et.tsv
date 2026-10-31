@@ -456,3 +456,16 @@ hTempRom	Kui juhtmel on mitu andurit, sisesta spindli anduri aadress (vt olekule
 stTempWire	Temperatuuriandurid juhtmel
 stTempWireValue	Leitud {0}, loetakse {1}
 stTempGuess	oletus: määra aadress
+fRpmInput	Anduri sisend
+rpmDigital	Digitaalne (DO)
+rpmAnalog	Analoog (AO, kiire ADC)
+fRpmEdge	Impulss frondil
+edgeRising	Tõusev
+edgeFalling	Langev
+fRpmAuto	Lävendid jälgivad signaali
+fRpmThHi	Ülemine lävend (mV)
+fRpmThLo	Alumine lävend (mV)
+rq_good	puhtad impulsid
+rq_noisy	mürarikkad impulsid
+rq_none	impulsse pole
+stRpmLevel	Analoogtase (alumine-ülemine lävend)

@@ -1,5 +1,6 @@
 // EH3D-NODE-BUNGARD-AUX host tests: the settings file, the measure of the laser, the speed and the temperature of the spindle and the words of the network.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <string>
@@ -147,7 +148,13 @@ static void rpm_meter() {
         t += 2500;
     }
     CHECK(near(two.rpm(t), 12000.0, 1.0));
-    // the spindle slows: the average follows
+    // the spindle slows (a turn takes at most 15 % longer than the one before: nothing slows from one turn to the next to the half): the average follows
+    std::uint64_t gap = 2500;
+    for (int i = 0; i < 30; ++i) {
+        gap = std::min<std::uint64_t>(5000, gap + gap * 15 / 100);
+        one.pulse(t);
+        t += gap;
+    }
     for (int i = 0; i < 12; ++i) {
         one.pulse(t);
         t += 5000;

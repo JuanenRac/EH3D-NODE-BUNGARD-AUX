@@ -456,3 +456,16 @@ hTempRom	Ha több érzékelő van a vezetéken, add meg az orsóét (lásd az á
 stTempWire	Hőmérséklet-érzékelők a vezetéken
 stTempWireValue	{0} található, olvasott: {1}
 stTempGuess	találgatás: add meg a címet
+fRpmInput	Az érzékelő bemenete
+rpmDigital	Digitális (DO)
+rpmAnalog	Analóg (AO, gyors ADC)
+fRpmEdge	Impulzus az élen
+edgeRising	Felfutó
+edgeFalling	Lefutó
+fRpmAuto	A küszöbök követik a jelet
+fRpmThHi	Felső küszöb (mV)
+fRpmThLo	Alsó küszöb (mV)
+rq_good	tiszta impulzusok
+rq_noisy	zajos impulzusok
+rq_none	nincs impulzus
+stRpmLevel	Analóg szint (alsó-felső küszöb)

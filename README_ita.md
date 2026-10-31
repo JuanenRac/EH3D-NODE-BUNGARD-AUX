@@ -130,6 +130,7 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 * **37 lingue:** il pannello web del nodo parla inglese, spagnolo, italiano, tedesco, francese, portoghese, cinese, giapponese, bulgaro, croato, ceco, danese, olandese, estone, finlandese, greco, ungherese, irlandese, lettone, lituano, maltese, polacco, rumeno, slovacco, sloveno, svedese, norvegese, islandese, ucraino, russo, serbo, albanese, catalano, galiziano, basco, portoghese del Brasile e francese del Canada. Le parole dei 29 lingue oltre le prime otto sono tradotte dal modello e attendono la revisione di madrelingua; un testo che manca a una lingua appare in inglese.
 * **Il laser, adattato al lavoro:** il VL53L1X ha una modalità di distanza (corta o lunga) e un budget di tempo, un'area di ricezione che si può restringere per guardare un punto piccolo, un filtro che scarta le letture lontane dalla mediana, uno stato per ogni lettura (valida, segnale debole, dispersione alta, fuori portata) e una calibrazione a distanza nota (offset e crosstalk) che un amministratore deve prima attivare. Non ancora provato su un sensore.
 * **Più DS18B20 sullo stesso filo:** il nodo cerca sul filo tutti i sensori (con il CRC di ogni indirizzo), prende quello del mandrino dal suo indirizzo (`temp_rom`, o l'unico, o il primo trovato con un avviso nella pagina di stato), imposta la risoluzione da 9 a 12 bit (`temp_resolution`) e aspetta solo quanto serve a quella risoluzione. Provato su un computer con un bus simulato; non ancora provato su un filo reale.
+* **Un sensore di velocità che distingue il rumore dai giri:** il TCRT5000 (riflettente, con il suo segno sul mandrino) funziona con l'uscita digitale su interrupt, o con l'uscita analogica letta da un ADC veloce e un trigger di Schmitt le cui soglie seguono il segnale; si filtrano gli impulsi più veloci di quanto il mandrino possa girare, i picchi a metà giro e gli impulsi persi, e lo stato dice se gli impulsi sono puliti o rumorosi. Provato con treni di impulsi simulati a 400 Hz e 1 kHz; non ancora provato su un mandrino.
 
 ## 🔒 Sicurezza e protezione
 
@@ -222,7 +223,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── laser_hw.hpp                             i registri del laser
 │   ├── light.hpp                                l'anello di LED: livelli, colori, segnali
 │   ├── camera.hpp                               le telecamere OV2640 e OV5640 e le loro dimensioni
-│   ├── spindle.hpp                              velocità, calore e uscita di protezione
+│   ├── spindle.hpp                              il sensore di velocità: impulsi, rumore, Schmitt
 │   ├── thermo.hpp                               la temperatura: DS18B20, NTC, MLX90614
 │   ├── onewire.hpp                              il bus 1-Wire: ricerca, indirizzo, risoluzione
 │   ├── hash.hpp                                 gli accessi: MD5, SHA-1, base64

@@ -456,3 +456,16 @@ hTempRom	Með mörgum nemum á vírnum skaltu setja inn heimilisfang nemans á s
 stTempWire	Hitanemar á vírnum
 stTempWireValue	{0} fundust, les {1}
 stTempGuess	ágiskun: stilltu heimilisfangið
+fRpmInput	Inntak nemans
+rpmDigital	Stafrænt (DO)
+rpmAnalog	Hliðrænt (AO, hraður ADC)
+fRpmEdge	Púls á brúninni
+edgeRising	Hækkandi
+edgeFalling	Lækkandi
+fRpmAuto	Mörkin fylgja merkinu
+fRpmThHi	Efra mark (mV)
+fRpmThLo	Neðra mark (mV)
+rq_good	hreinir púlsar
+rq_noisy	suðandi púlsar
+rq_none	engir púlsar
+stRpmLevel	Hliðrænt stig (neðra-efra mark)

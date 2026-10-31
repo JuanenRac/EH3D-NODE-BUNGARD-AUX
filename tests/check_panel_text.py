@@ -188,7 +188,7 @@ def main():
             continue   # the start of a key chosen at run time
         if key not in table:
             problems.append(f"app.js uses the text \"{key}\" and text.js has no row for it")
-    dynamic = ("e_", "p_", "se_", "reason", "help_", "navHelpTab_", "lr_")   # chosen at run time from the code the node sends
+    dynamic = ("rq_", "e_", "p_", "se_", "reason", "help_", "navHelpTab_", "lr_")   # chosen at run time from the code the node sends
     for key in sorted(table):
         if key not in used and not key.startswith(dynamic):
             problems.append(f"text.js has the row \"{key}\" and nothing uses it")

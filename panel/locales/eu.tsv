@@ -456,3 +456,16 @@ hTempRom	Hari berean sentsore bat baino gehiago badaude, idatzi ardatzarenaren h
 stTempWire	Hariko tenperatura-sentsoreak
 stTempWireValue	{0} aurkitu dira, {1} irakurtzen
 stTempGuess	asmakizuna: ezarri helbidea
+fRpmInput	Sentsorearen sarrera
+rpmDigital	Digitala (DO)
+rpmAnalog	Analogikoa (AO, ADC azkarra)
+fRpmEdge	Pultsua ertzean
+edgeRising	Goranzkoa
+edgeFalling	Beheranzkoa
+fRpmAuto	Atalaseek seinalea jarraitzen dute
+fRpmThHi	Goiko atalasea (mV)
+fRpmThLo	Beheko atalasea (mV)
+rq_good	pultsu garbiak
+rq_noisy	zaratadun pultsuak
+rq_none	pultsurik ez
+stRpmLevel	Maila analogikoa (beheko-goiko atalasea)

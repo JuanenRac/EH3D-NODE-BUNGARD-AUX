@@ -456,3 +456,16 @@ hTempRom	Jos johdossa on useita antureita, anna karan anturin osoite (katso tila
 stTempWire	Lämpötila-anturit johdossa
 stTempWireValue	{0} löytyi, luetaan {1}
 stTempGuess	arvaus: aseta osoite
+fRpmInput	Anturin tulo
+rpmDigital	Digitaalinen (DO)
+rpmAnalog	Analoginen (AO, nopea ADC)
+fRpmEdge	Pulssi reunalla
+edgeRising	Nouseva
+edgeFalling	Laskeva
+fRpmAuto	Kynnykset seuraavat signaalia
+fRpmThHi	Ylempi kynnys (mV)
+fRpmThLo	Alempi kynnys (mV)
+rq_good	puhtaat pulssit
+rq_noisy	kohinaiset pulssit
+rq_none	ei pulsseja
+stRpmLevel	Analoginen taso (alempi-ylempi kynnys)

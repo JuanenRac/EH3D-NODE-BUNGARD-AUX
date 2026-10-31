@@ -133,6 +133,13 @@ struct Status {
     std::string temp_rom_used;
     int temp_resolution = 12;
     bool temp_guess = false;
+    // the speed sensor: its input, the quality of its pulses, the pulses refused as noise and, on the analogue input, the level and the thresholds in mV
+    std::string rpm_input = "digital";
+    std::string rpm_quality = "none";
+    std::uint64_t rpm_rejected = 0;
+    int rpm_level_mv = 0;
+    int rpm_th_hi_mv = 0;
+    int rpm_th_lo_mv = 0;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -158,7 +165,9 @@ inline std::string json_status(const Status& s) {
     std::string out = buf;
     out.pop_back();  // the closing brace: the sensors of the temperature go after it
     out += ",\"temp_roms\":\"" + json_escape(s.temp_roms) + "\",\"temp_rom_used\":\"" + json_escape(s.temp_rom_used) + "\",\"temp_resolution\":" + std::to_string(s.temp_resolution) +
-           ",\"temp_guess\":" + (s.temp_guess ? "true" : "false") + "}";
+           ",\"temp_guess\":" + (s.temp_guess ? "true" : "false") + ",\"rpm_input\":\"" + json_escape(s.rpm_input) + "\",\"rpm_quality\":\"" + json_escape(s.rpm_quality) +
+           "\",\"rpm_rejected\":" + std::to_string(s.rpm_rejected) + ",\"rpm_level_mv\":" + std::to_string(s.rpm_level_mv) + ",\"rpm_th_hi_mv\":" + std::to_string(s.rpm_th_hi_mv) +
+           ",\"rpm_th_lo_mv\":" + std::to_string(s.rpm_th_lo_mv) + "}";
     return out;
 }
 

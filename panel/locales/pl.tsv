@@ -456,3 +456,16 @@ hTempRom	Przy kilku czujnikach na przewodzie wpisz adres czujnika wrzeciona (zob
 stTempWire	Czujniki temperatury na przewodzie
 stTempWireValue	Znaleziono {0}, odczyt z {1}
 stTempGuess	zgadywanie: ustaw adres
+fRpmInput	Wejście czujnika
+rpmDigital	Cyfrowe (DO)
+rpmAnalog	Analogowe (AO, szybki ADC)
+fRpmEdge	Impuls na zboczu
+edgeRising	Narastającym
+edgeFalling	Opadającym
+fRpmAuto	Progi podążają za sygnałem
+fRpmThHi	Próg górny (mV)
+fRpmThLo	Próg dolny (mV)
+rq_good	czyste impulsy
+rq_noisy	zaszumione impulsy
+rq_none	brak impulsów
+stRpmLevel	Poziom analogowy (próg dolny-górny)

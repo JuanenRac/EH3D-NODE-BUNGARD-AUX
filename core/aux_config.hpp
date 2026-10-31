@@ -49,6 +49,12 @@ inline bool tone_from_text(const std::string& v, Tone& out) {
     return false;
 }
 
+enum class RpmInput { Digital, Analog };
+enum class RpmEdge { Rising, Falling };
+
+inline const char* rpm_input_text(RpmInput i) { return i == RpmInput::Analog ? "analog" : "digital"; }
+inline const char* rpm_edge_text(RpmEdge e) { return e == RpmEdge::Falling ? "falling" : "rising"; }
+
 struct Settings {
     // the link: the node has a wired network port; an empty address means DHCP
     std::string name = "bungard-aux";
@@ -94,6 +100,11 @@ struct Settings {
     // the speed of the spindle
     bool rpm_enabled = true;
     std::uint32_t rpm_pulses_per_rev = 1;   // 1..64
+    RpmInput rpm_input = RpmInput::Digital; // digital: the output DO of the sensor on an interrupt; analog: the output AO read by the fast ADC with a Schmitt trigger
+    RpmEdge rpm_edge = RpmEdge::Rising;     // which edge of the signal is a pulse (a TCRT5000 module goes low in front of a bright mark: falling)
+    std::uint32_t rpm_threshold_hi_mv = 2000;  // analogue input: the signal rises through this level (50..3300)
+    std::uint32_t rpm_threshold_lo_mv = 1000;  // and falls through this one (0..3250), always below the high one
+    bool rpm_auto_threshold = true;         // analogue input: the thresholds follow the signal (35 % and 65 % between its extremes)
     std::uint32_t rpm_max = 65000;          // above this the speed is an alarm, 1000..200000
     std::uint32_t rpm_stale_ms = 1500;      // no pulse for this long means the spindle stopped, 200..10000
 
@@ -302,6 +313,20 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             if (flag()) s.rpm_enabled = b;
         } else if (key == "rpm_pulses_per_rev") {
             if (num(1, 64)) s.rpm_pulses_per_rev = n;
+        } else if (key == "rpm_input") {
+            if (val == "digital") s.rpm_input = RpmInput::Digital;
+            else if (val == "analog") s.rpm_input = RpmInput::Analog;
+            else bad("digital or analog");
+        } else if (key == "rpm_edge") {
+            if (val == "rising") s.rpm_edge = RpmEdge::Rising;
+            else if (val == "falling") s.rpm_edge = RpmEdge::Falling;
+            else bad("rising or falling");
+        } else if (key == "rpm_threshold_hi_mv") {
+            if (num(50, 3300)) s.rpm_threshold_hi_mv = n;
+        } else if (key == "rpm_threshold_lo_mv") {
+            if (num(0, 3250)) s.rpm_threshold_lo_mv = n;
+        } else if (key == "rpm_auto_threshold") {
+            if (flag()) s.rpm_auto_threshold = b;
         } else if (key == "rpm_max") {
             if (num(1000, 200000)) s.rpm_max = n;
         } else if (key == "rpm_stale_ms") {
@@ -359,6 +384,11 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
         }
     }
     // the ranges must make sense together: the critical temperature is above the warning, and the range of the laser is not upside down
+    if (s.rpm_threshold_lo_mv >= s.rpm_threshold_hi_mv) {
+        problems.push_back({0, "rpm_threshold_lo_mv", "must be below rpm_threshold_hi_mv; the defaults are used"});
+        s.rpm_threshold_hi_mv = Settings{}.rpm_threshold_hi_mv;
+        s.rpm_threshold_lo_mv = Settings{}.rpm_threshold_lo_mv;
+    }
     if (s.temp_critical_c <= s.temp_warn_c) {
         problems.push_back({0, "temp_critical_c", "must be above temp_warn_c; the defaults are used"});
         s.temp_warn_c = Settings{}.temp_warn_c;

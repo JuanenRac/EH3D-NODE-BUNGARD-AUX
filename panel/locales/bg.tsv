@@ -456,3 +456,16 @@ hTempRom	При няколко датчика на шината въведете
 stTempWire	Температурни датчици на шината
 stTempWireValue	Намерени: {0}, чете се {1}
 stTempGuess	отгатнат: задайте адреса
+fRpmInput	Вход на датчика
+rpmDigital	Цифров (DO)
+rpmAnalog	Аналогов (AO, бърз ADC)
+fRpmEdge	Импулс по фронта
+edgeRising	Нарастващ
+edgeFalling	Спадащ
+fRpmAuto	Праговете следват сигнала
+fRpmThHi	Горен праг (mV)
+fRpmThLo	Долен праг (mV)
+rq_good	чисти импулси
+rq_noisy	шумни импулси
+rq_none	няма импулси
+stRpmLevel	Аналогово ниво (долен-горен праг)

@@ -456,3 +456,16 @@ hTempRom	Са више сензора на жици унесите адресу 
 stTempWire	Температурни сензори на жици
 stTempWireValue	Пронађено {0}, чита се {1}
 stTempGuess	нагађање: поставите адресу
+fRpmInput	Улаз сензора
+rpmDigital	Дигитални (DO)
+rpmAnalog	Аналогни (AO, брзи ADC)
+fRpmEdge	Импулс на ивици
+edgeRising	Узлазна
+edgeFalling	Силазна
+fRpmAuto	Прагови прате сигнал
+fRpmThHi	Горњи праг (mV)
+fRpmThLo	Доњи праг (mV)
+rq_good	чисти импулси
+rq_noisy	бучни импулси
+rq_none	нема импулса
+stRpmLevel	Аналогни ниво (доњи-горњи праг)

@@ -456,3 +456,16 @@ hTempRom	Me disa sensorë në tel, shkruaj adresën e atij të boshtit (shih faq
 stTempWire	Sensorët e temperaturës në tel
 stTempWireValue	U gjetën {0}, lexohet {1}
 stTempGuess	hamendje: vendos adresën
+fRpmInput	Hyrja e sensorit
+rpmDigital	Dixhital (DO)
+rpmAnalog	Analog (AO, ADC i shpejtë)
+fRpmEdge	Impuls në buzë
+edgeRising	Rritëse
+edgeFalling	Zbritëse
+fRpmAuto	Pragjet ndjekin sinjalin
+fRpmThHi	Pragu i sipërm (mV)
+fRpmThLo	Pragu i poshtëm (mV)
+rq_good	impulse të pastra
+rq_noisy	impulse me zhurmë
+rq_none	pa impulse
+stRpmLevel	Niveli analog (pragu i poshtëm-sipërm)
