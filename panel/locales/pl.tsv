@@ -416,3 +416,37 @@ hSpindleSafety	Przetestuj zabezpieczenie z odłączonym przemiennikiem wrzeciona
 navHelpTab_head	Głowica
 help_head_title	Głowica
 help_head_text	Głowica zawiera to, co ma tylko ten węzeł: kamerę oraz jej rozmiar i jakość, strumienie RTSP i ONVIF, laser mierzący stół, czujniki wrzeciona i wyjście zabezpieczenia. Token dostępu służy programom do odczytu kamery, stanu i pomiaru.\n\nHasła i token są tylko do zapisu: panel nigdy ich nie pokazuje, puste pole zachowuje zapisane, a pole wyboru je usuwa. Zmiana wymaga ponownego uruchomienia.
+fLaserMode	Tryb odległości
+modeShort	Krótki
+modeLong	Długi
+fLaserBudget	Czas na odczyt (ms)
+fLaserRoi	Obszar detektorów (SxW, od 4 do 16)
+fLaserRoiCenter	Środek obszaru (0 = automatycznie)
+fLaserOutlier	Odczyty odstające: współczynnik rozrzutu
+fLaserCalOn	Zezwól na kalibrację
+hLaserHw	Tryb krótki sięga ok. 1,3 m i lepiej znosi światło; długi sięga ok. 4 m i jest najlepszy w ciemności. Dłuższy czas na odczyt daje większą stabilność (15 ms jest tylko w trybie krótkim). Mały obszar detektorów patrzy na mały punkt. Kalibracja zmienia znaczenie każdego odczytu, więc pozostaje wyłączona, dopóki administrator jej nie włączy.
+stLaserState	Tryb {0}, {1} ms na odczyt, obszar {2}
+stLaserCal	Kalibracja: offset {0} mm, przesłuch {1} cps
+stLaserLast	Ostatni odczyt {0} mm ({1})
+stLaserNone	Brak jeszcze odczytu
+fCalTarget	Odległość płaskiego celu (mm)
+stCalOffset	Skalibruj offset
+stCalXtalk	Skalibruj przesłuch
+stCalReset	Wyczyść kalibrację
+stCalHelp	Połóż płaski, matowy cel w zmierzonej odległości i wpisz ją. Najpierw skalibruj offset (np. przy 100 mm), potem przesłuch większym, dalszym celem.
+stCalDone	Skalibrowano: offset {0} mm, przesłuch {1} cps
+stCalFail	Kalibracja odrzucona ({0})
+stCalOff	Kalibracja jest wyłączona w ustawieniach głowicy.
+lr_valid	odczyt dobry
+lr_sigma_high	odczyty zbyt rozrzucone
+lr_signal_low	sygnał zbyt słaby
+lr_out_of_range	poza zakresem
+lr_sensor_fault	awaria czujnika
+lr_other	odrzucone przez czujnik
+lr_no_readings	brak odczytów
+lr_too_few	zbyt mało dobrych odczytów
+lr_too_noisy	zbyt duże zakłócenia
+lr_disabled	kalibracja jest wyłączona
+lr_bad_target	odległość spoza zakresu 10 do 4000 mm
+lr_offset_limit	cel dalej niż 50 mm od tego, co widzi czujnik
+lr_no_signal	brak sygnału z celu

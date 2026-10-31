@@ -23,7 +23,7 @@
 
 namespace bungard_aux {
 
-enum class Route { NotFound, Status, Measure, Stream, Snapshot, LightGet, LightSet, BadMethod };
+enum class Route { NotFound, Status, Measure, Stream, Snapshot, LightGet, LightSet, Calibrate, BadMethod };
 
 struct Request {
     std::string method;
@@ -52,6 +52,7 @@ inline Route route_of(const Request& r) {
     if (r.path == "/stream") return r.method == "GET" ? Route::Stream : Route::BadMethod;
     if (r.path == "/api/snapshot") return r.method == "GET" ? Route::Snapshot : Route::BadMethod;
     if (r.path == "/api/light") return r.method == "GET" ? Route::LightGet : r.method == "POST" ? Route::LightSet : Route::BadMethod;
+    if (r.path == "/api/laser/calibrate") return r.method == "POST" ? Route::Calibrate : Route::BadMethod;
     return Route::NotFound;
 }
 
@@ -86,6 +87,21 @@ inline int samples_of(const Settings& s, const Request& r) {
     return static_cast<int>(n);
 }
 
+/// What a request to calibrate the laser asks: `kind` is offset, xtalk or reset, `mm` the distance of the flat target from the sensor (not needed to reset).
+struct CalibrateRequest {
+    std::string kind;
+    double target_mm = 0.0;
+};
+
+/// False when the kind is unknown, or the target is missing or not a number between 10 and 4000 mm (a reset needs none).
+inline bool parse_calibrate(const Request& r, CalibrateRequest& out) {
+    out.kind = query_value(r.query, "kind");
+    if (out.kind.empty()) out.kind = "offset";
+    if (out.kind == "reset") return true;
+    if (out.kind != "offset" && out.kind != "xtalk") return false;
+    return detail::to_double(query_value(r.query, "mm"), 10.0, 4000.0, out.target_mm);
+}
+
 struct Status {
     std::string name;
     std::string version;
@@ -102,6 +118,16 @@ struct Status {
     bool light = false;        // the node has the ring of LEDs switched on in its settings
     bool light_on = false;     // and the ring is shining
     std::uint32_t light_level = 0;
+    // the laser: how it is set up and the last reading the sensor gave (laser_age_ms is -1 when it has given none)
+    std::string laser_mode = "long";
+    int laser_budget_ms = 100;
+    std::string laser_roi = "16x16";
+    double laser_cal_offset_mm = 0.0;
+    double laser_cal_xtalk_cps = 0.0;
+    bool laser_cal_allowed = false;
+    double laser_last_mm = 0.0;
+    std::string laser_last_status = "none";  // valid, sigma_high, signal_low, out_of_range, sensor_fault, other or none
+    long laser_age_ms = -1;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -115,21 +141,31 @@ inline std::string json_escape(const std::string& s) {
 }
 
 inline std::string json_status(const Status& s) {
-    char buf[640];
+    char buf[1024];
     char temp[24];
     if (s.has_temp) std::snprintf(temp, sizeof temp, "%.1f", s.temp_c); else std::snprintf(temp, sizeof temp, "null");
     std::snprintf(buf, sizeof buf,
-                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"camera_model\":\"%s\",\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u,\"light\":%s,\"light_on\":%s,\"light_level\":%u}",
+                  "{\"node\":\"%s\",\"version\":\"%s\",\"camera\":%s,\"camera_model\":\"%s\",\"laser\":%s,\"rpm_sensor\":%s,\"rpm\":%.0f,\"temp_c\":%s,\"heat\":\"%s\",\"protect_open\":%s,\"uptime_s\":%u,\"light\":%s,\"light_on\":%s,\"light_level\":%u,\"laser_mode\":\"%s\",\"laser_budget_ms\":%d,\"laser_roi\":\"%s\",\"laser_cal_offset_mm\":%.3f,\"laser_cal_xtalk_cps\":%.0f,\"laser_cal_allowed\":%s,\"laser_last_mm\":%.3f,\"laser_last_status\":\"%s\",\"laser_age_ms\":%ld}",
                   json_escape(s.name).c_str(), json_escape(s.version).c_str(), s.camera ? "true" : "false", json_escape(s.camera_model).c_str(), s.laser ? "true" : "false", s.rpm_on ? "true" : "false", s.rpm, temp,
                   heat_text(s.heat), s.protect_open ? "true" : "false", static_cast<unsigned>(s.uptime_s), s.light ? "true" : "false", s.light_on ? "true" : "false",
-                  static_cast<unsigned>(s.light_level));
+                  static_cast<unsigned>(s.light_level), json_escape(s.laser_mode).c_str(), s.laser_budget_ms, json_escape(s.laser_roi).c_str(), s.laser_cal_offset_mm, s.laser_cal_xtalk_cps,
+                  s.laser_cal_allowed ? "true" : "false", s.laser_last_mm, json_escape(s.laser_last_status).c_str(), s.laser_age_ms);
     return buf;
 }
 
 inline std::string json_measure(const Measure& m) {
-    char buf[224];
-    std::snprintf(buf, sizeof buf, "{\"ok\":%s,\"why\":\"%s\",\"distance_mm\":%.3f,\"sigma_mm\":%.3f,\"asked\":%d,\"used\":%d,\"rejected\":%d}", m.ok ? "true" : "false",
-                  why_text(m.why), m.distance_mm, m.sigma_mm, m.asked, m.used, m.rejected);
+    char buf[320];
+    std::snprintf(buf, sizeof buf,
+                  "{\"ok\":%s,\"why\":\"%s\",\"distance_mm\":%.3f,\"sigma_mm\":%.3f,\"asked\":%d,\"used\":%d,\"rejected\":%d,\"refused\":%d,\"status\":\"%s\",\"status_code\":%d}",
+                  m.ok ? "true" : "false", why_text(m.why), m.distance_mm, m.sigma_mm, m.asked, m.used, m.rejected, m.refused, range_why_text(m.status_why), m.status_code);
+    return buf;
+}
+
+/// The answer to a calibration: what was found and what the sensor now has stored (the offset in mm and the crosstalk in counts per second).
+inline std::string json_calibration(const std::string& kind, bool ok, const std::string& why, double offset_mm, double xtalk_cps, int used, double sigma_mm) {
+    char buf[320];
+    std::snprintf(buf, sizeof buf, "{\"ok\":%s,\"kind\":\"%s\",\"why\":\"%s\",\"cal_offset_mm\":%.3f,\"cal_xtalk_cps\":%.0f,\"used\":%d,\"sigma_mm\":%.3f}", ok ? "true" : "false",
+                  json_escape(kind).c_str(), json_escape(why).c_str(), offset_mm, xtalk_cps, used, sigma_mm);
     return buf;
 }
 

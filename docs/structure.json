@@ -63,6 +63,19 @@
           "name": "laser.hpp"
         },
         {
+          "name": "laser_hw.hpp",
+          "desc": {
+            "en": "the registers of the laser",
+            "es": "los registros del láser",
+            "it": "i registri del laser",
+            "de": "die Register des Lasers",
+            "fr": "les registres du laser",
+            "pt": "os registos do laser",
+            "zh": "激光的寄存器",
+            "ja": "レーザーのレジスタ"
+          }
+        },
+        {
           "desc": {
             "en": "the ring of LEDs: levels, colours, signals",
             "es": "el aro de LEDs: niveles, colores, señales",
@@ -457,6 +470,19 @@
           },
           "name": "test_light.cpp",
           "tree_name": "test_light.cpp"
+        },
+        {
+          "name": "test_laser.cpp",
+          "desc": {
+            "en": "the laser on a simulated sensor",
+            "es": "el láser con un sensor simulado",
+            "it": "il laser con un sensore simulato",
+            "de": "der Laser an einem simulierten Sensor",
+            "fr": "le laser sur un capteur simulé",
+            "pt": "o laser com um sensor simulado",
+            "zh": "用模拟传感器测试激光",
+            "ja": "模擬センサーでのレーザー試験"
+          }
         },
         {
           "desc": {

@@ -416,3 +416,37 @@ hSpindleSafety	Proba a protección co variador do husillo desconectado antes de 
 navHelpTab_head	Cabezal
 help_head_title	Cabezal
 help_head_text	Cabezal contén o que só ten este nó: a cámara co seu tamaño e calidade, as transmisións RTSP e ONVIF, o láser que mide a mesa, os sensores do husillo e a saída de protección. O token de acceso é o que usan os programas para ler a cámara, o estado e a medida.\n\nOs contrasinais e o token son de só escritura: o panel nunca os amosa, unha caixa baleira mantén o gardado e a caixa de verificación bórrao. Un cambio precisa reinicio.
+fLaserMode	Modo de distancia
+modeShort	Curto
+modeLong	Longo
+fLaserBudget	Tempo por lectura (ms)
+fLaserRoi	Área de detectores (AxA, de 4 a 16)
+fLaserRoiCenter	Centro da área (0 = automático)
+fLaserOutlier	Lecturas atípicas: factor de dispersión
+fLaserCalOn	Permitir a calibración
+hLaserHw	O modo curto chega a uns 1,3 m e soporta mellor a luz; o longo chega a uns 4 m e é o mellor na escuridade. Máis tempo por lectura dá máis estabilidade (15 ms só existe no modo curto). Unha área pequena de detectores mira un punto pequeno. A calibración cambia o significado de cada lectura, así que segue desactivada ata que un administrador a active.
+stLaserState	Modo {0}, {1} ms por lectura, área {2}
+stLaserCal	Calibración: desfase {0} mm, diafonía {1} cps
+stLaserLast	Última lectura {0} mm ({1})
+stLaserNone	Aínda sen lectura
+fCalTarget	Distancia do obxectivo plano (mm)
+stCalOffset	Calibrar o desfase
+stCalXtalk	Calibrar a diafonía
+stCalReset	Borrar a calibración
+stCalHelp	Pon un obxectivo plano e mate a unha distancia que mediras e escríbea. Calibra primeiro o desfase (por exemplo a 100 mm) e despois a diafonía cun obxectivo maior e máis afastado.
+stCalDone	Calibrado: desfase {0} mm, diafonía {1} cps
+stCalFail	Calibración rexeitada ({0})
+stCalOff	A calibración está desactivada nos axustes do cabezal.
+lr_valid	lectura boa
+lr_sigma_high	lecturas demasiado dispersas
+lr_signal_low	sinal demasiado feble
+lr_out_of_range	fóra do intervalo
+lr_sensor_fault	avaría do sensor
+lr_other	rexeitada polo sensor
+lr_no_readings	sen lecturas
+lr_too_few	poucas lecturas boas
+lr_too_noisy	demasiado ruído
+lr_disabled	a calibración está desactivada
+lr_bad_target	distancia fóra de 10 a 4000 mm
+lr_offset_limit	obxectivo a máis de 50 mm do que ve o sensor
+lr_no_signal	sen sinal do obxectivo

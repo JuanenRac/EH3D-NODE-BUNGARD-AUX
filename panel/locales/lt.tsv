@@ -416,3 +416,37 @@ hSpindleSafety	Prieš pasikliaudami apsauga, išbandykite ją atjungę verpstės
 navHelpTab_head	Galvutė
 help_head_title	Galvutė
 help_head_text	Skiltyje Galvutė yra tai, ką turi tik šis mazgas: kamera, jos dydis ir kokybė, RTSP ir ONVIF srautai, stalą matuojantis lazeris, verpstės jutikliai ir apsaugos išvestis. Prieigos raktas yra tai, ką programos naudoja kamerai, būsenai ir matavimui skaityti.\n\nSlaptažodžiai ir raktas yra tik įrašomi: skydelis jų niekada nerodo, tuščias laukelis palieka išsaugotą, o žymimasis langelis jį ištrina. Pakeitimui reikia perkrovimo.
+fLaserMode	Atstumo režimas
+modeShort	Trumpas
+modeLong	Ilgas
+fLaserBudget	Laikas vienam rodmeniui (ms)
+fLaserRoi	Detektorių sritis (PxA, nuo 4 iki 16)
+fLaserRoiCenter	Srities centras (0 = automatinis)
+fLaserOutlier	Neįprasti rodmenys: sklaidos koeficientas
+fLaserCalOn	Leisti kalibruoti
+hLaserHw	Trumpas režimas siekia apie 1,3 m ir geriau toleruoja šviesą; ilgas siekia apie 4 m ir geriausias tamsoje. Ilgesnis laikas vienam rodmeniui yra stabilesnis (15 ms yra tik trumpame režime). Maža detektorių sritis žiūri į mažą tašką. Kalibravimas keičia kiekvieno rodmens reikšmę, todėl jis išjungtas, kol administratorius jį įjungia.
+stLaserState	Režimas {0}, {1} ms vienam rodmeniui, sritis {2}
+stLaserCal	Kalibravimas: postūmis {0} mm, persidengimas {1} cps
+stLaserLast	Paskutinis rodmuo {0} mm ({1})
+stLaserNone	Dar nėra rodmens
+fCalTarget	Plokščio taikinio atstumas (mm)
+stCalOffset	Kalibruoti postūmį
+stCalXtalk	Kalibruoti persidengimą
+stCalReset	Išvalyti kalibravimą
+stCalHelp	Padėkite plokščią matinį taikinį išmatuotu atstumu ir įveskite jį. Pirmiausia sukalibruokite postūmį (pvz., ties 100 mm), tada persidengimą su didesniu, tolesniu taikiniu.
+stCalDone	Sukalibruota: postūmis {0} mm, persidengimas {1} cps
+stCalFail	Kalibravimas atmestas ({0})
+stCalOff	Kalibravimas išjungtas galvutės nustatymuose.
+lr_valid	rodmuo geras
+lr_sigma_high	rodmenys per daug išsibarstę
+lr_signal_low	signalas per silpnas
+lr_out_of_range	už ribų
+lr_sensor_fault	jutiklio gedimas
+lr_other	jutiklis atmetė
+lr_no_readings	nėra rodmenų
+lr_too_few	per mažai gerų rodmenų
+lr_too_noisy	per daug triukšmo
+lr_disabled	kalibravimas išjungtas
+lr_bad_target	atstumas ne tarp 10 ir 4000 mm
+lr_offset_limit	taikinys daugiau nei 50 mm nuo to, ką mato jutiklis
+lr_no_signal	nėra signalo iš taikinio

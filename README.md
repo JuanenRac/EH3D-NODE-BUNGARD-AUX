@@ -128,6 +128,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in the Head page) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
 * **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire light the area under the head so the camera sees well. White is the light for the camera; the levels follow the eye and never go over a ceiling; one side only gives a raking light; any colour can be asked, and the ring says how a check went (green, red blinking, a blue spot turning, amber, fast red). It turns itself off after a while. `GET` and `POST /api/light` and `GET /api/snapshot` serve the programs; the settings are in the panel and in `head.cfg` (`light_*`), and the pin in the menu of the firmware (`AUX_LIGHT_GPIO`).
 * **37 languages:** the web panel of the node speaks English, Spanish, Italian, German, French, Portuguese, Chinese, Japanese, Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French. The words of the 29 languages beyond the first eight are translated by the model and wait for a review by native speakers; a text that a language does not have is shown in English.
+* **The laser, set to the job:** the VL53L1X has a distance mode (short or long) and a timing budget, a receiving area that can be narrowed to look at a small spot, a filter that throws away readings far from the median, a state for each reading (valid, weak signal, high spread, out of range), and a calibration at a known distance (offset and crosstalk) that an administrator has to switch on first. Not tried on a sensor yet.
 
 ## 🔒 Security & Safety
 
@@ -217,6 +218,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
 │   ├── bungard_config.hpp                       the settings of the node and the head section
 │   ├── laser.hpp                                the measure of the height of the table
+│   ├── laser_hw.hpp                             the registers of the laser
 │   ├── light.hpp                                the ring of LEDs: levels, colours, signals
 │   ├── camera.hpp                               the cameras OV2640 and OV5640 and their sizes
 │   ├── spindle.hpp                              speed, heat and the protect output

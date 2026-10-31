@@ -416,3 +416,37 @@ hSpindleSafety	Prófaðu vörnina með tíðnibreyti snældunnar aftengdan áðu
 navHelpTab_head	Haus
 help_head_title	Haus
 help_head_text	Haus geymir það sem aðeins þessi hnútur hefur: myndavélina með stærð hennar og gæðum, RTSP- og ONVIF-straumana, leysinn sem mælir borðið, skynjara snældunnar og varnarútganginn. Aðgangslykillinn er það sem forrit nota til að lesa myndavélina, stöðuna og mælinguna.\n\nLykilorðin og aðgangslykillinn eru aðeins skrifanleg: stjórnborðið sýnir þau aldrei, tómur reitur heldur vistaða gildinu og hakið eyðir því. Breyting krefst endurræsingar.
+fLaserMode	Fjarlægðarhamur
+modeShort	Stuttur
+modeLong	Langur
+fLaserBudget	Tími á mælingu (ms)
+fLaserRoi	Skynjarasvæði (BxH, 4 til 16)
+fLaserRoiCenter	Miðja svæðis (0 = sjálfvirkt)
+fLaserOutlier	Fráviksmælingar: dreifingarstuðull
+fLaserCalOn	Leyfa kvörðun
+hLaserHw	Stutt hamur nær um 1,3 m og þolir ljós betur; langur nær um 4 m og er bestur í myrkri. Lengri tími á mælingu er stöðugri (15 ms er aðeins í stutta hamnum). Lítið skynjarasvæði horfir á lítinn punkt. Kvörðun breytir merkingu hverrar mælingar og er því slökkt þar til stjórnandi kveikir á henni.
+stLaserState	Hamur {0}, {1} ms á mælingu, svæði {2}
+stLaserCal	Kvörðun: frávik {0} mm, víxltal {1} cps
+stLaserLast	Síðasta mæling {0} mm ({1})
+stLaserNone	Engin mæling enn
+fCalTarget	Fjarlægð flata skotmarksins (mm)
+stCalOffset	Kvarða frávik
+stCalXtalk	Kvarða víxltal
+stCalReset	Hreinsa kvörðun
+stCalHelp	Settu flatt, matt skotmark í fjarlægð sem þú hefur mælt og sláðu hana inn. Kvarðaðu fyrst frávikið (t.d. við 100 mm), síðan víxltalið með stærra skotmarki lengra frá.
+stCalDone	Kvarðað: frávik {0} mm, víxltal {1} cps
+stCalFail	Kvörðun hafnað ({0})
+stCalOff	Slökkt er á kvörðun í stillingum haverbaksins.
+lr_valid	mæling góð
+lr_sigma_high	mælingar of dreifðar
+lr_signal_low	merkið er of veikt
+lr_out_of_range	utan marka
+lr_sensor_fault	skynjarabilun
+lr_other	hafnað af skynjara
+lr_no_readings	engar mælingar
+lr_too_few	of fáar góðar mælingar
+lr_too_noisy	of mikill suð
+lr_disabled	slökkt er á kvörðun
+lr_bad_target	fjarlægðin er ekki milli 10 og 4000 mm
+lr_offset_limit	skotmarkið er meira en 50 mm frá því sem skynjarinn sér
+lr_no_signal	ekkert merki frá skotmarkinu

@@ -18,4 +18,11 @@ void register_routes(httpd_handle_t server);
 std::string live_json();
 std::string measure_json(int samples);
 
+/// The calibration of the laser (kind "offset", "xtalk" or "reset"; `target_mm` is the distance of the flat target). Refused with "disabled" unless the settings allow it. `found` is true
+/// when it worked, and the new values are then also stored in the settings of the node (`offset_mm` in mm, `xtalk_cps` in counts per second).
+std::string calibrate_json(const std::string& kind, double target_mm, bool& found, double& offset_mm, double& xtalk_cps);
+
+/// Stores the values a calibration found in the settings of the node (they are applied at once and kept over restarts).
+void store_calibration(double offset_mm, double xtalk_cps);
+
 }  // namespace head

@@ -128,6 +128,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 * **Três sensores de temperatura:** um DS18B20 num fio, um termístor NTC numa entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` em a página Cabeçote) ou um termómetro de infravermelhos MLX90614 que olha para o fuso sem lhe tocar (no barramento I2C do laser); as somas de verificação e as conversões estão testadas num computador.
 * **Um anel de LEDs à volta da câmara:** oito LEDs RGB do tipo WS2812 num só fio iluminam a zona sob a cabeça para a câmara ver bem. O branco é a luz para a câmara; os níveis seguem o olho e nunca passam de um limite; um só lado dá luz rasante; pode pedir-se qualquer cor, e o anel diz como correu uma verificação (verde, vermelho a piscar, um ponto azul a girar, âmbar, vermelho rápido). Apaga-se sozinho ao fim de algum tempo. `GET` e `POST /api/light` e `GET /api/snapshot` servem os programas; as definições estão no painel e em `head.cfg` (`light_*`), e o pino no menu do firmware (`AUX_LIGHT_GPIO`).
 * **37 línguas:** o painel web do nó fala inglês, espanhol, italiano, alemão, francês, português, chinês, japonês, búlgaro, croata, checo, dinamarquês, neerlandês, estónio, finlandês, grego, húngaro, irlandês, letão, lituano, maltês, polaco, romeno, eslovaco, esloveno, sueco, norueguês, islandês, ucraniano, russo, sérvio, albanês, catalão, galego, basco, português do Brasil e francês do Canadá. As palavras das 29 línguas além das oito primeiras foram traduzidas pelo modelo e aguardam a revisão de falantes nativos; um texto que falte numa língua aparece em inglês.
+* **O laser, ajustado ao trabalho:** o VL53L1X tem modo de distância (curto ou longo) e orçamento de tempo, uma área de receção que se pode estreitar para olhar um ponto pequeno, um filtro que descarta leituras longe da mediana, um estado para cada leitura (válida, sinal fraco, dispersão alta, fora de alcance) e uma calibração a distância conhecida (desvio e diafonia) que um administrador tem de ativar primeiro. Ainda não experimentado num sensor.
 
 ## 🔒 Segurança e proteção
 
@@ -217,6 +218,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           o ficheiro de definições e os seus valores seguros
 │   ├── bungard_config.hpp                       as definições do nó e a secção do cabeçote
 │   ├── laser.hpp                                a medição da altura da mesa
+│   ├── laser_hw.hpp                             os registos do laser
 │   ├── light.hpp                                o anel de LEDs: níveis, cores, sinais
 │   ├── camera.hpp                               as câmaras OV2640 e OV5640 e os seus tamanhos
 │   ├── spindle.hpp                              velocidade, calor e saída de proteção

@@ -416,3 +416,37 @@ hSpindleSafety	Isprobajte zaštitu s odspojenim pretvaračem vretena prije nego 
 navHelpTab_head	Glava
 help_head_title	Glava
 help_head_text	Glava sadrži ono što ima samo ovaj čvor: kameru i njezinu veličinu i kvalitetu, tokove RTSP i ONVIF, laser koji mjeri stol, senzore vretena i izlaz zaštite. Pristupni token je ono čime programi čitaju kameru, stanje i mjerenje.\n\nLozinke i token samo su za upis: ploča ih nikada ne prikazuje, prazan okvir zadržava spremljenu vrijednost, a potvrdni okvir je briše. Promjena traži ponovno pokretanje.
+fLaserMode	Način udaljenosti
+modeShort	Kratki
+modeLong	Dugi
+fLaserBudget	Vrijeme po očitanju (ms)
+fLaserRoi	Područje detektora (ŠxV, 4 do 16)
+fLaserRoiCenter	Središte područja (0 = automatski)
+fLaserOutlier	Neuobičajena očitanja: faktor raspršenja
+fLaserCalOn	Dopusti kalibraciju
+hLaserHw	Kratki način dosegne oko 1,3 m i bolje podnosi svjetlo; dugi dosegne oko 4 m i najbolji je u mraku. Dulje vrijeme po očitanju je stabilnije (15 ms postoji samo u kratkom načinu). Malo područje detektora gleda malu točku. Kalibracija mijenja značenje svakog očitanja pa ostaje isključena dok je administrator ne uključi.
+stLaserState	Način {0}, {1} ms po očitanju, područje {2}
+stLaserCal	Kalibracija: pomak {0} mm, preslušavanje {1} cps
+stLaserLast	Zadnje očitanje {0} mm ({1})
+stLaserNone	Još nema očitanja
+fCalTarget	Udaljenost ravne mete (mm)
+stCalOffset	Kalibriraj pomak
+stCalXtalk	Kalibriraj preslušavanje
+stCalReset	Obriši kalibraciju
+stCalHelp	Postavite ravnu, mat metu na izmjerenu udaljenost i upišite je. Prvo kalibrirajte pomak (npr. na 100 mm), zatim preslušavanje s većom i udaljenijom metom.
+stCalDone	Kalibrirano: pomak {0} mm, preslušavanje {1} cps
+stCalFail	Kalibracija odbijena ({0})
+stCalOff	Kalibracija je isključena u postavkama glave.
+lr_valid	dobro očitanje
+lr_sigma_high	očitanja previše raspršena
+lr_signal_low	signal preslab
+lr_out_of_range	izvan raspona
+lr_sensor_fault	kvar senzora
+lr_other	senzor je odbio
+lr_no_readings	nema očitanja
+lr_too_few	premalo dobrih očitanja
+lr_too_noisy	preveliki šum
+lr_disabled	kalibracija je isključena
+lr_bad_target	udaljenost nije između 10 i 4000 mm
+lr_offset_limit	meta je više od 50 mm od onoga što senzor vidi
+lr_no_signal	nema signala s mete

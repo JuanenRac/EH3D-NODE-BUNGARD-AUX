@@ -16,10 +16,12 @@
 #include "../core/aux_config.hpp"
 #include "../core/camera.hpp"
 #include "../core/laser.hpp"
+#include "../core/laser_hw.hpp"
 #include "../core/protocol.hpp"
 #include "../core/spindle.hpp"
 #include "head.hpp"
 #include "light.hpp"
+#include "node_store.hpp"
 #include "sensors.hpp"
 #include "stream.hpp"
 #include "web_server.hpp"
@@ -123,7 +125,8 @@ bool allowed(httpd_req_t* req, bungard_aux::Route route, bungard_aux::Request& r
     r.query = q == std::string::npos ? "" : uri.substr(q + 1);
     if (bungard_aux::authorized(settings, route, bearer_of(req), r)) return true;
     // a person signed in to the panel sees the camera and measures without the access token of the programs (the picture of the panel cannot carry a header)
-    if (route != bungard_aux::Route::Status && eh3d::web::signed_in(req)) return true;
+    // (calibrating changes what every reading means: it takes the token of the head, or the administrator's own route of the panel)
+    if (route != bungard_aux::Route::Status && route != bungard_aux::Route::Calibrate && eh3d::web::signed_in(req)) return true;
     httpd_resp_set_status(req, "401 Unauthorized");
     httpd_resp_send(req, "{\"error\":\"unauthorized\"}", HTTPD_RESP_USE_STRLEN);
     return false;
@@ -146,24 +149,86 @@ std::string live_json_now() {
     s.light = light::present();
     s.light_on = light::is_on();
     s.light_level = light::level();
+    s.laser_mode = bungard_aux::distance_mode_text(settings.laser_distance_mode);
+    s.laser_budget_ms = static_cast<int>(settings.laser_timing_budget_ms);
+    s.laser_roi = bungard_aux::roi_text(settings.laser_roi_w, settings.laser_roi_h);
+    s.laser_cal_offset_mm = settings.laser_cal_offset_mm;
+    s.laser_cal_xtalk_cps = settings.laser_cal_xtalk_cps;
+    s.laser_cal_allowed = settings.laser_calibration_enabled;
+    bungard_aux::LaserReading last;
+    long age_ms = 0;
+    if (settings.laser_enabled && sensors::laser_last(last, age_ms)) {
+        s.laser_last_mm = last.distance_mm + settings.laser_offset_mm + settings.laser_cal_offset_mm;
+        s.laser_last_status = bungard_aux::range_why_text(bungard_aux::range_why(last.status));
+        s.laser_age_ms = age_ms;
+    }
     return bungard_aux::json_status(s);
+}
+
+bungard_aux::LaserLimits laser_limits_now() {
+    bungard_aux::LaserLimits lim;
+    lim.range_min_mm = settings.laser_range_min_mm;
+    lim.range_max_mm = settings.laser_range_max_mm;
+    lim.sigma_max_mm = settings.laser_sigma_max_mm;
+    lim.offset_mm = settings.laser_offset_mm;
+    lim.cal_offset_mm = settings.laser_cal_offset_mm;
+    lim.outlier_k = settings.laser_outlier_k;
+    lim.outlier_floor_mm = settings.laser_outlier_floor_mm;
+    return lim;
 }
 
 std::string measure_json_now(int asked) {
     std::vector<bungard_aux::LaserReading> got;
     std::int64_t deadline = esp_timer_get_time() + static_cast<std::int64_t>(settings.laser_timeout_ms) * 1000;
     while (static_cast<int>(got.size()) < asked && esp_timer_get_time() < deadline && settings.laser_enabled) {
-        double mm = 0.0;
-        bool valid = false;
-        if (sensors::laser_read(mm, valid)) got.push_back({mm, valid});
+        bungard_aux::LaserReading r;
+        if (sensors::laser_read(r)) got.push_back(r);
         else vTaskDelay(pdMS_TO_TICKS(5));
     }
-    bungard_aux::LaserLimits lim;
-    lim.range_min_mm = settings.laser_range_min_mm;
-    lim.range_max_mm = settings.laser_range_max_mm;
-    lim.sigma_max_mm = settings.laser_sigma_max_mm;
-    lim.offset_mm = settings.laser_offset_mm;
-    return bungard_aux::json_measure(bungard_aux::measure_distance(got, asked, lim));
+    return bungard_aux::json_measure(bungard_aux::measure_distance(got, asked, laser_limits_now()));
+}
+
+/// The calibration of the laser at a known distance (kind offset or xtalk) or the clearing of both. Returns the JSON answer; `found` is true and `offset_mm`/`xtalk_cps` hold the new
+/// values to store when it worked. Nothing is stored here: the caller saves them in the settings of the node.
+std::string calibrate_now(const bungard_aux::CalibrateRequest& req, bool& found, double& offset_mm, double& xtalk_cps) {
+    found = false;
+    offset_mm = settings.laser_cal_offset_mm;
+    xtalk_cps = settings.laser_cal_xtalk_cps;
+    auto answer = [&](bool ok, const std::string& why, int used, double sigma) {
+        return bungard_aux::json_calibration(req.kind, ok, why, offset_mm, xtalk_cps, used, sigma);
+    };
+    if (!settings.laser_calibration_enabled) return answer(false, "disabled", 0, 0.0);
+    if (!settings.laser_enabled) return answer(false, "no_readings", 0, 0.0);
+    if (req.kind == "reset") {
+        if (!sensors::laser_set_xtalk(0.0)) return answer(false, "no_readings", 0, 0.0);
+        settings.laser_cal_offset_mm = offset_mm = 0.0;
+        settings.laser_cal_xtalk_cps = xtalk_cps = 0.0;
+        found = true;
+        return answer(true, "ok", 0, 0.0);
+    }
+    constexpr int kReadings = 50;
+    const std::uint32_t timeout = static_cast<std::uint32_t>(kReadings) * (static_cast<std::uint32_t>(bungard_aux::inter_measurement_ms(static_cast<int>(settings.laser_timing_budget_ms))) + 60);
+    std::vector<bungard_aux::LaserReading> got;
+    if (req.kind == "xtalk") {
+        // like the ST driver: the crosstalk is cleared in the sensor while the target is measured, then the one found is written
+        if (!sensors::laser_set_xtalk(0.0)) return answer(false, "no_readings", 0, 0.0);
+        sensors::laser_collect(kReadings, timeout, got);
+        const bungard_aux::Calibration c = bungard_aux::calibrate_xtalk(got, req.target_mm);
+        if (!c.ok) {
+            sensors::laser_set_xtalk(settings.laser_cal_xtalk_cps);   // back to what it was
+            return answer(false, c.why, c.used, c.sigma_mm);
+        }
+        if (!sensors::laser_set_xtalk(c.value)) return answer(false, "no_readings", c.used, c.sigma_mm);
+        settings.laser_cal_xtalk_cps = xtalk_cps = c.value;
+        found = true;
+        return answer(true, "ok", c.used, c.sigma_mm);
+    }
+    sensors::laser_collect(kReadings, timeout, got);
+    const bungard_aux::Calibration c = bungard_aux::calibrate_offset(got, kReadings, req.target_mm, laser_limits_now());
+    if (!c.ok) return answer(false, c.why, c.used, c.sigma_mm);
+    settings.laser_cal_offset_mm = offset_mm = c.value;
+    found = true;
+    return answer(true, "ok", c.used, c.sigma_mm);
 }
 
 esp_err_t status_handler(httpd_req_t* req) {
@@ -180,6 +245,25 @@ esp_err_t measure_handler(httpd_req_t* req) {
     if (!allowed(req, bungard_aux::Route::Measure, r)) return ESP_OK;
     httpd_resp_set_type(req, "application/json");
     const std::string body = measure_json_now(bungard_aux::samples_of(settings, r));
+    httpd_resp_send(req, body.c_str(), body.size());
+    return ESP_OK;
+}
+
+esp_err_t calibrate_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::Calibrate, r)) return ESP_OK;
+    httpd_resp_set_type(req, "application/json");
+    bungard_aux::CalibrateRequest cr;
+    if (!bungard_aux::parse_calibrate(r, cr)) {
+        httpd_resp_set_status(req, "400 Bad Request");
+        const std::string bad = bungard_aux::json_calibration("", false, "bad_target", settings.laser_cal_offset_mm, settings.laser_cal_xtalk_cps, 0, 0.0);
+        httpd_resp_send(req, bad.c_str(), bad.size());
+        return ESP_OK;
+    }
+    bool found = false;
+    double offset = 0.0, xtalk = 0.0;
+    const std::string body = calibrate_now(cr, found, offset, xtalk);
+    if (found) head::store_calibration(offset, xtalk);
     httpd_resp_send(req, body.c_str(), body.size());
     return ESP_OK;
 }
@@ -299,6 +383,8 @@ void register_routes(httpd_handle_t server) {
     httpd_uri_t light_get = {"/api/light", HTTP_GET, light_get_handler, nullptr};
     httpd_uri_t light_set = {"/api/light", HTTP_POST, light_set_handler, nullptr};
     httpd_uri_t snapshot = {"/api/snapshot", HTTP_GET, snapshot_handler, nullptr};
+    httpd_uri_t calibrate = {"/api/laser/calibrate", HTTP_POST, calibrate_handler, nullptr};
+    httpd_register_uri_handler(server, &calibrate);
     httpd_register_uri_handler(server, &light_get);
     httpd_register_uri_handler(server, &light_set);
     httpd_register_uri_handler(server, &snapshot);
@@ -306,6 +392,20 @@ void register_routes(httpd_handle_t server) {
 }
 
 std::string live_json() { return live_json_now(); }
+
+void store_calibration(double offset_mm, double xtalk_cps) {
+    config::Settings next = store::settings();
+    next.head.laser_cal_offset_mm = offset_mm;
+    next.head.laser_cal_xtalk_cps = xtalk_cps;
+    if (!store::save_settings(next)) ESP_LOGE(TAG, "the calibration of the laser could not be stored");
+}
+
+std::string calibrate_json(const std::string& kind, double target_mm, bool& found, double& offset_mm, double& xtalk_cps) {
+    bungard_aux::CalibrateRequest cr;
+    cr.kind = kind;
+    cr.target_mm = target_mm;
+    return calibrate_now(cr, found, offset_mm, xtalk_cps);
+}
 std::string measure_json(int samples) { return measure_json_now(samples < 1 ? 1 : samples > 31 ? 31 : samples); }
 
 }  // namespace head

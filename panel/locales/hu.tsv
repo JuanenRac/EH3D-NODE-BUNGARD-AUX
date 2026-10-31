@@ -416,3 +416,37 @@ hSpindleSafety	Teszteld a védelmet az orsó meghajtójának leválasztásával,
 navHelpTab_head	Fej
 help_head_title	Fej
 help_head_text	A Fej azt tartalmazza, ami csak ennek a csomópontnak van: a kamerát a méretével és minőségével, az RTSP és ONVIF streameket, az asztalt mérő lézert, az orsó érzékelőit és a védelmi kimenetet. A hozzáférési token az, amellyel a programok olvassák a kamerát, az állapotot és a mérést.\n\nA jelszavak és a token csak írhatók: a panel soha nem mutatja őket, az üres mező megtartja a tároltat, a jelölőnégyzet pedig törli. A módosításhoz újraindítás kell.
+fLaserMode	Távolságmód
+modeShort	Rövid
+modeLong	Hosszú
+fLaserBudget	Idő olvasatonként (ms)
+fLaserRoi	Érzékelőterület (SxM, 4–16)
+fLaserRoiCenter	A terület közepe (0 = automatikus)
+fLaserOutlier	Kiugró olvasatok: szórástényező
+fLaserCalOn	Kalibrálás engedélyezése
+hLaserHw	A rövid mód kb. 1,3 m-ig ér el és jobban tűri a fényt; a hosszú kb. 4 m-ig ér el és sötétben a legjobb. A hosszabb idő olvasatonként stabilabb (a 15 ms csak rövid módban van). Egy kis érzékelőterület kis pontot néz. A kalibrálás megváltoztatja minden olvasat jelentését, ezért kikapcsolva marad, amíg egy rendszergazda be nem kapcsolja.
+stLaserState	Mód: {0}, {1} ms olvasatonként, terület: {2}
+stLaserCal	Kalibrálás: eltolás {0} mm, áthallás {1} cps
+stLaserLast	Utolsó olvasat: {0} mm ({1})
+stLaserNone	Még nincs olvasat
+fCalTarget	A sík célpont távolsága (mm)
+stCalOffset	Eltolás kalibrálása
+stCalXtalk	Áthallás kalibrálása
+stCalReset	Kalibrálás törlése
+stCalHelp	Helyezzen egy sík, matt célpontot egy lemért távolságra, és írja be. Először az eltolást kalibrálja (pl. 100 mm-nél), majd az áthallást egy nagyobb, távolabbi célponttal.
+stCalDone	Kalibrálva: eltolás {0} mm, áthallás {1} cps
+stCalFail	A kalibrálást elutasította ({0})
+stCalOff	A kalibrálás ki van kapcsolva a fej beállításaiban.
+lr_valid	az olvasat jó
+lr_sigma_high	az olvasatok túl szórtak
+lr_signal_low	a jel túl gyenge
+lr_out_of_range	tartományon kívül
+lr_sensor_fault	érzékelőhiba
+lr_other	az érzékelő elutasította
+lr_no_readings	nincs olvasat
+lr_too_few	túl kevés jó olvasat
+lr_too_noisy	túl zajos
+lr_disabled	a kalibrálás ki van kapcsolva
+lr_bad_target	a távolság nem 10 és 4000 mm között van
+lr_offset_limit	a célpont több mint 50 mm-re van attól, amit az érzékelő lát
+lr_no_signal	nincs jel a célpontról

@@ -38,6 +38,7 @@ extern "C" {
 #include "github_update.hpp"
 #include "log_buffer.hpp"
 #include "head.hpp"
+#include "core/protocol.hpp"
 #include "api_shared.hpp"
 #include "clock_sync.hpp"
 #include "network.hpp"
@@ -512,6 +513,26 @@ esp_err_t post_head_measure(httpd_req_t* r) {
   return send_json(r, 200, head::measure_json(samples));
 }
 
+// Calibrates the laser at a known distance (kind=offset|xtalk, mm=the distance of a flat target) or clears the calibration (kind=reset). Administrators only, and only when the settings of
+// the head allow it; the values found are stored in the settings of the node and applied at once.
+esp_err_t post_head_laser_calibrate(httpd_req_t* r) {
+  Who who;
+  if (!require(r, who, true, true)) return ESP_OK;
+  bungard_aux::Request request;
+  char query[64];
+  if (httpd_req_get_url_query_str(r, query, sizeof query) == ESP_OK) request.query = query;
+  bungard_aux::CalibrateRequest wanted;
+  if (!bungard_aux::parse_calibrate(request, wanted)) return send_error(r, 422, "invalid");
+  bool found = false;
+  double offset = 0.0, xtalk = 0.0;
+  const std::string answer = head::calibrate_json(wanted.kind, wanted.target_mm, found, offset, xtalk);
+  if (found) {
+    head::store_calibration(offset, xtalk);
+    ESP_LOGI(kTag, "laser calibration (%s) by \"%s\"", wanted.kind.c_str(), who.user.c_str());
+  }
+  return send_json(r, 200, answer);
+}
+
 const char* result_code(auth::Result result) {
   switch (result) {
     case auth::Result::kOk: return "ok";
@@ -854,6 +875,7 @@ esp_err_t api_handler(httpd_req_t* r) {
     if (route == "ota/install") return post_ota_install(r);
     if (route == "ota/check") return post_ota_check(r);
     if (route == "head/measure") return post_head_measure(r);
+    if (route == "head/laser/calibrate") return post_head_laser_calibrate(r);
     if (route == "time") return post_time(r);
   } else if (method == HTTP_PUT) {
     if (route == "config") return put_config(r);

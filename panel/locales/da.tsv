@@ -416,3 +416,37 @@ hSpindleSafety	Test beskyttelsen med spindelomformeren frakoblet, før du stoler
 navHelpTab_head	Hoved
 help_head_title	Hoved
 help_head_text	Hoved rummer det, kun denne node har: kameraet og dets størrelse og kvalitet, RTSP- og ONVIF-strømmene, laseren, der måler bordet, spindlens sensorer og beskyttelsesudgangen. Adgangstokenet er det, programmer bruger til at læse kameraet, status og målingen.\n\nAdgangskoderne og tokenet er kun til skrivning: panelet viser dem aldrig, et tomt felt beholder den gemte værdi, og afkrydsningsfeltet sletter den. En ændring kræver en genstart.
+fLaserMode	Afstandstilstand
+modeShort	Kort
+modeLong	Lang
+fLaserBudget	Tid pr. aflæsning (ms)
+fLaserRoi	Detektorområde (BxH, 4 til 16)
+fLaserRoiCenter	Områdets midte (0 = automatisk)
+fLaserOutlier	Afvigende aflæsninger: spredningsfaktor
+fLaserCalOn	Tillad kalibrering
+hLaserHw	Kort tilstand rækker omkring 1,3 m og tåler lys bedre; lang rækker omkring 4 m og er bedst i mørke. Længere tid pr. aflæsning er mere stabil (15 ms findes kun i kort tilstand). Et lille detektorområde ser på et lille punkt. Kalibrering ændrer, hvad hver aflæsning betyder, så den er slået fra, indtil en administrator slår den til.
+stLaserState	Tilstand {0}, {1} ms pr. aflæsning, område {2}
+stLaserCal	Kalibrering: forskydning {0} mm, krydstale {1} cps
+stLaserLast	Seneste aflæsning {0} mm ({1})
+stLaserNone	Ingen aflæsning endnu
+fCalTarget	Afstand til det flade mål (mm)
+stCalOffset	Kalibrér forskydning
+stCalXtalk	Kalibrér krydstale
+stCalReset	Ryd kalibrering
+stCalHelp	Placér et fladt, mat mål i en afstand, du har målt, og skriv den ind. Kalibrér først forskydningen (fx ved 100 mm), derefter krydstalen med et større mål længere væk.
+stCalDone	Kalibreret: forskydning {0} mm, krydstale {1} cps
+stCalFail	Kalibrering afvist ({0})
+stCalOff	Kalibrering er slået fra i hovedets indstillinger.
+lr_valid	aflæsning god
+lr_sigma_high	aflæsningerne er for spredte
+lr_signal_low	signalet er for svagt
+lr_out_of_range	uden for rækkevidde
+lr_sensor_fault	sensorfejl
+lr_other	afvist af sensoren
+lr_no_readings	ingen aflæsninger
+lr_too_few	for få gode aflæsninger
+lr_too_noisy	for meget støj
+lr_disabled	kalibrering er slået fra
+lr_bad_target	afstanden er ikke mellem 10 og 4000 mm
+lr_offset_limit	målet er mere end 50 mm fra det, sensoren ser
+lr_no_signal	intet signal fra målet

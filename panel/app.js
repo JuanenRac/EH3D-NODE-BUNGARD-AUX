@@ -61,6 +61,7 @@ const S = {
   cfg: null, saved: "",                       // the network settings (GET/PUT config) and what was last saved
   head: null, headSaved: "",                  // the settings of the head (GET/PUT head) and what was last saved; the passwords and the token are write-only
   measure: null,                              // the last measure of the table asked for from this page
+  cal: { target: "100", busy: false, result: null },   // the calibration of the laser at a known distance: the distance typed, and what the node answered
   problems: { cfg: {}, head: {} }, touched: new Set(), server: {},   // what is drawn next to the fields; the fields left once; what the node refused
   status: null,                               // the node's own status (flash slots, network)
   ms: null,                                   // what the head reads, polled
@@ -201,7 +202,7 @@ function field(labelKey, store, path, options = {}) {
   } else if (options.type === "number") {
     const shown = typeof current === "number" && Number.isFinite(current) ? current / factor : "";
     input = el("input", Object.assign({ type: "number", inputMode: "numeric", min: options.min, max: options.max, step: options.step || 1, value: shown, placeholder: options.placeholder || "",
-      oninput: e => setValue(store, path, e.target.value === "" ? NaN : Math.round(Number(e.target.value) * factor)),
+      oninput: e => setValue(store, path, e.target.value === "" ? NaN : options.step === "any" ? Number(e.target.value) * factor : Math.round(Number(e.target.value) * factor)),
       onblur: () => { if (store === "head") { S.touched.add(path); paintProblems(); } } }, common));
   } else if (options.type === "password") {
     const stored = getValue(store, path + "_set");
@@ -360,6 +361,37 @@ async function measureTable() {
   render();
 }
 
+// Why a measure or a calibration was refused, in words: the sensor's own verdict when it gave one, else the code the node answered with.
+const laserWord = code => (L["lr_" + code] ? t("lr_" + code) : String(code));
+const modeWord = mode => (mode === "short" ? t("modeShort") : t("modeLong"));
+const measureReason = m => laserWord(m.refused > 0 && m.status && m.status !== "valid" ? m.status : m.why);
+
+// The calibration at a known distance: kind is offset, xtalk or reset.
+async function calibrateLaser(kind) {
+  S.cal.busy = true; S.cal.result = null; render();
+  const r = await api("POST", "head/laser/calibrate?kind=" + kind + "&mm=" + encodeURIComponent(S.cal.target || "0"), {});
+  S.cal.busy = false;
+  S.cal.result = r.ok ? r.data : { ok: false, why: "error" };
+  if (!r.ok) S.message = { kind: "bad", text: errorText(r.data.error) };
+  render();
+}
+
+function calibrationBlock() {
+  if (!isAdmin()) return null;
+  const c = S.cal, res = c.result;
+  const off = !(S.ms && S.ms.laser_cal_allowed);
+  return el("div", { class: "cal" },
+    el("div", { class: "field" }, el("label", { for: "cal-target" }, t("fCalTarget")),
+      el("input", { id: "cal-target", type: "number", inputMode: "decimal", min: "10", max: "4000", step: "any", value: c.target, oninput: e => { c.target = e.target.value; } })),
+    el("div", { class: "actions" },
+      el("button", { class: "b", type: "button", id: "cal-offset", disabled: off || c.busy, onclick: () => calibrateLaser("offset") }, t("stCalOffset")),
+      el("button", { class: "b", type: "button", id: "cal-xtalk", disabled: off || c.busy, onclick: () => calibrateLaser("xtalk") }, t("stCalXtalk")),
+      el("button", { class: "b", type: "button", id: "cal-reset", disabled: off || c.busy, onclick: () => calibrateLaser("reset") }, t("stCalReset"))),
+    off ? el("p", { class: "muted", id: "cal-off" }, t("stCalOff")) : null,
+    res ? (res.ok ? note(t("stCalDone", Number(res.cal_offset_mm).toFixed(3), Math.round(res.cal_xtalk_cps)), "ok") : note(t("stCalFail", laserWord(res.why)), "bad")) : null,
+    el("p", { class: "muted" }, t("stCalHelp")));
+}
+
 function statusPage() {
   const m = S.measure;
   return el("div", { class: "grid" },
@@ -368,8 +400,11 @@ function statusPage() {
     card(t("stCamera"), el("div", { class: "pills" }, el("span", { id: "st-p-camera" })), el("p", { class: "muted", id: "st-camera-model" }), el("p", { class: "muted" }, t("stCameraHelp"))),
     card(t("stLaser"), el("div", { class: "pills" }, el("span", { id: "st-p-laser" })),
       isAdmin() ? el("div", { class: "actions" }, el("button", { class: "b", type: "button", id: "st-measure", onclick: measureTable }, t("stMeasure"))) : null,
-      m ? (m.ok ? el("p", { class: "big" }, t("stMeasureResult", m.distance_mm.toFixed(3), m.sigma_mm.toFixed(3), m.used, m.asked)) : note(t("stMeasureFail", m.why || "?"), "bad")) : null,
-      el("p", { class: "muted" }, t("stLaserHelp"))),
+      el("p", { class: "muted", id: "st-laser-cfg" }), el("p", { class: "muted", id: "st-laser-cal" }), el("p", { id: "st-laser-last" }),
+      m ? (m.ok ? el("p", { class: "big" }, t("stMeasureResult", m.distance_mm.toFixed(3), m.sigma_mm.toFixed(3), m.used, m.asked)) : note(t("stMeasureFail", measureReason(m)), "bad")) : null,
+      m && m.ok && m.refused > 0 ? el("p", { class: "muted" }, laserWord(m.status)) : null,
+      el("p", { class: "muted" }, t("stLaserHelp")),
+      calibrationBlock()),
     card(t("stSpindle"), el("p", { class: "big" }, el("span", { id: "sp-rpm" }, "—")), el("span", { id: "sp-label", class: "hint" }, t("stSpindleBar")), barBox("sp-bar", "sp-label"),
       el("p", { class: "muted", id: "sp-max" }), el("div", { class: "pills" }, el("span", { id: "st-p-heat" })), el("p", { class: "big" }, el("span", { id: "sp-temp" }, "—"))),
     card(t("stProtect"), el("div", { class: "pills" }, el("span", { id: "st-p-protect" })), el("p", { class: "muted" }, t("stProtectHelp"))),
@@ -396,6 +431,12 @@ function patchStatus() {
   setPill("st-p-camera", t(m.camera ? "stOn" : "stOff"), m.camera ? "ok" : "");
   setText("st-camera-model", m.camera && m.camera_model ? m.camera_model.toUpperCase() : "");
   setPill("st-p-laser", t(m.laser ? "stOn" : "stOff"), m.laser ? "ok" : "");
+  setText("st-laser-cfg", m.laser && m.laser_mode ? t("stLaserState", modeWord(m.laser_mode), m.laser_budget_ms, m.laser_roi) : "");
+  setText("st-laser-cal", m.laser && m.laser_mode ? t("stLaserCal", Number(m.laser_cal_offset_mm).toFixed(3), Math.round(m.laser_cal_xtalk_cps)) : "");
+  setText("st-laser-last", !m.laser ? "" : m.laser_age_ms >= 0 ? t("stLaserLast", Number(m.laser_last_mm).toFixed(1), laserWord(m.laser_last_status)) : t("stLaserNone"));
+  for (const id of ["cal-offset", "cal-xtalk", "cal-reset"]) { const b = document.getElementById(id); if (b) b.disabled = !m.laser_cal_allowed || S.cal.busy; }
+  const calOff = document.getElementById("cal-off");
+  if (calOff) calOff.hidden = !!m.laser_cal_allowed;
   const max = S.head ? S.head.rpm_max : 0;
   setText("sp-rpm", m.rpm_sensor ? m.rpm + " rpm" : "—");
   setBar("sp-bar", max && m.rpm_sensor ? m.rpm / max : 0);
@@ -428,6 +469,7 @@ async function lightCall(query) {
 function headPage() {
   if (!S.head) return el("p", { class: "muted" }, t("loading"));
   const h = S.head;
+  if (h.laser_distance_mode !== "short" && h.laser_timing_budget_ms === 15) setValue("head", "laser_timing_budget_ms", 20);   // 15 ms exists in the short mode only
   return el("div", {}, note(t("hRestartNote"), "info"), !isAdmin() ? note(t("adminOnly"), "info") : null,
     el("div", { class: "grid wide" },
       card(t("hCamera"), el("p", { class: "muted" }, t("hCameraIntro")),
@@ -447,6 +489,12 @@ function headPage() {
       card(t("hLaser"), el("p", { class: "muted" }, t("hLaserIntro")),
         hf("fLaserOn", "laser_enabled", { type: "checkbox", rerender: true }),
         h.laser_enabled ? [
+          el("div", { class: "row" },
+            hf("fLaserMode", "laser_distance_mode", { type: "select", rerender: true, options: [["long", t("modeLong")], ["short", t("modeShort")]] }),
+            hf("fLaserBudget", "laser_timing_budget_ms", { type: "select", number: true, options: (h.laser_distance_mode === "short" ? [15, 20, 33, 50, 100, 200, 500] : [20, 33, 50, 100, 200, 500]).map(v => [v, String(v)]) })),
+          el("div", { class: "row" }, hf("fLaserRoi", "laser_roi", { max: 5, placeholder: "16x16" }), num("fLaserRoiCenter", "laser_roi_center", 0, 255, "0"), num("fLaserOutlier", "laser_outlier_k", 1, 10, "3", { step: "any" })),
+          hf("fLaserCalOn", "laser_calibration_enabled", { type: "checkbox" }),
+          el("p", { class: "muted" }, t("hLaserHw")),
           el("div", { class: "row" }, num("fSamples", "laser_samples", 1, 31, "7"), num("fLaserTimeout", "laser_timeout_ms", 20, 5000, "500")),
           el("div", { class: "row" }, num("fLaserOffset", "laser_offset_mm", -1000, 1000, "0", { step: "any" }), num("fLaserSigma", "laser_sigma_max_mm", 0, 50, "0.2", { step: "any" })),
           el("div", { class: "row" }, num("fLaserMin", "laser_range_min_mm", 0, 4000, "10", { step: "any" }), num("fLaserMax", "laser_range_max_mm", 1, 4000, "400", { step: "any" }))] : null),

@@ -416,3 +416,37 @@ hSpindleSafety	Proveu la protecció amb el variador del broquer desconnectat aba
 navHelpTab_head	Capçal
 help_head_title	Capçal
 help_head_text	Capçal conté el que només té aquest node: la càmera i la seva mida i qualitat, els fluxos RTSP i ONVIF, el làser que mesura la taula, els sensors del broquer i la sortida de protecció. El testimoni d'accés és el que fan servir els programes per llegir la càmera, l'estat i la mesura.\n\nLes contrasenyes i el testimoni són només d'escriptura: el tauler no les mostra mai, una casella buida conserva el valor desat i la casella de selecció l'esborra. Un canvi necessita un reinici.
+fLaserMode	Mode de distància
+modeShort	Curt
+modeLong	Llarg
+fLaserBudget	Temps per lectura (ms)
+fLaserRoi	Àrea de detectors (AxA, de 4 a 16)
+fLaserRoiCenter	Centre de l'àrea (0 = automàtic)
+fLaserOutlier	Lectures atípiques: factor de dispersió
+fLaserCalOn	Permet el calibratge
+hLaserHw	El mode curt arriba a uns 1,3 m i suporta millor la llum; el llarg arriba a uns 4 m i és el millor a les fosques. Més temps per lectura dóna més estabilitat (15 ms només existeix en mode curt). Una àrea petita de detectors mira un punt petit. El calibratge canvia el significat de cada lectura, així que continua desactivat fins que un administrador l'activi.
+stLaserState	Mode {0}, {1} ms per lectura, àrea {2}
+stLaserCal	Calibratge: desplaçament {0} mm, diafonia {1} cps
+stLaserLast	Darrera lectura {0} mm ({1})
+stLaserNone	Encara no hi ha cap lectura
+fCalTarget	Distància de l'objectiu pla (mm)
+stCalOffset	Calibra el desplaçament
+stCalXtalk	Calibra la diafonia
+stCalReset	Esborra el calibratge
+stCalHelp	Posa un objectiu pla i mat a una distància que hagis mesurat i escriu-la. Calibra primer el desplaçament (per exemple a 100 mm) i després la diafonia amb un objectiu més gran i més llunyà.
+stCalDone	Calibrat: desplaçament {0} mm, diafonia {1} cps
+stCalFail	Calibratge rebutjat ({0})
+stCalOff	El calibratge està desactivat als paràmetres del capçal.
+lr_valid	lectura bona
+lr_sigma_high	lectures massa dispersades
+lr_signal_low	senyal massa feble
+lr_out_of_range	fora de l'interval
+lr_sensor_fault	avaria del sensor
+lr_other	rebutjada pel sensor
+lr_no_readings	cap lectura
+lr_too_few	massa poques lectures bones
+lr_too_noisy	massa soroll
+lr_disabled	el calibratge està desactivat
+lr_bad_target	distància fora de 10 a 4000 mm
+lr_offset_limit	objectiu a més de 50 mm del que veu el sensor
+lr_no_signal	cap senyal de l'objectiu

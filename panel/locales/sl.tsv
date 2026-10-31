@@ -416,3 +416,37 @@ hSpindleSafety	Zaščito preizkusite z odklopljenim pretvornikom vretena, preden
 navHelpTab_head	Glava
 help_head_title	Glava
 help_head_text	Glava vsebuje to, kar ima samo to vozlišče: kamero z njeno velikostjo in kakovostjo, tokova RTSP in ONVIF, laser, ki meri mizo, senzorje vretena in zaščitni izhod. Dostopni žeton je tisto, s čimer programi berejo kamero, stanje in meritev.\n\nGesla in žeton so samo za pisanje: plošča jih nikoli ne pokaže, prazno polje ohrani shranjeno vrednost, kljukica pa jo izbriše. Sprememba zahteva ponovni zagon.
+fLaserMode	Način razdalje
+modeShort	Kratek
+modeLong	Dolg
+fLaserBudget	Čas na meritev (ms)
+fLaserRoi	Območje detektorjev (ŠxV, 4 do 16)
+fLaserRoiCenter	Sredina območja (0 = samodejno)
+fLaserOutlier	Odstopajoče meritve: faktor raztrosa
+fLaserCalOn	Dovoli umerjanje
+hLaserHw	Kratki način seže približno 1,3 m in bolje prenaša svetlobo; dolgi seže približno 4 m in je najboljši v temi. Daljši čas na meritev je stabilnejši (15 ms obstaja samo v kratkem načinu). Majhno območje detektorjev gleda majhno točko. Umerjanje spremeni pomen vsake meritve, zato ostane izklopljeno, dokler ga skrbnik ne vklopi.
+stLaserState	Način {0}, {1} ms na meritev, območje {2}
+stLaserCal	Umerjanje: odmik {0} mm, preslišava {1} cps
+stLaserLast	Zadnja meritev {0} mm ({1})
+stLaserNone	Še ni meritve
+fCalTarget	Razdalja ravne tarče (mm)
+stCalOffset	Umeri odmik
+stCalXtalk	Umeri preslišavo
+stCalReset	Počisti umerjanje
+stCalHelp	Postavite ravno, motno tarčo na izmerjeno razdaljo in jo vnesite. Najprej umerite odmik (npr. pri 100 mm), nato preslišavo z večjo, bolj oddaljeno tarčo.
+stCalDone	Umerjeno: odmik {0} mm, preslišava {1} cps
+stCalFail	Umerjanje zavrnjeno ({0})
+stCalOff	Umerjanje je izklopljeno v nastavitvah glave.
+lr_valid	meritev dobra
+lr_sigma_high	meritve preveč razpršene
+lr_signal_low	signal prešibak
+lr_out_of_range	zunaj območja
+lr_sensor_fault	napaka senzorja
+lr_other	senzor je zavrnil
+lr_no_readings	ni meritev
+lr_too_few	premalo dobrih meritev
+lr_too_noisy	preveč šuma
+lr_disabled	umerjanje je izklopljeno
+lr_bad_target	razdalja ni med 10 in 4000 mm
+lr_offset_limit	tarča je več kot 50 mm od tega, kar vidi senzor
+lr_no_signal	ni signala s tarče

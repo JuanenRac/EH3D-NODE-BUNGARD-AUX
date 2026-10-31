@@ -416,3 +416,37 @@ hSpindleSafety	Pārbaudiet aizsardzību ar atvienotu spindeļa dziņu, pirms uz 
 navHelpTab_head	Galva
 help_head_title	Galva
 help_head_text	Galva satur to, kas ir tikai šim mezglam: kameru, tās izmēru un kvalitāti, RTSP un ONVIF straumes, lāzeru, kas mēra galdu, spindeļa sensorus un aizsardzības izeju. Piekļuves marķieris ir tas, ko programmas izmanto, lai nolasītu kameru, stāvokli un mērījumu.\n\nParoles un marķieris ir tikai rakstāmi: panelis tos nekad nerāda, tukša rūtiņa patur saglabāto, bet izvēles rūtiņa to dzēš. Izmaiņai nepieciešama restartēšana.
+fLaserMode	Attāluma režīms
+modeShort	Īss
+modeLong	Garš
+fLaserBudget	Laiks uz nolasījumu (ms)
+fLaserRoi	Detektoru apgabals (PxA, 4 līdz 16)
+fLaserRoiCenter	Apgabala centrs (0 = automātiski)
+fLaserOutlier	Neparastie nolasījumi: izkliedes koeficients
+fLaserCalOn	Atļaut kalibrēšanu
+hLaserHw	Īsais režīms sniedzas ap 1,3 m un labāk panes gaismu; garais sniedzas ap 4 m un ir labākais tumsā. Ilgāks laiks uz nolasījumu ir stabilāks (15 ms ir tikai īsajā režīmā). Mazs detektoru apgabals skatās uz mazu punktu. Kalibrēšana maina katra nolasījuma nozīmi, tāpēc tā ir izslēgta, kamēr administrators to neieslēdz.
+stLaserState	Režīms {0}, {1} ms uz nolasījumu, apgabals {2}
+stLaserCal	Kalibrēšana: nobīde {0} mm, šķērsrunas {1} cps
+stLaserLast	Pēdējais nolasījums {0} mm ({1})
+stLaserNone	Vēl nav nolasījuma
+fCalTarget	Plakanā mērķa attālums (mm)
+stCalOffset	Kalibrēt nobīdi
+stCalXtalk	Kalibrēt šķērsrunas
+stCalReset	Dzēst kalibrēšanu
+stCalHelp	Novietojiet plakanu, matētu mērķi izmērītā attālumā un ievadiet to. Vispirms kalibrējiet nobīdi (piemēram, pie 100 mm), pēc tam šķērsrunas ar lielāku, tālāku mērķi.
+stCalDone	Nokalibrēts: nobīde {0} mm, šķērsrunas {1} cps
+stCalFail	Kalibrēšana noraidīta ({0})
+stCalOff	Kalibrēšana ir izslēgta galvas iestatījumos.
+lr_valid	nolasījums labs
+lr_sigma_high	nolasījumi pārāk izkliedēti
+lr_signal_low	signāls pārāk vājš
+lr_out_of_range	ārpus diapazona
+lr_sensor_fault	sensora kļūme
+lr_other	sensors noraidīja
+lr_no_readings	nav nolasījumu
+lr_too_few	pārāk maz labu nolasījumu
+lr_too_noisy	pārāk trokšņains
+lr_disabled	kalibrēšana ir izslēgta
+lr_bad_target	attālums nav starp 10 un 4000 mm
+lr_offset_limit	mērķis ir vairāk nekā 50 mm no tā, ko redz sensors
+lr_no_signal	nav signāla no mērķa

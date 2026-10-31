@@ -79,6 +79,29 @@ int main() {
   for (const auto& p : problems) std::printf("  problem %s %s\n", p.path.c_str(), p.code.c_str());
   CHECK(round.head.token == secret.head.token && round.head.camera_width == secret.head.camera_width && round.head.laser_range_max_mm == secret.head.laser_range_max_mm);
 
+  // the laser: mode, budget, area and calibration are read from the panel's document, checked together, and written back the same
+  problems.clear();
+  CHECK(config::load(R"({"head":{"laser_distance_mode":"short","laser_timing_budget_ms":15,"laser_roi":"8x6","laser_roi_center":120,"laser_outlier_k":4.5,"laser_calibration_enabled":true,
+    "laser_cal_offset_mm":-1.25,"laser_cal_xtalk_cps":4200}})", base, out, problems));
+  CHECK(out.head.laser_distance_mode == bungard_aux::DistanceMode::Short && out.head.laser_timing_budget_ms == 15 && out.head.laser_roi_w == 8 && out.head.laser_roi_h == 6);
+  CHECK(out.head.laser_roi_center == 120 && out.head.laser_outlier_k == 4.5 && out.head.laser_calibration_enabled && out.head.laser_cal_offset_mm == -1.25 && out.head.laser_cal_xtalk_cps == 4200.0);
+  const std::string laser_copy = config::to_json(out, false);
+  CHECK(laser_copy.find("\"laser_roi\":\"8x6\"") != std::string::npos && laser_copy.find("\"laser_distance_mode\":\"short\"") != std::string::npos);
+  config::Settings laser_round;
+  problems.clear();
+  CHECK(config::load(config::to_json(out, true), base, laser_round, problems));
+  CHECK(laser_round.head.laser_roi_w == 8 && laser_round.head.laser_timing_budget_ms == 15 && laser_round.head.laser_cal_xtalk_cps == 4200.0);
+  // a budget the mode does not have, a bad area and a calibration out of bounds are refused with the field's path
+  problems.clear();
+  CHECK(!config::load(R"({"head":{"laser_distance_mode":"long","laser_timing_budget_ms":15}})", base, out, problems));
+  CHECK(has_problem(problems, "head.laser_timing_budget_ms"));
+  problems.clear();
+  CHECK(!config::load(R"({"head":{"laser_roi":"3x16"}})", base, out, problems));
+  CHECK(has_problem(problems, "head.laser_roi"));
+  problems.clear();
+  CHECK(!config::load(R"({"head":{"laser_cal_offset_mm":90}})", base, out, problems));
+  CHECK(has_problem(problems, "head.laser_cal_offset_mm"));
+
   // a restart is not needed for the name, the language or the time zone; every setting of the head needs one
   config::Settings a = base, b = base;
   b.node_name = "other";

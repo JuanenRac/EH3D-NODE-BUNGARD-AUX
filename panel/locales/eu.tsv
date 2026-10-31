@@ -416,3 +416,37 @@ hSpindleSafety	Probatu babesa ardatz-aldagailua deskonektatuta, horretan fidatu 
 navHelpTab_head	Burua
 help_head_title	Burua
 help_head_text	Buruak nodo honek bakarrik duena biltzen du: kamera bere tamaina eta kalitatearekin, RTSP eta ONVIF transmisioak, mahaia neurtzen duen laserra, ardatzaren sentsoreak eta babes-irteera. Sarbide-tokena programek kamera, egoera eta neurketa irakurtzeko erabiltzen dutena da.\n\nPasahitzak eta tokena idazteko soilik dira: panelak ez ditu inoiz erakusten, kutxa hutsak gordetakoa mantentzen du eta aukeratze-laukiak ezabatzen du. Aldaketak berrabiaraztea behar du.
+fLaserMode	Distantzia modua
+modeShort	Laburra
+modeLong	Luzea
+fLaserBudget	Denbora irakurketa bakoitzeko (ms)
+fLaserRoi	Detektore-area (ZxA, 4tik 16ra)
+fLaserRoiCenter	Eremuaren erdia (0 = automatikoa)
+fLaserOutlier	Irakurketa arraroak: sakabanatze-faktorea
+fLaserCalOn	Baimendu kalibrazioa
+hLaserHw	Modu laburrak 1,3 m inguru iristen da eta argia hobeto jasaten du; luzeak 4 m inguru iristen da eta ilunpean da onena. Irakurketa bakoitzeko denbora luzeagoak egonkortasun handiagoa ematen du (15 ms modu laburrean soilik dago). Detektore-area txiki batek puntu txiki bat begiratzen du. Kalibrazioak irakurketa bakoitzaren esanahia aldatzen du, beraz itzalita dago administratzaile batek aktibatu arte.
+stLaserState	Modua {0}, {1} ms irakurketako, area {2}
+stLaserCal	Kalibrazioa: konpentsazioa {0} mm, elkarrizketa-zarata {1} cps
+stLaserLast	Azken irakurketa {0} mm ({1})
+stLaserNone	Oraindik irakurketarik ez
+fCalTarget	Helburu lauaren distantzia (mm)
+stCalOffset	Kalibratu konpentsazioa
+stCalXtalk	Kalibratu elkarrizketa-zarata
+stCalReset	Garbitu kalibrazioa
+stCalHelp	Jarri helburu lau eta mate bat neurtu duzun distantzian eta idatzi. Kalibratu lehenengo konpentsazioa (adibidez 100 mm-tan), gero elkarrizketa-zarata helburu handiago eta urrunago batekin.
+stCalDone	Kalibratuta: konpentsazioa {0} mm, elkarrizketa-zarata {1} cps
+stCalFail	Kalibrazioa baztertu da ({0})
+stCalOff	Kalibrazioa itzalita dago buruaren ezarpenetan.
+lr_valid	irakurketa ona
+lr_sigma_high	irakurketa gehiegi sakabanatuta
+lr_signal_low	seinalea ahulegia
+lr_out_of_range	tartetik kanpo
+lr_sensor_fault	sentsorearen hutsegitea
+lr_other	sentsoreak baztertu du
+lr_no_readings	irakurketarik ez
+lr_too_few	irakurketa on gutxiegi
+lr_too_noisy	zarata gehiegi
+lr_disabled	kalibrazioa itzalita dago
+lr_bad_target	distantzia ez dago 10 eta 4000 mm artean
+lr_offset_limit	helburua sentsoreak ikusten duenetik 50 mm baino urrunago dago
+lr_no_signal	ez dago seinalerik helburutik

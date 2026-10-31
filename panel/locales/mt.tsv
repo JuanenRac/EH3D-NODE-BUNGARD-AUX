@@ -416,3 +416,37 @@ hSpindleSafety	Ittestja l-protezzjoni bid-drajv tal-ispindlu skonnettjat qabel m
 navHelpTab_head	Ras
 help_head_title	Ras
 help_head_text	Ras fiha dak li għandu biss dan in-nodu: il-kamera u d-daqs u l-kwalità tagħha, l-streams RTSP u ONVIF, il-laser li jkejjel il-mejda, is-sensors tal-ispindlu u l-output tal-protezzjoni. It-token tal-aċċess huwa dak li l-programmi jużaw biex jaqraw il-kamera, l-istat u l-kejl.\n\nL-passwords u t-token huma għall-kitba biss: il-pannell qatt ma juriehom, kaxxa vojta żżomm dik maħżuna u l-kaxxa tal-immarkar timsaħha. Bidla teħtieġ riavvjar.
+fLaserMode	Mod tad-distanza
+modeShort	Qasir
+modeLong	Twil
+fLaserBudget	Ħin għal kull qari (ms)
+fLaserRoi	Żona tad-detetturi (WxL, 4 sa 16)
+fLaserRoiCenter	Ċentru taż-żona (0 = awtomatiku)
+fLaserOutlier	Qari stramb: fattur tal-firxa
+fLaserCalOn	Ippermetti l-kalibrazzjoni
+hLaserHw	Il-mod qasir jilħaq madwar 1.3 m u jittollera aħjar id-dawl; it-twil jilħaq madwar 4 m u huwa l-aħjar fid-dlam. Aktar ħin għal kull qari huwa aktar stabbli (15 ms teżisti biss fil-mod qasir). Żona żgħira tad-detetturi tħares lejn punt żgħir. Il-kalibrazzjoni tbiddel tifsira ta' kull qari, għalhekk tibqa' mitfija sakemm amministratur jixgħelha.
+stLaserState	Mod {0}, {1} ms għal kull qari, żona {2}
+stLaserCal	Kalibrazzjoni: offset {0} mm, crosstalk {1} cps
+stLaserLast	L-aħħar qari {0} mm ({1})
+stLaserNone	Għad m'hemm l-ebda qari
+fCalTarget	Distanza tal-mira ċatta (mm)
+stCalOffset	Ikkalibra l-offset
+stCalXtalk	Ikkalibra c-crosstalk
+stCalReset	Neħħi l-kalibrazzjoni
+stCalHelp	Poġġi mira ċatta u matta f'distanza li kejjilt u ittajpjaha. Ikkalibra l-offset l-ewwel (pereżempju f'100 mm), imbagħad is-crosstalk b'mira akbar u aktar 'il bogħod.
+stCalDone	Ikkalibrat: offset {0} mm, crosstalk {1} cps
+stCalFail	Il-kalibrazzjoni ġiet miċħuda ({0})
+stCalOff	Il-kalibrazzjoni hija mitfija fis-settings tar-ras.
+lr_valid	qari tajjeb
+lr_sigma_high	qrati firxa żżejjed
+lr_signal_low	sinjal dgħajjef wisq
+lr_out_of_range	barra mill-firxa
+lr_sensor_fault	ħsara fis-sensor
+lr_other	miċħud mis-sensor
+lr_no_readings	l-ebda qari
+lr_too_few	ftit wisq qari tajbin
+lr_too_noisy	storbju wisq
+lr_disabled	il-kalibrazzjoni hija mitfija
+lr_bad_target	id-distanza mhix bejn 10 u 4000 mm
+lr_offset_limit	il-mira hija aktar minn 50 mm minn dak li jara s-sensor
+lr_no_signal	l-ebda sinjal mill-mira

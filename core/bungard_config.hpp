@@ -103,6 +103,10 @@ inline void head_write(json::Writer& w, const bungard_aux::Settings& h, bool sec
   if (secrets) w.field("stream_password", h.stream_password); else w.field("stream_password_set", !h.stream_password.empty());
   w.field("laser_enabled", h.laser_enabled).field("laser_samples", static_cast<int>(h.laser_samples)).field("laser_timeout_ms", static_cast<long long>(h.laser_timeout_ms))
       .field("laser_offset_mm", h.laser_offset_mm).field("laser_range_min_mm", h.laser_range_min_mm).field("laser_range_max_mm", h.laser_range_max_mm).field("laser_sigma_max_mm", h.laser_sigma_max_mm);
+  w.field("laser_distance_mode", bungard_aux::distance_mode_text(h.laser_distance_mode)).field("laser_timing_budget_ms", static_cast<long long>(h.laser_timing_budget_ms))
+      .field("laser_roi", bungard_aux::roi_text(h.laser_roi_w, h.laser_roi_h)).field("laser_roi_center", static_cast<long long>(h.laser_roi_center))
+      .field("laser_outlier_k", h.laser_outlier_k).field("laser_outlier_floor_mm", h.laser_outlier_floor_mm).field("laser_calibration_enabled", h.laser_calibration_enabled)
+      .field("laser_cal_offset_mm", h.laser_cal_offset_mm).field("laser_cal_xtalk_cps", h.laser_cal_xtalk_cps);
   w.field("light_enabled", h.light_enabled).field("light_leds", static_cast<long long>(h.light_leds)).field("light_level", static_cast<long long>(h.light_level))
       .field("light_max_level", static_cast<long long>(h.light_max_level)).field("light_tone", bungard_aux::tone_text(h.light_tone)).field("light_auto_off_s", static_cast<long long>(h.light_auto_off_s))
       .field("light_on_at_start", h.light_on_at_start).field("light_order", h.light_order == bungard_aux::ColourOrder::Rgb ? "rgb" : "grb");

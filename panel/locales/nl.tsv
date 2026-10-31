@@ -416,3 +416,37 @@ hSpindleSafety	Test de beveiliging met losgekoppelde spindelregelaar voordat je 
 navHelpTab_head	Kop
 help_head_title	Kop
 help_head_text	Kop bevat wat alleen deze node heeft: de camera met zijn grootte en kwaliteit, de RTSP- en ONVIF-streams, de laser die de tafel meet, de sensoren van de spindel en de beveiligingsuitgang. Het toegangstoken is wat programma's gebruiken om de camera, de status en de meting te lezen.\n\nDe wachtwoorden en het token zijn alleen schrijfbaar: het paneel toont ze nooit, een leeg vak behoudt de opgeslagen waarde en het selectievakje wist hem. Een wijziging heeft een herstart nodig.
+fLaserMode	Afstandsmodus
+modeShort	Kort
+modeLong	Lang
+fLaserBudget	Tijd per meting (ms)
+fLaserRoi	Detectorgebied (BxH, 4 tot 16)
+fLaserRoiCenter	Midden van het gebied (0 = automatisch)
+fLaserOutlier	Uitschieters: spreidingsfactor
+fLaserCalOn	Kalibratie toestaan
+hLaserHw	De korte modus reikt ongeveer 1,3 m en verdraagt licht beter; de lange reikt ongeveer 4 m en is het best in het donker. Meer tijd per meting is stabieler (15 ms bestaat alleen in de korte modus). Een klein detectorgebied kijkt naar een klein punt. Kalibratie verandert wat elke meting betekent en blijft daarom uit tot een beheerder haar inschakelt.
+stLaserState	Modus {0}, {1} ms per meting, gebied {2}
+stLaserCal	Kalibratie: offset {0} mm, overspraak {1} cps
+stLaserLast	Laatste meting {0} mm ({1})
+stLaserNone	Nog geen meting
+fCalTarget	Afstand tot het vlakke doel (mm)
+stCalOffset	Offset kalibreren
+stCalXtalk	Overspraak kalibreren
+stCalReset	Kalibratie wissen
+stCalHelp	Plaats een vlak, mat doel op een afstand die u hebt gemeten en voer die in. Kalibreer eerst de offset (bijvoorbeeld op 100 mm), daarna de overspraak met een groter doel verder weg.
+stCalDone	Gekalibreerd: offset {0} mm, overspraak {1} cps
+stCalFail	Kalibratie geweigerd ({0})
+stCalOff	Kalibratie staat uit in de instellingen van de kop.
+lr_valid	meting goed
+lr_sigma_high	metingen te verspreid
+lr_signal_low	signaal te zwak
+lr_out_of_range	buiten bereik
+lr_sensor_fault	sensorstoring
+lr_other	door de sensor geweigerd
+lr_no_readings	geen metingen
+lr_too_few	te weinig goede metingen
+lr_too_noisy	te veel ruis
+lr_disabled	kalibratie staat uit
+lr_bad_target	afstand niet tussen 10 en 4000 mm
+lr_offset_limit	doel meer dan 50 mm van wat de sensor ziet
+lr_no_signal	geen signaal van het doel

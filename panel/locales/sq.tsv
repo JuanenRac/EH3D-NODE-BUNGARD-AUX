@@ -416,3 +416,37 @@ hSpindleSafety	Provoni mbrojtjen me drejtuesin e boshtit të shkëputur përpara
 navHelpTab_head	Koka
 help_head_title	Koka
 help_head_text	Koka përmban atë që ka vetëm kjo nyje: kamerën dhe madhësinë dhe cilësinë e saj, transmetimet RTSP dhe ONVIF, lazerin që mat tavolinën, sensorët e boshtit dhe daljen e mbrojtjes. Tokeni i hyrjes është ajo që përdorin programet për të lexuar kamerën, gjendjen dhe matjen.\n\nFjalëkalimet dhe tokeni janë vetëm për shkrim: paneli nuk i shfaq kurrë, një kuti e lënë bosh mban të ruajturin dhe kutia e zgjedhjes e fshin. Një ndryshim kërkon rinisje.
+fLaserMode	Mënyra e distancës
+modeShort	I shkurtër
+modeLong	I gjatë
+fLaserBudget	Koha për lexim (ms)
+fLaserRoi	Zona e detektorëve (GjxL, 4 deri 16)
+fLaserRoiCenter	Qendra e zonës (0 = automatike)
+fLaserOutlier	Lexime të çuditshme: faktori i përhapjes
+fLaserCalOn	Lejo kalibrimin
+hLaserHw	Mënyra e shkurtër arrin rreth 1,3 m dhe e toleron më mirë dritën; e gjata arrin rreth 4 m dhe është më e mira në errësirë. Më shumë kohë për lexim është më e qëndrueshme (15 ms ekziston vetëm në mënyrën e shkurtër). Një zonë e vogël detektorësh shikon një pikë të vogël. Kalibrimi ndryshon kuptimin e çdo leximi, prandaj mbetet i fikur derisa ta ndezë një administrator.
+stLaserState	Mënyra {0}, {1} ms për lexim, zona {2}
+stLaserCal	Kalibrimi: zhvendosja {0} mm, ndërhyrja {1} cps
+stLaserLast	Leximi i fundit {0} mm ({1})
+stLaserNone	Ende pa lexim
+fCalTarget	Largësia e objektivit të sheshtë (mm)
+stCalOffset	Kalibro zhvendosjen
+stCalXtalk	Kalibro ndërhyrjen
+stCalReset	Pastro kalibrimin
+stCalHelp	Vendosni një objektiv të sheshtë, mat në një largësi që keni matur dhe shkruajeni. Kalibroni së pari zhvendosjen (p.sh. në 100 mm), pastaj ndërhyrjen me një objektiv më të madh dhe më të largët.
+stCalDone	U kalibrua: zhvendosja {0} mm, ndërhyrja {1} cps
+stCalFail	Kalibrimi u refuzua ({0})
+stCalOff	Kalibrimi është i fikur në cilësimet e kokës.
+lr_valid	leximi i mirë
+lr_sigma_high	lexime shumë të shpërndara
+lr_signal_low	sinjal shumë i dobët
+lr_out_of_range	jashtë rrezes
+lr_sensor_fault	dështim i sensorit
+lr_other	refuzuar nga sensori
+lr_no_readings	pa lexime
+lr_too_few	shumë pak lexime të mira
+lr_too_noisy	shumë zhurmë
+lr_disabled	kalibrimi është i fikur
+lr_bad_target	largësia nuk është mes 10 dhe 4000 mm
+lr_offset_limit	objektivi është më shumë se 50 mm nga ajo që sheh sensori
+lr_no_signal	asnjë sinjal nga objektivi

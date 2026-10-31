@@ -416,3 +416,37 @@ hSpindleSafety	Testi kaitset spindli muunduri lahtiühendatuna, enne kui sellele
 navHelpTab_head	Pea
 help_head_title	Pea
 help_head_text	Pea hoiab seda, mis on ainult sellel sõlmel: kaamera ning selle suurus ja kvaliteet, RTSP ja ONVIF voogedastused, lauda mõõtev laser, spindli andurid ja kaitseväljund. Juurdepääsutoken on see, millega programmid loevad kaamerat, olekut ja mõõtmist.\n\nParoolid ja token on ainult kirjutatavad: paneel ei näita neid kunagi, tühi väli jätab salvestatu alles ja märkeruut kustutab selle. Muudatus vajab taaskäivitust.
+fLaserMode	Kauguserežiim
+modeShort	Lühike
+modeLong	Pikk
+fLaserBudget	Aeg lugemi kohta (ms)
+fLaserRoi	Detektorite ala (LxK, 4 kuni 16)
+fLaserRoiCenter	Ala keskpunkt (0 = automaatne)
+fLaserOutlier	Kõrvalekalduvad lugemid: hajuvusteguri
+fLaserCalOn	Luba kalibreerimine
+hLaserHw	Lühike režiim ulatub umbes 1,3 m ja talub valgust paremini; pikk ulatub umbes 4 m ja sobib kõige paremini pimedas. Pikem aeg lugemi kohta on stabiilsem (15 ms on ainult lühikeses režiimis). Väike detektorite ala vaatab väikest punkti. Kalibreerimine muudab iga lugemi tähendust, seega on see välja lülitatud, kuni administraator selle sisse lülitab.
+stLaserState	Režiim {0}, {1} ms lugemi kohta, ala {2}
+stLaserCal	Kalibreerimine: nihe {0} mm, ülekuuldavus {1} cps
+stLaserLast	Viimane lugem {0} mm ({1})
+stLaserNone	Lugemit veel pole
+fCalTarget	Tasapinnalise sihtmärgi kaugus (mm)
+stCalOffset	Kalibreeri nihe
+stCalXtalk	Kalibreeri ülekuuldavus
+stCalReset	Tühjenda kalibreering
+stCalHelp	Pange tasane matt sihtmärk mõõdetud kaugusele ja sisestage see. Kalibreerige kõigepealt nihe (nt 100 mm juures), seejärel ülekuuldavus suurema ja kaugema sihtmärgiga.
+stCalDone	Kalibreeritud: nihe {0} mm, ülekuuldavus {1} cps
+stCalFail	Kalibreerimisest keelduti ({0})
+stCalOff	Kalibreerimine on pea seadetes välja lülitatud.
+lr_valid	lugem korras
+lr_sigma_high	lugemid liiga hajusad
+lr_signal_low	signaal liiga nõrk
+lr_out_of_range	vahemikust väljas
+lr_sensor_fault	anduri rike
+lr_other	andur keeldus
+lr_no_readings	lugemeid pole
+lr_too_few	liiga vähe häid lugemeid
+lr_too_noisy	liiga mürarikas
+lr_disabled	kalibreerimine on välja lülitatud
+lr_bad_target	kaugus pole vahemikus 10 kuni 4000 mm
+lr_offset_limit	sihtmärk on üle 50 mm kaugusel sellest, mida andur näeb
+lr_no_signal	sihtmärgilt pole signaali

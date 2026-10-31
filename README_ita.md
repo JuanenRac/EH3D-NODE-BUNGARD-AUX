@@ -128,6 +128,7 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 * **Tre sensori di temperatura:** un DS18B20 su un filo, un termistore NTC su un ingresso analogico (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in la pagina Testa) o un termometro a infrarossi MLX90614 che guarda il mandrino senza toccarlo (sul bus I2C del laser); i checksum e le conversioni sono testati su un computer.
 * **Un anello di LED attorno alla telecamera:** otto LED RGB di tipo WS2812 su un solo filo illuminano la zona sotto la testa perché la telecamera veda bene. Il bianco è la luce per la telecamera; i livelli seguono l'occhio e non superano mai un limite; un solo lato dà una luce radente; si può chiedere qualsiasi colore, e l'anello dice com'è andato un controllo (verde, rosso lampeggiante, un punto blu che gira, ambra, rosso veloce). Si spegne da solo dopo un po'. `GET` e `POST /api/light` e `GET /api/snapshot` servono i programmi; le impostazioni sono nel pannello e in `head.cfg` (`light_*`), il pin nel menu del firmware (`AUX_LIGHT_GPIO`).
 * **37 lingue:** il pannello web del nodo parla inglese, spagnolo, italiano, tedesco, francese, portoghese, cinese, giapponese, bulgaro, croato, ceco, danese, olandese, estone, finlandese, greco, ungherese, irlandese, lettone, lituano, maltese, polacco, rumeno, slovacco, sloveno, svedese, norvegese, islandese, ucraino, russo, serbo, albanese, catalano, galiziano, basco, portoghese del Brasile e francese del Canada. Le parole dei 29 lingue oltre le prime otto sono tradotte dal modello e attendono la revisione di madrelingua; un testo che manca a una lingua appare in inglese.
+* **Il laser, adattato al lavoro:** il VL53L1X ha una modalità di distanza (corta o lunga) e un budget di tempo, un'area di ricezione che si può restringere per guardare un punto piccolo, un filtro che scarta le letture lontane dalla mediana, uno stato per ogni lettura (valida, segnale debole, dispersione alta, fuori portata) e una calibrazione a distanza nota (offset e crosstalk) che un amministratore deve prima attivare. Non ancora provato su un sensore.
 
 ## 🔒 Sicurezza e protezione
 
@@ -217,6 +218,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           il file delle impostazioni e i suoi valori sicuri
 │   ├── bungard_config.hpp                       le impostazioni del nodo e la sezione della testa
 │   ├── laser.hpp                                la misura dell'altezza del tavolo
+│   ├── laser_hw.hpp                             i registri del laser
 │   ├── light.hpp                                l'anello di LED: livelli, colori, segnali
 │   ├── camera.hpp                               le telecamere OV2640 e OV5640 e le loro dimensioni
 │   ├── spindle.hpp                              velocità, calore e uscita di protezione

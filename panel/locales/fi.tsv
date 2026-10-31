@@ -416,3 +416,37 @@ hSpindleSafety	Testaa suojaus karan taajuusmuuttaja irrotettuna, ennen kuin luot
 navHelpTab_head	Työstöpää
 help_head_title	Työstöpää
 help_head_text	Työstöpää sisältää sen, mikä on vain tällä solmulla: kameran ja sen koon ja laadun, RTSP- ja ONVIF-suoratoistot, pöytää mittaavan laserin, karan anturit ja suojalähdön. Pääsytunnus on se, jolla ohjelmat lukevat kameran, tilan ja mittauksen.\n\nSalasanat ja tunnus ovat vain kirjoitettavia: paneeli ei koskaan näytä niitä, tyhjä kenttä säilyttää tallennetun ja valintaruutu poistaa sen. Muutos vaatii uudelleenkäynnistyksen.
+fLaserMode	Etäisyystila
+modeShort	Lyhyt
+modeLong	Pitkä
+fLaserBudget	Aika lukemaa kohden (ms)
+fLaserRoi	Ilmaisinalue (LxK, 4–16)
+fLaserRoiCenter	Alueen keskipiste (0 = automaattinen)
+fLaserOutlier	Poikkeavat lukemat: hajontakerroin
+fLaserCalOn	Salli kalibrointi
+hLaserHw	Lyhyt tila yltää noin 1,3 m:iin ja sietää valoa paremmin; pitkä yltää noin 4 m:iin ja on paras pimeässä. Pidempi aika lukemaa kohden on vakaampi (15 ms on vain lyhyessä tilassa). Pieni ilmaisinalue katsoo pientä pistettä. Kalibrointi muuttaa jokaisen lukeman merkityksen, joten se on pois päältä, kunnes ylläpitäjä kytkee sen päälle.
+stLaserState	Tila {0}, {1} ms lukemaa kohden, alue {2}
+stLaserCal	Kalibrointi: poikkeama {0} mm, ylikuuluvuus {1} cps
+stLaserLast	Viimeisin lukema {0} mm ({1})
+stLaserNone	Ei vielä lukemaa
+fCalTarget	Tasaisen kohteen etäisyys (mm)
+stCalOffset	Kalibroi poikkeama
+stCalXtalk	Kalibroi ylikuuluvuus
+stCalReset	Tyhjennä kalibrointi
+stCalHelp	Aseta tasainen, himmeä kohde mittaamallesi etäisyydelle ja syötä se. Kalibroi ensin poikkeama (esim. 100 mm:ssä), sitten ylikuuluvuus suuremmalla, kauempana olevalla kohteella.
+stCalDone	Kalibroitu: poikkeama {0} mm, ylikuuluvuus {1} cps
+stCalFail	Kalibrointi hylättiin ({0})
+stCalOff	Kalibrointi on pois päältä pään asetuksissa.
+lr_valid	lukema hyvä
+lr_sigma_high	lukemat liian hajanaisia
+lr_signal_low	signaali liian heikko
+lr_out_of_range	alueen ulkopuolella
+lr_sensor_fault	anturivika
+lr_other	anturi hylkäsi
+lr_no_readings	ei lukemia
+lr_too_few	liian vähän hyviä lukemia
+lr_too_noisy	liikaa kohinaa
+lr_disabled	kalibrointi on pois päältä
+lr_bad_target	etäisyys ei ole välillä 10–4000 mm
+lr_offset_limit	kohde yli 50 mm päässä siitä, minkä anturi näkee
+lr_no_signal	ei signaalia kohteesta

@@ -128,6 +128,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans la page Tête) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
 * **Un anneau de LED autour de la caméra :** huit LED RVB de type WS2812 sur un seul fil éclairent la zone sous la tête pour que la caméra voie bien. Le blanc est la lumière pour la caméra ; les niveaux suivent l'œil et ne dépassent jamais un plafond ; un seul côté donne une lumière rasante ; on peut demander n'importe quelle couleur, et l'anneau dit comment un contrôle s'est passé (vert, rouge clignotant, un point bleu qui tourne, ambre, rouge rapide). Il s'éteint seul au bout d'un moment. `GET` et `POST /api/light` et `GET /api/snapshot` servent les programmes ; les réglages sont dans le panneau et dans `head.cfg` (`light_*`), la broche dans le menu du firmware (`AUX_LIGHT_GPIO`).
 * **37 langues :** le panneau web du nœud parle anglais, espagnol, italien, allemand, français, portugais, chinois, japonais, bulgare, croate, tchèque, danois, néerlandais, estonien, finnois, grec, hongrois, irlandais, letton, lituanien, maltais, polonais, roumain, slovaque, slovène, suédois, norvégien, islandais, ukrainien, russe, serbe, albanais, catalan, galicien, basque, portugais du Brésil et français du Canada. Les mots des 29 langues au-delà des huit premières sont traduits par le modèle et attendent la relecture de locuteurs natifs ; un texte qu'une langue n'a pas s'affiche en anglais.
+* **Le laser, réglé pour le travail :** le VL53L1X a un mode de distance (court ou long) et un budget de temps, une zone de réception qui peut se resserrer pour viser un petit point, un filtre qui écarte les mesures éloignées de la médiane, un état pour chaque mesure (valide, signal faible, dispersion élevée, hors portée) et un étalonnage à distance connue (décalage et diaphonie) qu'un administrateur doit d'abord activer. Pas encore essayé sur un capteur.
 
 ## 🔒 Sécurité et protection
 
@@ -217,6 +218,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
 │   ├── bungard_config.hpp                       les réglages du nœud et la section de la tête
 │   ├── laser.hpp                                la mesure de la hauteur de la table
+│   ├── laser_hw.hpp                             les registres du laser
 │   ├── light.hpp                                l'anneau de LED : niveaux, couleurs, signaux
 │   ├── camera.hpp                               les caméras OV2640 et OV5640 et leurs tailles
 │   ├── spindle.hpp                              vitesse, chaleur et sortie de protection

@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "camera.hpp"
+#include "laser_hw.hpp"
 
 namespace bungard_aux {
 
@@ -78,6 +79,16 @@ struct Settings {
     double laser_range_min_mm = 20.0;       // readings closer than this are refused
     double laser_range_max_mm = 400.0;      // readings farther than this are refused
     double laser_sigma_max_mm = 0.15;       // a measure whose readings spread more than this is refused (0.01..5)
+    DistanceMode laser_distance_mode = DistanceMode::Long;  // short (to about 1.3 m, less trouble with light) or long (to about 4 m, best in the dark)
+    std::uint32_t laser_timing_budget_ms = 100;  // how long the sensor looks for each reading: short 15, 20, 33, 50, 100, 200 or 500; long the same without 15
+    std::uint8_t laser_roi_w = 16;          // the area of the receiving array that looks at the table, 4..16 detectors wide ...
+    std::uint8_t laser_roi_h = 16;          // ... and high (setting: laser_roi = WxH); a small area looks at a small spot
+    std::uint32_t laser_roi_center = 0;     // 0: the centre the sensor reports; 1..255 the detector the small area is centred on
+    double laser_outlier_k = 3.0;           // a reading farther than this many spreads from the median is thrown away, 1..10
+    double laser_outlier_floor_mm = 0.05;   // the spread is never taken smaller than this, 0.01..1
+    bool laser_calibration_enabled = false; // safety: the calibration at a known distance changes what every reading means, so it is off until an administrator switches it on
+    double laser_cal_offset_mm = 0.0;       // found by the calibration (-50..50), added to every distance
+    double laser_cal_xtalk_cps = 0.0;       // found by the calibration (0..128000), written to the sensor when it starts
 
     // the speed of the spindle
     bool rpm_enabled = true;
@@ -264,6 +275,26 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             if (real(1.0, 4000.0)) s.laser_range_max_mm = d;
         } else if (key == "laser_sigma_max_mm") {
             if (real(0.01, 5.0)) s.laser_sigma_max_mm = d;
+        } else if (key == "laser_distance_mode") {
+            DistanceMode dm;
+            if (distance_mode_from_text(val, dm)) s.laser_distance_mode = dm; else bad("short or long");
+        } else if (key == "laser_timing_budget_ms") {
+            if (num(15, 500)) s.laser_timing_budget_ms = n;
+        } else if (key == "laser_roi") {
+            int w = 0, h = 0;
+            if (parse_roi(val, w, h)) { s.laser_roi_w = static_cast<std::uint8_t>(w); s.laser_roi_h = static_cast<std::uint8_t>(h); } else bad("WxH with each side from 4 to 16");
+        } else if (key == "laser_roi_center") {
+            if (num(0, 255)) s.laser_roi_center = n;
+        } else if (key == "laser_outlier_k") {
+            if (real(1.0, 10.0)) s.laser_outlier_k = d;
+        } else if (key == "laser_outlier_floor_mm") {
+            if (real(0.01, 1.0)) s.laser_outlier_floor_mm = d;
+        } else if (key == "laser_calibration_enabled") {
+            if (flag()) s.laser_calibration_enabled = b;
+        } else if (key == "laser_cal_offset_mm") {
+            if (real(-kMaxCalOffsetMm, kMaxCalOffsetMm)) s.laser_cal_offset_mm = d;
+        } else if (key == "laser_cal_xtalk_cps") {
+            if (real(0.0, kMaxXtalkCps)) s.laser_cal_xtalk_cps = d;
         } else if (key == "rpm_enabled") {
             if (flag()) s.rpm_enabled = b;
         } else if (key == "rpm_pulses_per_rev") {
@@ -325,6 +356,11 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
         problems.push_back({0, "laser_range_max_mm", "must be above laser_range_min_mm; the defaults are used"});
         s.laser_range_min_mm = Settings{}.laser_range_min_mm;
         s.laser_range_max_mm = Settings{}.laser_range_max_mm;
+    }
+    // the timing budget must be one the distance mode has (15 ms is for the short mode only)
+    if (!budget_valid(s.laser_distance_mode, static_cast<int>(s.laser_timing_budget_ms))) {
+        problems.push_back({0, "laser_timing_budget_ms", "not a budget of this distance mode; the default is used"});
+        s.laser_timing_budget_ms = Settings{}.laser_timing_budget_ms;
     }
     // the level of the light cannot start above its own ceiling
     if (s.light_level > s.light_max_level) {

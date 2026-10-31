@@ -416,3 +416,37 @@ hSpindleSafety	Než se na ochranu spolehnete, vyzkoušejte ji s odpojeným měni
 navHelpTab_head	Hlava
 help_head_title	Hlava
 help_head_text	Hlava obsahuje to, co má jen tento uzel: kameru a její velikost a kvalitu, proudy RTSP a ONVIF, laser měřicí stůl, senzory vřetena a výstup ochrany. Přístupový token je to, čím programy čtou kameru, stav a měření.\n\nHesla a token jsou jen pro zápis: panel je nikdy nezobrazí, prázdné pole ponechá uloženou hodnotu a zaškrtávací políčko ji smaže. Změna vyžaduje restart.
+fLaserMode	Režim vzdálenosti
+modeShort	Krátký
+modeLong	Dlouhý
+fLaserBudget	Čas na odečet (ms)
+fLaserRoi	Oblast detektorů (ŠxV, 4 až 16)
+fLaserRoiCenter	Střed oblasti (0 = automaticky)
+fLaserOutlier	Odlehlé odečty: faktor rozptylu
+fLaserCalOn	Povolit kalibraci
+hLaserHw	Krátký režim dosáhne asi 1,3 m a lépe snáší světlo; dlouhý dosáhne asi 4 m a je nejlepší ve tmě. Delší čas na odečet je stabilnější (15 ms existuje jen v krátkém režimu). Malá oblast detektorů sleduje malý bod. Kalibrace mění význam každého odečtu, proto zůstává vypnutá, dokud ji nezapne správce.
+stLaserState	Režim {0}, {1} ms na odečet, oblast {2}
+stLaserCal	Kalibrace: offset {0} mm, přeslech {1} cps
+stLaserLast	Poslední odečet {0} mm ({1})
+stLaserNone	Zatím žádný odečet
+fCalTarget	Vzdálenost rovného cíle (mm)
+stCalOffset	Kalibrovat offset
+stCalXtalk	Kalibrovat přeslech
+stCalReset	Smazat kalibraci
+stCalHelp	Postavte rovný matný cíl do změřené vzdálenosti a zadejte ji. Nejprve kalibrujte offset (např. na 100 mm), poté přeslech větším a vzdálenějším cílem.
+stCalDone	Zkalibrováno: offset {0} mm, přeslech {1} cps
+stCalFail	Kalibrace odmítnuta ({0})
+stCalOff	Kalibrace je vypnutá v nastavení hlavy.
+lr_valid	odečet v pořádku
+lr_sigma_high	odečty příliš rozptýlené
+lr_signal_low	signál příliš slabý
+lr_out_of_range	mimo rozsah
+lr_sensor_fault	porucha senzoru
+lr_other	senzor odmítl
+lr_no_readings	žádné odečty
+lr_too_few	příliš málo dobrých odečtů
+lr_too_noisy	příliš šumu
+lr_disabled	kalibrace je vypnutá
+lr_bad_target	vzdálenost není mezi 10 a 4000 mm
+lr_offset_limit	cíl je více než 50 mm od toho, co snímač vidí
+lr_no_signal	žádný signál z cíle

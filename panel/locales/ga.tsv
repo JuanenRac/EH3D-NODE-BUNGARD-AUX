@@ -416,3 +416,37 @@ hSpindleSafety	Déan tástáil ar an gcosaint le tiomántán na fearsaide díche
 navHelpTab_head	Ceann
 help_head_title	Ceann
 help_head_text	Coinníonn Ceann an méid nach bhfuil ach ag an nód seo: an ceamara agus a mhéid agus a cháilíocht, na sruthanna RTSP agus ONVIF, an léasair a thomhaiseann an tábla, braiteoirí na fearsaide agus an t-aschur cosanta. Is é an comhartha rochtana an rud a úsáideann cláir chun an ceamara, an stádas agus an tomhas a léamh.\n\nNí féidir ach scríobh chuig na pasfhocail agus an comhartha: ní thaispeánann an painéal riamh iad, coinníonn bosca folamh an ceann stóráilte agus scriosann an ticbhosca é. Teastaíonn atosú ó athrú.
+fLaserMode	Mód achair
+modeShort	Gearr
+modeLong	Fada
+fLaserBudget	Am in aghaidh an léamha (ms)
+fLaserRoi	Limistéar brathadóirí (LxA, 4 go 16)
+fLaserRoiCenter	Lár an limistéir (0 = uathoibríoch)
+fLaserOutlier	Léamha corra: fachtóir scaipthe
+fLaserCalOn	Ceadaigh calabrú
+hLaserHw	Sroicheann an mód gearr thart ar 1.3 m agus is fearr a sheasann sé an solas; sroicheann an mód fada thart ar 4 m agus is fearr é sa dorchadas. Tá níos mó ama in aghaidh an léamha níos cobhsaí (níl 15 ms ann ach sa mhód gearr). Féachann limistéar beag brathadóirí ar spota beag. Athraíonn an calabrú brí gach léimh, mar sin fanann sé múchta go dtí go gcuireann riarthóir air é.
+stLaserState	Mód {0}, {1} ms in aghaidh an léamha, limistéar {2}
+stLaserCal	Calabrú: fritháireamh {0} mm, crosstalk {1} cps
+stLaserLast	An léamh deireanach {0} mm ({1})
+stLaserNone	Gan léamh fós
+fCalTarget	Achar an sprice cothrom (mm)
+stCalOffset	Calabraigh an fritháireamh
+stCalXtalk	Calabraigh an crosstalk
+stCalReset	Glan an calabrú
+stCalHelp	Cuir sprioc cothrom, maide ar achar a thomhais tú agus clóscríobh isteach é. Calabraigh an fritháireamh ar dtús (mar shampla ag 100 mm), ansin an crosstalk le sprioc níos mó níos faide uait.
+stCalDone	Calabraithe: fritháireamh {0} mm, crosstalk {1} cps
+stCalFail	Diúltaíodh don chalabrú ({0})
+stCalOff	Tá an calabrú múchta i socruithe an chinn.
+lr_valid	léamh maith
+lr_sigma_high	léamha ró-scaipthe
+lr_signal_low	comhartha ró-lag
+lr_out_of_range	lasmuigh den raon
+lr_sensor_fault	locht ar an braiteoir
+lr_other	dhiúltaigh an braiteoir
+lr_no_readings	gan léamha
+lr_too_few	róbheagán léamha maith
+lr_too_noisy	ró-torannach
+lr_disabled	tá an calabrú múchta
+lr_bad_target	níl an t-achar idir 10 agus 4000 mm
+lr_offset_limit	tá an sprioc níos mó ná 50 mm ón rud a fheiceann an braiteoir
+lr_no_signal	gan comhartha ón sprioc

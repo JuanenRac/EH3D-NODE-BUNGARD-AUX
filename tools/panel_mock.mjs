@@ -57,6 +57,7 @@ const head = {
   camera_enabled: true, camera_model: "auto", camera_width: 1280, camera_height: 720, camera_quality: 12, camera_fps_max: 10,
   rtsp_enabled: true, rtsp_port: 8554, onvif_enabled: true, stream_user: "head", stream_password_set: true,
   laser_enabled: true, laser_samples: 7, laser_timeout_ms: 500, laser_offset_mm: 0, laser_range_min_mm: 10, laser_range_max_mm: 400, laser_sigma_max_mm: 0.2,
+  laser_distance_mode: "long", laser_timing_budget_ms: 100, laser_roi: "16x16", laser_roi_center: 0, laser_outlier_k: 3, laser_outlier_floor_mm: 0.05, laser_calibration_enabled: true, laser_cal_offset_mm: 0, laser_cal_xtalk_cps: 0,
   rpm_enabled: true, rpm_pulses_per_rev: 1, rpm_max: 24000, rpm_stale_ms: 1000,
   temp_sensor: "ds18b20", ntc_series_ohm: 10000, ntc_r25_ohm: 10000, ntc_beta: 3950, temp_warn_c: 55, temp_critical_c: 70, temp_hysteresis_c: 3, protect_output: true, token_set: true,
 };
@@ -174,7 +175,7 @@ const server = createServer(async (request, response) => {
   const writable = () => { if (armed) { json(response, 409, { error: "machine_armed" }); return false; } return true; };
 
   if (method === "GET" && route === "status") return json(response, 200, nodeStatus());
-  if (method === "GET" && route === "head/status") return json(response, 200, { node: "EH3D head", version: manifestVersion, camera: true, camera_model: "ov5640", laser: true, rpm_sensor: true, rpm: 23880, temp_c: 41.5, heat: "ok", protect_open: false, uptime_s: Math.round((Date.now() - started) / 1000) });
+  if (method === "GET" && route === "head/status") return json(response, 200, { node: "EH3D head", version: manifestVersion, camera: true, camera_model: "ov5640", laser: true, rpm_sensor: true, rpm: 23880, temp_c: 41.5, heat: "ok", protect_open: false, uptime_s: Math.round((Date.now() - started) / 1000), laser_mode: "long", laser_budget_ms: 100, laser_roi: "16x16", laser_cal_offset_mm: 0, laser_cal_xtalk_cps: 0, laser_cal_allowed: true, laser_last_mm: 98.3, laser_last_status: "valid", laser_age_ms: 90 });
   if (method === "GET" && route === "head") return json(response, 200, { head });
   if (method === "PUT" && route === "head") {
     if (!needAdmin()) return;
@@ -187,7 +188,8 @@ const server = createServer(async (request, response) => {
     if (body.stream_password_clear === true) head.stream_password_set = false;
     return json(response, 200, { ok: true, restart_required: true });
   }
-  if (method === "POST" && route === "head/measure") return json(response, 200, { ok: true, why: "ok", distance_mm: 12.345, sigma_mm: 0.021, asked: 7, used: 7, rejected: 0 });
+  if (method === "POST" && route === "head/measure") return json(response, 200, { ok: true, why: "ok", distance_mm: 12.345, sigma_mm: 0.021, asked: 7, used: 7, rejected: 0, refused: 0, status: "valid", status_code: 0 });
+  if (method === "POST" && route === "head/laser/calibrate") return json(response, 200, { ok: true, kind: "offset", why: "ok", cal_offset_mm: 1.7, cal_xtalk_cps: 0, used: 48, sigma_mm: 0.04 });
   if (method === "GET" && route === "wifi/scan") { if (!needAdmin()) return; return json(response, 200, { networks: [{ ssid: "HomeRouter", rssi: -48, channel: 6, security: "wpa2" }, { ssid: "Neighbour", rssi: -71, channel: 11, security: "wpa2wpa3" }, { ssid: "CafeOpen", rssi: -80, channel: 1, security: "open" }] }); }
   if (method === "GET" && route === "config") return json(response, 200, { config, channel_auto: 6, firmware: manifestVersion });
   if (method === "PUT" && route === "config") {

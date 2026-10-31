@@ -416,3 +416,37 @@ hSpindleSafety	Testați protecția cu variatorul axului deconectat înainte de a
 navHelpTab_head	Cap
 help_head_title	Cap
 help_head_text	Cap conține ce are doar acest nod: camera și dimensiunea și calitatea ei, fluxurile RTSP și ONVIF, laserul care măsoară masa, senzorii axului și ieșirea de protecție. Tokenul de acces este ceea ce folosesc programele pentru a citi camera, starea și măsurătoarea.\n\nParolele și tokenul sunt doar pentru scriere: panoul nu le arată niciodată, o casetă goală păstrează valoarea stocată, iar caseta de bifare o șterge. O modificare necesită repornire.
+fLaserMode	Mod de distanță
+modeShort	Scurt
+modeLong	Lung
+fLaserBudget	Timp pe citire (ms)
+fLaserRoi	Zona detectoarelor (LxÎ, 4 până la 16)
+fLaserRoiCenter	Centrul zonei (0 = automat)
+fLaserOutlier	Citiri atipice: factor de împrăștiere
+fLaserCalOn	Permite calibrarea
+hLaserHw	Modul scurt ajunge la aproximativ 1,3 m și suportă mai bine lumina; cel lung ajunge la aproximativ 4 m și este cel mai bun în întuneric. Un timp mai lung pe citire este mai stabil (15 ms există doar în modul scurt). O zonă mică de detectoare privește un punct mic. Calibrarea schimbă sensul fiecărei citiri, deci rămâne oprită până o pornește un administrator.
+stLaserState	Mod {0}, {1} ms pe citire, zonă {2}
+stLaserCal	Calibrare: offset {0} mm, diafonie {1} cps
+stLaserLast	Ultima citire {0} mm ({1})
+stLaserNone	Încă nicio citire
+fCalTarget	Distanța țintei plane (mm)
+stCalOffset	Calibrează offsetul
+stCalXtalk	Calibrează diafonia
+stCalReset	Șterge calibrarea
+stCalHelp	Așază o țintă plană, mată, la o distanță pe care ai măsurat-o și introdu-o. Calibrează mai întâi offsetul (de exemplu la 100 mm), apoi diafonia cu o țintă mai mare și mai îndepărtată.
+stCalDone	Calibrat: offset {0} mm, diafonie {1} cps
+stCalFail	Calibrare refuzată ({0})
+stCalOff	Calibrarea este oprită în setările capului.
+lr_valid	citire bună
+lr_sigma_high	citiri prea împrăștiate
+lr_signal_low	semnal prea slab
+lr_out_of_range	în afara intervalului
+lr_sensor_fault	defecțiune a senzorului
+lr_other	refuzată de senzor
+lr_no_readings	nicio citire
+lr_too_few	prea puține citiri bune
+lr_too_noisy	prea mult zgomot
+lr_disabled	calibrarea este oprită
+lr_bad_target	distanța nu e între 10 și 4000 mm
+lr_offset_limit	ținta e la mai mult de 50 mm de ce vede senzorul
+lr_no_signal	niciun semnal de la țintă

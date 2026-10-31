@@ -18,6 +18,9 @@
 #include "sdkconfig.h"
 #include "vl53l1x.h"
 
+#include <mutex>
+
+#include "../core/laser_hw.hpp"
 #include "../core/spindle.hpp"
 #include "../core/thermo.hpp"
 
@@ -72,21 +75,76 @@ bool bus_up() {
 
 vl53l1x_t laser = {};
 bool laser_up = false;
+std::mutex laser_lock;  // one thing at a time talks to the sensor: a measure, a calibration or the status
+
+constexpr std::uint16_t kLaserDev = 0x52;  // the 8-bit address the ST driver uses for 0x29
+
+// the last reading the sensor gave, for the status of the node
+bungard_aux::LaserReading last_reading;
+std::int64_t last_reading_us = -1;
+
+/// Writes the registers of a list (a word goes high byte first, as the platform layer of the library does).
+bool laser_write(const std::vector<bungard_aux::RegWrite>& list) {
+    for (const bungard_aux::RegWrite& w : list) {
+        const std::uint8_t st = w.bytes == 1 ? VL53L1X_ULP_WrByte(kLaserDev, w.reg, static_cast<std::uint8_t>(w.value)) : VL53L1X_ULP_WrWord(kLaserDev, w.reg, w.value);
+        if (st != 0) return false;
+    }
+    return true;
+}
+
+bungard_aux::LaserHw laser_hw_of(const bungard_aux::Settings& c, bool write_xtalk) {
+    bungard_aux::LaserHw hw;
+    hw.mode = c.laser_distance_mode;
+    hw.budget_ms = static_cast<int>(c.laser_timing_budget_ms);
+    hw.roi_w = c.laser_roi_w;
+    hw.roi_h = c.laser_roi_h;
+    hw.roi_center = static_cast<int>(c.laser_roi_center);
+    std::uint8_t optical = 0;
+    if (VL53L1X_ULP_RdByte(kLaserDev, 0x013E, &optical) == 0 && optical > 0) hw.optical_center = optical;  // the centre the sensor itself reports
+    hw.write_xtalk = write_xtalk;
+    hw.xtalk_cps = c.laser_cal_xtalk_cps;
+    return hw;
+}
 
 void laser_start() {
     if (!cfg.laser_enabled || !bus_up()) return;
+    std::lock_guard<std::mutex> guard(laser_lock);
     uint16_t id = 0;
     if (vl53l1x_init(&laser, bus, 0x29) != ESP_OK || vl53l1x_get_sensor_id(&laser, &id) != ESP_OK || id != 0xEACC) {
         ESP_LOGE(TAG, "no VL53L1X answers on the I2C bus (id 0x%04x)", static_cast<unsigned>(id));
         return;
     }
-    if (vl53l1x_sensor_init(&laser) != ESP_OK || vl53l1x_config_long_100ms(&laser) != ESP_OK || vl53l1x_set_intermeasurement_ms(&laser, 100) != ESP_OK ||
-        vl53l1x_start(&laser) != ESP_OK) {
+    // the distance mode, the timing budget, the area and the crosstalk are written after the library's own set-up, from the settings
+    const bungard_aux::LaserHw hw = laser_hw_of(cfg, cfg.laser_cal_xtalk_cps > 0.0);
+    if (vl53l1x_sensor_init(&laser) != ESP_OK || !laser_write(bungard_aux::registers_for(hw)) ||
+        vl53l1x_set_intermeasurement_ms(&laser, static_cast<uint32_t>(bungard_aux::inter_measurement_ms(hw.budget_ms))) != ESP_OK || vl53l1x_start(&laser) != ESP_OK) {
         ESP_LOGE(TAG, "the VL53L1X did not start");
         return;
     }
     laser_up = true;
-    ESP_LOGI(TAG, "laser ready");
+    ESP_LOGI(TAG, "laser ready (%s mode, %d ms, area %dx%d)", bungard_aux::distance_mode_text(hw.mode), hw.budget_ms, hw.roi_w, hw.roi_h);
+}
+
+/// One reading, with the lock held by the caller. `spads` also asks the sensor how many detectors were looking (for the crosstalk calibration).
+bool laser_read_locked(bungard_aux::LaserReading& out, bool spads, uint32_t timeout_ms) {
+    if (!laser_up) return false;
+    vl53l1x_result_t r = {};
+    if (vl53l1x_read(&laser, &r, timeout_ms) != ESP_OK) return false;
+    out = {};
+    out.distance_mm = r.distance_mm;
+    out.status = r.status;
+    out.valid = r.status == 0;
+    out.sigma_mm = r.sigma_mm;
+    out.signal_kcps = r.signal_kcps;
+    if (spads) {
+        std::uint16_t word = 0;
+        std::uint16_t corrected = 0;
+        if (VL53L1X_ULP_RdWord(kLaserDev, 0x008C, &word) == 0) out.spads = static_cast<double>(word >> 8);
+        if (VL53L1X_ULP_RdWord(kLaserDev, 0x0098, &corrected) == 0) out.signal_kcps = static_cast<double>(corrected) * 8.0;  // the signal as the crosstalk calibration needs it
+    }
+    last_reading = out;
+    last_reading_us = esp_timer_get_time();
+    return true;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------ one-wire (DS18B20)
@@ -263,13 +321,44 @@ void init(const bungard_aux::Settings& s) {
     ESP_LOGI(TAG, "sensors ready (laser %s)", laser_up ? "up" : "not found");
 }
 
-bool laser_read(double& distance_mm, bool& valid) {
-    if (!laser_up) return false;
-    vl53l1x_result_t r = {};
-    if (vl53l1x_read(&laser, &r, 300) != ESP_OK) return false;
-    distance_mm = r.distance_mm;
-    valid = r.status == 0;
+bool laser_read(bungard_aux::LaserReading& out) {
+    std::lock_guard<std::mutex> guard(laser_lock);
+    return laser_read_locked(out, false, 300);
+}
+
+bool laser_last(bungard_aux::LaserReading& out, long& age_ms) {
+    std::lock_guard<std::mutex> guard(laser_lock);
+    if (!laser_up || last_reading_us < 0) return false;
+    out = last_reading;
+    age_ms = static_cast<long>((esp_timer_get_time() - last_reading_us) / 1000);
     return true;
+}
+
+bool laser_collect(int count, uint32_t timeout_ms, std::vector<bungard_aux::LaserReading>& out) {
+    std::lock_guard<std::mutex> guard(laser_lock);
+    if (!laser_up) return false;
+    const std::int64_t deadline = esp_timer_get_time() + static_cast<std::int64_t>(timeout_ms) * 1000;
+    while (static_cast<int>(out.size()) < count && esp_timer_get_time() < deadline) {
+        bungard_aux::LaserReading r;
+        if (laser_read_locked(r, true, 300)) out.push_back(r);
+        else vTaskDelay(pdMS_TO_TICKS(5));
+    }
+    return !out.empty();
+}
+
+bool laser_set_xtalk(double cps) {
+    std::lock_guard<std::mutex> guard(laser_lock);
+    if (!laser_up) return false;
+    bungard_aux::LaserHw hw = laser_hw_of(cfg, true);
+    hw.xtalk_cps = cps;
+    std::vector<bungard_aux::RegWrite> list;
+    for (const bungard_aux::RegWrite& w : bungard_aux::registers_for(hw)) {
+        if (w.reg == 0x0016 || w.reg == 0x0018 || w.reg == 0x001A) list.push_back(w);   // only the crosstalk registers
+    }
+    // like the ST driver, the crosstalk is changed while the sensor is not ranging
+    const bool ok = vl53l1x_stop(&laser) == ESP_OK && laser_write(list);
+    vl53l1x_start(&laser);
+    return ok;
 }
 
 double rpm_now() {
