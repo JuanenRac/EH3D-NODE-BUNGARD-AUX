@@ -413,10 +413,10 @@ void register_routes(httpd_handle_t server) {
 std::string live_json() { return live_json_now(); }
 
 void store_calibration(double offset_mm, double xtalk_cps) {
-    config::Settings next = store::settings();
+    eh3d::config::Settings next = eh3d::store::settings();
     next.head.laser_cal_offset_mm = offset_mm;
     next.head.laser_cal_xtalk_cps = xtalk_cps;
-    if (!store::save_settings(next)) ESP_LOGE(TAG, "the calibration of the laser could not be stored");
+    if (!eh3d::store::save_settings(next)) ESP_LOGE(TAG, "the calibration of the laser could not be stored");
 }
 
 std::string calibrate_json(const std::string& kind, double target_mm, bool& found, double& offset_mm, double& xtalk_cps) {
