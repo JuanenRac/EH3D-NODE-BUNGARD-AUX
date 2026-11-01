@@ -12,6 +12,7 @@
 #include "esp_camera.h"
 #include "esp_http_server.h"
 #include "esp_log.h"
+#include "esp_task_wdt.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -25,6 +26,7 @@
 #include "../core/spindle.hpp"
 #include "head.hpp"
 #include "light.hpp"
+#include "node_guard.hpp"
 #include "node_store.hpp"
 #include "sensors.hpp"
 #include "stream.hpp"
@@ -422,7 +424,11 @@ void temperature_task(void*) {
 }
 
 void watch_task(void*) {
+    // The only task that writes the protect output: if it hangs (a bus that does not answer, a lock that is never freed) the output would stay open for good, so the task
+    // watchdog watches it. With the watchdog set to panic, a hang restarts the chip and the pin goes back to input, which opens the stop line.
+    esp_task_wdt_add(nullptr);
     while (true) {
+        esp_task_wdt_reset();
         double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
         bool open = bungard_aux::protect_open(settings, rpm, heat_now());
         protect_is_open = open;
@@ -447,6 +453,7 @@ void start(const bungard_aux::Settings& s) {
     light::start(settings);
     if (settings.camera_enabled) camera_ok = camera_start();
     ::stream::start(settings);
+    eh3d::nodeguard::expect_task("watch");
     xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
     if (settings.temp_sensor != bungard_aux::TempSensor::None) xTaskCreate(temperature_task, "temp", 4096, nullptr, 4, nullptr);
 }
