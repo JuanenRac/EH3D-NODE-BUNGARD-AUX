@@ -5,6 +5,11 @@ All notable changes to this project are documented here.
 ## [Unreleased]
 
 - **The node no longer announces itself as the node of the machine:** the shared firmware base is now kept in step by the base tool, which put this node's own name in the default network name, in the Improv device information and in the headers; the network name the set-up creates is `EH3D-NODE-BUNGARD-AUX-<tail of the MAC>`. A host test fails if the other node's name comes back in those places.
+- **The spindle is watched every 100 ms again:** the temperature has a task of its own (a DS18B20 conversion blocks for up to 750 ms, and the search for a lost sensor longer), so the speed is judged on its own beat and an overspeed opens the protect output without waiting for the thermometer.
+- **Pulses of the speed sensor:** the ring is now a tested class (`core/pulse_ring.hpp`) with unsigned indices (the signed one went negative after about twenty-five days of a spindle at 1 kHz and wrote outside the array), holds a second of pulses at 60000 rpm instead of half a second, and the interrupt takes the lock of the ring. The meter is fed and read under a lock, because the status of the panel and the watch of the spindle both ask for the speed.
+- **The camera picture does not hold the web server:** `/stream` is handed to a task of its own (at most two viewers; a third is told to wait), so the status, the measures and the panel answer while somebody looks at the camera.
+- **RTSP is limited:** at most three sessions at a time, a session that has not started to play within twenty seconds is dropped, and a session whose picture port is already taken ends instead of ignoring it.
+- **The status carries the name of the node** (it was always empty), and the laser's `rejected` counts only the odd readings, not again those the sensor refused.
 
 ## [0.0.5] - Laser, one-wire, speed sensor and camera picture settings
 

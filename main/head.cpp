@@ -1,7 +1,11 @@
 // EH3D-NODE-BUNGARD-AUX - main/head.cpp: what is only the head's: the camera, the laser, the speed and the temperature of the spindle, the protect output and the routes that
 // programs use (the status, the measure, the camera as MJPEG, with the access token of the head or the login of the panel). GPL-3.0-or-later.
 // Written against ESP-IDF 5.5 and built with it; it has not been flashed or run on a board. The rules are in core/ and are tested on a computer.
+#include <atomic>
 #include <cstdio>
+#include <memory>
+#include <mutex>
+#include <new>
 #include <string>
 
 #include "esp_app_desc.h"
@@ -33,8 +37,18 @@ const char* TAG = "aux-head";
 bungard_aux::Settings settings;   // the `head` section of the settings of the node, as it was when the node started
 bungard_aux::Thermal thermal(55.0, 70.0, 3.0);
 volatile bool protect_is_open = true;
-volatile double temp_now_c = 0.0;
-volatile bool temp_now_valid = false;
+// the temperature is read by a task of its own (a DS18B20 takes up to 750 ms to convert); this lock guards what it leaves for the others
+std::mutex thermal_lock;
+double temp_now_c = 0.0;
+bool temp_now_valid = false;
+std::string node_name_text;  // the name of the node, for /api/status
+std::atomic<int> streams_open{0};
+constexpr int kMaxStreams = 2;   // each one is a task with a buffer of a picture; more viewers than this are told to wait
+
+bungard_aux::Heat heat_now() {
+    std::lock_guard<std::mutex> guard(thermal_lock);
+    return thermal.state();
+}
 
 // ------------------------------------------------------------------------------------------------------------------------------ the camera
 
@@ -145,18 +159,21 @@ bool allowed(httpd_req_t* req, bungard_aux::Route route, bungard_aux::Request& r
 
 std::string live_json_now() {
     bungard_aux::Status s;
-    s.name = "";
+    s.name = node_name_text;
     s.version = esp_app_get_description()->version;
     s.camera = camera_ok && settings.camera_enabled;
     if (s.camera) s.camera_model = camera_model_seen;
     s.laser = settings.laser_enabled;
     s.rpm_on = settings.rpm_enabled;
     s.rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
-    s.heat = thermal.state();
+    s.heat = heat_now();
     s.rpm_input = bungard_aux::rpm_input_text(settings.rpm_input);
     sensors::rpm_diagnostics(s.rpm_quality, s.rpm_rejected, s.rpm_level_mv, s.rpm_th_hi_mv, s.rpm_th_lo_mv);
-    s.has_temp = temp_now_valid;
-    s.temp_c = temp_now_c;
+    {
+        std::lock_guard<std::mutex> guard(thermal_lock);
+        s.has_temp = temp_now_valid;
+        s.temp_c = temp_now_c;
+    }
     if (settings.temp_sensor == bungard_aux::TempSensor::Ds18b20) {
         for (const std::string& rom : sensors::temp_sensors_found()) s.temp_roms += (s.temp_roms.empty() ? "" : ",") + rom;
         s.temp_rom_used = sensors::temp_sensor_used();
@@ -333,14 +350,9 @@ esp_err_t snapshot_handler(httpd_req_t* req) {
     return e;
 }
 
-esp_err_t stream_handler(httpd_req_t* req) {
-    bungard_aux::Request r;
-    if (!allowed(req, bungard_aux::Route::Stream, r)) return ESP_OK;
-    if (!camera_ok || !settings.camera_enabled) {
-        httpd_resp_set_status(req, "503 Service Unavailable");
-        httpd_resp_send(req, "{\"error\":\"no camera\"}", HTTPD_RESP_USE_STRLEN);
-        return ESP_OK;
-    }
+// The task that sends the picture of one viewer as MJPEG, until the viewer closes.
+void stream_task(void* arg) {
+    httpd_req_t* req = static_cast<httpd_req_t*>(arg);
     httpd_resp_set_type(req, "multipart/x-mixed-replace;boundary=frame");
     const int period_ms = 1000 / (settings.camera_fps_max ? settings.camera_fps_max : 1);
     while (true) {
@@ -355,22 +367,64 @@ esp_err_t stream_handler(httpd_req_t* req) {
         if (e != ESP_OK) break;  // the viewer closed
         vTaskDelay(pdMS_TO_TICKS(period_ms));
     }
+    httpd_resp_send_chunk(req, nullptr, 0);
+    httpd_req_async_handler_complete(req);
+    streams_open.fetch_sub(1);
+    vTaskDelete(nullptr);
+}
+
+esp_err_t stream_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::Stream, r)) return ESP_OK;
+    if (!camera_ok || !settings.camera_enabled) {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_send(req, "{\"error\":\"no camera\"}", HTTPD_RESP_USE_STRLEN);
+        return ESP_OK;
+    }
+    // The picture goes on for as long as somebody looks at it, so it must not hold the one task of the web server: the request is handed to a task of its own and the
+    // server goes on answering the status, the measures and the panel. At most `kMaxStreams` at a time.
+    if (streams_open.load() >= kMaxStreams) {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_send(req, "{\"error\":\"too many viewers\"}", HTTPD_RESP_USE_STRLEN);
+        return ESP_OK;
+    }
+    httpd_req_t* async = nullptr;
+    if (httpd_req_async_handler_begin(req, &async) != ESP_OK) {
+        httpd_resp_set_status(req, "503 Service Unavailable");
+        httpd_resp_send(req, "{\"error\":\"busy\"}", HTTPD_RESP_USE_STRLEN);
+        return ESP_OK;
+    }
+    streams_open.fetch_add(1);
+    if (xTaskCreate(stream_task, "mjpeg", 6144, async, 4, nullptr) != pdPASS) {
+        streams_open.fetch_sub(1);
+        httpd_resp_set_status(async, "503 Service Unavailable");
+        httpd_resp_send(async, "{\"error\":\"busy\"}", HTTPD_RESP_USE_STRLEN);
+        httpd_req_async_handler_complete(async);
+    }
     return ESP_OK;
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------ the watch of the spindle
 
-void watch_task(void*) {
+// The temperature has a task of its own: a DS18B20 conversion blocks for up to 750 ms (and the search for a lost sensor longer), and the speed must be judged every 100 ms.
+void temperature_task(void*) {
     while (true) {
-        double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
         double c = 0.0;
-        bool got = settings.temp_sensor != bungard_aux::TempSensor::None && sensors::temperature_read(c);
-        if (settings.temp_sensor != bungard_aux::TempSensor::None) {
+        const bool got = sensors::temperature_read(c);
+        {
+            std::lock_guard<std::mutex> guard(thermal_lock);
             thermal.update(c, got);
             temp_now_valid = got;
             if (got) temp_now_c = c;
         }
-        bool open = bungard_aux::protect_open(settings, rpm, thermal.state());
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+
+void watch_task(void*) {
+    while (true) {
+        double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
+        bool open = bungard_aux::protect_open(settings, rpm, heat_now());
         protect_is_open = open;
         sensors::protect_set(open);
         vTaskDelay(pdMS_TO_TICKS(100));
@@ -384,11 +438,17 @@ namespace head {
 void start(const bungard_aux::Settings& s) {
     settings = s;
     thermal = bungard_aux::Thermal(settings.temp_warn_c, settings.temp_critical_c, settings.temp_hysteresis_c);
+    {
+        // the name of the node, for the status (the settings are a big structure: on the heap)
+        const std::unique_ptr<eh3d::config::Settings> node(new (std::nothrow) eh3d::config::Settings(eh3d::store::settings()));
+        if (node) node_name_text = node->node_name;
+    }
     sensors::init(settings);
     light::start(settings);
     if (settings.camera_enabled) camera_ok = camera_start();
     ::stream::start(settings);
     xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
+    if (settings.temp_sensor != bungard_aux::TempSensor::None) xTaskCreate(temperature_task, "temp", 4096, nullptr, 4, nullptr);
 }
 
 void register_routes(httpd_handle_t server) {

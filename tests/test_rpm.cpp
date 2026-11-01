@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../core/aux_config.hpp"
+#include "../core/pulse_ring.hpp"
 #include "../core/spindle.hpp"
 
 using namespace bungard_aux;
@@ -248,7 +249,39 @@ static void the_settings_of_the_input() {
     CHECK(std::string(rpm_quality_text(RpmQuality::Noisy)) == "noisy");
 }
 
+static void the_ring_of_pulses_survives_the_wrap_of_its_index() {
+    PulseRing<8> ring;
+    std::uint32_t tail = 0;
+    std::vector<std::uint64_t> got;
+    auto take = [&]() {
+        tail = PulseRing<8>::resume_from(tail, ring.head());
+        while (tail != ring.head()) got.push_back(ring.at(tail++));
+    };
+    for (std::uint64_t t = 1; t <= 5; ++t) ring.push(t);
+    take();
+    CHECK(got.size() == 5 && got.front() == 1 && got.back() == 5);
+    // more pulses than the ring holds between two readings: the oldest are lost, the newest come in order
+    got.clear();
+    for (std::uint64_t t = 6; t <= 25; ++t) ring.push(t);
+    take();
+    CHECK(got.size() == 8 && got.front() == 18 && got.back() == 25);
+    // the indices go through 2^32: no negative place, nothing lost, the order kept
+    PulseRing<8> wrap(0xFFFFFFFCu);
+    tail = wrap.head();
+    got.clear();
+    for (std::uint64_t t = 100; t < 106; ++t) wrap.push(t);  // the head goes through 0xFFFFFFFF to 2
+    CHECK(wrap.head() == 2u);
+    tail = PulseRing<8>::resume_from(tail, wrap.head());
+    while (tail != wrap.head()) got.push_back(wrap.at(tail++));
+    CHECK(got.size() == 6 && got.front() == 100 && got.back() == 105);
+    // and more than a ring behind across the wrap
+    tail = 0xFFFFFFFCu;
+    for (std::uint64_t t = 106; t < 116; ++t) wrap.push(t);  // the head is now 12: sixteen ahead of the tail
+    CHECK(PulseRing<8>::resume_from(tail, wrap.head()) == wrap.head() - 8u);
+}
+
 int main() {
+    the_ring_of_pulses_survives_the_wrap_of_its_index();
     speeds_from_400_hz_to_1_khz();
     jitter_does_not_move_the_speed_much();
     spikes_of_the_variador_are_refused();

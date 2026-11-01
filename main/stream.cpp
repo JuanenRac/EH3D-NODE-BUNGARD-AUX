@@ -3,6 +3,7 @@
 // discovery) are in core/ and are tested on a computer; this file only carries them over lwIP sockets.
 #include "stream.hpp"
 
+#include <atomic>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -90,9 +91,16 @@ struct Client {
     sockaddr_in peer;
 };
 
+// Each connection is a task with a buffer of a picture: only a few at a time, and one that has not started to play within a short time (a player that connected
+// and said nothing, or never logged in) is dropped.
+constexpr int kMaxRtsp = 3;
+constexpr std::int64_t kSetupLimitUs = 20 * 1000000;
+std::atomic<int> rtsp_open{0};
+
 void rtsp_connection(void* arg) {
     Client cl = *static_cast<Client*>(arg);
     delete static_cast<Client*>(arg);
+    const std::int64_t born_us = esp_timer_get_time();
     bungard_aux::RtspConfig rc;
     rc.user = cfg.stream_user;
     rc.password = cfg.stream_password;
@@ -109,13 +117,14 @@ void rtsp_connection(void* arg) {
     while (run && !session.ended()) {
         // wait for a request, or for the time of the next picture when one is being sent
         timeval tv = {};
-        tv.tv_sec = session.playing() ? 0 : 60;
+        tv.tv_sec = session.playing() ? 0 : 5;
         tv.tv_usec = session.playing() ? 20 * 1000 : 0;
         fd_set rs;
         FD_ZERO(&rs);
         FD_SET(cl.fd, &rs);
         int ready = select(cl.fd + 1, &rs, nullptr, nullptr, &tv);
         if (ready < 0) break;
+        if (!session.playing() && esp_timer_get_time() - born_us > kSetupLimitUs) break;  // it did not get to play in time
         if (ready > 0) {
             char buf[1024];
             int n = recv(cl.fd, buf, sizeof buf, 0);
@@ -152,7 +161,14 @@ void rtsp_connection(void* arg) {
                     local.sin_family = AF_INET;
                     local.sin_addr.s_addr = htonl(INADDR_ANY);
                     local.sin_port = htons(static_cast<std::uint16_t>(rc.server_rtp_port));
-                    bind(udp, reinterpret_cast<sockaddr*>(&local), sizeof local);
+                    if (udp < 0 || bind(udp, reinterpret_cast<sockaddr*>(&local), sizeof local) != 0) {
+                        // the port announced to the player is taken (another session has it): this session cannot send its picture
+                        ESP_LOGW(TAG, "RTSP: the port %u for the picture is not free", static_cast<unsigned>(rc.server_rtp_port));
+                        if (udp >= 0) close(udp);
+                        udp = -1;
+                        run = false;
+                        break;
+                    }
                 }
                 if (next == bungard_aux::Next::Start) next_frame_us = 0;
             }
@@ -182,6 +198,7 @@ void rtsp_connection(void* arg) {
     }
     if (udp >= 0) close(udp);
     close(cl.fd);
+    rtsp_open.fetch_sub(1);
     vTaskDelete(nullptr);
 }
 
@@ -206,7 +223,14 @@ void rtsp_server(void*) {
             delete c;
             continue;
         }
+        if (rtsp_open.load() >= kMaxRtsp) {  // too many: the connection is closed at once
+            close(c->fd);
+            delete c;
+            continue;
+        }
+        rtsp_open.fetch_add(1);
         if (xTaskCreate(rtsp_connection, "rtsp", 8192, c, 5, nullptr) != pdPASS) {
+            rtsp_open.fetch_sub(1);
             close(c->fd);
             delete c;
         }

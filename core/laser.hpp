@@ -138,7 +138,7 @@ inline Measure measure_distance(const std::vector<LaserReading>& readings, int a
     for (double x : inside) {
         if (std::fabs(x - med) <= cut) kept.push_back(x);
     }
-    m.rejected = static_cast<int>(readings.size() - kept.size());
+    m.rejected = static_cast<int>(inside.size() - kept.size());  // the odd ones out; the readings the sensor refused are counted in `refused`
     m.used = static_cast<int>(kept.size());
     if (m.used * 2 < asked) {
         m.why = MeasureWhy::TooFew;

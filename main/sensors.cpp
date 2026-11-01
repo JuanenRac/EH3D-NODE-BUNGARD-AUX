@@ -25,6 +25,7 @@
 
 #include "../core/laser_hw.hpp"
 #include "../core/onewire.hpp"
+#include "../core/pulse_ring.hpp"
 #include "../core/spindle.hpp"
 #include "../core/thermo.hpp"
 
@@ -34,17 +35,15 @@ namespace {
 const char* TAG = "aux-sensors";
 
 // the interrupt only stores the time of the pulse; the meter is fed from the task that asks for the speed
-constexpr int kRing = 512;  // at 60000 rpm with one mark a thousand pulses a second come: the ring holds half a second of them between two readings
-volatile std::uint64_t ring[kRing];
-volatile int ring_head = 0;
+bungard_aux::PulseRing<1024> ring;  // at 60000 rpm with one mark a thousand pulses a second come: the ring holds a second of them between two readings
 portMUX_TYPE ring_lock = portMUX_INITIALIZER_UNLOCKED;
 bungard_aux::RpmMeter* meter = nullptr;
-int tail = 0;
+std::mutex meter_lock;  // the meter is fed and read by one task at a time (the watch of the spindle and the status of the panel both ask for the speed)
+std::uint32_t tail = 0;
 
 void push_pulse(std::uint64_t t_us) {
     portENTER_CRITICAL(&ring_lock);
-    ring[ring_head % kRing] = t_us;
-    ring_head = ring_head + 1;
+    ring.push(t_us);
     portEXIT_CRITICAL(&ring_lock);
 }
 
@@ -116,8 +115,9 @@ void rpm_adc_start() {
 
 #if CONFIG_AUX_RPM_GPIO >= 0
 void IRAM_ATTR on_pulse(void*) {
-    ring[ring_head % kRing] = static_cast<std::uint64_t>(esp_timer_get_time());
-    ring_head = ring_head + 1;
+    portENTER_CRITICAL_ISR(&ring_lock);
+    ring.push(static_cast<std::uint64_t>(esp_timer_get_time()));
+    portEXIT_CRITICAL_ISR(&ring_lock);
 }
 #endif
 
@@ -489,19 +489,21 @@ bool laser_set_xtalk(double cps) {
 
 double rpm_now() {
     if (!meter) return 0.0;
-    int head;
+    std::lock_guard<std::mutex> guard(meter_lock);
+    std::uint32_t head;
     portENTER_CRITICAL(&ring_lock);
-    head = ring_head;
+    head = ring.head();
     portEXIT_CRITICAL(&ring_lock);
-    if (head - tail > kRing) tail = head - kRing;  // more pulses than the ring holds: the oldest are lost
-    while (tail < head) {
-        meter->pulse(ring[tail % kRing]);
+    tail = bungard_aux::PulseRing<1024>::resume_from(tail, head);  // more pulses than the ring holds: the oldest are lost
+    while (tail != head) {
+        meter->pulse(ring.at(tail));
         ++tail;
     }
     return meter->rpm(static_cast<std::uint64_t>(esp_timer_get_time()));
 }
 
 void rpm_diagnostics(std::string& quality, std::uint64_t& rejected, int& level_mv, int& threshold_hi_mv, int& threshold_lo_mv) {
+    std::lock_guard<std::mutex> guard(meter_lock);
     quality = meter ? bungard_aux::rpm_quality_text(meter->quality()) : "none";
     rejected = meter ? meter->pulses_rejected() : 0;
     level_mv = 0;

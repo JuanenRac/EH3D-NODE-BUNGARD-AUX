@@ -295,6 +295,12 @@ static void odd_readings() {
     off.cal_offset_mm = -0.5;
     m = measure_distance({{100.0, true}, {100.0, true}, {100.0, true}}, 3, off);
     CHECK(m.ok && near(m.distance_mm, 101.0));
+    // the readings the sensor refused are counted once, as refused, and not again as odd ones out
+    std::vector<LaserReading> some_refused;
+    for (int i = 0; i < 7; ++i) some_refused.push_back({100.0, true});
+    for (int i = 0; i < 3; ++i) some_refused.push_back({0.0, false, 4});
+    m = measure_distance(some_refused, 10, lim);
+    CHECK(m.ok && m.refused == 3 && m.rejected == 0 && m.used == 7);
 }
 
 static void calibration_offset() {
