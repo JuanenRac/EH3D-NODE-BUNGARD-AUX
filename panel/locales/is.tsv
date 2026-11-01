@@ -477,3 +477,16 @@ fCamSaturation	Mettun (-2 til 2)
 fCamAutoExp	Sjálfvirk lýsing
 fCamExposure	Lýsing handvirkt (0 til 1200)
 fCamAwb	Sjálfvirkt hvítjafnvægi
+saveNothing	Ekkert að vista ennþá: breyttu stillingu og Vista verður virkt
+exportConfig	Flytja út stillingar
+importConfig	Flytja inn stillingar
+configBackupTitle	Öryggisafrit af stillingunum
+configBackupNote	Skráin inniheldur allar stillingar þessa hnúts, með Wi-Fi lykilorðum og aðgangslykli: geymdu hana þar sem aðeins þú getur lesið hana. Innflutningur hleður skránni í eyðublöð síðnanna Net, Wi-Fi og vél án þess að senda neitt; athugaðu þau og ýttu á Vista á hverri síðu. Innflutningur breytir aldrei auðkenni hnútsins (auðkenni, nafni og hýsilnafni).
+importBadFile	Skráin er ekki stillingaskrá EH3D-hnúts
+importLoaded	Skráin er hlaðin í eyðublöðin, ekkert hefur verið sent enn. Athugaðu síðurnar og ýttu á Vista á hverri sem sýnir breytingar.
+importFixedAddress	Skráin ber fast vistfang: tveir hnútar á einu neti geta ekki deilt því.
+clockTitle	Klukka og endurræsingar
+ntpEnabled	Sækja tímann frá tímaþjóni (NTP)
+ntpServer	Tímaþjónn (NTP)
+autoRestart	Endurræsa sig sjálfur á hverjum
+autoRestartNever	Aldrei

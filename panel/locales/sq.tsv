@@ -477,3 +477,16 @@ fCamSaturation	Ngopja (-2 deri 2)
 fCamAutoExp	Ekspozim automatik
 fCamExposure	Ekspozim me dorë (0 deri 1200)
 fCamAwb	Balanca e bardhë automatike
+saveNothing	Ende nuk ka çfarë të ruhet: ndryshoni një cilësim dhe Ruaj aktivizohet
+exportConfig	Eksporto cilësimet
+importConfig	Importo cilësimet
+configBackupTitle	Kopja rezervë e cilësimeve
+configBackupNote	Skedari përmban të gjitha cilësimet e këtij nyjeje, me fjalëkalimet Wi-Fi dhe tokenin e hyrjes: ruajeni aty ku vetëm ju mund ta lexoni. Importimi e ngarkon skedarin në format e faqeve Rrjeti, Wi-Fi dhe makina pa dërguar asgjë; kontrollojini dhe shtypni Ruaj në çdo faqe. Identiteti i nyjes (id, emri dhe emri i hostit) nuk ndryshohet kurrë nga një importim.
+importBadFile	Skedari nuk është skedar cilësimesh i një nyjeje EH3D
+importLoaded	Skedari është ngarkuar në forma, ende nuk është dërguar asgjë. Kontrolloni faqet dhe shtypni Ruaj në secilën që tregon ndryshime.
+importFixedAddress	Skedari mban një adresë fikse: dy nyje në një rrjet nuk mund ta ndajnë.
+clockTitle	Ora dhe rindezjet
+ntpEnabled	Merr orën nga një server ore (NTP)
+ntpServer	Serveri i orës (NTP)
+autoRestart	Rindizu vetë çdo
+autoRestartNever	Kurrë

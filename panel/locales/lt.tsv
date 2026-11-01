@@ -477,3 +477,16 @@ fCamSaturation	Sodrumas (nuo -2 iki 2)
 fCamAutoExp	Automatinė ekspozicija
 fCamExposure	Ekspozicija rankiniu būdu (0–1200)
 fCamAwb	Automatinis baltos spalvos balansas
+saveNothing	Dar nėra ko išsaugoti: pakeiskite nustatymą ir Išsaugoti taps aktyvus
+exportConfig	Eksportuoti nustatymus
+importConfig	Importuoti nustatymus
+configBackupTitle	Nustatymų atsarginė kopija
+configBackupNote	Faile yra visi šio mazgo nustatymai su Wi-Fi slaptažodžiais ir prieigos raktu: laikykite jį ten, kur gali skaityti tik jūs. Importuojant failas įkeliamas į puslapių Tinklas, Wi-Fi ir mašina formas nieko nesiunčiant; patikrinkite jas ir kiekviename puslapyje spustelėkite Išsaugoti. Importas niekada nekeičia mazgo tapatybės (id, pavadinimo ir pagrindinio kompiuterio vardo).
+importBadFile	Failas nėra EH3D mazgo nustatymų failas
+importLoaded	Failas įkeltas į formas, kol kas nieko neišsiųsta. Patikrinkite puslapius ir spustelėkite Išsaugoti kiekviename, kuriame rodomi pakeitimai.
+importFixedAddress	Faile yra fiksuotas adresas: du mazgai viename tinkle jo dalytis negali.
+clockTitle	Laikrodis ir paleidimai iš naujo
+ntpEnabled	Gauti laiką iš laiko serverio (NTP)
+ntpServer	Laiko serveris (NTP)
+autoRestart	Pats paleisti iš naujo kas
+autoRestartNever	Niekada

@@ -477,3 +477,16 @@ fCamSaturation	Sáithiú (-2 go 2)
 fCamAutoExp	Nochtadh uathoibríoch
 fCamExposure	Nochtadh de láimh (0 go 1200)
 fCamAwb	Cothromaíocht bháin uathoibríoch
+saveNothing	Níl aon rud le sábháil go fóill: athraigh socrú agus beidh Sábháil gníomhach
+exportConfig	Easpórtáil na socruithe
+importConfig	Iompórtáil na socruithe
+configBackupTitle	Cúltaca na socruithe
+configBackupNote	Tá gach socrú den nód seo sa chomhad, lena phasfhocail Wi-Fi agus a chomhartha rochtana: coinnigh é áit nach féidir ach leatsa é a léamh. Luchtaíonn an t-iompórtáil an comhad i bhfoirmeacha na leathanach Líonra, Wi-Fi agus meaisín gan aon rud a sheoladh; seiceáil iad agus brúigh Sábháil ar gach leathanach. Ní athraíonn iompórtáil féiniúlacht an nóid (id, ainm agus óstainm) riamh.
+importBadFile	Ní comhad socruithe nód EH3D é an comhad
+importLoaded	Tá an comhad luchtaithe sna foirmeacha, níor seoladh aon rud fós. Seiceáil na leathanaigh agus brúigh Sábháil ar gach ceann a thaispeánann athruithe.
+importFixedAddress	Tá seoladh seasta sa chomhad: ní féidir le dhá nód ar líonra amháin é a roinnt.
+clockTitle	Clog agus atosuithe
+ntpEnabled	Faigh an t-am ó fhreastalaí ama (NTP)
+ntpServer	Freastalaí ama (NTP)
+autoRestart	Atosaigh é féin gach
+autoRestartNever	Choíche

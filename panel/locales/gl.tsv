@@ -477,3 +477,16 @@ fCamSaturation	Saturación (-2 a 2)
 fCamAutoExp	Exposición automática
 fCamExposure	Exposición manual (0 a 1200)
 fCamAwb	Balance de brancos automático
+saveNothing	Aínda non hai nada que gardar: cambia un axuste e activarase Gardar
+exportConfig	Exportar a configuración
+importConfig	Importar a configuración
+configBackupTitle	Copia de seguridade da configuración
+configBackupNote	O ficheiro contén todos os axustes deste nodo, cos seus contrasinais Wi-Fi e o token de acceso: gárdao onde só ti o poidas ler. Importar carga o ficheiro nos formularios das páxinas Rede, Wi-Fi e máquina sen enviar nada; revísaos e preme Gardar en cada páxina. A identidade do nodo (id, nome e nome de host) nunca cambia cunha importación.
+importBadFile	O ficheiro non é un ficheiro de configuración dun nodo EH3D
+importLoaded	O ficheiro está cargado nos formularios, aínda non se enviou nada. Revisa as páxinas e preme Gardar en cada unha que mostre cambios.
+importFixedAddress	O ficheiro trae un enderezo fixo: dous nodos nunha rede non o poden compartir.
+clockTitle	Reloxo e reinicios
+ntpEnabled	Tomar a hora dun servidor de hora (NTP)
+ntpServer	Servidor de hora (NTP)
+autoRestart	Reiniciarse só cada
+autoRestartNever	Nunca

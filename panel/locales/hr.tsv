@@ -477,3 +477,16 @@ fCamSaturation	Zasićenost (-2 do 2)
 fCamAutoExp	Automatska ekspozicija
 fCamExposure	Ručna ekspozicija (0 do 1200)
 fCamAwb	Automatski balans bijele
+saveNothing	Još nema što spremiti: promijenite postavku i Spremi će se uključiti
+exportConfig	Izvezi postavke
+importConfig	Uvezi postavke
+configBackupTitle	Sigurnosna kopija postavki
+configBackupNote	Datoteka sadrži sve postavke ovog čvora, s Wi-Fi lozinkama i pristupnim tokenom: čuvajte je ondje gdje je samo vi možete čitati. Uvoz učitava datoteku u obrasce stranica Mreža, Wi-Fi i stroj bez slanja; provjerite ih i na svakoj stranici pritisnite Spremi. Uvoz nikada ne mijenja identitet čvora (id, naziv i naziv hosta).
+importBadFile	Datoteka nije datoteka postavki EH3D čvora
+importLoaded	Datoteka je učitana u obrasce, još ništa nije poslano. Provjerite stranice i pritisnite Spremi na svakoj koja prikazuje promjene.
+importFixedAddress	Datoteka nosi fiksnu adresu: dva čvora u istoj mreži ne mogu je dijeliti.
+clockTitle	Sat i ponovna pokretanja
+ntpEnabled	Uzimaj vrijeme s vremenskog poslužitelja (NTP)
+ntpServer	Vremenski poslužitelj (NTP)
+autoRestart	Sam se ponovno pokreni svakih
+autoRestartNever	Nikad

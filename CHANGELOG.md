@@ -10,6 +10,11 @@ All notable changes to this project are documented here.
 - **The camera picture does not hold the web server:** `/stream` is handed to a task of its own (at most two viewers; a third is told to wait), so the status, the measures and the panel answer while somebody looks at the camera.
 - **RTSP is limited:** at most three sessions at a time, a session that has not started to play within twenty seconds is dropped, and a session whose picture port is already taken ends instead of ignoring it.
 - **The status carries the name of the node** (it was always empty), and the laser's `rejected` counts only the odd readings, not again those the sensor refused.
+- **A save bar that is always there:** Save and Save and restart show on every page with settings (off, with a note, until something changes) and Restart is always at hand for an administrator; before, the buttons appeared only after a change and the whole bar was hidden otherwise.
+- **Backup of the settings from the panel:** the System page exports every setting to a `.json` file (it holds the Wi-Fi passwords and the token) and imports one back into the forms without sending anything, so each page is saved with its own Save; the id, name and host name of the node are never changed by an import.
+- **The backup Wi-Fi networks are saved:** `networkBody()` did not carry `sta.backup`, so adding or removing one showed no change and was never sent. The fields the network pages send are now one list (`NETWORK_FIELDS`) and `tests/check_panel_text.py` fails when a page paints a field that is not in it (or the machine body lacks one it paints).
+- **More of the node's settings in the panel:** the Network page edits the name of the node, the time server and its use, the time zone and the periodic restart (the firmware already had them).
+- **Texts:** thirteen new texts in the 37 languages. Written for the browser and tried only on a computer, not on a board.
 
 ## [0.0.5] - Laser, one-wire, speed sensor and camera picture settings
 

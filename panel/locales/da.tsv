@@ -477,3 +477,16 @@ fCamSaturation	Farvemætning (-2 til 2)
 fCamAutoExp	Automatisk eksponering
 fCamExposure	Manuel eksponering (0 til 1200)
 fCamAwb	Automatisk hvidbalance
+saveNothing	Intet at gemme endnu: ændr en indstilling, så bliver Gem aktiv
+exportConfig	Eksportér indstillinger
+importConfig	Importér indstillinger
+configBackupTitle	Sikkerhedskopi af indstillingerne
+configBackupNote	Filen indeholder alle indstillinger for denne node med Wi-Fi-adgangskoder og adgangstoken: opbevar den et sted, hvor kun du kan læse den. Import indlæser filen i formularerne på siderne Netværk, Wi-Fi og maskine uden at sende noget; kontrollér dem og tryk på Gem på hver side. Nodens identitet (id, navn og værtsnavn) ændres aldrig af en import.
+importBadFile	Filen er ikke en indstillingsfil for en EH3D-node
+importLoaded	Filen er indlæst i formularerne, intet er sendt endnu. Kontrollér siderne og tryk på Gem på hver side, der viser ændringer.
+importFixedAddress	Filen indeholder en fast adresse: to noder på ét netværk kan ikke dele den.
+clockTitle	Ur og genstart
+ntpEnabled	Hent tiden fra en tidsserver (NTP)
+ntpServer	Tidsserver (NTP)
+autoRestart	Genstart af sig selv hver
+autoRestartNever	Aldrig
