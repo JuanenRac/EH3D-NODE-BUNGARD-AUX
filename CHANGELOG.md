@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.6] - A save bar that is always there, a backup of the settings, a quicker guard of the spindle and a stream that does not block
+
 - **The task that writes the protect output is watched:** it is subscribed to the task watchdog (set to panic in `sdkconfig.defaults`) and registered with the node guard, so a hang restarts the chip, the pin goes back to input and the stop line opens instead of staying open for good. Not built or run on a board.
 - **The node no longer announces itself as the node of the machine:** the shared firmware base is now kept in step by the base tool, which put this node's own name in the default network name, in the Improv device information and in the headers; the network name the set-up creates is `EH3D-NODE-BUNGARD-AUX-<tail of the MAC>`. A host test fails if the other node's name comes back in those places.
 - **The spindle is watched every 100 ms again:** the temperature has a task of its own (a DS18B20 conversion blocks for up to 750 ms, and the search for a lost sensor longer), so the speed is judged on its own beat and an overspeed opens the protect output without waiting for the thermometer.
