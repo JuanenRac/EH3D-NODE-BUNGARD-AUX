@@ -74,7 +74,7 @@ static void jitter_does_not_move_the_speed_much() {
 
 static void spikes_of_the_variador_are_refused() {
     RpmMeter m(1, 1500);
-    m.set_limit_rpm(30000);  // the fastest gap that is believed: 60e6 / (30000 * 1.25) = 1600 us
+    m.set_limit_rpm(30000);  // the fastest gap that is believed: 60e6 / (30000 * 4) = 500 us
     double t = 0;
     for (int i = 0; i < 60; ++i) {
         t += 2500;
@@ -90,6 +90,20 @@ static void spikes_of_the_variador_are_refused() {
         m.pulse(static_cast<std::uint64_t>(t));
     }
     CHECK(m.quality() == RpmQuality::Good);
+}
+
+static void an_overspeed_is_read_as_an_overspeed() {
+    for (double factor : {1.3, 2.0, 3.0}) {
+        RpmMeter m(1, 1500);
+        m.set_limit_rpm(24000);
+        double t = 0;
+        const double gap = 60.0e6 / (24000.0 * factor);
+        for (int i = 0; i < 60; ++i) {
+            t += gap;
+            m.pulse(static_cast<std::uint64_t>(t));
+        }
+        CHECK(m.rpm(static_cast<std::uint64_t>(t)) > 24000.0 * (factor - 0.1));
+    }
 }
 
 static void a_spike_in_the_middle_of_a_turn_is_refused_even_without_the_limit() {
@@ -238,6 +252,7 @@ int main() {
     speeds_from_400_hz_to_1_khz();
     jitter_does_not_move_the_speed_much();
     spikes_of_the_variador_are_refused();
+    an_overspeed_is_read_as_an_overspeed();
     a_spike_in_the_middle_of_a_turn_is_refused_even_without_the_limit();
     a_missed_pulse_is_mended();
     start_and_stop();

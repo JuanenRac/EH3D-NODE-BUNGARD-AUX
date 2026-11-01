@@ -28,12 +28,14 @@ inline const char* rpm_quality_text(RpmQuality q) {
 
 class RpmMeter {
 public:
+    static constexpr double kLimitFactor = 4.0;
+
     RpmMeter(std::uint32_t pulses_per_rev, std::uint32_t stale_ms) : ppr_(pulses_per_rev ? pulses_per_rev : 1), stale_us_(static_cast<std::uint64_t>(stale_ms) * 1000) {}
 
     /// The fastest the pulses can come: a pulse closer than this to the one before it is noise (the variador and the motor make spikes), not a turn. Derived from the speed the spindle
-    /// may reach (`rpm_max`, with a quarter of room above it) and the pulses of a turn; 0 turns the filter off.
+    /// may reach (`rpm_max`, with room above it up to four times, so that an overspeed is still read as an overspeed and can open the protect output) and the pulses of a turn; 0 turns the filter off.
     void set_limit_rpm(std::uint32_t rpm_max) {
-        min_gap_us_ = rpm_max ? static_cast<std::uint64_t>(60.0e6 / (static_cast<double>(rpm_max) * 1.25 * static_cast<double>(ppr_))) : 0;
+        min_gap_us_ = rpm_max ? static_cast<std::uint64_t>(60.0e6 / (static_cast<double>(rpm_max) * kLimitFactor * static_cast<double>(ppr_))) : 0;
     }
 
     /// A pulse at `t_us` (a clock that only goes up).
