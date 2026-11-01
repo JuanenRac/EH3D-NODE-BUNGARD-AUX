@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - checking GitHub's own releases for a newer firmware and installing it, next to the manual upload of the panel (web_server.cpp's /api/v1/ota): both end up in the same
+// EH3D-NODE-BUNGARD-AUX - checking GitHub's own releases for a newer firmware and installing it, next to the manual upload of the panel (web_server.cpp's /api/v1/ota): both end up in the same
 // OTA slot through the same esp_ota_* calls, this one just gets its bytes from the Internet instead of the panel's own upload. Nothing here replaces the manual path - a board with no
 // Internet route, or a fleet an operator wants to hold back, still updates exactly as it always has.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.

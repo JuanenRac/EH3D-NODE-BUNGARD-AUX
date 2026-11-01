@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - reading the settings kept in flash after an update. Pure: tested on a computer.
+// EH3D-NODE-BUNGARD-AUX - reading the settings kept in flash after an update. Pure: tested on a computer.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include <cstddef>

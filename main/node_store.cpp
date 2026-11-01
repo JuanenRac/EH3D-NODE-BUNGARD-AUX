@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - what the node keeps in flash: its settings and its panel users.
+// EH3D-NODE-BUNGARD-AUX - what the node keeps in flash: its settings and its panel users.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #include "node_store.hpp"
 

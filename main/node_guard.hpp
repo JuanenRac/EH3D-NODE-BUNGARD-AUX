@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the node's own watchdog over its health (rules in core/node_guard.hpp, tested on a computer). Nothing here has run on a board.
+// EH3D-NODE-BUNGARD-AUX - the node's own watchdog over its health (rules in core/node_guard.hpp, tested on a computer). Nothing here has run on a board.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include "core/node_guard.hpp"

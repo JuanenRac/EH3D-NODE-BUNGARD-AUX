@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EH3D-NODE-BUNGARD - compresses the web panel for embedding in the firmware.
+"""EH3D-NODE-BUNGARD-AUX - compresses the web panel for embedding in the firmware.
 Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 
     pack_panel.py PANEL_DIR OUT_DIR

@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the update from GitHub and the copy of a firmware slot. See github_update.hpp. GPL-3.0-or-later.
+// EH3D-NODE-BUNGARD-AUX - the update from GitHub and the copy of a firmware slot. See github_update.hpp. GPL-3.0-or-later.
 // Written against ESP-IDF 5.5 and built with it; it has not been run on a board against the real GitHub.
 #include "github_update.hpp"
 

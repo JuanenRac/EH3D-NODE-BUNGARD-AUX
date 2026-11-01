@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - decides how the node's Wi-Fi is built from its settings: a station, an access point, both, or the setup access point.
+// EH3D-NODE-BUNGARD-AUX - decides how the node's Wi-Fi is built from its settings: a station, an access point, both, or the setup access point.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // The layouts:

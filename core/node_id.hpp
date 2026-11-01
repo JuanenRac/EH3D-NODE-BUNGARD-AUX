@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - node identifier rules shared with the message contract.
+// EH3D-NODE-BUNGARD-AUX - node identifier rules shared with the message contract.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include <cstddef>

@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the node's own TLS certificate.
+// EH3D-NODE-BUNGARD-AUX - the node's own TLS certificate.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #include "tls_cert.hpp"
 

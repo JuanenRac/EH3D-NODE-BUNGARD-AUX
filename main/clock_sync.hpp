@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the node's clock: the time zone, the time server (SNTP) and, when the time server is off, setting the time by hand.
+// EH3D-NODE-BUNGARD-AUX - the node's clock: the time zone, the time server (SNTP) and, when the time server is off, setting the time by hand.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // The zone applies at start and the time server starts as soon as the network has an address.

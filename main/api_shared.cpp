@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - what the panel does over HTTP, whatever the node controls: the status, the settings and the search for Wi-Fi networks.
+// EH3D-NODE-BUNGARD-AUX - what the panel does over HTTP, whatever the node controls: the status, the settings and the search for Wi-Fi networks.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #include "api_shared.hpp"
 

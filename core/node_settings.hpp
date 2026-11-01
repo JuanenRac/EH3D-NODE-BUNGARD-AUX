@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the settings every EH3D node has, whatever it controls: its identity, the way in (Ethernet or Wi-Fi), the access point, the clock, the panel's mode, the language and the periodic restart.
+// EH3D-NODE-BUNGARD-AUX - the settings every EH3D node has, whatever it controls: its identity, the way in (Ethernet or Wi-Fi), the access point, the clock, the panel's mode, the language and the periodic restart.
 // Read, checked and written here, once, for any node that adopts it.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
@@ -36,7 +36,7 @@ struct IpSettings {
 
 struct AccessPoint {
   bool enabled = false;
-  std::string ssid = "EH3D-NODE-BUNGARD";
+  std::string ssid = "EH3D-NODE-BUNGARD-AUX";
   WifiSecurity security = WifiSecurity::kWpa2;
   std::string password;
   int channel = 0;  // 0: one of 1, 6 or 11 chosen from the node's MAC

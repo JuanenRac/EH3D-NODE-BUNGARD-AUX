@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - random bytes for session tokens, salts and the setup code.
+// EH3D-NODE-BUNGARD-AUX - random bytes for session tokens, salts and the setup code.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #include "entropy.hpp"
 

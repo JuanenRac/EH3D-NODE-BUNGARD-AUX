@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the node's web panel and its JSON API.
+// EH3D-NODE-BUNGARD-AUX - the node's web panel and its JSON API.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include <string>

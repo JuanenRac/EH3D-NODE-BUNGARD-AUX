@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - which file of a GitHub release is the firmware of THIS board, and which is its checksum. Pure: tested on a computer.
+// EH3D-NODE-BUNGARD-AUX - which file of a GitHub release is the firmware of THIS board, and which is its checksum. Pure: tested on a computer.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // A release of an EH3D node attaches, for each board, the image that the panel of the node can install, `<image>-<version>-<board>-app.bin` (for example

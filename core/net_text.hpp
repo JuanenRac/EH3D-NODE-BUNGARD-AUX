@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - checks for the network settings an operator types: IPv4 addresses, netmasks, host names, Wi-Fi names and keys.
+// EH3D-NODE-BUNGARD-AUX - checks for the network settings an operator types: IPv4 addresses, netmasks, host names, Wi-Fi names and keys.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include <cstdint>

@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - Improv Wi-Fi over the USB serial line. Nothing here has run on a board.
+// EH3D-NODE-BUNGARD-AUX - Improv Wi-Fi over the USB serial line. Nothing here has run on a board.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // What the packets mean is in core/improv.hpp (tested on a computer). This file reads the bytes the console receives (the chip's USB Serial/JTAG, polled: nothing is read when nothing was
@@ -71,7 +71,7 @@ void answer(const improv::Rpc& rpc) {
     case improv::Command::kGetCurrentState: send(improv::state_packet(current_state())); break;
     case improv::Command::kGetDeviceInfo: {
       const std::unique_ptr<config::Settings> s(new (std::nothrow) config::Settings(store::settings()));   // on the heap: the set-up task has a small stack
-      send(improv::result_packet(improv::Command::kGetDeviceInfo, {"EH3D-NODE-BUNGARD", api::version_text(), "ESP32-S3", s ? s->node_name : std::string()}));
+      send(improv::result_packet(improv::Command::kGetDeviceInfo, {"EH3D-NODE-BUNGARD-AUX", api::version_text(), "ESP32-S3", s ? s->node_name : std::string()}));
       break;
     }
     case improv::Command::kGetWifiNetworks: send(improv::result_packet(improv::Command::kGetWifiNetworks, {})); break;   // an empty answer ends the list: scanning is the panel's

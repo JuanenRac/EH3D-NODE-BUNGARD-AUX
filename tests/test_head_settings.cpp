@@ -1,6 +1,8 @@
 // EH3D-NODE-BUNGARD-AUX - host tests of the settings document of the node: the head's section read, checked and written the way the web panel does.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #include <cstdio>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 #include "../core/bungard_config.hpp"
@@ -14,7 +16,27 @@ static bool has_problem(const config::Problems& problems, const std::string& pat
   return false;
 }
 
+// The text of a source file of the node, found from the folder the test runs in.
+static std::string source(const std::string& rel) {
+  for (const char* up : {"", "../", "../../", "../../../"}) {
+    std::ifstream in(std::string(up) + rel, std::ios::binary);
+    if (!in) continue;
+    std::ostringstream all;
+    all << in.rdbuf();
+    return all.str();
+  }
+  return std::string();
+}
+
 int main() {
+  // this node does not announce itself as the node of the machine: not by its default network name, nor in the places that name it by hand
+  CHECK(config::default_settings("a1b2c3").ap.ssid == "EH3D-NODE-BUNGARD-AUX");
+  for (const char* rel : {"core/node_settings.hpp", "main/improv_serial.cpp", "main/web_server.cpp"}) {
+    const std::string text = source(rel);
+    if (text.empty()) { std::printf("FAIL cannot find %s\n", rel); ++fails; continue; }
+    CHECK(text.find("\"EH3D-NODE-BUNGARD\"") == std::string::npos);
+    CHECK(text.find("\"EH3D-NODE-BUNGARD-\"") == std::string::npos);
+  }
   config::Settings base = config::default_settings("a1b2c3");
   base.sta.enabled = true; base.sta.ssid = "home"; base.sta.password = "home-password";   // a node needs a network to be valid
   config::Settings out;

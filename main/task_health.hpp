@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the stack each task of the node has left (read from FreeRTOS), for the panel's status.
+// EH3D-NODE-BUNGARD-AUX - the stack each task of the node has left (read from FreeRTOS), for the panel's status.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 #pragma once
 #include <string>

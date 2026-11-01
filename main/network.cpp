@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the node's network: the Ethernet port of the s3-eth board, the Wi-Fi station and the Wi-Fi access point.
+// EH3D-NODE-BUNGARD-AUX - the node's network: the Ethernet port of the s3-eth board, the Wi-Fi station and the Wi-Fi access point.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // Nothing here has run on a board. The station joins the network of the settings and joins it again 3 seconds after any loss; the access point (the setup

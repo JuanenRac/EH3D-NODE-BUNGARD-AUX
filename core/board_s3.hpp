@@ -1,4 +1,4 @@
-// EH3D-NODE-BUNGARD - the two boards this firmware is built for, and which GPIO pins of each may be given to the machine (the serial line, the lamps, the spindle).
+// EH3D-NODE-BUNGARD-AUX - the two boards this firmware is built for, and which GPIO pins of each may be given to the machine (the serial line, the lamps, the spindle).
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 //
 // One firmware, two board profiles (chosen when the image is built; the host tests build both):

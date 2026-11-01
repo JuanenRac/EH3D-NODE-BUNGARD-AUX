@@ -1,4 +1,4 @@
-/* EH3D-NODE-BUNGARD panel - the pages. Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
+/* EH3D-NODE-BUNGARD-AUX panel - the pages. Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
    text.js (the eight languages) is joined in front of this file when the panel is packed, so LANGS and L exist here.
    No framework and no inline style: the panel is served with a strict content-security policy. The panel moves nothing:
    it shows what the head reads, measures the table on request and edits the settings of the node. */

@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The node no longer announces itself as the node of the machine:** the shared firmware base is now kept in step by the base tool, which put this node's own name in the default network name, in the Improv device information and in the headers; the network name the set-up creates is `EH3D-NODE-BUNGARD-AUX-<tail of the MAC>`. A host test fails if the other node's name comes back in those places.
+
 ## [0.0.5] - Laser, one-wire, speed sensor and camera picture settings
 
 - **The picture of the camera, set from the panel:** `camera_hmirror`, `camera_vflip`, `camera_brightness`, `camera_contrast`, `camera_saturation` (-2 to 2), `camera_auto_exposure` and, by hand, `camera_exposure` (0 to 1200), and `camera_auto_whitebalance`, applied to the sensor when the camera starts (the OV2640 and the OV5640 take all of them; one that the sensor does not have is left alone). Tested on a computer (`tests/test_aux.cpp`); not tried on a camera yet. The focus of the OV5640 is fixed: its automatic focus needs the firmware of the focus motor that the driver does not load.
