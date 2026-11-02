@@ -8,6 +8,8 @@ All notable changes to this project are documented here.
 - **`docs/HARDWARE_CHECKLIST.md`:** the steps to do by hand on the bench, with what must happen and where to write the result.
 - **Issue forms and a pull-request template:** the repository now has the bug report (it asks for the versions that `eh3d-updater --cli status --offline` lists), documentation, improvement and hardware validation forms (with the machine used) and the pull-request template of the suite.
 
+- **Three checks that nothing ran are removed from `tools/`:** `_doc_policy.py`, `_readme_parity.py` and `_tracked_names.py` were copies of the checks of another family that no workflow, script or document named, and their header said another family kept them in step. The checks that run are in `tools/ci_validate.py`.
+
 ## [0.0.6] - A save bar that is always there, a backup of the settings, a quicker guard of the spindle and a stream that does not block
 
 - **The task that writes the protect output is watched:** it is subscribed to the task watchdog (set to panic in `sdkconfig.defaults`) and registered with the node guard, so a hang restarts the chip, the pin goes back to input and the stop line opens instead of staying open for good. Not built or run on a board.
