@@ -39,6 +39,11 @@ class ToyRtsp:
                 c.close()
 
     def close(self):
+        # on Linux closing a listening socket that another thread waits on in accept() does not close it: it is shut down first
+        try:
+            self.sock.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass
         self.sock.close()
 
 
