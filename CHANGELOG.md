@@ -4,6 +4,9 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A self-test for the day the head meets the hardware:** `tools/selftest.py` reads the node (version, state, temperature, rpm, light state, a camera picture, the stream, the RTSP answer, one laser reading, the settings export compared with itself and never applied, backup networks, OTA state) and writes `selftest_aux_<time>.txt` with one line per step. With `--active` and a typed confirmation (or `--yes`) it switches the light ring on for two seconds and puts it back, checking the result even when a step fails. It never runs the laser calibration; nothing is written without `--active`; the tokens and the password are never printed. Its tests run against a toy node in the CI.
+- **`docs/HARDWARE_CHECKLIST.md`:** the steps to do by hand on the bench, with what must happen and where to write the result.
+
 ## [0.0.6] - A save bar that is always there, a backup of the settings, a quicker guard of the spindle and a stream that does not block
 
 - **The task that writes the protect output is watched:** it is subscribed to the task watchdog (set to panic in `sdkconfig.defaults`) and registered with the node guard, so a hang restarts the chip, the pin goes back to input and the stop line opens instead of staying open for good. Not built or run on a board.

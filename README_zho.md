@@ -195,6 +195,8 @@ python -I tools/ci_validate.py
 
 电脑测试（`build.bat` 或 `./build.sh`，再 `ctest`）是两个程序，全部通过：`test_aux`（103 项检查）覆盖设置文件（默认值、取值、错误取值、彼此矛盾的限值）、激光测量（中位数、被丢弃的异常读数、偏移、被标为坏的读数、量程、没有读数、过大的离散度）、主轴转速（每转脉冲数、减速的主轴、脉冲停止即停转）、温度（回差、传感器故障）、保护输出，以及网络用语（请求行、路由、头或查询中的令牌、读数个数、状态和测量的 JSON、高度图一个点的那一行）。固件未被覆盖：它能编译，但测试在电脑上运行。 第二个程序 `test_stream`（100 项检查）覆盖视频：登录所用哈希对照公布的向量（MD5、SHA-1、base64 以及 RFC 2617 的 Digest 示例）、RTSP 请求与整个会话（登录、SDP、UDP 与交错传输、play、pause、teardown、错误会话、拒绝多播）、JPEG 的 RTP 载荷（首包中的量化表、顺序、标记位、序号回绕），以及 ONVIF（发现、带标准示例的用户令牌、开放与受保护的调用、各项服务和未实现的调用）。 除这两个程序外，`test_head_settings` 以与面板相同的方式读取、检查和写入设置文档的钻头部分（密码和令牌仍为只写），固件基础的共用测试涵盖从 GitHub 更新、时钟和用户。
 
+探头接上硬件当天的自检：`python tools/selftest.py --host 节点 --token TOKEN` 读取节点（版本、状态、设置导出、备用网络、温度、转速、灯光、摄像头画面、视频流、RTSP、一次激光读数），每步一行写入报告；加上 `--active` 并手动输入确认后，还会点亮灯环两秒再恢复原状。它从不执行激光校准。其测试在 CI 中对一个玩具节点运行（`python -I -m unittest discover -s tools -p "test_*.py"`）。手动步骤见 [docs/HARDWARE_CHECKLIST.md](docs/HARDWARE_CHECKLIST.md)。
+
 ## 🏗️ 构建与发布
 
 版本在 `eh3d.project.json` 中，每个版本在 [CHANGELOG.md](CHANGELOG.md) 中都有条目。`build.sh` / `build.bat` 构建并运行电脑测试，`test.sh` / `test.bat` 运行仓库检查。固件用 ESP-IDF 5.5.5 构建（`idf.py build`），尚未进行；还没有发布过版本。
