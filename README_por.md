@@ -44,13 +44,13 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito e compila-se; não foi gravado. |
-| Testes | 🟢 | 11 programas de teste passam (`ctest`): as definições, a medição do laser, a velocidade e a temperatura do fuso, a saída de proteção, as palavras da rede, o vídeo (RTSP, ONVIF), o documento de definições do cabeçote, a atualização a partir do GitHub, o relógio, o que todos os nós partilham, os textos do painel em 37 línguas e as pilhas das tarefas. |
+| Testes | 🟡 | 11 programas de teste passam (`ctest`): as definições, a medição do laser, a velocidade e a temperatura do fuso, a saída de proteção, as palavras da rede, o vídeo (RTSP, ONVIF), o documento de definições do cabeçote, a atualização a partir do GitHub, o relógio, o que todos os nós partilham, os textos do painel em 37 línguas e as pilhas das tarefas. |
 | Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do VL53L1X está escrito mas nunca correu, por isso ainda não se fez nenhuma medição. |
 | Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores do DS18B20, do NTC e do MLX90614 estão escritos mas nunca correram. |
 | Câmara | 🟠 | O fluxo MJPEG está escrito para o conector de câmara da placa e precisa dos pinos da placa em menuconfig; não foi executado. |
 | Vídeo (RTSP, ONVIF) | 🟡 | A sessão RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, por UDP ou dentro da ligação TCP, acesso Digest e Basic), a carga RTP de JPEG, a descoberta e os serviços SOAP do ONVIF (perfis, codificadores com os seus tamanhos, endereços do fluxo e do instantâneo, o token de utilizador) estão testados num computador; nenhum leitor nem gravador recebeu o vídeo de uma placa real. |
 | Hardware real | 🔴 | Nenhuma placa executou este firmware e nada foi ligado a uma máquina. |
-| Documentação | 🟢 | README em oito idiomas, a referência das definições e as notas de hardware. |
+| Documentação | 🟡 | README em oito idiomas, a referência das definições e as notas de hardware. |
 
 ## 🎯 Visão geral
 

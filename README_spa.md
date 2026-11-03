@@ -44,13 +44,13 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito y se compila; no se ha grabado. |
-| Pruebas | 🟢 | 11 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en 37 idiomas y las pilas de las tareas. |
+| Pruebas | 🟡 | 11 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en 37 idiomas y las pilas de las tareas. |
 | Láser (altura de la mesa) | 🟡 | La medida a partir de varias lecturas (mediana, lecturas raras descartadas, dispersión comprobada, rango y desplazamiento) está probada; el controlador del VL53L1X está escrito pero nunca se ha ejecutado, así que aún no se ha hecho ninguna medida. |
 | Husillo | 🟡 | La velocidad a partir de los pulsos de un sensor (cualquier número por vuelta, parado cuando cesan los pulsos), la temperatura con aviso, nivel crítico e histéresis y la salida de protección están probadas; los controladores del DS18B20, del NTC y del MLX90614 están escritos pero nunca se han ejecutado. |
 | Cámara | 🟠 | El flujo MJPEG está escrito para el conector de cámara de la placa y necesita los pines de la placa en menuconfig; no se ha ejecutado. |
 | Vídeo (RTSP, ONVIF) | 🟡 | La sesión RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, por UDP o dentro de la conexión TCP, acceso Digest y Basic), la carga RTP de JPEG, el descubrimiento y los servicios SOAP de ONVIF (perfiles, codificadores con sus tamaños, direcciones del flujo y de la instantánea, el token de usuario) están probados en un ordenador; ningún reproductor ni grabador ha tomado el vídeo de una placa real. |
 | Hardware real | 🔴 | Ninguna placa ha ejecutado este firmware y no se ha conectado nada a una máquina. |
-| Documentación | 🟢 | README en ocho idiomas, la referencia de ajustes y las notas de hardware. |
+| Documentación | 🟡 | README en ocho idiomas, la referencia de ajustes y las notas de hardware. |
 
 ## 🎯 Resumen
 

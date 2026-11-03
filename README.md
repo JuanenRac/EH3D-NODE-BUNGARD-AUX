@@ -44,13 +44,13 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
-| Tests | 🟢 | 11 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in 37 languages and the stacks of the tasks. |
+| Tests | 🟡 | 11 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in 37 languages and the stacks of the tasks. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
 | Video (RTSP, ONVIF) | 🟡 | The RTSP session (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, over UDP or inside the TCP connection, Digest and Basic login), the RTP payload of JPEG, the discovery and the SOAP services of ONVIF (profiles, encoders with their sizes, stream and snapshot addresses, the user token) are tested on a computer; no player or recorder has taken the video from a real board. |
 | Real hardware | 🔴 | No board has run this firmware and nothing has been connected to a machine. |
-| Documentation | 🟢 | README in eight languages, the settings reference and the hardware notes. |
+| Documentation | 🟡 | README in eight languages, the settings reference and the hardware notes. |
 
 ## 🎯 Overview
 

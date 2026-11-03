@@ -44,13 +44,13 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Software | 🟠 | Il progetto ESP-IDF (rete cablata con un W5500, server web, telecamera, impulsi del mandrino, uscita di protezione, il file delle impostazioni nella sua partizione) è scritto e si compila; non è stato caricato. |
-| Test | 🟢 | 11 programmi di test passano (`ctest`): le impostazioni, la misura del laser, la velocità e la temperatura del mandrino, l'uscita di protezione, le parole della rete, il video (RTSP, ONVIF), il documento delle impostazioni della testa, l'aggiornamento da GitHub, l'orologio, ciò che condividono tutti i nodi, i testi del pannello in 37 lingue e gli stack dei task. |
+| Test | 🟡 | 11 programmi di test passano (`ctest`): le impostazioni, la misura del laser, la velocità e la temperatura del mandrino, l'uscita di protezione, le parole della rete, il video (RTSP, ONVIF), il documento delle impostazioni della testa, l'aggiornamento da GitHub, l'orologio, ciò che condividono tutti i nodi, i testi del pannello in 37 lingue e gli stack dei task. |
 | Laser (altezza del tavolo) | 🟡 | La misura da più letture (mediana, letture anomale scartate, dispersione verificata, intervallo e offset) è provata; il driver del VL53L1X è scritto ma non è mai stato eseguito, quindi non è ancora stata fatta alcuna misura. |
 | Mandrino | 🟡 | La velocità dagli impulsi di un sensore (qualsiasi numero per giro, fermo quando gli impulsi cessano), la temperatura con avviso, livello critico e isteresi e l'uscita di protezione sono provate; i driver del DS18B20, dell'NTC e dell'MLX90614 sono scritti ma non sono mai stati eseguiti. |
 | Telecamera | 🟠 | Il flusso MJPEG è scritto per il connettore della telecamera della scheda e richiede i pin della scheda in menuconfig; non è stato eseguito. |
 | Video (RTSP, ONVIF) | 🟡 | La sessione RTSP (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, su UDP o dentro la connessione TCP, accesso Digest e Basic), il payload RTP di JPEG, la discovery e i servizi SOAP di ONVIF (profili, encoder con le loro dimensioni, indirizzi del flusso e dello snapshot, il token utente) sono provati su un computer; nessun player o registratore ha preso il video da una scheda reale. |
 | Hardware reale | 🔴 | Nessuna scheda ha eseguito questo firmware e nulla è stato collegato a una macchina. |
-| Documentazione | 🟢 | README in otto lingue, il riferimento delle impostazioni e le note sull'hardware. |
+| Documentazione | 🟡 | README in otto lingue, il riferimento delle impostazioni e le note sull'hardware. |
 
 ## 🎯 Panoramica
 

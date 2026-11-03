@@ -44,13 +44,13 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben und baut; es wurde nicht geflasht. |
-| Tests | 🟢 | 11 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
+| Tests | 🟡 | 11 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
 | Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des VL53L1X ist geschrieben, aber nie gelaufen, daher wurde noch keine Messung gemacht. |
 | Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber des DS18B20, des NTC und des MLX90614 sind geschrieben, aber nie gelaufen. |
 | Kamera | 🟠 | Der MJPEG-Strom ist für den Kameraanschluss der Platine geschrieben und braucht die Pins der Platine in menuconfig; er ist nicht gelaufen. |
 | Video (RTSP, ONVIF) | 🟡 | Die RTSP-Sitzung (OPTIONS, DESCRIBE, SETUP, PLAY, PAUSE, TEARDOWN, über UDP oder in der TCP-Verbindung, Digest- und Basic-Anmeldung), die RTP-Nutzlast von JPEG, die Erkennung und die SOAP-Dienste von ONVIF (Profile, Encoder mit ihren Größen, Adressen von Strom und Schnappschuss, das Benutzer-Token) sind auf einem Rechner getestet; kein Player und kein Rekorder hat das Video von einer echten Platine geholt. |
 | Echte Hardware | 🔴 | Keine Platine hat diese Firmware ausgeführt, und nichts wurde an eine Maschine angeschlossen. |
-| Dokumentation | 🟢 | README in acht Sprachen, die Einstellungsreferenz und die Hardware-Notizen. |
+| Dokumentation | 🟡 | README in acht Sprachen, die Einstellungsreferenz und die Hardware-Notizen. |
 
 ## 🎯 Überblick
 
