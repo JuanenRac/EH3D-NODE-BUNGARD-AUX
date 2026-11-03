@@ -3,6 +3,7 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+- **A watchdog for the manual build:** `.github/workflows/build-watchdog.yml` looks every hour for a build that stays queued or running longer than the limit in `.github/build-watchdog.json` and opens (or updates) an issue `build-stuck`, which it closes when no build is stuck.
 - **Firmware builds in GitHub Actions:** `.github/workflows/firmware-build.yml` (manual, owner only) builds the images in the pinned ESP-IDF container, writes `SHA256SUMS`, a build manifest and a provenance attestation, checks the version inside every image, opens an issue `build-failed` when it fails and prepares an unsigned draft release only after the owner approves it; the signature stays on the maintainer's computer. See `docs/BUILD.md`.
 
 - **A self-test for the day the head meets the hardware:** `tools/selftest.py` reads the node (version, state, temperature, rpm, light state, a camera picture, the stream, the RTSP answer, one laser reading, the settings export compared with itself and never applied, backup networks, OTA state) and writes `selftest_aux_<time>.txt` with one line per step. With `--active` and a typed confirmation (or `--yes`) it switches the light ring on for two seconds and puts it back, checking the result even when a step fails. It never runs the laser calibration; nothing is written without `--active`; the tokens and the password are never printed. Its tests run against a toy node in the CI.
