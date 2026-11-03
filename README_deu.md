@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.6` |
 | Reifegrad | Gerüst |
-| Tests | 11 Testprogramme am Computer |
+| Tests | 12 Testprogramme am Computer |
 | Technologie-Stack | C++17, ESP-IDF 5.5, ESP32-S3, Netzwerk W5500 |
 | Auf echter Hardware | Nein: die Firmware lässt sich bauen, wurde aber nicht geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -44,7 +44,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben und baut; es wurde nicht geflasht. |
-| Tests | 🟡 | 11 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
+| Tests | 🟡 | 12 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
 | Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des VL53L1X ist geschrieben, aber nie gelaufen, daher wurde noch keine Messung gemacht. |
 | Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber des DS18B20, des NTC und des MLX90614 sind geschrieben, aber nie gelaufen. |
 | Kamera | 🟠 | Der MJPEG-Strom ist für den Kameraanschluss der Platine geschrieben und braucht die Pins der Platine in menuconfig; er ist nicht gelaufen. |

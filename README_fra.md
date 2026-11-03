@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.6` |
 | Maturité | Échafaudage |
-| Tests | 11 programmes de test sur l'ordinateur |
+| Tests | 12 programmes de test sur l'ordinateur |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
 | Sur du matériel réel | Non : le firmware se compile mais n'a pas été flashé, et rien n'a été branché à une machine |
 
@@ -44,7 +44,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit et se compile ; il n'a pas été flashé. |
-| Tests | 🟡 | 11 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en 37 langues et les piles des tâches. |
+| Tests | 🟡 | 12 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en 37 langues et les piles des tâches. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |

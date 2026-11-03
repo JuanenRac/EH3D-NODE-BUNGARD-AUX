@@ -12,6 +12,7 @@ All notable changes to this project are documented here.
 
 - **Three checks that nothing ran are removed from `tools/`:** `_doc_policy.py`, `_readme_parity.py` and `_tracked_names.py` were copies of the checks of another family that no workflow, script or document named, and their header said another family kept them in step. The checks that run are in `tools/ci_validate.py`.
 - **The workflows are hardened:** every action is pinned by its commit with its version in a comment, and the checkouts keep no credentials.
+- **More host tests:** the settings, the thermistor and its limits, the laser, the speed of the spindle, the light and the words of the panel, at their edges.
 
 ## [0.0.6] - A save bar that is always there, a backup of the settings, a quicker guard of the spindle and a stream that does not block
 
