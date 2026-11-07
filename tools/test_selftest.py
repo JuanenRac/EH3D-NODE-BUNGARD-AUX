@@ -54,6 +54,7 @@ class ToyHead:
         self.mode, self.writes = mode, []
         self.light = {"light": light_enabled, "on": False, "level": 0, "max_level": 80}
         self.light_calls = []
+        self.selfcheck, self.selfcheck_codes = "ok", ""
         node = self
 
         class H(http.server.BaseHTTPRequestHandler):
@@ -84,7 +85,7 @@ class ToyHead:
                 if node.mode == "broken":
                     return self._send(200, b"{nope")
                 if path == "/api/status":
-                    return self._send(200, {"node": "toy", "version": "0.0.2", "camera": True, "camera_model": "ov5640", "laser": True, "rpm_sensor": True, "rpm": 0, "temp_c": 31.5, "heat": "ok", "uptime_s": 5})
+                    return self._send(200, {"node": "toy", "version": "0.0.2", "camera": True, "camera_model": "ov5640", "laser": True, "rpm_sensor": True, "rpm": 0, "temp_c": 31.5, "heat": "ok", "uptime_s": 5, "selfcheck": node.selfcheck, "selfcheck_codes": node.selfcheck_codes})
                 if path in ("/api/light", "/api/snapshot", "/stream"):
                     if not self._token():
                         return self._send(401, {"error": "unauthorized"})
@@ -171,6 +172,17 @@ class SelfTest(unittest.TestCase):
             self.assertIn(text, report)
         self.assertEqual(sorted(self.node.writes), ["/api/measure?samples=3", "/api/v1/login"])
         self.assertEqual(self.node.light_calls, [])
+
+    def test_the_node_own_check_is_read(self):
+        code, out, report = run(base(self.node, self.rtsp))
+        self.assertIn("OK       head: the node's own check | selfcheck=ok codes=none", report)
+        self.node.selfcheck, self.node.selfcheck_codes = "warn", "AUX-S02"
+        code, out, report = run(base(self.node, self.rtsp))
+        self.assertIn("OK       head: the node's own check | selfcheck=warn codes=AUX-S02", report)
+        self.node.selfcheck, self.node.selfcheck_codes = "fail", "AUX-L02"
+        code, out, report = run(base(self.node, self.rtsp))
+        self.assertIn("FALLO    head: the node's own check | the node reports a fault: AUX-L02", report)
+        self.assertNotEqual(code, 0)
 
     def test_secrets_are_never_printed(self):
         code, out, report = run(base(self.node, self.rtsp))

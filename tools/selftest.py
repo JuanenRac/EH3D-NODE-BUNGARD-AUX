@@ -307,6 +307,17 @@ def check_head(args, rep, http_, st):
 
     rep.step("head: status (no token needed)", status)
 
+    def own_check():
+        # the node judges itself (docs/CONTRACT.md): a fail is a failed step, a warn is shown; an older firmware has no such key
+        verdict = live.get("selfcheck")
+        if verdict is None:
+            raise Skip("this firmware has no self-check")
+        if verdict == "fail":
+            raise Fail("the node reports a fault: %s" % (live.get("selfcheck_codes") or "no code"))
+        return "selfcheck=%s codes=%s" % (verdict, live.get("selfcheck_codes") or "none")
+
+    rep.step("head: the node's own check", own_check)
+
     def temp():
         t = live.get("temp_c")
         if t is None:

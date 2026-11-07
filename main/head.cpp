@@ -23,6 +23,7 @@
 #include "../core/laser.hpp"
 #include "../core/laser_hw.hpp"
 #include "../core/protocol.hpp"
+#include "../core/self_check.hpp"
 #include "../core/spindle.hpp"
 #include "head.hpp"
 #include "light.hpp"
@@ -200,6 +201,7 @@ std::string live_json_now() {
         s.laser_last_status = bungard_aux::range_why_text(bungard_aux::range_why(last.status));
         s.laser_age_ms = age_ms;
     }
+    bungard_aux::apply_self_check(s, settings);
     return bungard_aux::json_status(s);
 }
 
