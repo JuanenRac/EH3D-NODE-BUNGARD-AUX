@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.7` |
 | Maturité | Échafaudage |
-| Tests | 12 programmes de test sur l'ordinateur |
+| Tests | 14 programmes de test sur l'ordinateur |
 | Pile technique | C++17, ESP-IDF 5.5, ESP32-S3, réseau W5500 |
 | Sur du matériel réel | Non : le firmware se compile mais n'a pas été flashé, et rien n'a été branché à une machine |
 
@@ -44,7 +44,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Logiciel | 🟠 | Le projet ESP-IDF (réseau filaire avec un W5500, serveur web, caméra, impulsions de la broche, sortie de protection, le fichier de réglages dans sa propre partition) est écrit et se compile ; il n'a pas été flashé. |
-| Tests | 🟡 | 12 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en 37 langues et les piles des tâches. |
+| Tests | 🟡 | 14 programmes de test passent (`ctest`) : les réglages, la mesure du laser, la vitesse et la température de la broche, la sortie de protection, les mots du réseau, la vidéo (RTSP, ONVIF), le document de réglages de la tête, la mise à jour depuis GitHub, l'horloge, ce que partagent tous les nœuds, les textes du panneau en 37 langues et les piles des tâches. |
 | Laser (hauteur de la table) | 🟡 | La mesure à partir de plusieurs lectures (médiane, lectures aberrantes écartées, dispersion vérifiée, plage et décalage) est testée ; le pilote du VL53L1X est écrit mais n'a jamais tourné, donc aucune mesure n'a encore été faite. |
 | Broche | 🟡 | La vitesse à partir des impulsions d'un capteur (n'importe quel nombre par tour, arrêtée quand les impulsions cessent), la température avec avertissement, niveau critique et hystérésis et la sortie de protection sont testées ; les pilotes du DS18B20, de la CTN et du MLX90614 sont écrits mais n'ont jamais tourné. |
 | Caméra | 🟠 | Le flux MJPEG est écrit pour le connecteur de caméra de la carte et demande les broches de la carte dans menuconfig ; il n'a pas tourné. |
@@ -128,6 +128,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 * **Deux caméras, l'OV2640 et l'OV5640 :** le capteur dit laquelle c'est et le nœud donne la plus grande taille que les réglages permettent et que ce capteur sait faire (l'OV2640 jusqu'à 1600x1200, l'OV5640 jusqu'à 2592x1944), l'indique dans `/api/status` (`camera_model`) et dans les options d'encodeur d'ONVIF ; `camera_model = auto | ov2640 | ov5640` dans la page Tête. Les broches du connecteur caméra de la Waveshare ESP32-S3-ETH sont les valeurs par défaut de `menuconfig`.
 * **Trois capteurs de température :** un DS18B20 sur un fil, une thermistance CTN sur une entrée analogique (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` dans la page Tête) ou un thermomètre infrarouge MLX90614 qui regarde la broche sans la toucher (sur le bus I2C du laser) ; les sommes de contrôle et les conversions sont testées sur un ordinateur.
 * **Un anneau de LED autour de la caméra :** huit LED RVB de type WS2812 sur un seul fil éclairent la zone sous la tête pour que la caméra voie bien. Le blanc est la lumière pour la caméra ; les niveaux suivent l'œil et ne dépassent jamais un plafond ; un seul côté donne une lumière rasante ; on peut demander n'importe quelle couleur, et l'anneau dit comment un contrôle s'est passé (vert, rouge clignotant, un point bleu qui tourne, ambre, rouge rapide). Il s'éteint seul au bout d'un moment. `GET` et `POST /api/light` et `GET /api/snapshot` servent les programmes ; les réglages sont dans le panneau et dans `head.cfg` (`light_*`), la broche dans le menu du firmware (`AUX_LIGHT_GPIO`).
+* **Un nœud qui se juge lui-même, et une tête qui n'existe pas :** l'état porte un verdict (`selfcheck` : ok, warn, fail) et les codes qui l'expliquent (`selfcheck_codes` : une caméra qui n'a pas démarré, une panne du laser ou une mesure ancienne, des impulsions de vitesse bruitées, une broche tiède ou chaude, un capteur de température muet, pas de jeton ...) ; ses limites sont les réglages `selfcheck_*` de `head.cfg`. `core/head_sim.hpp` est une tête de perçage simulée (une table qui n'est pas plane, une broche qui monte en vitesse et chauffe, des pannes que l'on peut activer) qui répond comme le firmware ; les clés et les codes sont dans [docs/CONTRACT.md](docs/CONTRACT.md) et un test garde la page et les réponses identiques. Testé sur un ordinateur ; pas exécuté sur une carte.
 * **37 langues :** le panneau web du nœud parle anglais, espagnol, italien, allemand, français, portugais, chinois, japonais, bulgare, croate, tchèque, danois, néerlandais, estonien, finnois, grec, hongrois, irlandais, letton, lituanien, maltais, polonais, roumain, slovaque, slovène, suédois, norvégien, islandais, ukrainien, russe, serbe, albanais, catalan, galicien, basque, portugais du Brésil et français du Canada. Les mots des 29 langues au-delà des huit premières sont traduits par le modèle et attendent la relecture de locuteurs natifs ; un texte qu'une langue n'a pas s'affiche en anglais.
 * **Une barre d'enregistrement toujours là et une sauvegarde des réglages :** Enregistrer et Enregistrer et redémarrer sont toujours sur les pages de réglages (éteints, avec une note, tant que rien ne change), Redémarrer est toujours à portée pour un administrateur, et la page Système exporte tous les réglages dans un fichier (avec les mots de passe Wi-Fi et le jeton : à garder privé) et les réimporte dans les formulaires sans rien envoyer, de sorte que chaque page s'enregistre avec son propre Enregistrer ; l'id, le nom et le nom d'hôte du nœud ne sont jamais changés par un import. La page Réseau édite aussi le nom, le serveur de temps, le fuseau horaire et le redémarrage périodique, et les réseaux Wi-Fi de secours comptent maintenant comme un changement et sont envoyés à l'enregistrement. Écrit pour le navigateur ; non essayé sur une carte.
 * **Le laser, réglé pour le travail :** le VL53L1X a un mode de distance (court ou long) et un budget de temps, une zone de réception qui peut se resserrer pour viser un petit point, un filtre qui écarte les mesures éloignées de la médiane, un état pour chaque mesure (valide, signal faible, dispersion élevée, hors portée) et un étalonnage à distance connue (décalage et diaphonie) qu'un administrateur doit d'abord activer. Pas encore essayé sur un capteur.
@@ -223,6 +224,8 @@ La version se trouve dans `eh3d.project.json`, et chaque version a son entrée d
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
+│   ├── self_check.hpp                           le jugement du nœud sur lui-même, avec des codes
+│   ├── head_sim.hpp                             une tête qui n'existe pas, pour les tests et les programmes
 │   ├── bungard_config.hpp                       les réglages du nœud et la section de la tête
 │   ├── laser.hpp                                la mesure de la hauteur de la table
 │   ├── laser_hw.hpp                             les registres du laser
@@ -253,7 +256,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── app.js text.js                           les pages et les textes en 37 langues
 │   └── locales/                                 les mots de 29 autres langues, un fichier chacune
 ├── tests/                                       tests sur ordinateur des réglages, de la porte, de la voix et des textes d'écran
-├── docs/                                        les notes matérielles et les sources des deux images
+├── docs/                                        les notes matérielles, le contrat avec les programmes et les sources des images
 ├── tools/                                       contrôle CI, contrôle du README et outils des images
 ├── CMakeLists.txt                               le projet ESP-IDF
 ├── partitions.csv                               la répartition de la flash à deux emplacements

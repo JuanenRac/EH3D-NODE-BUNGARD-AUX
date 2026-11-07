@@ -30,7 +30,7 @@
 |---|---|
 | Versión | `0.0.7` |
 | Madurez | Andamiaje |
-| Pruebas | 12 programas de prueba en el ordenador |
+| Pruebas | 14 programas de prueba en el ordenador |
 | Pila tecnológica | C++17, ESP-IDF 5.5, ESP32-S3, red W5500 |
 | En hardware real | No: el firmware se compila pero no se ha grabado, y no se ha conectado nada a una máquina |
 
@@ -44,7 +44,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Software | 🟠 | El proyecto de ESP-IDF (red por cable con un W5500, servidor web, cámara, pulsos del husillo, salida de protección, el fichero de ajustes en su propia partición) está escrito y se compila; no se ha grabado. |
-| Pruebas | 🟡 | 12 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en 37 idiomas y las pilas de las tareas. |
+| Pruebas | 🟡 | 14 programas de prueba pasan (`ctest`): los ajustes, la medida del láser, la velocidad y la temperatura del husillo, la salida de protección, las palabras de la red, el vídeo (RTSP, ONVIF), el documento de ajustes del cabezal, la actualización desde GitHub, el reloj, lo que comparten todos los nodos, los textos del panel en 37 idiomas y las pilas de las tareas. |
 | Láser (altura de la mesa) | 🟡 | La medida a partir de varias lecturas (mediana, lecturas raras descartadas, dispersión comprobada, rango y desplazamiento) está probada; el controlador del VL53L1X está escrito pero nunca se ha ejecutado, así que aún no se ha hecho ninguna medida. |
 | Husillo | 🟡 | La velocidad a partir de los pulsos de un sensor (cualquier número por vuelta, parado cuando cesan los pulsos), la temperatura con aviso, nivel crítico e histéresis y la salida de protección están probadas; los controladores del DS18B20, del NTC y del MLX90614 están escritos pero nunca se han ejecutado. |
 | Cámara | 🟠 | El flujo MJPEG está escrito para el conector de cámara de la placa y necesita los pines de la placa en menuconfig; no se ha ejecutado. |
@@ -128,6 +128,7 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 * **Dos cámaras, la OV2640 y la OV5640:** el sensor dice cuál es y el nodo da el mayor tamaño que permiten los ajustes y que ese sensor puede dar (la OV2640 hasta 1600x1200, la OV5640 hasta 2592x1944), lo informa en `/api/status` (`camera_model`) y en las opciones del codificador de ONVIF; `camera_model = auto | ov2640 | ov5640` en la página Cabezal. Los pines del conector de cámara de la Waveshare ESP32-S3-ETH son los valores por defecto de `menuconfig`.
 * **Tres sensores de temperatura:** un DS18B20 en un hilo, un termistor NTC en una entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` en la página Cabezal) o un termómetro infrarrojo MLX90614 que mira el husillo sin tocarlo (en el bus I2C del láser); las sumas de comprobación y las conversiones están probadas en un ordenador.
 * **Un aro de LEDs alrededor de la cámara:** ocho LEDs RGB del tipo WS2812 en un solo hilo iluminan la zona bajo el cabezal para que la cámara vea bien. El blanco es la luz para la cámara; los niveles siguen al ojo y nunca pasan de un techo; un solo lado da una luz rasante; se puede pedir cualquier color, y el aro dice cómo fue una verificación (verde, rojo parpadeando, un punto azul que gira, ámbar, rojo rápido). Se apaga solo pasado un tiempo. `GET` y `POST /api/light` y `GET /api/snapshot` sirven a los programas; los ajustes están en el panel y en `head.cfg` (`light_*`), y el pin en el menú del firmware (`AUX_LIGHT_GPIO`).
+* **Un nodo que se juzga a sí mismo, y un cabezal que no existe:** el estado lleva un veredicto (`selfcheck`: ok, warn, fail) y los códigos que lo explican (`selfcheck_codes`: una cámara que no arrancó, un fallo del láser o una lectura vieja, pulsos de velocidad ruidosos, un husillo templado o caliente, un sensor de temperatura mudo, falta de token ...); sus límites son los ajustes `selfcheck_*` de `head.cfg`. `core/head_sim.hpp` es un cabezal de taladro simulado (una mesa que no es plana, un husillo que acelera y se calienta, fallos que se pueden activar) que responde como el firmware; las claves y los códigos están en [docs/CONTRACT.md](docs/CONTRACT.md) y una prueba mantiene iguales la página y las respuestas. Probado en un ordenador; no ejecutado en una placa.
 * **37 idiomas:** el panel web del nodo habla inglés, español, italiano, alemán, francés, portugués, chino, japonés, búlgaro, croata, checo, danés, neerlandés, estonio, finés, griego, húngaro, irlandés, letón, lituano, maltés, polaco, rumano, eslovaco, esloveno, sueco, noruego, islandés, ucraniano, ruso, serbio, albanés, catalán, gallego, euskera, portugués de Brasil y francés de Canadá. Las palabras de los 29 idiomas posteriores a los ocho primeros están traducidas por el modelo y esperan la revisión de hablantes nativos; un texto que a un idioma le falta se muestra en inglés.
 * **Una barra de guardar siempre presente y una copia de seguridad de la configuración:** Guardar y Guardar y reiniciar están siempre en las páginas con ajustes (apagados, con un aviso, hasta que algo cambia), Reiniciar está siempre a mano para un administrador, y la página Sistema exporta todos los ajustes a un fichero (con las contraseñas Wi-Fi y el token: guárdalo en privado) y los importa de vuelta a los formularios sin enviar nada, de modo que cada página se guarda con su propio Guardar; el id, el nombre y el nombre de host del nodo nunca cambian con una importación. La página Red edita además el nombre, el servidor de hora, la zona horaria y el reinicio periódico, y las redes Wi-Fi de respaldo ahora cuentan como un cambio y se envían al guardar. Escrito para el navegador; no probado en placa.
 * **El láser, ajustado al trabajo:** el VL53L1X tiene modo de distancia (corto o largo) y presupuesto de tiempo, un área de recepción que se puede estrechar para mirar un punto pequeño, un filtro que descarta lecturas lejos de la mediana, un estado para cada lectura (válida, señal débil, dispersión alta, fuera de rango) y una calibración a distancia conocida (desfase y diafonía) que un administrador debe activar antes. Aún no probado con un sensor.
@@ -223,6 +224,8 @@ La versión está en `eh3d.project.json`, y cada versión tiene su entrada en [C
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           el fichero de ajustes y sus valores seguros
+│   ├── self_check.hpp                           el juicio del nodo sobre sí mismo, con códigos
+│   ├── head_sim.hpp                             un cabezal que no existe, para pruebas y programas
 │   ├── bungard_config.hpp                       los ajustes del nodo y la sección del cabezal
 │   ├── laser.hpp                                la medida de la altura de la mesa
 │   ├── laser_hw.hpp                             los registros del láser
@@ -253,7 +256,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── app.js text.js                           las páginas y los textos en 37 idiomas
 │   └── locales/                                 las palabras de 29 idiomas más, un fichero cada uno
 ├── tests/                                       pruebas en el ordenador de los ajustes, la compuerta, la voz y los textos de pantalla
-├── docs/                                        las notas de hardware y las fuentes de los dos dibujos
+├── docs/                                        las notas de hardware, el contrato con los programas y las fuentes de los dibujos
 ├── tools/                                       comprobación de CI, de README y herramientas de dibujos
 ├── CMakeLists.txt                               el proyecto ESP-IDF
 ├── partitions.csv                               el reparto de la flash con dos ranuras

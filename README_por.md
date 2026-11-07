@@ -30,7 +30,7 @@
 |---|---|
 | Versão | `0.0.7` |
 | Maturidade | Estrutura inicial |
-| Testes | 12 programas de teste no computador |
+| Testes | 14 programas de teste no computador |
 | Tecnologias | C++17, ESP-IDF 5.5, ESP32-S3, rede W5500 |
 | Em hardware real | Não: o firmware compila-se mas não foi gravado, e nada foi ligado a uma máquina |
 
@@ -44,7 +44,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Software | 🟠 | O projeto ESP-IDF (rede por cabo com um W5500, servidor web, câmara, impulsos do fuso, saída de proteção, o ficheiro de definições na sua própria partição) está escrito e compila-se; não foi gravado. |
-| Testes | 🟡 | 12 programas de teste passam (`ctest`): as definições, a medição do laser, a velocidade e a temperatura do fuso, a saída de proteção, as palavras da rede, o vídeo (RTSP, ONVIF), o documento de definições do cabeçote, a atualização a partir do GitHub, o relógio, o que todos os nós partilham, os textos do painel em 37 línguas e as pilhas das tarefas. |
+| Testes | 🟡 | 14 programas de teste passam (`ctest`): as definições, a medição do laser, a velocidade e a temperatura do fuso, a saída de proteção, as palavras da rede, o vídeo (RTSP, ONVIF), o documento de definições do cabeçote, a atualização a partir do GitHub, o relógio, o que todos os nós partilham, os textos do painel em 37 línguas e as pilhas das tarefas. |
 | Laser (altura da mesa) | 🟡 | A medição a partir de várias leituras (mediana, leituras estranhas descartadas, dispersão verificada, intervalo e deslocamento) está testada; o controlador do VL53L1X está escrito mas nunca correu, por isso ainda não se fez nenhuma medição. |
 | Fuso | 🟡 | A velocidade a partir dos impulsos de um sensor (qualquer número por volta, parado quando os impulsos cessam), a temperatura com aviso, nível crítico e histerese e a saída de proteção estão testadas; os controladores do DS18B20, do NTC e do MLX90614 estão escritos mas nunca correram. |
 | Câmara | 🟠 | O fluxo MJPEG está escrito para o conector de câmara da placa e precisa dos pinos da placa em menuconfig; não foi executado. |
@@ -128,6 +128,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 * **Duas câmaras, a OV2640 e a OV5640:** o sensor diz qual é e o nó dá o maior tamanho que as definições permitem e que esse sensor consegue (a OV2640 até 1600x1200, a OV5640 até 2592x1944), indica-o em `/api/status` (`camera_model`) e nas opções do codificador do ONVIF; `camera_model = auto | ov2640 | ov5640` em a página Cabeçote. Os pinos do conector de câmara da Waveshare ESP32-S3-ETH são os valores por omissão de `menuconfig`.
 * **Três sensores de temperatura:** um DS18B20 num fio, um termístor NTC numa entrada analógica (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` em a página Cabeçote) ou um termómetro de infravermelhos MLX90614 que olha para o fuso sem lhe tocar (no barramento I2C do laser); as somas de verificação e as conversões estão testadas num computador.
 * **Um anel de LEDs à volta da câmara:** oito LEDs RGB do tipo WS2812 num só fio iluminam a zona sob a cabeça para a câmara ver bem. O branco é a luz para a câmara; os níveis seguem o olho e nunca passam de um limite; um só lado dá luz rasante; pode pedir-se qualquer cor, e o anel diz como correu uma verificação (verde, vermelho a piscar, um ponto azul a girar, âmbar, vermelho rápido). Apaga-se sozinho ao fim de algum tempo. `GET` e `POST /api/light` e `GET /api/snapshot` servem os programas; as definições estão no painel e em `head.cfg` (`light_*`), e o pino no menu do firmware (`AUX_LIGHT_GPIO`).
+* **Um nó que se julga a si próprio, e um cabeçote que não existe:** o estado traz um veredicto (`selfcheck`: ok, warn, fail) e os códigos que o explicam (`selfcheck_codes`: uma câmara que não arrancou, uma falha do laser ou uma leitura antiga, impulsos de velocidade ruidosos, um fuso morno ou quente, um sensor de temperatura mudo, falta de token ...); os limites são as definições `selfcheck_*` do `head.cfg`. `core/head_sim.hpp` é um cabeçote de furação simulado (uma mesa que não é plana, um fuso que acelera e aquece, falhas que se podem ativar) que responde como o firmware; as chaves e os códigos estão em [docs/CONTRACT.md](docs/CONTRACT.md) e um teste mantém iguais a página e as respostas. Testado num computador; não executado numa placa.
 * **37 línguas:** o painel web do nó fala inglês, espanhol, italiano, alemão, francês, português, chinês, japonês, búlgaro, croata, checo, dinamarquês, neerlandês, estónio, finlandês, grego, húngaro, irlandês, letão, lituano, maltês, polaco, romeno, eslovaco, esloveno, sueco, norueguês, islandês, ucraniano, russo, sérvio, albanês, catalão, galego, basco, português do Brasil e francês do Canadá. As palavras das 29 línguas além das oito primeiras foram traduzidas pelo modelo e aguardam a revisão de falantes nativos; um texto que falte numa língua aparece em inglês.
 * **Uma barra de guardar sempre presente e uma cópia de segurança das definições:** Guardar e Guardar e reiniciar estão sempre nas páginas com definições (desligados, com uma nota, até algo mudar), Reiniciar está sempre à mão para um administrador, e a página Sistema exporta todas as definições para um ficheiro (com as palavras-passe Wi-Fi e o token: guarde-o em privado) e importa-as de volta para os formulários sem enviar nada, de modo que cada página se guarda com o seu próprio Guardar; o id, o nome e o nome do anfitrião do nó nunca são alterados por uma importação. A página Rede edita ainda o nome, o servidor de hora, o fuso horário e o reinício periódico, e as redes Wi-Fi de reserva passam a contar como alteração e são enviadas ao guardar. Escrito para o navegador; não experimentado numa placa.
 * **O laser, ajustado ao trabalho:** o VL53L1X tem modo de distância (curto ou longo) e orçamento de tempo, uma área de receção que se pode estreitar para olhar um ponto pequeno, um filtro que descarta leituras longe da mediana, um estado para cada leitura (válida, sinal fraco, dispersão alta, fora de alcance) e uma calibração a distância conhecida (desvio e diafonia) que um administrador tem de ativar primeiro. Ainda não experimentado num sensor.
@@ -223,6 +224,8 @@ A versão está em `eh3d.project.json`, e cada versão tem a sua entrada em [CHA
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           o ficheiro de definições e os seus valores seguros
+│   ├── self_check.hpp                           o juízo do nó sobre si próprio, com códigos
+│   ├── head_sim.hpp                             um cabeçote que não existe, para testes e programas
 │   ├── bungard_config.hpp                       as definições do nó e a secção do cabeçote
 │   ├── laser.hpp                                a medição da altura da mesa
 │   ├── laser_hw.hpp                             os registos do laser
@@ -253,7 +256,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── app.js text.js                           as páginas e os textos em 37 línguas
 │   └── locales/                                 as palavras de mais 29 línguas, um ficheiro cada
 ├── tests/                                       testes no computador das definições, da comporta, da voz e dos textos de ecrã
-├── docs/                                        as notas de hardware e as fontes dos dois desenhos
+├── docs/                                        as notas de hardware, o contrato com os programas e as fontes dos desenhos
 ├── tools/                                       verificação de CI, de README e ferramentas dos desenhos
 ├── CMakeLists.txt                               o projeto ESP-IDF
 ├── partitions.csv                               a divisão da flash com duas ranhuras

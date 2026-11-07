@@ -37,6 +37,34 @@
         },
         {
           "desc": {
+            "en": "the node's judgement on itself, with codes",
+            "es": "el juicio del nodo sobre sí mismo, con códigos",
+            "it": "il giudizio del nodo su sé stesso, con codici",
+            "de": "die Selbstbeurteilung des Knotens mit Codes",
+            "fr": "le jugement du nœud sur lui-même, avec des codes",
+            "pt": "o juízo do nó sobre si próprio, com códigos",
+            "zh": "节点对自身状态的判断及其代码",
+            "ja": "ノード自身の状態判定とそのコード"
+          },
+          "name": "self_check.hpp",
+          "tree_name": "self_check.hpp"
+        },
+        {
+          "desc": {
+            "en": "a head that is not there, for tests and programs",
+            "es": "un cabezal que no existe, para pruebas y programas",
+            "it": "una testa che non c'è, per prove e programmi",
+            "de": "ein Kopf, der nicht da ist, für Tests und Programme",
+            "fr": "une tête qui n'existe pas, pour les tests et les programmes",
+            "pt": "um cabeçote que não existe, para testes e programas",
+            "zh": "不存在的钻头模拟，供测试和程序使用",
+            "ja": "実在しないヘッドの模擬、試験とプログラム用"
+          },
+          "name": "head_sim.hpp",
+          "tree_name": "head_sim.hpp"
+        },
+        {
+          "desc": {
             "en": "the settings of the node and the head section",
             "es": "los ajustes del nodo y la sección del cabezal",
             "it": "le impostazioni del nodo e la sezione della testa",
@@ -485,6 +513,48 @@
           "tree_name": "test_light.cpp"
         },
         {
+          "desc": {
+            "en": "the simulated head, the self-check, the contract page",
+            "es": "el cabezal simulado, la autocomprobación, la página del contrato",
+            "it": "la testa simulata, l'autocontrollo, la pagina del contratto",
+            "de": "der simulierte Kopf, die Selbstprüfung, die Vertragsseite",
+            "fr": "la tête simulée, l'autocontrôle, la page du contrat",
+            "pt": "o cabeçote simulado, a autoverificação, a página do contrato",
+            "zh": "模拟钻头、自检、约定页面",
+            "ja": "模擬ヘッド・自己診断・取り決めのページ"
+          },
+          "name": "test_head_sim.cpp",
+          "tree_name": "test_head_sim.cpp"
+        },
+        {
+          "desc": {
+            "en": "every setting through flash; the example file",
+            "es": "cada ajuste por la flash; el fichero de ejemplo",
+            "it": "ogni impostazione attraverso la flash; il file di esempio",
+            "de": "jede Einstellung durch den Flash; die Beispieldatei",
+            "fr": "chaque réglage à travers la flash ; le fichier d'exemple",
+            "pt": "cada definição pela flash; o ficheiro de exemplo",
+            "zh": "每项设置经闪存往返；示例文件",
+            "ja": "全設定のフラッシュ往復と例ファイル"
+          },
+          "name": "test_head_roundtrip.cpp",
+          "tree_name": "test_head_roundtrip.cpp"
+        },
+        {
+          "desc": {
+            "en": "a head that answers request lines",
+            "es": "un cabezal que responde a líneas de petición",
+            "it": "una testa che risponde a righe di richiesta",
+            "de": "ein Kopf, der Anfragezeilen beantwortet",
+            "fr": "une tête qui répond aux lignes de requête",
+            "pt": "um cabeçote que responde a linhas de pedido",
+            "zh": "按请求行作答的钻头模拟",
+            "ja": "リクエスト行に答えるヘッド"
+          },
+          "name": "head_sim_cli.cpp",
+          "tree_name": "head_sim_cli.cpp"
+        },
+        {
           "name": "test_laser.cpp",
           "desc": {
             "en": "the laser on a simulated sensor",
@@ -622,14 +692,14 @@
       "rows": [
         {
           "desc": {
-            "en": "the hardware notes and the two pictures' sources",
-            "es": "las notas de hardware y las fuentes de los dos dibujos",
-            "it": "le note hardware e le fonti dei due disegni",
-            "de": "die Hardware-Hinweise und die Quellen der beiden Bilder",
-            "fr": "les notes matérielles et les sources des deux images",
-            "pt": "as notas de hardware e as fontes dos dois desenhos",
-            "zh": "硬件说明和两幅图的源文件",
-            "ja": "ハードウェアのメモと 2 つの図のソース"
+            "en": "the hardware notes, the contract with the programs and the pictures' sources",
+            "es": "las notas de hardware, el contrato con los programas y las fuentes de los dibujos",
+            "it": "le note hardware, il contratto con i programmi e le fonti dei disegni",
+            "de": "die Hardware-Hinweise, der Vertrag mit den Programmen und die Bildquellen",
+            "fr": "les notes matérielles, le contrat avec les programmes et les sources des images",
+            "pt": "as notas de hardware, o contrato com os programas e as fontes dos desenhos",
+            "zh": "硬件说明、与程序的约定和图的源文件",
+            "ja": "ハードウェアのメモ、プログラムとの取り決め、図のソース"
           },
           "name": "docs/"
         },

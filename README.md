@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.7` |
 | Maturity | Scaffolding |
-| Tests | 12 host test programs |
+| Tests | 14 host test programs |
 | Stack | C++17, ESP-IDF 5.5, ESP32-S3, W5500 network |
 | On real hardware | No: the firmware builds but has not been flashed, and nothing has been connected to a machine |
 
@@ -44,7 +44,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Software | 🟠 | The ESP-IDF project (wired network on a W5500, web server, camera, pulses of the spindle, protect output, the settings file in its own partition) is written and builds; it has not been flashed. |
-| Tests | 🟡 | 12 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in 37 languages and the stacks of the tasks. |
+| Tests | 🟡 | 14 host test programs pass (`ctest`): the settings, the measure of the laser, the speed and the temperature of the spindle, the protect output, the words of the network, the video (RTSP, ONVIF), the settings document of the head, the update from GitHub, the clock, what every node shares, the texts of the panel in 37 languages and the stacks of the tasks. |
 | Laser (table height) | 🟡 | The measure from several readings (median, odd readings thrown away, spread checked, range and offset) is tested; the driver of the VL53L1X is written but has never run, so no measure has been taken yet. |
 | Spindle | 🟡 | Speed from the pulses of a sensor (any number per turn, stopped when the pulses stop), temperature with warning, critical level and hysteresis, and the protect output are tested; the drivers of the DS18B20, the NTC and the MLX90614 are written but have never run. |
 | Camera | 🟠 | The MJPEG stream is written for the camera connector of the board and needs the pins of the board in menuconfig; it has not run. |
@@ -128,6 +128,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 * **Two cameras, the OV2640 and the OV5640:** the sensor says which one it is and the node gives the largest size that the settings allow and that sensor can do (the OV2640 up to 1600x1200, the OV5640 up to 2592x1944), reports it on `/api/status` (`camera_model`) and in the encoder options of ONVIF; `camera_model = auto | ov2640 | ov5640` in the Head page. The pins of the camera connector of the Waveshare ESP32-S3-ETH are the defaults of `menuconfig`.
 * **Three temperature sensors:** a DS18B20 on one wire, an NTC thermistor on an analogue input (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in the Head page) or an MLX90614 infrared thermometer that looks at the spindle without touching it (on the I2C bus of the laser); the checksums and the conversions are tested on a computer.
 * **A ring of LEDs around the camera:** eight RGB LEDs of the WS2812 kind on one wire light the area under the head so the camera sees well. White is the light for the camera; the levels follow the eye and never go over a ceiling; one side only gives a raking light; any colour can be asked, and the ring says how a check went (green, red blinking, a blue spot turning, amber, fast red). It turns itself off after a while. `GET` and `POST /api/light` and `GET /api/snapshot` serve the programs; the settings are in the panel and in `head.cfg` (`light_*`), and the pin in the menu of the firmware (`AUX_LIGHT_GPIO`).
+* **A node that judges itself, and a head that is not there:** the status carries a verdict (`selfcheck`: ok, warn, fail) and the codes behind it (`selfcheck_codes`: a camera that did not start, a laser fault or an old reading, noisy speed pulses, a spindle that is warm or hot, a silent temperature sensor, no token ...); its limits are the `selfcheck_*` settings of `head.cfg`. `core/head_sim.hpp` is a simulated drill head (a table that is not flat, a spindle that speeds up and heats, faults that can be switched on) that answers like the firmware; the keys and the codes are listed in [docs/CONTRACT.md](docs/CONTRACT.md) and a test keeps the page and the answers equal. Tested on a computer; not run on a board.
 * **37 languages:** the web panel of the node speaks English, Spanish, Italian, German, French, Portuguese, Chinese, Japanese, Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hungarian, Irish, Latvian, Lithuanian, Maltese, Polish, Romanian, Slovak, Slovenian, Swedish, Norwegian, Icelandic, Ukrainian, Russian, Serbian, Albanian, Catalan, Galician, Basque, Brazilian Portuguese and Canadian French. The words of the 29 languages beyond the first eight are translated by the model and wait for a review by native speakers; a text that a language does not have is shown in English.
 * **A save bar that is always there, and a backup of the settings:** Save and Save and restart are always on the pages that have settings (off, with a note, until something changes), Restart is always at hand for an administrator, and the System page exports every setting to a file (with the Wi-Fi passwords and the token: keep it private) and imports it back into the forms without sending anything, so each page is saved with its own Save; the id, name and host name of the node are never changed by an import. The Network page also edits the name, the time server, the time zone and the periodic restart, and the backup Wi-Fi networks now count as a change and are sent when saved. Written for the browser; not tried on a board.
 * **The laser, set to the job:** the VL53L1X has a distance mode (short or long) and a timing budget, a receiving area that can be narrowed to look at a small spot, a filter that throws away readings far from the median, a state for each reading (valid, weak signal, high spread, out of range), and a calibration at a known distance (offset and crosstalk) that an administrator has to switch on first. Not tried on a sensor yet.
@@ -223,6 +224,8 @@ The version lives in `eh3d.project.json`, and each version has its entry in [CHA
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
+│   ├── self_check.hpp                           the node's judgement on itself, with codes
+│   ├── head_sim.hpp                             a head that is not there, for tests and programs
 │   ├── bungard_config.hpp                       the settings of the node and the head section
 │   ├── laser.hpp                                the measure of the height of the table
 │   ├── laser_hw.hpp                             the registers of the laser
@@ -253,7 +256,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── app.js text.js                           the pages and the texts in 37 languages
 │   └── locales/                                 the words of 29 more languages, one file each
 ├── tests/                                       host tests of the settings, the gate, the voice and the screen texts
-├── docs/                                        the hardware notes and the two pictures' sources
+├── docs/                                        the hardware notes, the contract with the programs and the pictures' sources
 ├── tools/                                       CI check, README check and the picture tools
 ├── CMakeLists.txt                               the ESP-IDF project
 ├── partitions.csv                               the flash layout with two slots

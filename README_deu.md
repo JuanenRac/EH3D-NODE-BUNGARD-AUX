@@ -30,7 +30,7 @@
 |---|---|
 | Version | `0.0.7` |
 | Reifegrad | Gerüst |
-| Tests | 12 Testprogramme am Computer |
+| Tests | 14 Testprogramme am Computer |
 | Technologie-Stack | C++17, ESP-IDF 5.5, ESP32-S3, Netzwerk W5500 |
 | Auf echter Hardware | Nein: die Firmware lässt sich bauen, wurde aber nicht geflasht, und nichts wurde an eine Maschine angeschlossen |
 
@@ -44,7 +44,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Software | 🟠 | Das ESP-IDF-Projekt (Kabelnetz mit einem W5500, Webserver, Kamera, Spindelimpulse, Schutzausgang, die Einstellungsdatei in ihrer eigenen Partition) ist geschrieben und baut; es wurde nicht geflasht. |
-| Tests | 🟡 | 12 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
+| Tests | 🟡 | 14 Testprogramme laufen durch (`ctest`): die Einstellungen, die Messung des Lasers, Drehzahl und Temperatur der Spindel, der Schutzausgang, die Worte des Netzes, das Video (RTSP, ONVIF), das Einstellungsdokument des Kopfes, das Update von GitHub, die Uhr, was alle Knoten teilen, die Texte des Panels in 37 Sprachen und die Stacks der Tasks. |
 | Laser (Tischhöhe) | 🟡 | Die Messung aus mehreren Werten (Median, Ausreißer verworfen, Streuung geprüft, Bereich und Versatz) ist getestet; der Treiber des VL53L1X ist geschrieben, aber nie gelaufen, daher wurde noch keine Messung gemacht. |
 | Spindel | 🟡 | Drehzahl aus den Impulsen eines Sensors (beliebig viele pro Umdrehung, Stillstand wenn die Impulse ausbleiben), Temperatur mit Warnung, kritischer Stufe und Hysterese und der Schutzausgang sind getestet; die Treiber des DS18B20, des NTC und des MLX90614 sind geschrieben, aber nie gelaufen. |
 | Kamera | 🟠 | Der MJPEG-Strom ist für den Kameraanschluss der Platine geschrieben und braucht die Pins der Platine in menuconfig; er ist nicht gelaufen. |
@@ -128,6 +128,7 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 * **Zwei Kameras, die OV2640 und die OV5640:** der Sensor sagt, welche es ist, und der Knoten liefert die größte Größe, die die Einstellungen erlauben und die dieser Sensor kann (die OV2640 bis 1600x1200, die OV5640 bis 2592x1944), meldet sie in `/api/status` (`camera_model`) und in den Encoder-Optionen von ONVIF; `camera_model = auto | ov2640 | ov5640` in die Seite Kopf. Die Pins des Kameraanschlusses der Waveshare ESP32-S3-ETH sind die Standardwerte von `menuconfig`.
 * **Drei Temperatursensoren:** ein DS18B20 an einem Draht, ein NTC-Thermistor an einem Analogeingang (`ntc_series_ohm`, `ntc_r25_ohm`, `ntc_beta` in die Seite Kopf) oder ein Infrarotthermometer MLX90614, das die Spindel berührungslos ansieht (am I2C-Bus des Lasers); die Prüfsummen und die Umrechnungen sind auf einem Computer getestet.
 * **Ein LED-Ring um die Kamera:** Acht RGB-LEDs vom Typ WS2812 an einer Leitung beleuchten den Bereich unter dem Kopf, damit die Kamera gut sieht. Weiß ist das Licht für die Kamera; die Stufen folgen dem Auge und gehen nie über eine Obergrenze; eine einzelne Seite gibt Streiflicht; jede Farbe kann verlangt werden, und der Ring zeigt, wie eine Prüfung ausging (grün, rot blinkend, ein kreisender blauer Punkt, bernstein, schnelles Rot). Nach einer Weile schaltet er sich selbst aus. `GET` und `POST /api/light` sowie `GET /api/snapshot` bedienen die Programme; die Einstellungen stehen im Panel und in `head.cfg` (`light_*`), der Pin im Menü der Firmware (`AUX_LIGHT_GPIO`).
+* **Ein Knoten, der sich selbst beurteilt, und ein Kopf, der nicht da ist:** Der Status trägt ein Urteil (`selfcheck`: ok, warn, fail) und die Codes dahinter (`selfcheck_codes`: eine Kamera, die nicht gestartet ist, ein Laserfehler oder ein alter Messwert, verrauschte Drehzahlimpulse, eine warme oder heiße Spindel, ein stummer Temperatursensor, kein Token ...); die Grenzen sind die `selfcheck_*`-Einstellungen in `head.cfg`. `core/head_sim.hpp` ist ein simulierter Bohrkopf (ein Tisch, der nicht eben ist, eine Spindel, die hochläuft und sich erwärmt, Fehler, die sich einschalten lassen), der wie die Firmware antwortet; die Schlüssel und die Codes stehen in [docs/CONTRACT.md](docs/CONTRACT.md), und ein Test hält die Seite und die Antworten gleich. Auf einem Computer getestet; nicht auf einer Platine gelaufen.
 * **37 Sprachen:** das Web-Panel des Knotens spricht Englisch, Spanisch, Italienisch, Deutsch, Französisch, Portugiesisch, Chinesisch, Japanisch, Bulgarisch, Kroatisch, Tschechisch, Dänisch, Niederländisch, Estnisch, Finnisch, Griechisch, Ungarisch, Irisch, Lettisch, Litauisch, Maltesisch, Polnisch, Rumänisch, Slowakisch, Slowenisch, Schwedisch, Norwegisch, Isländisch, Ukrainisch, Russisch, Serbisch, Albanisch, Katalanisch, Galicisch, Baskisch, brasilianisches Portugiesisch und kanadisches Französisch. Die Wörter der 29 Sprachen nach den ersten acht stammen vom Modell und warten auf die Durchsicht durch Muttersprachler; ein fehlender Text wird auf Englisch gezeigt.
 * **Eine Speicherleiste, die immer da ist, und eine Sicherung der Einstellungen:** Speichern und Speichern und Neustart sind auf den Seiten mit Einstellungen immer da (aus, mit einem Hinweis, bis sich etwas ändert), Neustart ist für einen Administrator immer griffbereit, und die Seite System exportiert alle Einstellungen in eine Datei (mit den WLAN-Passwörtern und dem Token: privat aufbewahren) und importiert sie zurück in die Formulare, ohne etwas zu senden, sodass jede Seite mit ihrem eigenen Speichern gespeichert wird; ID, Name und Hostname des Knotens ändert ein Import nie. Die Seite Netzwerk bearbeitet außerdem den Namen, den Zeitserver, die Zeitzone und den regelmäßigen Neustart, und die Reserve-WLAN-Netze zählen jetzt als Änderung und werden beim Speichern gesendet. Für den Browser geschrieben; nicht auf einer Platine erprobt.
 * **Der Laser, auf die Arbeit abgestimmt:** Der VL53L1X hat einen Entfernungsmodus (kurz oder lang) und ein Zeitbudget, einen Empfangsbereich, der sich auf einen kleinen Punkt verengen lässt, einen Filter, der Messwerte weit vom Median verwirft, einen Zustand je Messwert (gültig, schwaches Signal, hohe Streuung, außer Reichweite) und eine Kalibrierung bei bekannter Entfernung (Offset und Übersprechen), die ein Administrator zuerst einschalten muss. Noch an keinem Sensor erprobt.
@@ -223,6 +224,8 @@ Die Version steht in `eh3d.project.json`, und jede Version hat ihren Eintrag in 
 EH3D-NODE-BUNGARD-AUX/
 ├── core/
 │   ├── aux_config.hpp                           die Einstellungsdatei und ihre sicheren Standardwerte
+│   ├── self_check.hpp                           die Selbstbeurteilung des Knotens mit Codes
+│   ├── head_sim.hpp                             ein Kopf, der nicht da ist, für Tests und Programme
 │   ├── bungard_config.hpp                       die Einstellungen des Knotens und der Kopf-Abschnitt
 │   ├── laser.hpp                                die Messung der Tischhöhe
 │   ├── laser_hw.hpp                             die Register des Lasers
@@ -253,7 +256,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── app.js text.js                           die Seiten und die Texte in 37 Sprachen
 │   └── locales/                                 die Wörter von 29 weiteren Sprachen, je eine Datei
 ├── tests/                                       Host-Tests von Einstellungen, Tor, Sprache und Bildschirmtexten
-├── docs/                                        die Hardware-Hinweise und die Quellen der beiden Bilder
+├── docs/                                        die Hardware-Hinweise, der Vertrag mit den Programmen und die Bildquellen
 ├── tools/                                       CI-Prüfung, README-Prüfung und Bildwerkzeuge
 ├── CMakeLists.txt                               das ESP-IDF-Projekt
 ├── partitions.csv                               die Flash-Aufteilung mit zwei Slots
