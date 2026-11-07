@@ -38,6 +38,19 @@ laser_offset_mm = 0
 laser_range_min_mm = 20
 laser_range_max_mm = 400
 laser_sigma_max_mm = 0.15
+# how the sensor looks: short (to about 1.3 m, less trouble with light) or long (to about 4 m, best in the dark); the time it looks for each reading (short 15, 20, 33, 50, 100, 200 or 500 ms; long the same without 15)
+laser_distance_mode = long
+laser_timing_budget_ms = 100
+# the area of the receiving array that looks at the table (WxH, each side 4 to 16) and the detector it is centred on (0: the centre the sensor reports)
+laser_roi = 16x16
+laser_roi_center = 0
+# a reading farther than this many spreads from the median is thrown away (1 to 10); the spread is never taken smaller than the floor (mm, 0.01 to 1)
+laser_outlier_k = 3
+laser_outlier_floor_mm = 0.05
+# the calibration at a known distance changes what every reading means: off until an administrator switches it on; the two values it finds are stored here
+laser_calibration_enabled = off
+laser_cal_offset_mm = 0
+laser_cal_xtalk_cps = 0
 
 # the speed of the spindle: pulses of the sensor per turn, the speed that counts as an alarm, how long without a pulse means stopped
 rpm_enabled = on
@@ -65,5 +78,20 @@ temp_warn_c = 55
 temp_critical_c = 70
 temp_hysteresis_c = 3
 
+# the ring of LEDs around the camera (eight WS2812 on one wire): the level it starts at, the ceiling it never goes over (0 to 100), the tone (white, cool, warm, red, green or blue), when it turns itself off (seconds, 0: never) and the order of the colours of the LED (grb or rgb)
+light_enabled = on
+light_leds = 8
+light_level = 60
+light_max_level = 80
+light_tone = white
+light_auto_off_s = 600
+light_on_at_start = off
+light_order = grb
+
 # the protect output opens when the spindle is too fast or too hot (a sensor that is on and silent counts as hot)
 protect_output = on
+
+# the self-check: the node judges its own status and says it with codes in /api/status (selfcheck, selfcheck_codes); a laser reading older than this many seconds is reported, and for this many seconds after the start a reading that is not there yet is not a fault
+selfcheck_enabled = on
+selfcheck_laser_age_max_s = 600
+selfcheck_grace_s = 30

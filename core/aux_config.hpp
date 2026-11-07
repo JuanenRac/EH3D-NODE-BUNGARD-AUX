@@ -140,6 +140,11 @@ struct Settings {
 
     // the safety output: it opens when the spindle is too hot or too fast, so the control unit's stop line can use it
     bool protect_output = true;
+
+    // the self-check: the node judges its own status and says it with codes (core/self_check.hpp); the limits are here, never in the code
+    bool selfcheck_enabled = true;
+    std::uint32_t selfcheck_laser_age_max_s = 600;  // 10..86400, a laser reading older than this is reported
+    std::uint32_t selfcheck_grace_s = 30;           // 0..600, after the start a reading that is not there yet is not a fault
 };
 
 struct Problem {
@@ -413,6 +418,12 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             else bad("not grb or rgb");
         } else if (key == "protect_output") {
             if (flag()) s.protect_output = b;
+        } else if (key == "selfcheck_enabled") {
+            if (flag()) s.selfcheck_enabled = b;
+        } else if (key == "selfcheck_laser_age_max_s") {
+            if (num(10, 86400)) s.selfcheck_laser_age_max_s = n;
+        } else if (key == "selfcheck_grace_s") {
+            if (num(0, 600)) s.selfcheck_grace_s = n;
         } else {
             bad("unknown key");
         }

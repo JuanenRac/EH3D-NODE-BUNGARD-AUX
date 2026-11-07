@@ -140,6 +140,9 @@ struct Status {
     int rpm_level_mv = 0;
     int rpm_th_hi_mv = 0;
     int rpm_th_lo_mv = 0;
+    // the verdict of the node on itself (core/self_check.hpp): ok, warn, fail or off, and the codes behind it
+    std::string selfcheck = "off";
+    std::string selfcheck_codes;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -167,7 +170,8 @@ inline std::string json_status(const Status& s) {
     out += ",\"temp_roms\":\"" + json_escape(s.temp_roms) + "\",\"temp_rom_used\":\"" + json_escape(s.temp_rom_used) + "\",\"temp_resolution\":" + std::to_string(s.temp_resolution) +
            ",\"temp_guess\":" + (s.temp_guess ? "true" : "false") + ",\"rpm_input\":\"" + json_escape(s.rpm_input) + "\",\"rpm_quality\":\"" + json_escape(s.rpm_quality) +
            "\",\"rpm_rejected\":" + std::to_string(s.rpm_rejected) + ",\"rpm_level_mv\":" + std::to_string(s.rpm_level_mv) + ",\"rpm_th_hi_mv\":" + std::to_string(s.rpm_th_hi_mv) +
-           ",\"rpm_th_lo_mv\":" + std::to_string(s.rpm_th_lo_mv) + "}";
+           ",\"rpm_th_lo_mv\":" + std::to_string(s.rpm_th_lo_mv) +
+           ",\"selfcheck\":\"" + json_escape(s.selfcheck) + "\",\"selfcheck_codes\":\"" + json_escape(s.selfcheck_codes) + "\"}";
     return out;
 }
 

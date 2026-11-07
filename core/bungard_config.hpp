@@ -99,6 +99,9 @@ inline Problems validate(const Settings& s) {
 inline void head_write(json::Writer& w, const bungard_aux::Settings& h, bool secrets) {
   w.field("camera_enabled", h.camera_enabled).field("camera_model", bungard_aux::model_text(h.camera_model)).field("camera_width", static_cast<int>(h.camera_width))
       .field("camera_height", static_cast<int>(h.camera_height)).field("camera_quality", static_cast<int>(h.camera_quality)).field("camera_fps_max", static_cast<int>(h.camera_fps_max));
+  w.field("camera_hmirror", h.camera_hmirror).field("camera_vflip", h.camera_vflip).field("camera_brightness", h.camera_brightness).field("camera_contrast", h.camera_contrast)
+      .field("camera_saturation", h.camera_saturation).field("camera_auto_exposure", h.camera_auto_exposure).field("camera_exposure", static_cast<long long>(h.camera_exposure))
+      .field("camera_auto_whitebalance", h.camera_auto_whitebalance);
   w.field("rtsp_enabled", h.rtsp_enabled).field("rtsp_port", static_cast<int>(h.rtsp_port)).field("onvif_enabled", h.onvif_enabled).field("stream_user", h.stream_user);
   if (secrets) w.field("stream_password", h.stream_password); else w.field("stream_password_set", !h.stream_password.empty());
   w.field("laser_enabled", h.laser_enabled).field("laser_samples", static_cast<int>(h.laser_samples)).field("laser_timeout_ms", static_cast<long long>(h.laser_timeout_ms))
@@ -111,9 +114,13 @@ inline void head_write(json::Writer& w, const bungard_aux::Settings& h, bool sec
       .field("light_max_level", static_cast<long long>(h.light_max_level)).field("light_tone", bungard_aux::tone_text(h.light_tone)).field("light_auto_off_s", static_cast<long long>(h.light_auto_off_s))
       .field("light_on_at_start", h.light_on_at_start).field("light_order", h.light_order == bungard_aux::ColourOrder::Rgb ? "rgb" : "grb");
   w.field("rpm_enabled", h.rpm_enabled).field("rpm_pulses_per_rev", static_cast<long long>(h.rpm_pulses_per_rev)).field("rpm_max", static_cast<long long>(h.rpm_max))
-      .field("rpm_stale_ms", static_cast<long long>(h.rpm_stale_ms));
-  w.field("temp_sensor", bungard_aux::temp_sensor_text(h.temp_sensor)).field("ntc_series_ohm", h.ntc_series_ohm).field("ntc_r25_ohm", h.ntc_r25_ohm).field("ntc_beta", h.ntc_beta)
-      .field("temp_warn_c", h.temp_warn_c).field("temp_critical_c", h.temp_critical_c).field("temp_hysteresis_c", h.temp_hysteresis_c).field("protect_output", h.protect_output);
+      .field("rpm_stale_ms", static_cast<long long>(h.rpm_stale_ms))
+      .field("rpm_input", bungard_aux::rpm_input_text(h.rpm_input)).field("rpm_edge", bungard_aux::rpm_edge_text(h.rpm_edge)).field("rpm_auto_threshold", h.rpm_auto_threshold)
+      .field("rpm_threshold_hi_mv", static_cast<long long>(h.rpm_threshold_hi_mv)).field("rpm_threshold_lo_mv", static_cast<long long>(h.rpm_threshold_lo_mv));
+  w.field("temp_sensor", bungard_aux::temp_sensor_text(h.temp_sensor)).field("temp_resolution", h.temp_resolution).field("temp_rom", h.temp_rom).field("ntc_series_ohm", h.ntc_series_ohm).field("ntc_r25_ohm", h.ntc_r25_ohm).field("ntc_beta", h.ntc_beta)
+      .field("temp_warn_c", h.temp_warn_c).field("temp_critical_c", h.temp_critical_c).field("temp_hysteresis_c", h.temp_hysteresis_c).field("protect_output", h.protect_output)
+      .field("selfcheck_enabled", h.selfcheck_enabled).field("selfcheck_laser_age_max_s", static_cast<long long>(h.selfcheck_laser_age_max_s))
+      .field("selfcheck_grace_s", static_cast<long long>(h.selfcheck_grace_s));
   if (secrets) w.field("token", h.token); else w.field("token_set", !h.token.empty());
 }
 
