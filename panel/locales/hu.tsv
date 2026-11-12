@@ -345,6 +345,7 @@ stProtect	Védelmi kimenet
 stProtectOpen	Nyitva: a védelem csak akkor engedi forogni az orsót, ha a csomópont engedi
 stProtectClosed	Zárva: az orsó foroghat
 stProtectLast	A indítás óta {0}-szor nyitott. Utolsó ok: {1}.
+stProtectNow	Most nyitva: {0}.
 stProtectCause_too_fast	a fordulatszám a határ felett van
 stProtectCause_hot	az orsó túl forró
 stProtectCause_sensor_silent	a hőmérséklet-érzékelő nem válaszol

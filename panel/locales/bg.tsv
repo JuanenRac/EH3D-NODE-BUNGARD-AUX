@@ -345,6 +345,7 @@ stProtect	Защитен изход
 stProtectOpen	Отворен: защитата позволява на шпиндела да работи само ако възелът разреши
 stProtectClosed	Затворен: шпинделът може да работи
 stProtectLast	Отваряна {0} пъти от стартирането. Последна причина: {1}.
+stProtectNow	Отворено сега: {0}.
 stProtectCause_too_fast	скоростта е над границата
 stProtectCause_hot	шпинделът е твърде горещ
 stProtectCause_sensor_silent	температурният датчик не отговаря

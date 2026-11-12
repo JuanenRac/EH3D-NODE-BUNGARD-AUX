@@ -345,6 +345,7 @@ stProtect	Dalja e mbrojtjes
 stProtectOpen	E hapur: mbrojtja e lë boshtin të punojë vetëm nëse nyja e lejon
 stProtectClosed	E mbyllur: boshti mund të punojë
 stProtectLast	Hapur {0} herë që nga nisja. Shkaku i fundit: {1}.
+stProtectNow	E hapur tani: {0}.
 stProtectCause_too_fast	shpejtësia mbi kufirin
 stProtectCause_hot	boshti është shumë i nxehtë
 stProtectCause_sensor_silent	sensori i temperaturës nuk përgjigjet

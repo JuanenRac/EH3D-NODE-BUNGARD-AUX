@@ -345,6 +345,7 @@ stProtect	Babes-irteera
 stProtectOpen	Irekita: babesak ardatza nodoak uzten badu bakarrik uzten du martxan
 stProtectClosed	Itxita: ardatza martxan egon daiteke
 stProtectLast	{0} aldiz ireki da abiaraztetik. Azken arrazoia: {1}.
+stProtectNow	Orain irekita: {0}.
 stProtectCause_too_fast	abiadura mugaren gainetik
 stProtectCause_hot	ardatza beroegia
 stProtectCause_sensor_silent	tenperatura-sentsoreak ez du erantzuten

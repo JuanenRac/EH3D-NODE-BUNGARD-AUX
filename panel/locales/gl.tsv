@@ -345,6 +345,7 @@ stProtect	Saída de protección
 stProtectOpen	Aberta: a protección só deixa funcionar o husillo se o nó o permite
 stProtectClosed	Pechada: o husillo pode funcionar
 stProtectLast	Aberta {0} veces desde o arranque. Última causa: {1}.
+stProtectNow	Aberta agora: {0}.
 stProtectCause_too_fast	velocidade por riba do límite
 stProtectCause_hot	fuso demasiado quente
 stProtectCause_sensor_silent	o sensor de temperatura non responde

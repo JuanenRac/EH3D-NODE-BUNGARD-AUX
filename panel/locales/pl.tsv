@@ -345,6 +345,7 @@ stProtect	Wyjście zabezpieczenia
 stProtectOpen	Otwarte: zabezpieczenie pozwala wrzecionu pracować tylko wtedy, gdy węzeł na to zezwoli
 stProtectClosed	Zamknięte: wrzeciono może pracować
 stProtectLast	Otwarte {0} razy od startu. Ostatnia przyczyna: {1}.
+stProtectNow	Otwarte teraz: {0}.
 stProtectCause_too_fast	prędkość powyżej limitu
 stProtectCause_hot	wrzeciono jest zbyt gorące
 stProtectCause_sensor_silent	czujnik temperatury nie odpowiada

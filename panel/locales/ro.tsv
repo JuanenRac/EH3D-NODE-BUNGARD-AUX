@@ -345,6 +345,7 @@ stProtect	Ieșire de protecție
 stProtectOpen	Deschisă: protecția lasă axul să funcționeze doar dacă nodul permite
 stProtectClosed	Închisă: axul poate funcționa
 stProtectLast	Deschisă de {0} ori de la pornire. Ultima cauză: {1}.
+stProtectNow	Deschis acum: {0}.
 stProtectCause_too_fast	viteză peste limită
 stProtectCause_hot	axul este prea fierbinte
 stProtectCause_sensor_silent	senzorul de temperatură nu răspunde

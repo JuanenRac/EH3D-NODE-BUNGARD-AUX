@@ -345,6 +345,7 @@ stProtect	Izlaz zaštite
 stProtectOpen	Otvoren: zaštita dopušta vretenu rad samo ako čvor dopusti
 stProtectClosed	Zatvoren: vreteno smije raditi
 stProtectLast	Otvoreno {0} puta od pokretanja. Zadnji uzrok: {1}.
+stProtectNow	Sada otvoreno: {0}.
 stProtectCause_too_fast	brzina iznad granice
 stProtectCause_hot	vreteno je prevruće
 stProtectCause_sensor_silent	senzor temperature ne odgovara

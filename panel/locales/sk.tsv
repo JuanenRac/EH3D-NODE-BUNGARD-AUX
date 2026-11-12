@@ -345,6 +345,7 @@ stProtect	Ochranný výstup
 stProtectOpen	Otvorený: ochrana nechá vreteno bežať, len ak to uzol povolí
 stProtectClosed	Zatvorený: vreteno môže bežať
 stProtectLast	Otvorené {0}-krát od štartu. Posledná príčina: {1}.
+stProtectNow	Teraz otvorené: {0}.
 stProtectCause_too_fast	otáčky nad limitom
 stProtectCause_hot	vreteno je príliš horúce
 stProtectCause_sensor_silent	teplotný snímač neodpovedá

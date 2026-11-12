@@ -345,6 +345,7 @@ stProtect	Beveiligingsuitgang
 stProtectOpen	Open: de beveiliging laat de spindel alleen draaien als de node het toestaat
 stProtectClosed	Gesloten: de spindel mag draaien
 stProtectLast	{0} keer geopend sinds de start. Laatste oorzaak: {1}.
+stProtectNow	Nu open: {0}.
 stProtectCause_too_fast	snelheid boven de limiet
 stProtectCause_hot	spindel te heet
 stProtectCause_sensor_silent	temperatuursensor reageert niet

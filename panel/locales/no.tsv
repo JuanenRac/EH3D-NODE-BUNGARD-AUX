@@ -345,6 +345,7 @@ stProtect	Beskyttelsesutgang
 stProtectOpen	Åpen: beskyttelsen lar spindelen gå bare hvis noden tillater det
 stProtectClosed	Lukket: spindelen kan gå
 stProtectLast	Åpnet {0} ganger siden start. Siste årsak: {1}.
+stProtectNow	Åpen nå: {0}.
 stProtectCause_too_fast	hastighet over grensen
 stProtectCause_hot	spindelen er for varm
 stProtectCause_sensor_silent	temperatursensoren svarer ikke

@@ -345,6 +345,7 @@ stProtect	Έξοδος προστασίας
 stProtectOpen	Ανοιχτή: η προστασία επιτρέπει στην άτρακτο να περιστρέφεται μόνο αν το επιτρέπει ο κόμβος
 stProtectClosed	Κλειστή: η άτρακτος μπορεί να περιστρέφεται
 stProtectLast	Άνοιξε {0} φορές από την εκκίνηση. Τελευταία αιτία: {1}.
+stProtectNow	Ανοιχτό τώρα: {0}.
 stProtectCause_too_fast	ταχύτητα πάνω από το όριο
 stProtectCause_hot	ο άξονας είναι πολύ ζεστός
 stProtectCause_sensor_silent	ο αισθητήρας θερμοκρασίας δεν απαντά

@@ -345,6 +345,7 @@ stProtect	Suojalähtö
 stProtectOpen	Auki: suoja sallii karan pyöriä vain, jos solmu sen sallii
 stProtectClosed	Kiinni: kara saa pyöriä
 stProtectLast	Avattu {0} kertaa käynnistyksen jälkeen. Viimeisin syy: {1}.
+stProtectNow	Auki nyt: {0}.
 stProtectCause_too_fast	nopeus yli rajan
 stProtectCause_hot	kara on liian kuuma
 stProtectCause_sensor_silent	lämpötila-anturi ei vastaa

@@ -345,6 +345,7 @@ stProtect	Sortida de protecció
 stProtectOpen	Oberta: la protecció només deixa funcionar el broquer si el node ho permet
 stProtectClosed	Tancada: el broquer pot funcionar
 stProtectLast	Oberta {0} vegades des de l'inici. Darrera causa: {1}.
+stProtectNow	Oberta ara: {0}.
 stProtectCause_too_fast	velocitat per sobre del límit
 stProtectCause_hot	fus massa calent
 stProtectCause_sensor_silent	el sensor de temperatura no respon

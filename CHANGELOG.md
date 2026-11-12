@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The status page tells why the protect output is open now:** next to the number of times it has opened and the last cause, the page shows the reason that holds it open at this moment (speed over the limit, spindle too hot, temperature sensor not answering), in the 37 languages. `tests/check_panel_text.py` reads the reasons from `core/spindle.hpp` and fails if one has no text in the panel.
+
 - **The ONVIF discovery task has a bigger stack:** the build's stack report showed its main function using 2480 bytes of the 4096 it had; it now has 6144.
 
 - **The panel tells why the protect output opened:** under the protection card the status page says how many times it has opened since the start and the last cause (speed over the limit, spindle too hot, temperature sensor not answering), in the 37 languages of the panel.

@@ -345,6 +345,7 @@ stProtect	Излаз заштите
 stProtectOpen	Отворен: заштита дозвољава раду вретена само ако чвор то допушта
 stProtectClosed	Затворен: вретено може да ради
 stProtectLast	Отворено {0} пута од покретања. Последњи узрок: {1}.
+stProtectNow	Сада отворено: {0}.
 stProtectCause_too_fast	брзина изнад границе
 stProtectCause_hot	вретено је превруће
 stProtectCause_sensor_silent	сензор температуре не одговара

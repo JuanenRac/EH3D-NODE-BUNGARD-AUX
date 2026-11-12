@@ -345,6 +345,7 @@ stProtect	Kaitseväljund
 stProtectOpen	Avatud: kaitse lubab spindlil pöörelda ainult siis, kui sõlm seda lubab
 stProtectClosed	Suletud: spindel võib pöörelda
 stProtectLast	Avatud {0} korda alates käivitusest. Viimane põhjus: {1}.
+stProtectNow	Praegu avatud: {0}.
 stProtectCause_too_fast	kiirus üle piiri
 stProtectCause_hot	spindel liiga kuum
 stProtectCause_sensor_silent	temperatuuriandur ei vasta

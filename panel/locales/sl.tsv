@@ -345,6 +345,7 @@ stProtect	Zaščitni izhod
 stProtectOpen	Odprt: zaščita pusti vreteno teči le, če vozlišče to dovoli
 stProtectClosed	Zaprt: vreteno lahko teče
 stProtectLast	Odprto {0}-krat od zagona. Zadnji vzrok: {1}.
+stProtectNow	Zdaj odprto: {0}.
 stProtectCause_too_fast	hitrost nad mejo
 stProtectCause_hot	vreteno je pregrelo
 stProtectCause_sensor_silent	temperaturno tipalo ne odgovarja

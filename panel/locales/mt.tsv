@@ -345,6 +345,7 @@ stProtect	Output tal-protezzjoni
 stProtectOpen	Miftuħ: il-protezzjoni tħalli l-ispindlu jaħdem biss jekk in-nodu jippermetti
 stProtectClosed	Magħluq: l-ispindlu jista' jaħdem
 stProtectLast	Miftuħ {0} darbiet mill-bidu. L-aħħar kawża: {1}.
+stProtectNow	Miftuħ issa: {0}.
 stProtectCause_too_fast	veloċità 'l fuq mil-limitu
 stProtectCause_hot	l-ispindil sħun wisq
 stProtectCause_sensor_silent	is-sensor tat-temperatura ma jwiebx

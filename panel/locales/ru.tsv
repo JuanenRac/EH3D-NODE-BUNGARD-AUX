@@ -345,6 +345,7 @@ stProtect	Выход защиты
 stProtectOpen	Разомкнут: защита позволяет шпинделю работать, только если это разрешает узел
 stProtectClosed	Замкнут: шпиндель может работать
 stProtectLast	Размыкался {0} раз с момента запуска. Последняя причина: {1}.
+stProtectNow	Сейчас открыто: {0}.
 stProtectCause_too_fast	скорость выше предела
 stProtectCause_hot	шпиндель перегрет
 stProtectCause_sensor_silent	датчик температуры не отвечает

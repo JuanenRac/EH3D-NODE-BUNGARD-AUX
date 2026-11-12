@@ -345,6 +345,7 @@ stProtect	Aschur cosanta
 stProtectOpen	Oscailte: ní ligeann an chosaint don fhearsaid rothlú ach amháin má cheadaíonn an nód é
 stProtectClosed	Dúnta: féadfaidh an fhearsaid rothlú
 stProtectLast	Oscailte {0} uair ó thosú. An chúis dheireanach: {1}.
+stProtectNow	Oscailte anois: {0}.
 stProtectCause_too_fast	luas os cionn na teorann
 stProtectCause_hot	an fearsaid ró-the
 stProtectCause_sensor_silent	ní fhreagraíonn an braiteoir teochta

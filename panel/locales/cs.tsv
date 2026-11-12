@@ -345,6 +345,7 @@ stProtect	Výstup ochrany
 stProtectOpen	Otevřený: ochrana nechá vřeteno běžet, jen pokud to uzel povolí
 stProtectClosed	Zavřený: vřeteno smí běžet
 stProtectLast	Rozepnuto {0}krát od startu. Poslední příčina: {1}.
+stProtectNow	Nyní otevřeno: {0}.
 stProtectCause_too_fast	otáčky nad limitem
 stProtectCause_hot	vřeteno je příliš horké
 stProtectCause_sensor_silent	teplotní čidlo neodpovídá

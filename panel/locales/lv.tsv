@@ -345,6 +345,7 @@ stProtect	Aizsardzības izeja
 stProtectOpen	Atvērta: aizsardzība ļauj spindelim darboties tikai tad, ja mezgls to atļauj
 stProtectClosed	Aizvērta: spindelis drīkst darboties
 stProtectLast	Atvērts {0} reizes kopš palaišanas. Pēdējais iemesls: {1}.
+stProtectNow	Tagad atvērts: {0}.
 stProtectCause_too_fast	ātrums pārsniedz robežu
 stProtectCause_hot	vārpsta ir pārāk karsta
 stProtectCause_sensor_silent	temperatūras sensors neatbild

@@ -196,6 +196,25 @@ def check_bodies(app, problems):
                 problems.append(f"the machine page paints \"{path}\" and machineBody() does not send its section")
 
 
+def check_protect_reasons(table, app, problems):
+    """Every reason the protect output can be open for (core/spindle.hpp) has its text in every language and is known to the panel, which tells the reason now and the last one."""
+    header = (ROOT / "core" / "spindle.hpp").read_text(encoding="utf-8")
+    body = header.split("inline const char* protect_reason_text", 1)[1].split("\n}\n", 1)[0]
+    reasons = [r for r in re.findall(r'return "([a-z_]+)";', body) if r != "none"]
+    if len(reasons) < 3:
+        problems.append("the reasons of the protect output could not be read from core/spindle.hpp")
+    for reason in reasons:
+        if "stProtectCause_" + reason not in table:
+            problems.append(f"the protect output can open for \"{reason}\" and the panel has no text stProtectCause_{reason}")
+        if f'stProtectCause_{reason}' not in app:
+            problems.append(f"the panel does not name the reason \"{reason}\" of the protect output")
+    for key in ("stProtectNow", "stProtectLast"):
+        if key not in table:
+            problems.append(f"{key} is missing")
+    if "m.protect_reason" not in app or "m.protect_trips" not in app:
+        problems.append("the status page does not show protect_reason and protect_trips")
+
+
 def main():
     problems = []
     text = (PANEL / "text.js").read_text(encoding="utf-8")
@@ -229,6 +248,7 @@ def main():
             problems.append(f"e_{code} is missing")
     codes = check_firmware_codes(table, problems)
     check_bodies(app, problems)
+    check_protect_reasons(table, app, problems)
 
     packed = sum(len(gzip.compress(data, 9, mtime=0)) for data in (
         (PANEL / "index.html").read_bytes(),

@@ -345,6 +345,7 @@ stProtect	Apsaugos išvestis
 stProtectOpen	Atvira: apsauga leidžia verpstei suktis tik jei mazgas leidžia
 stProtectClosed	Uždara: verpstė gali suktis
 stProtectLast	Atsidarė {0} kartus nuo paleidimo. Paskutinė priežastis: {1}.
+stProtectNow	Dabar atidaryta: {0}.
 stProtectCause_too_fast	greitis viršija ribą
 stProtectCause_hot	velenas per karštas
 stProtectCause_sensor_silent	temperatūros jutiklis neatsako

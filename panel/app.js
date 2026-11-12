@@ -535,7 +535,9 @@ function patchStatus() {
   setText("sp-temp", typeof m.temp_c === "number" ? m.temp_c.toFixed(1) + " °C" : t("stNoTemp"));
   setPill("st-p-protect", t(m.protect_open ? "stProtectOpen" : "stProtectClosed"), m.protect_open ? "warn" : "ok");
   const causes = { too_fast: "stProtectCause_too_fast", hot: "stProtectCause_hot", sensor_silent: "stProtectCause_sensor_silent" };
-  setText("st-protect-why", m.protect_trips > 0 && causes[m.protect_last] ? t("stProtectLast", m.protect_trips, t(causes[m.protect_last])) : "");
+  const nowWhy = m.protect_open && causes[m.protect_reason] ? t("stProtectNow", t(causes[m.protect_reason])) : "";
+  const lastWhy = m.protect_trips > 0 && causes[m.protect_last] ? t("stProtectLast", m.protect_trips, t(causes[m.protect_last])) : "";
+  setText("st-protect-why", [nowWhy, lastWhy].filter(Boolean).join(" "));
   setText("st-version", m.version); setText("st-ip", S.status && S.status.network && S.status.network.ip ? S.status.network.ip : "—"); setText("st-uptime", formatUptime(m.uptime_s));
 }
 
