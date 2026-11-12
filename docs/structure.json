@@ -74,8 +74,8 @@
             "zh": "节点设置和钻头部分",
             "ja": "ノードの設定とヘッドの項目"
           },
-          "name": "bungard_config.hpp",
-          "tree_name": "bungard_config.hpp"
+          "name": "node_config.hpp",
+          "tree_name": "node_config.hpp"
         },
         {
           "desc": {

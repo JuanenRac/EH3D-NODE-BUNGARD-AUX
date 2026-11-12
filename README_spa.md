@@ -153,7 +153,7 @@ Cómo encajan las partes de este repositorio: quién habla con él, qué contien
 
 | Interfaz | Qué es | Dónde |
 |---|---|---|
-| Ajustes | un documento en la flash, editado en la página Cabezal del panel web; las claves son las de `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Ajustes | un documento en la flash, editado en la página Cabezal del panel web; las claves son las de `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | Estado | `GET /api/status`: el nodo, la cámara, el láser, la velocidad, la temperatura, la salida de protección y el tiempo encendido en una línea de JSON | `core/protocol.hpp` |
 | Medida | `POST /api/measure[?samples=N]` con el token: la distancia a la mesa, la dispersión y por qué se rechazó una medida | `core/laser.hpp`, `main/app_main.cpp` |
 | Cámara | `GET /stream` con el token: MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           el fichero de ajustes y sus valores seguros
 │   ├── self_check.hpp                           el juicio del nodo sobre sí mismo, con códigos
 │   ├── head_sim.hpp                             un cabezal que no existe, para pruebas y programas
-│   ├── bungard_config.hpp                       los ajustes del nodo y la sección del cabezal
+│   ├── node_config.hpp                          los ajustes del nodo y la sección del cabezal
 │   ├── laser.hpp                                la medida de la altura de la mesa
 │   ├── laser_hw.hpp                             los registros del láser
 │   ├── light.hpp                                el aro de LEDs: niveles, colores, señales

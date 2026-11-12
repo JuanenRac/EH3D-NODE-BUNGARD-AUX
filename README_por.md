@@ -153,7 +153,7 @@ Como as partes deste repositório se encaixam: quem fala com ele, o que contém 
 
 | Interface | O que é | Onde |
 |---|---|---|
-| Definições | um documento na flash, editado na página Cabeçote do painel web; as chaves são as de `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Definições | um documento na flash, editado na página Cabeçote do painel web; as chaves são as de `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | Estado | `GET /api/status`: o nó, a câmara, o laser, a velocidade, a temperatura, a saída de proteção e o tempo ligado numa linha de JSON | `core/protocol.hpp` |
 | Medição | `POST /api/measure[?samples=N]` com o token: a distância à mesa, a dispersão e porque uma medição foi recusada | `core/laser.hpp`, `main/app_main.cpp` |
 | Câmara | `GET /stream` com o token: MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           o ficheiro de definições e os seus valores seguros
 │   ├── self_check.hpp                           o juízo do nó sobre si próprio, com códigos
 │   ├── head_sim.hpp                             um cabeçote que não existe, para testes e programas
-│   ├── bungard_config.hpp                       as definições do nó e a secção do cabeçote
+│   ├── node_config.hpp                          as definições do nó e a secção do cabeçote
 │   ├── laser.hpp                                a medição da altura da mesa
 │   ├── laser_hw.hpp                             os registos do laser
 │   ├── light.hpp                                o anel de LEDs: níveis, cores, sinais

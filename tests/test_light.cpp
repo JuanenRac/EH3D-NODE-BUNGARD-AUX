@@ -278,7 +278,7 @@ static void the_words() {
     status.light_level = 55;
     std::string js = json_status(status);
     CHECK(js.find("\"light\":true") != std::string::npos && js.find("\"light_on\":true") != std::string::npos && js.find("\"light_level\":55") != std::string::npos);
-    CHECK(js.size() < 720);  // the status stays a short line for the small boards and the programs that poll it
+    CHECK(js.size() < 860);  // the status stays a short line for the small boards and the programs that poll it (the four keys that tell why the protect output opened took 110 bytes of it)
 }
 
 int main() {

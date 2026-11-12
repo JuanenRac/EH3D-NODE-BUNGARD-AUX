@@ -45,6 +45,10 @@ Always answered, with or without the token. One line of JSON; a program must ign
 | `rpm_th_lo_mv` | number | analogue input: the low threshold |
 | `selfcheck` | text | `ok`, `warn`, `fail` or `off` (see below) |
 | `selfcheck_codes` | text | the codes behind the verdict, separated by commas; empty when there are none |
+| `protect_reason` | text | why the protect output is open now: `too_fast`, `hot`, `sensor_silent`, or `none` when it is closed. |
+| `protect_trips` | number | how many times the protect output has opened since the start |
+| `protect_last` | text | why it opened last (`none` when it has not) |
+| `protect_last_s` | number | the running time, in seconds, of the last opening; -1 when it has not opened |
 
 The server needs `node`, `camera`, `laser`, `rpm_sensor` and `protect_open` (it refuses a status without them); every other key may be missing.
 

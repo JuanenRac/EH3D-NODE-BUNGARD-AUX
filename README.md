@@ -153,7 +153,7 @@ How the parts of this repository fit together: who talks to it, what it holds an
 
 | Interface | What it is | Where |
 |---|---|---|
-| Settings | one document in flash, edited on the Head page of the web panel; the keys are the ones of `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Settings | one document in flash, edited on the Head page of the web panel; the keys are the ones of `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | Status | `GET /api/status`: the node, the camera, the laser, the speed, the temperature, the protect output and the uptime as one line of JSON | `core/protocol.hpp` |
 | Measure | `POST /api/measure[?samples=N]` with the token: the distance to the table, the spread and why a measure was refused | `core/laser.hpp`, `main/app_main.cpp` |
 | Camera | `GET /stream` with the token: MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           the settings file and its safe defaults
 │   ├── self_check.hpp                           the node's judgement on itself, with codes
 │   ├── head_sim.hpp                             a head that is not there, for tests and programs
-│   ├── bungard_config.hpp                       the settings of the node and the head section
+│   ├── node_config.hpp                          the settings of the node and the head section
 │   ├── laser.hpp                                the measure of the height of the table
 │   ├── laser_hw.hpp                             the registers of the laser
 │   ├── light.hpp                                the ring of LEDs: levels, colours, signals

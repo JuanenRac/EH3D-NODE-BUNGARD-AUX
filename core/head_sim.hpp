@@ -118,6 +118,11 @@ public:
             s.heat = thermal_.state();
         }
         s.protect_open = protect_open(cfg_, s.rpm, s.heat);
+        protect_log_.update(protect_reason(cfg_, s.rpm, s.heat), static_cast<long>(now_ms_ / 1000));
+        s.protect_reason = protect_reason_text(protect_log_.now);
+        s.protect_trips = protect_log_.trips;
+        s.protect_last = protect_reason_text(protect_log_.last);
+        s.protect_last_s = protect_log_.last_s;
         s.uptime_s = static_cast<std::uint32_t>(now_ms_ / 1000);
         s.light = cfg_.light_enabled && !faults_.light_missing;
         s.light_on = s.light && light_on_;
@@ -172,6 +177,7 @@ private:
     SimFaults faults_;
     std::uint32_t rng_;
     Thermal thermal_{cfg_.temp_warn_c, cfg_.temp_critical_c, cfg_.temp_hysteresis_c};
+    mutable ProtectLog protect_log_;   // what the status tells about the protect output; a look at the status is what updates it
     double x_ = 0.0, y_ = 0.0;
     double rpm_ = 0.0, target_rpm_ = 0.0;
     double temp_c_;

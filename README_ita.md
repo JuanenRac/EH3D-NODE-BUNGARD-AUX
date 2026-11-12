@@ -153,7 +153,7 @@ Come si incastrano le parti di questo repository: chi parla con esso, cosa conti
 
 | Interfaccia | Che cos'è | Dove |
 |---|---|---|
-| Impostazioni | un documento nella flash, modificato nella pagina Testa del pannello web; le chiavi sono quelle di `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Impostazioni | un documento nella flash, modificato nella pagina Testa del pannello web; le chiavi sono quelle di `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | Stato | `GET /api/status`: il nodo, la telecamera, il laser, la velocità, la temperatura, l'uscita di protezione e il tempo di accensione in una riga di JSON | `core/protocol.hpp` |
 | Misura | `POST /api/measure[?samples=N]` con il token: la distanza dal tavolo, la dispersione e perché una misura è stata rifiutata | `core/laser.hpp`, `main/app_main.cpp` |
 | Telecamera | `GET /stream` con il token: MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           il file delle impostazioni e i suoi valori sicuri
 │   ├── self_check.hpp                           il giudizio del nodo su sé stesso, con codici
 │   ├── head_sim.hpp                             una testa che non c'è, per prove e programmi
-│   ├── bungard_config.hpp                       le impostazioni del nodo e la sezione della testa
+│   ├── node_config.hpp                          le impostazioni del nodo e la sezione della testa
 │   ├── laser.hpp                                la misura dell'altezza del tavolo
 │   ├── laser_hw.hpp                             i registri del laser
 │   ├── light.hpp                                l'anello di LED: livelli, colori, segnali

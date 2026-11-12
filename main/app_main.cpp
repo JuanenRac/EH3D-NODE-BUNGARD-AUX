@@ -7,6 +7,7 @@
  * and the two firmware slots); what is only the head's is in head.cpp and in core/aux_config.hpp. The rules are built and tested on a computer (tests/). None of it has run on
  * a board yet, and nothing has been mounted on a machine.
  */
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 extern "C" {
@@ -26,6 +27,7 @@ extern "C" {
 #include "improv_serial.hpp"
 #include "log_buffer.hpp"
 #include "network.hpp"
+#include "node_guard.hpp"
 #include "node_store.hpp"
 #include "psram_mem.hpp"
 #include "web_server.hpp"
@@ -68,6 +70,9 @@ void boot_button_task(void*) {
 
 // A freshly installed firmware is on probation: once the panel is up and has stayed up for a while, it is confirmed; if the panel could not start, the
 // boot loader is told to go back to the previous image now.
+// What a new image must have started before it is confirmed (core/node_guard.hpp): the panel and the task that writes the protect output.
+constexpr std::uint32_t kRequiredSubsystems = eh3d::nodeguard::kSubPanel | eh3d::nodeguard::kSubOutputs;
+
 void confirm_firmware_task(void* argument) {
   const bool panel_ok = argument != nullptr;
   const esp_partition_t* running = esp_ota_get_running_partition();
@@ -78,6 +83,12 @@ void confirm_firmware_task(void* argument) {
       esp_ota_mark_app_invalid_rollback_and_reboot();
     }
     vTaskDelay(pdMS_TO_TICKS(30000));
+    // The task that writes the protect output must be running as well: an image whose watch task did not start would leave that output as it was, and the previous image is the better one to stay on.
+    const std::uint32_t missing = eh3d::nodeguard::missing_subsystems(kRequiredSubsystems, eh3d::nodeguard::subsystems_up());
+    if (missing != 0) {
+      ESP_LOGE(kTag, "the new firmware did not start %s: going back to the previous one", eh3d::nodeguard::subsystem_text(missing).c_str());
+      esp_ota_mark_app_invalid_rollback_and_reboot();
+    }
     // A panel that is up is not enough: a node that cannot be reached (no address from the network, no access point of its own) would stay that way and need a cable to be rescued. The image
     // is confirmed once the node can be reached, and goes back to the previous one when five minutes pass without.
     bool reachable = false;
@@ -118,10 +129,12 @@ extern "C" void app_main() {
     eh3d::network::arm_rescue(eh3d::netplan::plan_network(settings, true, eh3d::store::setup_code(), eh3d::store::mac_tail(), eh3d::store::mac_sum()), 90);
   }
   if (!network_ok) ESP_LOGE(kTag, "the network could not be started: the node stays local");
+  else eh3d::nodeguard::subsystem_up(eh3d::nodeguard::kSubNetwork);
   eh3d::clocksync::start(settings);
   eh3d::improv_serial::start();   // Improv Wi-Fi over the USB cable (ESP Web Tools)
   head::start(settings.head);   // the camera, the sensors and the streams start once the network is up
   const bool panel_ok = network_ok && eh3d::web::start(settings);
+  if (panel_ok) eh3d::nodeguard::subsystem_up(eh3d::nodeguard::kSubPanel);
 
   // A periodic, unconditional restart the panel can turn on (0: never) - a board left running for weeks without anyone touching it.
   if (settings.auto_restart_hours > 0) eh3d::web::restart_after(static_cast<unsigned>(settings.auto_restart_hours) * 3600u * 1000u);

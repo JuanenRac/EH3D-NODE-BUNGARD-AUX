@@ -210,6 +210,31 @@ static void protect_output() {
     CHECK(!protect_open(s, 90000.0, Heat::Hot));  // the output is switched off in the settings
 }
 
+// why the protect output is open, and the count of its trips
+static void protect_reasons() {
+    Settings s;
+    s.temp_sensor = TempSensor::Ds18b20;
+    CHECK(protect_reason(s, 20000.0, Heat::Ok) == ProtectReason::None);
+    CHECK(protect_reason(s, 70000.0, Heat::Ok) == ProtectReason::TooFast);
+    CHECK(protect_reason(s, 70000.0, Heat::Hot) == ProtectReason::TooFast);   // too fast is told first
+    CHECK(protect_reason(s, 0.0, Heat::Hot) == ProtectReason::Hot);
+    CHECK(protect_reason(s, 0.0, Heat::Unknown) == ProtectReason::SensorSilent);
+    CHECK(std::string(protect_reason_text(ProtectReason::SensorSilent)) == "sensor_silent" && std::string(protect_reason_text(ProtectReason::None)) == "none");
+    s.protect_output = false;
+    CHECK(protect_reason(s, 90000.0, Heat::Hot) == ProtectReason::None);
+    ProtectLog log;
+    CHECK(log.trips == 0 && log.last_s == -1);
+    log.update(ProtectReason::None, 5);
+    log.update(ProtectReason::TooFast, 10);   // the first trip
+    log.update(ProtectReason::TooFast, 11);   // still open: not another trip
+    log.update(ProtectReason::Hot, 12);       // another reason while open: told, not counted
+    CHECK(log.trips == 1 && log.last == ProtectReason::Hot && log.now == ProtectReason::Hot && log.last_s == 10);
+    log.update(ProtectReason::None, 20);      // closed: the last reason stays
+    CHECK(log.now == ProtectReason::None && log.last == ProtectReason::Hot);
+    log.update(ProtectReason::SensorSilent, 30);
+    CHECK(log.trips == 2 && log.last_s == 30 && log.last == ProtectReason::SensorSilent);
+}
+
 static void words_of_the_network() {
     Request r;
     CHECK(parse_request_line("POST /api/measure?samples=5&token=x HTTP/1.1", r));
@@ -271,6 +296,14 @@ static void words_of_the_network() {
     CHECK(j.find("\"node\":\"head-1\"") != std::string::npos);
     CHECK(j.find("\"rpm\":23998") != std::string::npos && j.find("\"temp_c\":41.3") != std::string::npos);
     CHECK(j.find("\"protect_open\":false") != std::string::npos && j.find("\"uptime_s\":90") != std::string::npos);
+    CHECK(j.find("\"protect_reason\":\"none\"") != std::string::npos && j.find("\"protect_trips\":0") != std::string::npos && j.find("\"protect_last_s\":-1") != std::string::npos);
+    st.protect_reason = "too_fast";
+    st.protect_trips = 3;
+    st.protect_last = "hot";
+    st.protect_last_s = 42;
+    j = json_status(st);
+    CHECK(j.find("\"protect_reason\":\"too_fast\"") != std::string::npos && j.find("\"protect_trips\":3") != std::string::npos && j.find("\"protect_last\":\"hot\"") != std::string::npos &&
+          j.find("\"protect_last_s\":42") != std::string::npos);
     st.has_temp = false;
     CHECK(json_status(st).find("\"temp_c\":null") != std::string::npos);
     st.name = "a\"b";
@@ -362,6 +395,7 @@ int main() {
     camera_picture_settings();
     thermal_state();
     protect_output();
+    protect_reasons();
     words_of_the_network();
     cameras();
     thermometers();

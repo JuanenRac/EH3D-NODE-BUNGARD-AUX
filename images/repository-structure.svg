@@ -47,7 +47,7 @@
 <text x="392" y="334" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="14.5" font-weight="600" fill="#E6EDF3" text-anchor="start">head_sim.hpp</text>
 <text x="775.6" y="334" font-family="'Segoe UI','Noto Sans','Noto Sans CJK SC','Microsoft YaHei','Yu Gothic','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12.8" font-weight="400" fill="#8A97A6" text-anchor="start">a head that is not there, for tests and programs</text>
 <line x1="392" y1="342" x2="1118" y2="342" stroke="#1A2430" stroke-width="1"/>
-<text x="392" y="361" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="14.5" font-weight="600" fill="#E6EDF3" text-anchor="start">bungard_config.hpp</text>
+<text x="392" y="361" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="14.5" font-weight="600" fill="#E6EDF3" text-anchor="start">node_config.hpp</text>
 <text x="775.6" y="361" font-family="'Segoe UI','Noto Sans','Noto Sans CJK SC','Microsoft YaHei','Yu Gothic','Helvetica Neue',Helvetica,Arial,sans-serif" font-size="12.8" font-weight="400" fill="#8A97A6" text-anchor="start">the settings of the node and the head section</text>
 <line x1="392" y1="369" x2="1118" y2="369" stroke="#1A2430" stroke-width="1"/>
 <text x="392" y="388" font-family="'JetBrains Mono','Cascadia Code','SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="14.5" font-weight="600" fill="#E6EDF3" text-anchor="start">laser.hpp</text>

@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The settings header no longer carries the name of a machine:** `core/bungard_config.hpp` is now `core/node_config.hpp`, the header the shared firmware base includes, and the base and the copies in the nodes are kept equal by `tools/sync_firmware_base.py`.
+
+- **The host tests also run under AddressSanitizer and UBSan in the CI:** the same programs are built with `-fsanitize=address,undefined` and run (an undefined behaviour stops the test), and `test.sh` / `test.bat` run the same steps as the CI (the repository checks, the tests of the tools, the pictures and the languages, and the host tests).
+
+- **A task that is there but stuck is told:** the tasks that must keep moving call `nodeguard::beat(name)` each time round their loop, and the guard (`find_stalled` in `core/node_guard.hpp`) treats a task whose count has not changed for 30 seconds like a missing one: it is told in the log (`guard: task X stalled`) and, after a minute, the node restarts once, cleanly, under the same limit of three an hour.
+- **A new image is confirmed only when what drives the machine has started:** the subsystems each node needs (`kSub*` bits in `core/node_guard.hpp`) report themselves up when they start, and the confirmation task goes back to the previous image, naming what is missing, when one of them did not start.
+- **An image made for the other board is refused:** every image carries `EH3D-BOARD-MARK:<board>`; after `esp_ota_end` the node reads the written image back (`image_board_ok`, `core/board_mark.hpp`) and refuses one that names another board, from the upload and from GitHub, with the answer `wrong_firmware`. An image made before the mark existed is still accepted.
+- **A crash leaves a core dump:** `sdkconfig.defaults` turns on the core dump to the existing partition and the log says at the next start that one is there.
+
+- **Why the protect output is open:** the status says `protect_reason` (`too_fast`, `hot`, `sensor_silent` or `none`), `protect_trips` (how many times it has opened since the start), `protect_last` and `protect_last_s` (why and when it opened last); the rules are in `core/spindle.hpp` and tested on a computer, and the simulated head tells the same.
+
 ## [0.0.8] - Self-check of the head, simulated drill head with a tested contract and every setting written to flash
 
 - **Settings that were forgotten at the next start:** the `head` section that is written to flash, shown to the panel and compared to decide whether a restart is needed left out the picture of the camera (mirror, flip, brightness, contrast, saturation, exposure, white balance), the input, edge and thresholds of the speed sensor, and the resolution and the address of the DS18B20. A change to any of them was applied to the running node, lost at the next start, and never asked for a restart. All of them are written now. A host test (`tests/test_head_roundtrip.cpp`) reads every key the settings parser accepts and fails when one is missing from the written document, and takes a document with every key changed through flash and back.

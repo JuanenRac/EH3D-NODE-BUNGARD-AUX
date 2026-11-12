@@ -40,6 +40,9 @@ const char* TAG = "aux-head";
 bungard_aux::Settings settings;   // the `head` section of the settings of the node, as it was when the node started
 bungard_aux::Thermal thermal(55.0, 70.0, 3.0);
 volatile bool protect_is_open = true;
+// why it is open, how often it has opened and when last: the watch task writes it, the status reads it
+std::mutex protect_lock;
+bungard_aux::ProtectLog protect_log;
 // the temperature is read by a task of its own (a DS18B20 takes up to 750 ms to convert); this lock guards what it leaves for the others
 std::mutex thermal_lock;
 double temp_now_c = 0.0;
@@ -184,6 +187,13 @@ std::string live_json_now() {
         s.temp_resolution = settings.temp_resolution;
     }
     s.protect_open = protect_is_open;
+    {
+        std::lock_guard<std::mutex> guard(protect_lock);
+        s.protect_reason = bungard_aux::protect_reason_text(protect_log.now);
+        s.protect_trips = protect_log.trips;
+        s.protect_last = bungard_aux::protect_reason_text(protect_log.last);
+        s.protect_last_s = protect_log.last_s;
+    }
     s.uptime_s = static_cast<std::uint32_t>(esp_timer_get_time() / 1000000);
     s.light = light::present();
     s.light_on = light::is_on();
@@ -431,9 +441,15 @@ void watch_task(void*) {
     esp_task_wdt_add(nullptr);
     while (true) {
         esp_task_wdt_reset();
+        eh3d::nodeguard::beat("watch");   // the guard tells a watch task that does not come round (it is the one that writes the protect output)
         double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
-        bool open = bungard_aux::protect_open(settings, rpm, heat_now());
+        const bungard_aux::ProtectReason reason = bungard_aux::protect_reason(settings, rpm, heat_now());
+        const bool open = reason != bungard_aux::ProtectReason::None;
         protect_is_open = open;
+        {
+            std::lock_guard<std::mutex> guard(protect_lock);
+            protect_log.update(reason, static_cast<long>(esp_timer_get_time() / 1000000));
+        }
         sensors::protect_set(open);
         vTaskDelay(pdMS_TO_TICKS(100));
     }
@@ -456,7 +472,7 @@ void start(const bungard_aux::Settings& s) {
     if (settings.camera_enabled) camera_ok = camera_start();
     ::stream::start(settings);
     eh3d::nodeguard::expect_task("watch");
-    xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr);
+    if (xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr) == pdPASS) eh3d::nodeguard::subsystem_up(eh3d::nodeguard::kSubOutputs);
     if (settings.temp_sensor != bungard_aux::TempSensor::None) xTaskCreate(temperature_task, "temp", 4096, nullptr, 4, nullptr);
 }
 

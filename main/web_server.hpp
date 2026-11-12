@@ -5,7 +5,7 @@
 
 #include "esp_http_server.h"
 
-#include "core/bungard_config.hpp"
+#include "core/node_config.hpp"
 
 namespace eh3d::web {
 

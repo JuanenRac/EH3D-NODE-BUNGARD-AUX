@@ -153,7 +153,7 @@ Comment s'assemblent les parties de ce dépôt : qui lui parle, ce qu'il contien
 
 | Interface | Ce que c'est | Où |
 |---|---|---|
-| Réglages | un document dans la flash, modifié sur la page Tête du panneau web ; les clés sont celles de `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Réglages | un document dans la flash, modifié sur la page Tête du panneau web ; les clés sont celles de `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | État | `GET /api/status` : le nœud, la caméra, le laser, la vitesse, la température, la sortie de protection et la durée de fonctionnement en une ligne de JSON | `core/protocol.hpp` |
 | Mesure | `POST /api/measure[?samples=N]` avec le jeton : la distance à la table, la dispersion et pourquoi une mesure a été refusée | `core/laser.hpp`, `main/app_main.cpp` |
 | Caméra | `GET /stream` avec le jeton : MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           le fichier de réglages et ses valeurs sûres
 │   ├── self_check.hpp                           le jugement du nœud sur lui-même, avec des codes
 │   ├── head_sim.hpp                             une tête qui n'existe pas, pour les tests et les programmes
-│   ├── bungard_config.hpp                       les réglages du nœud et la section de la tête
+│   ├── node_config.hpp                          les réglages du nœud et la section de la tête
 │   ├── laser.hpp                                la mesure de la hauteur de la table
 │   ├── laser_hw.hpp                             les registres du laser
 │   ├── light.hpp                                l'anneau de LED : niveaux, couleurs, signaux

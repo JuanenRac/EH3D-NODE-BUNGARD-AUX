@@ -223,11 +223,45 @@ private:
 
 /// Whether the protect output is open (the spindle must stop): too fast, or too hot. A sensor that is switched on and does not answer counts as hot, so a broken
 /// wire never leaves the spindle unwatched; a sensor that is switched off in the settings is never asked.
-inline bool protect_open(const Settings& s, double rpm, Heat heat) {
-    if (!s.protect_output) return false;
-    if (s.rpm_enabled && rpm > static_cast<double>(s.rpm_max)) return true;
-    if (s.temp_sensor != TempSensor::None && (heat == Heat::Hot || heat == Heat::Unknown)) return true;
-    return false;
+/// Why the protect output is open: what the status tells next to `protect_open`.
+enum class ProtectReason { None, TooFast, Hot, SensorSilent };
+
+inline ProtectReason protect_reason(const Settings& s, double rpm, Heat heat) {
+    if (!s.protect_output) return ProtectReason::None;
+    if (s.rpm_enabled && rpm > static_cast<double>(s.rpm_max)) return ProtectReason::TooFast;
+    if (s.temp_sensor != TempSensor::None && heat == Heat::Hot) return ProtectReason::Hot;
+    if (s.temp_sensor != TempSensor::None && heat == Heat::Unknown) return ProtectReason::SensorSilent;
+    return ProtectReason::None;
 }
+
+inline bool protect_open(const Settings& s, double rpm, Heat heat) { return protect_reason(s, rpm, heat) != ProtectReason::None; }
+
+inline const char* protect_reason_text(ProtectReason r) {
+    switch (r) {
+        case ProtectReason::TooFast: return "too_fast";
+        case ProtectReason::Hot: return "hot";
+        case ProtectReason::SensorSilent: return "sensor_silent";
+        case ProtectReason::None: break;
+    }
+    return "none";
+}
+
+/// What the node remembers about the protect output: how many times it has opened since the start, why it opened last and when (seconds of running time, -1 when it has not).
+/// `update` is called with the reason of each look; a trip is a change from closed to open.
+struct ProtectLog {
+    ProtectReason now = ProtectReason::None;
+    ProtectReason last = ProtectReason::None;
+    unsigned trips = 0;
+    long last_s = -1;
+
+    void update(ProtectReason reason, long uptime_s) {
+        if (reason != ProtectReason::None && now == ProtectReason::None) {
+            ++trips;
+            last_s = uptime_s;
+        }
+        if (reason != ProtectReason::None) last = reason;
+        now = reason;
+    }
+};
 
 }  // namespace bungard_aux

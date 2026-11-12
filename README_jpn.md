@@ -153,7 +153,7 @@ EH3D-NODE-BUNGARD-AUX は Bungard CCD マシンのドリルヘッドのノード
 
 | インターフェース | 内容 | 場所 |
 |---|---|---|
-| 設定 | フラッシュ内の1つのドキュメント。Web パネルのヘッドページで編集。キーは `head.cfg.example` と同じ | `core/bungard_config.hpp`、`core/aux_config.hpp` |
+| 設定 | フラッシュ内の1つのドキュメント。Web パネルのヘッドページで編集。キーは `head.cfg.example` と同じ | `core/node_config.hpp`、`core/aux_config.hpp` |
 | 状態 | `GET /api/status`：ノード、カメラ、レーザー、回転数、温度、保護出力、稼働時間を JSON 1 行で | `core/protocol.hpp` |
 | 測定 | トークン付きの `POST /api/measure[?samples=N]`：テーブルまでの距離、ばらつき、測定が拒否された理由 | `core/laser.hpp`, `main/app_main.cpp` |
 | カメラ | トークン付きの `GET /stream`：MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           設定ファイルと安全な既定値
 │   ├── self_check.hpp                           ノード自身の状態判定とそのコード
 │   ├── head_sim.hpp                             実在しないヘッドの模擬、試験とプログラム用
-│   ├── bungard_config.hpp                       ノードの設定とヘッドの項目
+│   ├── node_config.hpp                          ノードの設定とヘッドの項目
 │   ├── laser.hpp                                テーブル高さの測定
 │   ├── laser_hw.hpp                             レーザーのレジスタ
 │   ├── light.hpp                                LED リング：明るさ・色・合図

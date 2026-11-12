@@ -153,7 +153,7 @@ Wie die Teile dieses Repositorys zusammenpassen: wer mit ihm spricht, was es ent
 
 | Schnittstelle | Was es ist | Wo |
 |---|---|---|
-| Einstellungen | ein Dokument im Flash, bearbeitet auf der Seite Kopf des Web-Panels; die Schlüssel sind die aus `head.cfg.example` | `core/bungard_config.hpp`, `core/aux_config.hpp` |
+| Einstellungen | ein Dokument im Flash, bearbeitet auf der Seite Kopf des Web-Panels; die Schlüssel sind die aus `head.cfg.example` | `core/node_config.hpp`, `core/aux_config.hpp` |
 | Status | `GET /api/status`: der Knoten, die Kamera, der Laser, die Drehzahl, die Temperatur, der Schutzausgang und die Laufzeit als eine JSON-Zeile | `core/protocol.hpp` |
 | Messung | `POST /api/measure[?samples=N]` mit Token: der Abstand zum Tisch, die Streuung und warum eine Messung abgelehnt wurde | `core/laser.hpp`, `main/app_main.cpp` |
 | Kamera | `GET /stream` mit Token: MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           die Einstellungsdatei und ihre sicheren Standardwerte
 │   ├── self_check.hpp                           die Selbstbeurteilung des Knotens mit Codes
 │   ├── head_sim.hpp                             ein Kopf, der nicht da ist, für Tests und Programme
-│   ├── bungard_config.hpp                       die Einstellungen des Knotens und der Kopf-Abschnitt
+│   ├── node_config.hpp                          die Einstellungen des Knotens und der Kopf-Abschnitt
 │   ├── laser.hpp                                die Messung der Tischhöhe
 │   ├── laser_hw.hpp                             die Register des Lasers
 │   ├── light.hpp                                der LED-Ring: Stufen, Farben, Signale

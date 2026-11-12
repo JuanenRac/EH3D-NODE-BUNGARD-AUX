@@ -143,6 +143,11 @@ struct Status {
     // the verdict of the node on itself (core/self_check.hpp): ok, warn, fail or off, and the codes behind it
     std::string selfcheck = "off";
     std::string selfcheck_codes;
+    // why the protect output is open now ("none" when it is closed), how many times it has opened since the start, why it opened last and when (seconds of running time, -1 when it has not)
+    std::string protect_reason = "none";
+    unsigned protect_trips = 0;
+    std::string protect_last = "none";
+    long protect_last_s = -1;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -171,7 +176,10 @@ inline std::string json_status(const Status& s) {
            ",\"temp_guess\":" + (s.temp_guess ? "true" : "false") + ",\"rpm_input\":\"" + json_escape(s.rpm_input) + "\",\"rpm_quality\":\"" + json_escape(s.rpm_quality) +
            "\",\"rpm_rejected\":" + std::to_string(s.rpm_rejected) + ",\"rpm_level_mv\":" + std::to_string(s.rpm_level_mv) + ",\"rpm_th_hi_mv\":" + std::to_string(s.rpm_th_hi_mv) +
            ",\"rpm_th_lo_mv\":" + std::to_string(s.rpm_th_lo_mv) +
-           ",\"selfcheck\":\"" + json_escape(s.selfcheck) + "\",\"selfcheck_codes\":\"" + json_escape(s.selfcheck_codes) + "\"}";
+           ",\"selfcheck\":\"" + json_escape(s.selfcheck) + "\",\"selfcheck_codes\":\"" + json_escape(s.selfcheck_codes) + "\"";
+    // why the protect output is open and how often it has opened: always there, so that the answer has the keys of the contract page
+    out += ",\"protect_reason\":\"" + json_escape(s.protect_reason) + "\",\"protect_trips\":" + std::to_string(s.protect_trips) + ",\"protect_last\":\"" + json_escape(s.protect_last) +
+           "\",\"protect_last_s\":" + std::to_string(s.protect_last_s) + "}";
     return out;
 }
 

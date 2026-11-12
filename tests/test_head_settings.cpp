@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-#include "../core/bungard_config.hpp"
+#include "../core/node_config.hpp"
 
 using namespace eh3d;
 static int fails = 0;

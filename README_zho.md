@@ -153,7 +153,7 @@ EH3D-NODE-BUNGARD-AUX 是 Bungard CCD 机床钻头上的节点，与 EH3D-NODE-B
 
 | 接口 | 说明 | 位置 |
 |---|---|---|
-| 设置 | 闪存中的一个文档，在网页面板的“钻头”页编辑；键名与 `head.cfg.example` 相同 | `core/bungard_config.hpp`、`core/aux_config.hpp` |
+| 设置 | 闪存中的一个文档，在网页面板的“钻头”页编辑；键名与 `head.cfg.example` 相同 | `core/node_config.hpp`、`core/aux_config.hpp` |
 | 状态 | `GET /api/status`：节点、摄像头、激光、转速、温度、保护输出和运行时间，一行 JSON | `core/protocol.hpp` |
 | 测量 | 带令牌的 `POST /api/measure[?samples=N]`：到工作台的距离、离散度以及测量被拒绝的原因 | `core/laser.hpp`, `main/app_main.cpp` |
 | 摄像头 | 带令牌的 `GET /stream`：MJPEG | `main/app_main.cpp` |
@@ -226,7 +226,7 @@ EH3D-NODE-BUNGARD-AUX/
 │   ├── aux_config.hpp                           设置文件及其安全默认值
 │   ├── self_check.hpp                           节点对自身状态的判断及其代码
 │   ├── head_sim.hpp                             不存在的钻头模拟，供测试和程序使用
-│   ├── bungard_config.hpp                       节点设置和钻头部分
+│   ├── node_config.hpp                          节点设置和钻头部分
 │   ├── laser.hpp                                工作台高度的测量
 │   ├── laser_hw.hpp                             激光的寄存器
 │   ├── light.hpp                                LED 环形灯：亮度、颜色、信号
