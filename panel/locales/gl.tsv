@@ -344,6 +344,10 @@ spNoSensor	Non hai ningún sensor de velocidade activado.
 stProtect	Saída de protección
 stProtectOpen	Aberta: a protección só deixa funcionar o husillo se o nó o permite
 stProtectClosed	Pechada: o husillo pode funcionar
+stProtectLast	Aberta {0} veces desde o arranque. Última causa: {1}.
+stProtectCause_too_fast	velocidade por riba do límite
+stProtectCause_hot	fuso demasiado quente
+stProtectCause_sensor_silent	o sensor de temperatura non responde
 stProtectHelp	A saída corta o enable do variador do husillo cando a velocidade ou a temperatura saen dos seus límites.
 ovHead	Cabezal
 hRestartNote	A cámara, os sensores e as transmisións arrancan co nó: un cambio aquí precisa reinicio.

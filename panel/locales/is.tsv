@@ -344,6 +344,10 @@ spNoSensor	Enginn hraðaskynjari er virkur.
 stProtect	Varnarútgangur
 stProtectOpen	Opinn: vörnin leyfir snældunni aðeins að snúast ef hnúturinn leyfir það
 stProtectClosed	Lokaður: snældan má snúast
+stProtectLast	Opnaðist {0} sinnum frá ræsingu. Síðasta orsök: {1}.
+stProtectCause_too_fast	hraði yfir mörkum
+stProtectCause_hot	snældan er of heit
+stProtectCause_sensor_silent	hitaskynjarinn svarar ekki
 stProtectHelp	Útgangurinn rýfur leyfi tíðnibreytis snældunnar þegar hraði eða hiti fer út fyrir mörk sín.
 ovHead	Haus
 hRestartNote	Myndavélin, skynjararnir og straumarnir ræsast með hnútnum: breyting hér krefst endurræsingar.

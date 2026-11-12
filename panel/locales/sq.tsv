@@ -344,6 +344,10 @@ spNoSensor	Nuk ka sensor shpejtësie të ndezur.
 stProtect	Dalja e mbrojtjes
 stProtectOpen	E hapur: mbrojtja e lë boshtin të punojë vetëm nëse nyja e lejon
 stProtectClosed	E mbyllur: boshti mund të punojë
+stProtectLast	Hapur {0} herë që nga nisja. Shkaku i fundit: {1}.
+stProtectCause_too_fast	shpejtësia mbi kufirin
+stProtectCause_hot	boshti është shumë i nxehtë
+stProtectCause_sensor_silent	sensori i temperaturës nuk përgjigjet
 stProtectHelp	Dalja e ndërpret lejen e drejtuesit të boshtit kur shpejtësia ose temperatura del jashtë kufijve.
 ovHead	Koka
 hRestartNote	Kamera, sensorët dhe transmetimet nisin me nyjen: një ndryshim këtu kërkon rinisje.

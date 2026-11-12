@@ -344,6 +344,10 @@ spNoSensor	Žiadny snímač otáčok nie je zapnutý.
 stProtect	Ochranný výstup
 stProtectOpen	Otvorený: ochrana nechá vreteno bežať, len ak to uzol povolí
 stProtectClosed	Zatvorený: vreteno môže bežať
+stProtectLast	Otvorené {0}-krát od štartu. Posledná príčina: {1}.
+stProtectCause_too_fast	otáčky nad limitom
+stProtectCause_hot	vreteno je príliš horúce
+stProtectCause_sensor_silent	teplotný snímač neodpovedá
 stProtectHelp	Výstup preruší povolenie meniča vretena, keď otáčky alebo teplota vybočia zo svojich limitov.
 ovHead	Hlava
 hRestartNote	Kamera, snímače a prúdy štartujú s uzlom: zmena tu vyžaduje reštart.

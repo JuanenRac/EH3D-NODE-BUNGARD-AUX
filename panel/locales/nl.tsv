@@ -344,6 +344,10 @@ spNoSensor	Er staat geen toerentalsensor aan.
 stProtect	Beveiligingsuitgang
 stProtectOpen	Open: de beveiliging laat de spindel alleen draaien als de node het toestaat
 stProtectClosed	Gesloten: de spindel mag draaien
+stProtectLast	{0} keer geopend sinds de start. Laatste oorzaak: {1}.
+stProtectCause_too_fast	snelheid boven de limiet
+stProtectCause_hot	spindel te heet
+stProtectCause_sensor_silent	temperatuursensor reageert niet
 stProtectHelp	De uitgang onderbreekt de enable van de spindelregelaar wanneer het toerental of de temperatuur buiten zijn grenzen komt.
 ovHead	Kop
 hRestartNote	De camera, de sensoren en de streams starten met de node: een wijziging hier heeft een herstart nodig.

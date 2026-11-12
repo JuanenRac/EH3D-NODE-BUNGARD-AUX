@@ -344,6 +344,10 @@ spNoSensor	Kiiruseandur ei ole sees.
 stProtect	Kaitseväljund
 stProtectOpen	Avatud: kaitse lubab spindlil pöörelda ainult siis, kui sõlm seda lubab
 stProtectClosed	Suletud: spindel võib pöörelda
+stProtectLast	Avatud {0} korda alates käivitusest. Viimane põhjus: {1}.
+stProtectCause_too_fast	kiirus üle piiri
+stProtectCause_hot	spindel liiga kuum
+stProtectCause_sensor_silent	temperatuuriandur ei vasta
 stProtectHelp	Väljund katkestab spindli muunduri loa, kui kiirus või temperatuur väljub piiridest.
 ovHead	Pea
 hRestartNote	Kaamera, andurid ja voogedastused käivituvad sõlmega: muudatus siin vajab taaskäivitust.

@@ -344,6 +344,10 @@ spNoSensor	Níl aon bhraiteoir luais air.
 stProtect	Aschur cosanta
 stProtectOpen	Oscailte: ní ligeann an chosaint don fhearsaid rothlú ach amháin má cheadaíonn an nód é
 stProtectClosed	Dúnta: féadfaidh an fhearsaid rothlú
+stProtectLast	Oscailte {0} uair ó thosú. An chúis dheireanach: {1}.
+stProtectCause_too_fast	luas os cionn na teorann
+stProtectCause_hot	an fearsaid ró-the
+stProtectCause_sensor_silent	ní fhreagraíonn an braiteoir teochta
 stProtectHelp	Gearrann an t-aschur cead tiomántáin na fearsaide nuair a fhágann an luas nó an teocht a dteorainneacha.
 ovHead	Ceann
 hRestartNote	Tosaíonn an ceamara, na braiteoirí agus na sruthanna leis an nód: teastaíonn atosú ó athrú anseo.

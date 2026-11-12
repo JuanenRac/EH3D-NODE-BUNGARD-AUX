@@ -344,6 +344,10 @@ spNoSensor	No hi ha cap sensor de velocitat activat.
 stProtect	Sortida de protecció
 stProtectOpen	Oberta: la protecció només deixa funcionar el broquer si el node ho permet
 stProtectClosed	Tancada: el broquer pot funcionar
+stProtectLast	Oberta {0} vegades des de l'inici. Darrera causa: {1}.
+stProtectCause_too_fast	velocitat per sobre del límit
+stProtectCause_hot	fus massa calent
+stProtectCause_sensor_silent	el sensor de temperatura no respon
 stProtectHelp	La sortida talla l'habilitació del variador del broquer quan la velocitat o la temperatura surt dels límits.
 ovHead	Capçal
 hRestartNote	La càmera, els sensors i els fluxos s'inicien amb el node: un canvi aquí necessita un reinici.

@@ -344,6 +344,10 @@ spNoSensor	Greičio jutiklis neįjungtas.
 stProtect	Apsaugos išvestis
 stProtectOpen	Atvira: apsauga leidžia verpstei suktis tik jei mazgas leidžia
 stProtectClosed	Uždara: verpstė gali suktis
+stProtectLast	Atsidarė {0} kartus nuo paleidimo. Paskutinė priežastis: {1}.
+stProtectCause_too_fast	greitis viršija ribą
+stProtectCause_hot	velenas per karštas
+stProtectCause_sensor_silent	temperatūros jutiklis neatsako
 stProtectHelp	Išvestis nutraukia verpstės pavaros enable signalą, kai greitis ar temperatūra išeina už ribų.
 ovHead	Galvutė
 hRestartNote	Kamera, jutikliai ir srautai paleidžiami kartu su mazgu: čia atliktam pakeitimui reikia perkrovimo.

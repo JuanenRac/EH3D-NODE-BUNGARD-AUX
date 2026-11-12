@@ -344,6 +344,10 @@ spNoSensor	Není zapnut senzor otáček.
 stProtect	Výstup ochrany
 stProtectOpen	Otevřený: ochrana nechá vřeteno běžet, jen pokud to uzel povolí
 stProtectClosed	Zavřený: vřeteno smí běžet
+stProtectLast	Rozepnuto {0}krát od startu. Poslední příčina: {1}.
+stProtectCause_too_fast	otáčky nad limitem
+stProtectCause_hot	vřeteno je příliš horké
+stProtectCause_sensor_silent	teplotní čidlo neodpovídá
 stProtectHelp	Výstup přeruší povolení měniče vřetena, když otáčky nebo teplota překročí své meze.
 ovHead	Hlava
 hRestartNote	Kamera, senzory a proudy se spouštějí s uzlem: změna zde vyžaduje restart.

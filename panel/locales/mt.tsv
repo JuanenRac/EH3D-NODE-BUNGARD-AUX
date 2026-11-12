@@ -344,6 +344,10 @@ spNoSensor	L-ebda sensor tal-veloċità mhu mixgħul.
 stProtect	Output tal-protezzjoni
 stProtectOpen	Miftuħ: il-protezzjoni tħalli l-ispindlu jaħdem biss jekk in-nodu jippermetti
 stProtectClosed	Magħluq: l-ispindlu jista' jaħdem
+stProtectLast	Miftuħ {0} darbiet mill-bidu. L-aħħar kawża: {1}.
+stProtectCause_too_fast	veloċità 'l fuq mil-limitu
+stProtectCause_hot	l-ispindil sħun wisq
+stProtectCause_sensor_silent	is-sensor tat-temperatura ma jwiebx
 stProtectHelp	L-output jaqta' l-enable tad-drajv tal-ispindlu meta l-veloċità jew it-temperatura toħroġ mil-limiti.
 ovHead	Ras
 hRestartNote	Il-kamera, is-sensors u l-istreams jibdew man-nodu: bidla hawn teħtieġ riavvjar.

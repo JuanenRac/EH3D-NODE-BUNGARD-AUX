@@ -344,6 +344,10 @@ spNoSensor	Ingen varvtalssensor är på.
 stProtect	Skyddsutgång
 stProtectOpen	Öppen: skyddet låter spindeln gå bara om noden tillåter det
 stProtectClosed	Sluten: spindeln får gå
+stProtectLast	Öppnad {0} gånger sedan start. Senaste orsak: {1}.
+stProtectCause_too_fast	varvtalet över gränsen
+stProtectCause_hot	spindeln är för varm
+stProtectCause_sensor_silent	temperaturgivaren svarar inte
 stProtectHelp	Utgången bryter spindelomriktarens enable när varvtalet eller temperaturen lämnar sina gränser.
 ovHead	Huvud
 hRestartNote	Kameran, sensorerna och strömmarna startar med noden: en ändring här kräver omstart.

@@ -344,6 +344,10 @@ spNoSensor	Ātruma sensors nav ieslēgts.
 stProtect	Aizsardzības izeja
 stProtectOpen	Atvērta: aizsardzība ļauj spindelim darboties tikai tad, ja mezgls to atļauj
 stProtectClosed	Aizvērta: spindelis drīkst darboties
+stProtectLast	Atvērts {0} reizes kopš palaišanas. Pēdējais iemesls: {1}.
+stProtectCause_too_fast	ātrums pārsniedz robežu
+stProtectCause_hot	vārpsta ir pārāk karsta
+stProtectCause_sensor_silent	temperatūras sensors neatbild
 stProtectHelp	Izeja pārtrauc spindeļa dziņa enable signālu, kad ātrums vai temperatūra iziet ārpus robežām.
 ovHead	Galva
 hRestartNote	Kamera, sensori un straumes startē kopā ar mezglu: šeit veikta izmaiņa prasa restartēšanu.

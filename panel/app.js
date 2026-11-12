@@ -496,7 +496,7 @@ function statusPage() {
       calibrationBlock()),
     card(t("stSpindle"), el("p", { class: "big" }, el("span", { id: "sp-rpm" }, "—")), el("span", { id: "sp-label", class: "hint" }, t("stSpindleBar")), barBox("sp-bar", "sp-label"),
       el("p", { class: "muted", id: "sp-max" }), el("div", { class: "pills" }, el("span", { id: "st-p-heat" })), el("p", { class: "big" }, el("span", { id: "sp-temp" }, "—"))),
-    card(t("stProtect"), el("div", { class: "pills" }, el("span", { id: "st-p-protect" })), el("p", { class: "muted" }, t("stProtectHelp"))),
+    card(t("stProtect"), el("div", { class: "pills" }, el("span", { id: "st-p-protect" })), el("p", { class: "muted" }, t("stProtectHelp")), el("p", { class: "muted", id: "st-protect-why" })),
     card(t("stNode"), kv([[t("firmware"), el("span", { id: "st-version" }, "—")], [t("uptime"), el("span", { id: "st-uptime" }, "—")], [t("address"), el("span", { id: "st-ip" }, "—")]])));
 }
 
@@ -534,6 +534,8 @@ function patchStatus() {
   setPill("st-p-heat", heat[0], heat[1]);
   setText("sp-temp", typeof m.temp_c === "number" ? m.temp_c.toFixed(1) + " °C" : t("stNoTemp"));
   setPill("st-p-protect", t(m.protect_open ? "stProtectOpen" : "stProtectClosed"), m.protect_open ? "warn" : "ok");
+  const causes = { too_fast: "stProtectCause_too_fast", hot: "stProtectCause_hot", sensor_silent: "stProtectCause_sensor_silent" };
+  setText("st-protect-why", m.protect_trips > 0 && causes[m.protect_last] ? t("stProtectLast", m.protect_trips, t(causes[m.protect_last])) : "");
   setText("st-version", m.version); setText("st-ip", S.status && S.status.network && S.status.network.ip ? S.status.network.ip : "—"); setText("st-uptime", formatUptime(m.uptime_s));
 }
 

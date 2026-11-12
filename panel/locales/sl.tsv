@@ -344,6 +344,10 @@ spNoSensor	Noben senzor hitrosti ni vklopljen.
 stProtect	Zaščitni izhod
 stProtectOpen	Odprt: zaščita pusti vreteno teči le, če vozlišče to dovoli
 stProtectClosed	Zaprt: vreteno lahko teče
+stProtectLast	Odprto {0}-krat od zagona. Zadnji vzrok: {1}.
+stProtectCause_too_fast	hitrost nad mejo
+stProtectCause_hot	vreteno je pregrelo
+stProtectCause_sensor_silent	temperaturno tipalo ne odgovarja
 stProtectHelp	Izhod prekine omogočitev pretvornika vretena, ko hitrost ali temperatura zapustita svoji meji.
 ovHead	Glava
 hRestartNote	Kamera, senzorji in tokovi se zaženejo z vozliščem: sprememba tukaj zahteva ponovni zagon.

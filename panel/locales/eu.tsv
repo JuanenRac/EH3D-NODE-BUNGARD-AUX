@@ -344,6 +344,10 @@ spNoSensor	Ez dago abiadura-sentsorerik aktibatuta.
 stProtect	Babes-irteera
 stProtectOpen	Irekita: babesak ardatza nodoak uzten badu bakarrik uzten du martxan
 stProtectClosed	Itxita: ardatza martxan egon daiteke
+stProtectLast	{0} aldiz ireki da abiaraztetik. Azken arrazoia: {1}.
+stProtectCause_too_fast	abiadura mugaren gainetik
+stProtectCause_hot	ardatza beroegia
+stProtectCause_sensor_silent	tenperatura-sentsoreak ez du erantzuten
 stProtectHelp	Irteerak ardatz-aldagailuaren enable moztu egiten du abiadura edo tenperatura beren mugetatik ateratzen direnean.
 ovHead	Burua
 hRestartNote	Kamera, sentsoreak eta transmisioak nodoarekin batera abiatzen dira: hemengo aldaketak berrabiaraztea behar du.

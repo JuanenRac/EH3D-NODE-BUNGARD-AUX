@@ -344,6 +344,10 @@ spNoSensor	Ingen hastighedssensor er slået til.
 stProtect	Beskyttelsesudgang
 stProtectOpen	Åben: beskyttelsen lader kun spindlen køre, hvis noden tillader det
 stProtectClosed	Lukket: spindlen må køre
+stProtectLast	Åbnet {0} gange siden start. Seneste årsag: {1}.
+stProtectCause_too_fast	hastighed over grænsen
+stProtectCause_hot	spindlen er for varm
+stProtectCause_sensor_silent	temperaturføleren svarer ikke
 stProtectHelp	Udgangen afbryder spindelomformerens enable, når hastigheden eller temperaturen forlader sine grænser.
 ovHead	Hoved
 hRestartNote	Kameraet, sensorerne og strømmene starter med noden: en ændring her kræver en genstart.
