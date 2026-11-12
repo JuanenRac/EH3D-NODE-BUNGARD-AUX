@@ -339,7 +339,7 @@ void start(const bungard_aux::Settings& s) {
     cfg = s;
     if (cfg.stream_password.empty()) ESP_LOGW(TAG, "stream_password is empty: RTSP and ONVIF serve nobody until it is set");
     if (cfg.rtsp_enabled) xTaskCreate(rtsp_server, "rtsp-srv", 4096, nullptr, 5, nullptr);
-    if (cfg.onvif_enabled) xTaskCreate(discovery_task, "onvif-disc", 4096, nullptr, 4, nullptr);
+    if (cfg.onvif_enabled) xTaskCreate(discovery_task, "onvif-disc", 6144, nullptr, 4, nullptr);
 }
 
 }  // namespace stream

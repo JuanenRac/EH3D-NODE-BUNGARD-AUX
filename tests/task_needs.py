@@ -11,7 +11,7 @@ NEEDS = {
     "improv": (5120, "the Wi-Fi setup over USB"),
     "light": (4096, "the light of the head"),
     "node-guard": (4096, "watches the other tasks"),
-    "onvif-disc": (4096, "ONVIF discovery"),
+    "onvif-disc": (6144, "ONVIF discovery"),
     "rpm_adc": (4096, "reads the rpm sensor"),
     "rtsp-srv": (4096, "the RTSP server"),
     "temp": (4096, "reads the temperature"),

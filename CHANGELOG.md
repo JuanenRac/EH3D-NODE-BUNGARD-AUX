@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The ONVIF discovery task has a bigger stack:** the build's stack report showed its main function using 2480 bytes of the 4096 it had; it now has 6144.
+
 - **The panel tells why the protect output opened:** under the protection card the status page says how many times it has opened since the start and the last cause (speed over the limit, spindle too hot, temperature sensor not answering), in the 37 languages of the panel.
 
 - **The build in GitHub Actions lists the biggest stack frames:** with `EH3D_STACK_REPORT=1` (set only by that build) the compiler writes the stack use of every function and the build prints the twenty biggest of `main/` and `core/` in its summary, with a warning on any above 2048 bytes; the image does not change.
