@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "ecosystem": "EH3D",
   "name": "EH3D-NODE-BUNGARD-AUX",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "role": "node",
   "stack": "C++17 (host-tested core); ESP-IDF 5.5 firmware for the ESP32-S3 with a W5500 wired network port",
   "technologies": [
@@ -17,7 +17,7 @@
   "family": "CNC Workflow Tools",
   "parent": null,
   "build": "cmake -S tests -B build/host && cmake --build build/host && ctest --test-dir build/host -C Debug",
-  "notes": "Scaffolding v0.0.8: a node for the drill head of a Bungard CCD machine that measures the height of the table with a laser, reads the speed and the temperature of the spindle, opens a protect output when the spindle is too fast or too hot and shows the camera, all over a wired network behind a token. The rules are in the host-tested core: the settings file with safe defaults, the measure from several laser readings (the odd ones thrown away, a spread that is too large refused), the speed of the spindle from pulses, the temperature with a hysteresis, the protect output and the words of the network. The ESP-IDF firmware is written but has not been built, flashed or run on a board; the drivers of the laser and of the temperature sensors are not written and nothing has been connected to a machine.",
+  "notes": "Scaffolding v0.0.9: a node for the drill head of a Bungard CCD machine that measures the height of the table with a laser, reads the speed and the temperature of the spindle, opens a protect output when the spindle is too fast or too hot and shows the camera, all over a wired network behind a token. The rules are in the host-tested core: the settings file with safe defaults, the measure from several laser readings (the odd ones thrown away, a spread that is too large refused), the speed of the spindle from pulses, the temperature with a hysteresis, the protect output and the words of the network. The ESP-IDF firmware is written but has not been built, flashed or run on a board; the drivers of the laser and of the temperature sensors are not written and nothing has been connected to a machine.",
   "native_version": {
     "file": "eh3d.project.json",
     "pattern": "\"version\"\\s*:\\s*\"(\\d+\\.\\d+\\.\\d+)\""
