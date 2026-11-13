@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The validation of the CI is the reusable one of the documentation hub:** the job `validate` calls `validate.yml` of EH3D-DOCS (pinned by commit) and what the repository checks besides it is in jobs of their own, with the check of the CHANGELOG.
+
 ## [0.0.9] - Why the protect output opened, stuck-task guard, board mark and core dump
 
 - **The status page tells why the protect output is open now:** next to the number of times it has opened and the last cause, the page shows the reason that holds it open at this moment (speed over the limit, spindle too hot, temperature sensor not answering), in the 37 languages. `tests/check_panel_text.py` reads the reasons from `core/spindle.hpp` and fails if one has no text in the panel.
