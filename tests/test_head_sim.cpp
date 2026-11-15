@@ -216,6 +216,24 @@ int main() {
     sim.set_spindle_target(0);
     sim.advance(20000);
     CHECK(!has_code(sim, "AUX-R02"));
+    // a spindle that is ordered to turn and stalls reads 0 rpm: a failure of its own, and the way back is to stop the order or free the spindle
+    sim.settings().rpm_enabled = true;
+    sim.set_spindle_target(0);
+    sim.advance(20000);
+    CHECK(!has_code(sim, "AUX-R03") && overall_of(sim) == "ok");  // no order, no stall
+    sim.set_spindle_target(24000);
+    sim.faults().spindle_stalled = true;
+    sim.advance(4000);
+    CHECK(sim.status().rpm == 0.0 && sim.status().spindle_ordered);
+    CHECK(has_code(sim, "AUX-R03") && overall_of(sim) == "fail");
+    sim.faults().spindle_stalled = false;  // freed
+    sim.advance(4000);
+    CHECK(!has_code(sim, "AUX-R03") && std::fabs(sim.status().rpm - 24000.0) < 1.0);
+    sim.faults().spindle_stalled = true;
+    sim.set_spindle_target(0);  // the order is withdrawn: nothing is stalled any more
+    sim.advance(1000);
+    CHECK(!has_code(sim, "AUX-R03"));
+    sim.faults().spindle_stalled = false;
     // with the speed sensor off in the settings the speed is never judged
     sim.settings().rpm_enabled = false;
     sim.set_spindle_target(70000);

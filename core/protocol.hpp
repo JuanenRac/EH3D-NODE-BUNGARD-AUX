@@ -110,6 +110,7 @@ struct Status {
     bool laser = false;
     bool rpm_on = false;
     double rpm = 0.0;
+    bool spindle_ordered = false;  // the controller has ordered the spindle to turn (not in the answer; only the simulator sets it, the firmware has no source for it yet)
     Heat heat = Heat::Unknown;
     bool has_temp = false;
     double temp_c = 0.0;

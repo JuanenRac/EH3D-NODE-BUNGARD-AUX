@@ -37,6 +37,7 @@ struct SimFaults {
     bool laser_fault = false;       // the sensor answers with the range status 5
     bool laser_weak = false;        // the sensor answers with the range status 2 (weak signal)
     bool rpm_noise = false;         // the pulses of the speed sensor are noisy
+    bool spindle_stalled = false;   // the spindle is ordered to turn and does not: the speed sensor reads 0
     bool temp_missing = false;      // the temperature sensor gives nothing
     bool light_missing = false;     // the ring of LEDs was not found
     bool laser_spikes = false;      // every third reading of a measure is 3 mm too far (a glitch of the sensor): the filter has to throw those away
@@ -61,6 +62,7 @@ public:
         const double step = world_.spindle_accel_rpm_s * dt;
         if (rpm_ < target_rpm_) rpm_ = rpm_ + step > target_rpm_ ? target_rpm_ : rpm_ + step;
         else rpm_ = rpm_ - step < target_rpm_ ? target_rpm_ : rpm_ - step;
+        if (faults_.spindle_stalled) rpm_ = 0.0;
         const double max = static_cast<double>(cfg_.rpm_max);
         temp_c_ += world_.heat_c_per_s_at_max * (rpm_ / max) * dt - world_.cool_per_s * (temp_c_ - world_.ambient_c) * dt;
         now_ms_ += ms;
@@ -112,6 +114,7 @@ public:
         s.laser = cfg_.laser_enabled;
         s.rpm_on = cfg_.rpm_enabled;
         s.rpm = cfg_.rpm_enabled ? rpm_ : 0.0;
+        s.spindle_ordered = cfg_.rpm_enabled && target_rpm_ > 0.0;
         s.rpm_input = rpm_input_text(cfg_.rpm_input);
         s.rpm_quality = !cfg_.rpm_enabled || rpm_ <= 0.0 ? "none" : faults_.rpm_noise ? "noisy" : "good";
         if (cfg_.temp_sensor != TempSensor::None) {
