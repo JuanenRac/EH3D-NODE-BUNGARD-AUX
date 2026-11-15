@@ -181,6 +181,25 @@ int main() {
     CHECK(sim.measure(7).ok && overall_of(sim) == "ok");
   }
 
+  // ---- a sensor that glitches: the odd readings are thrown away, the measure stays right, and it is the same with the same seed ------------------------------
+  {
+    HeadSim sim(secure());
+    sim.advance(31000);
+    const double truth = sim.table_distance_at(0.0, 0.0) + sim.settings().laser_offset_mm + sim.settings().laser_cal_offset_mm;
+    sim.faults().laser_spikes = true;
+    const Measure m = sim.measure(9);
+    CHECK(m.ok && m.asked == 9 && m.rejected == 3 && m.used == 6);  // readings 3, 6 and 9 are 3 mm too far
+    CHECK(std::fabs(m.distance_mm - truth) < 0.05);
+    CHECK(overall_of(sim) == "ok");
+    HeadSim again(secure());
+    again.advance(31000);
+    again.faults().laser_spikes = true;
+    CHECK(std::fabs(again.measure(9).distance_mm - m.distance_mm) < 1e-9);  // the same seed gives the same measure
+    sim.faults().laser_spikes = false;
+    const Measure clean = sim.measure(9);
+    CHECK(clean.ok && clean.rejected == 0 && std::fabs(clean.distance_mm - truth) < 0.05);  // the sensor is fine again
+  }
+
   // ---- the spindle: noisy pulses, too fast ---------------------------------------------------------------------------------------
   {
     HeadSim sim(secure());

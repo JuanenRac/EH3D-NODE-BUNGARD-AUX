@@ -1,7 +1,7 @@
 // EH3D-NODE-BUNGARD-AUX - a head that is not there: reads request lines from the standard input and prints the answers the firmware would send.
 // Copyright (C) 2026 JuanenRac (Electro Hobby 3D). GPL-3.0-or-later.
 // Lines: `GET /api/status`, `POST /api/measure?samples=5`, and the commands `move X Y`, `spindle RPM`, `advance MS`, `fault NAME on|off` (camera_down, laser_fault,
-// laser_weak, rpm_noise, temp_missing, light_missing). A `head.cfg` file given as the first argument sets the settings. The numbers of the table are made up.
+// laser_weak, laser_spikes, rpm_noise, temp_missing, light_missing). A `head.cfg` file given as the first argument sets the settings. The numbers of the table are made up.
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -54,6 +54,7 @@ int main(int argc, char** argv) {
             if (name == "camera_down") f.camera_down = on;
             else if (name == "laser_fault") f.laser_fault = on;
             else if (name == "laser_weak") f.laser_weak = on;
+            else if (name == "laser_spikes") f.laser_spikes = on;
             else if (name == "rpm_noise") f.rpm_noise = on;
             else if (name == "temp_missing") f.temp_missing = on;
             else if (name == "light_missing") f.light_missing = on;
