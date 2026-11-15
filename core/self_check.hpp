@@ -42,6 +42,7 @@ inline const std::vector<Finding>& self_check_catalog() {
         {"AUX-L05", Severity::Info, "the calibration of the laser is allowed", "laser_calibration_enabled"},
         {"AUX-R01", Severity::Warn, "the pulses of the speed sensor are noisy", "rpm_input"},
         {"AUX-R02", Severity::Fail, "the spindle turns faster than rpm_max", "rpm_max"},
+        {"AUX-R03", Severity::Fail, "the spindle is ordered to turn and the speed sensor reads 0 rpm (stalled)", "rpm_input"},
         {"AUX-T01", Severity::Fail, "the temperature sensor is on and gives no reading", "temp_sensor"},
         {"AUX-T02", Severity::Warn, "the spindle is warm", "temp_warn_c"},
         {"AUX-T03", Severity::Fail, "the spindle is hot", "temp_critical_c"},
@@ -118,6 +119,7 @@ inline Report self_check(const Status& s, const Settings& cfg) {
     if (cfg.rpm_enabled) {
         if (s.rpm_quality == "noisy") detail::raise(r, "AUX-R01");
         if (s.rpm > static_cast<double>(cfg.rpm_max)) detail::raise(r, "AUX-R02");
+        if (s.spindle_ordered && s.rpm <= 0.0 && !grace) detail::raise(r, "AUX-R03");
     }
 
     if (cfg.temp_sensor != TempSensor::None) {

@@ -85,6 +85,7 @@ The verdict is `fail` when any code of severity `fail` is raised, `warn` when th
 | `AUX-L05` | info | the calibration of the laser is allowed | `laser_calibration_enabled` |
 | `AUX-R01` | warn | the pulses of the speed sensor are noisy | `rpm_input` |
 | `AUX-R02` | fail | the spindle turns faster than `rpm_max` | `rpm_max` |
+| `AUX-R03` | fail | the spindle is ordered to turn and the speed sensor reads 0 rpm (stalled) | `rpm_input` |
 | `AUX-T01` | fail | the temperature sensor is on and gives no reading | `temp_sensor` |
 | `AUX-T02` | warn | the spindle is warm | `temp_warn_c` |
 | `AUX-T03` | fail | the spindle is hot | `temp_critical_c` |
@@ -97,4 +98,4 @@ The verdict is `fail` when any code of severity `fail` is raised, `warn` when th
 
 ## The simulator
 
-`core/head_sim.hpp` is a head on a computer: a table that is not flat under a laser, a spindle that speeds up and heats, a ring of LEDs and a camera, with faults that can be switched on (camera down, laser fault or weak, a laser that glitches every third reading, noisy pulses, missing temperature reading, ring not found). `answer("GET /api/status")` and `answer("POST /api/measure?samples=5")` give the bodies the firmware would send. The numbers of the table, of the noise and of the heating are made up for the simulation. `tests/head_sim_cli.cpp` is a small program that reads request lines and prints the answers, for a program that wants to read a head that is not there.
+`core/head_sim.hpp` is a head on a computer: a table that is not flat under a laser, a spindle that speeds up and heats, a ring of LEDs and a camera, with faults that can be switched on (camera down, laser fault or weak, a laser that glitches every third reading, noisy pulses, a spindle that stalls, missing temperature reading, ring not found). `answer("GET /api/status")` and `answer("POST /api/measure?samples=5")` give the bodies the firmware would send. The numbers of the table, of the noise and of the heating are made up for the simulation. `tests/head_sim_cli.cpp` is a small program that reads request lines and prints the answers, for a program that wants to read a head that is not there.
