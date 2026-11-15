@@ -39,6 +39,7 @@ struct SimFaults {
     bool rpm_noise = false;         // the pulses of the speed sensor are noisy
     bool temp_missing = false;      // the temperature sensor gives nothing
     bool light_missing = false;     // the ring of LEDs was not found
+    bool laser_spikes = false;      // every third reading of a measure is 3 mm too far (a glitch of the sensor): the filter has to throw those away
 };
 
 class HeadSim {
@@ -80,6 +81,7 @@ public:
         for (int i = 0; i < samples; ++i) {
             LaserReading one;
             one.distance_mm = truth + noise() * world_.noise_mm;
+            if (faults_.laser_spikes && i % 3 == 2) one.distance_mm += 3.0;
             one.status = faults_.laser_fault ? 5 : faults_.laser_weak ? 2 : 0;
             one.valid = one.status == 0;
             r.push_back(one);
