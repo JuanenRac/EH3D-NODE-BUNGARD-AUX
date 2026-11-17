@@ -177,7 +177,7 @@ std::string live_json_now() {
     sensors::rpm_diagnostics(s.rpm_quality, s.rpm_rejected, s.rpm_level_mv, s.rpm_th_hi_mv, s.rpm_th_lo_mv);
     {
         std::lock_guard<std::mutex> guard(thermal_lock);
-        s.has_temp = temp_now_valid;
+        s.has_temp = temp_now_valid && s.heat != bungard_aux::Heat::Unknown;   // a reading that went stale is no reading
         s.temp_c = temp_now_c;
     }
     if (settings.temp_sensor == bungard_aux::TempSensor::Ds18b20) {

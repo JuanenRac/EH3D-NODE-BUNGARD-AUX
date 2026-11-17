@@ -119,9 +119,9 @@ public:
         s.rpm_input = rpm_input_text(cfg_.rpm_input);
         s.rpm_quality = !cfg_.rpm_enabled || rpm_ <= 0.0 ? "none" : faults_.rpm_noise ? "noisy" : "good";
         if (cfg_.temp_sensor != TempSensor::None) {
-            s.has_temp = !faults_.temp_missing;
-            s.temp_c = temp_c_;
             s.heat = thermal_.state_at(now_ms_, cfg_.temp_stale_ms);
+            s.has_temp = !faults_.temp_missing && s.heat != Heat::Unknown;   // a reading that went stale is no reading
+            s.temp_c = temp_c_;
         }
         s.protect_open = protect_open(cfg_, s.rpm, s.heat);
         protect_log_.update(protect_reason(cfg_, s.rpm, s.heat), static_cast<long>(now_ms_ / 1000));
