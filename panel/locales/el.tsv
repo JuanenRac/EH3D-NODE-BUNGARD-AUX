@@ -495,3 +495,8 @@ ntpEnabled	Λήψη ώρας από διακομιστή ώρας (NTP)
 ntpServer	Διακομιστής ώρας (NTP)
 autoRestart	Επανεκκίνηση από μόνο του κάθε
 autoRestartNever	Ποτέ
+fRpmHyst	Υστέρηση ταχύτητας (σ.α.λ.)
+fProtectLatch	Η έξοδος προστασίας μένει ανοιχτή έως ότου επιβεβαιωθεί
+stProtectLatched	Η έξοδος μένει ανοιχτή μέχρι να την επιβεβαιώσει κάποιος.
+stProtectAck	Επιβεβαίωση
+stProtectAckStill	Η αιτία υπάρχει ακόμη: δεν είναι δυνατή η επιβεβαίωση.

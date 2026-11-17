@@ -495,3 +495,8 @@ ntpEnabled	Pobieraj czas z serwera czasu (NTP)
 ntpServer	Serwer czasu (NTP)
 autoRestart	Uruchamiaj się ponownie co
 autoRestartNever	Nigdy
+fRpmHyst	Histereza prędkości (obr./min)
+fProtectLatch	Utrzymuj wyjście zabezpieczenia otwarte do potwierdzenia
+stProtectLatched	Wyjście pozostaje otwarte, dopóki ktoś go nie potwierdzi.
+stProtectAck	Potwierdź
+stProtectAckStill	Przyczyna nadal występuje: nie można jeszcze potwierdzić.

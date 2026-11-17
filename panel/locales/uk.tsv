@@ -495,3 +495,8 @@ ntpEnabled	Брати час із сервера часу (NTP)
 ntpServer	Сервер часу (NTP)
 autoRestart	Перезапускатися сам кожні
 autoRestartNever	Ніколи
+fRpmHyst	Гістерезис швидкості (об/хв)
+fProtectLatch	Тримати вихід захисту розімкнутим, доки його не підтверджено
+stProtectLatched	Вихід лишається розімкнутим, доки людина його не підтвердить.
+stProtectAck	Підтвердити
+stProtectAckStill	Причина ще наявна: підтвердити поки не можна.

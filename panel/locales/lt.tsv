@@ -495,3 +495,8 @@ ntpEnabled	Gauti laiką iš laiko serverio (NTP)
 ntpServer	Laiko serveris (NTP)
 autoRestart	Pats paleisti iš naujo kas
 autoRestartNever	Niekada
+fRpmHyst	Greičio histerezė (aps./min)
+fProtectLatch	Laikyti apsaugos išvestį atvirą, kol ji patvirtinama
+stProtectLatched	Išvestis lieka atvira, kol žmogus ją patvirtina.
+stProtectAck	Patvirtinti
+stProtectAckStill	Priežastis vis dar yra: patvirtinti dar negalima.

@@ -141,6 +141,8 @@ struct Settings {
 
     // the safety output: it opens when the spindle is too hot or too fast, so the control unit's stop line can use it
     bool protect_output = true;
+    bool protect_latch = false;             // safety: an opening of the protect output stays until a person acknowledges it (POST /api/protect/ack); off: it closes by itself when the cause goes
+    std::uint32_t rpm_hysteresis = 0;       // 0..50000, after an overspeed the output closes again only when the speed is this many rpm below rpm_max; 0: as soon as it is not above rpm_max
 
     // the self-check: the node judges its own status and says it with codes (core/self_check.hpp); the limits are here, never in the code
     bool selfcheck_enabled = true;
@@ -421,6 +423,10 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             else bad("not grb or rgb");
         } else if (key == "protect_output") {
             if (flag()) s.protect_output = b;
+        } else if (key == "protect_latch") {
+            if (flag()) s.protect_latch = b;
+        } else if (key == "rpm_hysteresis") {
+            if (num(0, 50000)) s.rpm_hysteresis = n;
         } else if (key == "selfcheck_enabled") {
             if (flag()) s.selfcheck_enabled = b;
         } else if (key == "selfcheck_laser_age_max_s") {

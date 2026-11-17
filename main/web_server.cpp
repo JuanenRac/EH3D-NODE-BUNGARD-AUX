@@ -513,6 +513,15 @@ esp_err_t post_head_measure(httpd_req_t* r) {
   return send_json(r, 200, head::measure_json(samples));
 }
 
+// A person acknowledges a protect output that the latch holds open; 409 while a cause is still present. Administrators only.
+esp_err_t post_head_protect_ack(httpd_req_t* r) {
+  Who who;
+  if (!require(r, who, true, true)) return ESP_OK;
+  int code = 200;
+  const std::string answer = head::protect_ack_json(code);
+  return send_json(r, code, answer);
+}
+
 // Calibrates the laser at a known distance (kind=offset|xtalk, mm=the distance of a flat target) or clears the calibration (kind=reset). Administrators only, and only when the settings of
 // the head allow it; the values found are stored in the settings of the node and applied at once.
 esp_err_t post_head_laser_calibrate(httpd_req_t* r) {
@@ -877,6 +886,7 @@ esp_err_t api_handler(httpd_req_t* r) {
     if (route == "ota/check") return post_ota_check(r);
     if (route == "head/measure") return post_head_measure(r);
     if (route == "head/laser/calibrate") return post_head_laser_calibrate(r);
+    if (route == "head/protect/ack") return post_head_protect_ack(r);
     if (route == "time") return post_time(r);
   } else if (method == HTTP_PUT) {
     if (route == "config") return put_config(r);

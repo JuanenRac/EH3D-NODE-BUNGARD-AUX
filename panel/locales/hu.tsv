@@ -495,3 +495,8 @@ ntpEnabled	Idő lekérése időszerverről (NTP)
 ntpServer	Időszerver (NTP)
 autoRestart	Újraindul magától minden
 autoRestartNever	Soha
+fRpmHyst	Fordulatszám-hiszterézis (ford./perc)
+fProtectLatch	A védelmi kimenet maradjon nyitva a nyugtázásig
+stProtectLatched	A kimenet addig marad nyitva, amíg valaki nem nyugtázza.
+stProtectAck	Nyugtázás
+stProtectAckStill	Az ok még fennáll: még nem nyugtázható.

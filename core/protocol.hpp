@@ -23,7 +23,7 @@
 
 namespace bungard_aux {
 
-enum class Route { NotFound, Status, Measure, Stream, Snapshot, LightGet, LightSet, Calibrate, BadMethod };
+enum class Route { NotFound, Status, Measure, Stream, Snapshot, LightGet, LightSet, Calibrate, ProtectAck, BadMethod };
 
 struct Request {
     std::string method;
@@ -53,6 +53,7 @@ inline Route route_of(const Request& r) {
     if (r.path == "/api/snapshot") return r.method == "GET" ? Route::Snapshot : Route::BadMethod;
     if (r.path == "/api/light") return r.method == "GET" ? Route::LightGet : r.method == "POST" ? Route::LightSet : Route::BadMethod;
     if (r.path == "/api/laser/calibrate") return r.method == "POST" ? Route::Calibrate : Route::BadMethod;
+    if (r.path == "/api/protect/ack") return r.method == "POST" ? Route::ProtectAck : Route::BadMethod;
     return Route::NotFound;
 }
 
@@ -149,6 +150,8 @@ struct Status {
     unsigned protect_trips = 0;
     std::string protect_last = "none";
     long protect_last_s = -1;
+    // the protect output is held open until a person acknowledges it (setting protect_latch), even if no cause is present any more
+    bool protect_latched = false;
 };
 
 inline std::string json_escape(const std::string& s) {
@@ -180,8 +183,13 @@ inline std::string json_status(const Status& s) {
            ",\"selfcheck\":\"" + json_escape(s.selfcheck) + "\",\"selfcheck_codes\":\"" + json_escape(s.selfcheck_codes) + "\"";
     // why the protect output is open and how often it has opened: always there, so that the answer has the keys of the contract page
     out += ",\"protect_reason\":\"" + json_escape(s.protect_reason) + "\",\"protect_trips\":" + std::to_string(s.protect_trips) + ",\"protect_last\":\"" + json_escape(s.protect_last) +
-           "\",\"protect_last_s\":" + std::to_string(s.protect_last_s) + "}";
+           "\",\"protect_last_s\":" + std::to_string(s.protect_last_s) + ",\"protect_latched\":" + (s.protect_latched ? "true" : "false") + "}";
     return out;
+}
+
+/// The answer to POST /api/protect/ack: `result` is cleared, not_held (nothing was held) or still_active (a cause is present, so it cannot be cleared yet); the output is `protect_open` now.
+inline std::string json_protect_ack(AckResult result, bool protect_open_now) {
+    return std::string("{\"ok\":") + (result == AckResult::StillActive ? "false" : "true") + ",\"result\":\"" + ack_result_text(result) + "\",\"protect_open\":" + (protect_open_now ? "true" : "false") + "}";
 }
 
 inline std::string json_measure(const Measure& m) {

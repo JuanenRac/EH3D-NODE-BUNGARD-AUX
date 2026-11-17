@@ -495,3 +495,8 @@ ntpEnabled	Hae aika aikapalvelimelta (NTP)
 ntpServer	Aikapalvelin (NTP)
 autoRestart	Käynnisty itse uudelleen joka
 autoRestartNever	Ei koskaan
+fRpmHyst	Nopeuden hystereesi (r/min)
+fProtectLatch	Pidä suojalähtö auki, kunnes se kuitataan
+stProtectLatched	Lähtö pysyy auki, kunnes henkilö kuittaa sen.
+stProtectAck	Kuittaa
+stProtectAckStill	Syy on yhä olemassa: kuittaus ei ole vielä mahdollinen.

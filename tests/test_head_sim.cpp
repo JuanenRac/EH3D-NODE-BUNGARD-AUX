@@ -323,6 +323,92 @@ int main() {
     CHECK(read.selfcheck_laser_age_max_s == 60 && read.selfcheck_grace_s == 0 && !read.selfcheck_enabled);
   }
 
+  // ---- the protect output can be held open until a person acknowledges it, and an overspeed has a hysteresis ----------------------------------
+  {
+    // off by default: the output follows the cause, as before, and there is nothing to acknowledge
+    CHECK(!Settings{}.protect_latch && Settings{}.rpm_hysteresis == 0);
+    Settings cfg = secure();
+    cfg.rpm_max = 10000;
+    HeadSim plain(cfg);
+    plain.advance(1000);
+    plain.set_spindle_target(12000);
+    plain.advance(2000);
+    CHECK(plain.status().protect_open && !plain.status().protect_latched);
+    plain.set_spindle_target(0);
+    plain.advance(3000);
+    CHECK(!plain.status().protect_open);
+    CHECK(plain.protect_ack() == AckResult::NotHeld);
+
+    // the latch on: the output stays open after the cause has gone, and acknowledging while the cause is there is refused
+    cfg.protect_latch = true;
+    HeadSim sim(cfg);
+    sim.advance(1000);
+    CHECK(!sim.status().protect_open);
+    sim.set_spindle_target(12000);
+    sim.advance(2000);
+    CHECK(sim.status().protect_open && sim.status().protect_latched && sim.status().protect_reason == "too_fast");
+    CHECK(sim.protect_ack() == AckResult::StillActive);
+    CHECK(sim.status().protect_open);
+    sim.set_spindle_target(0);
+    sim.advance(3000);
+    const Status held = sim.status();
+    CHECK(held.protect_open && held.protect_latched && held.protect_trips == 1);   // the cause is gone and the output is still open
+    CHECK(parsed(json_status(held)).get("protect_latched")->type == eh3d::json::Type::kBool);
+    const std::string accepted = sim.answer("POST /api/protect/ack");
+    CHECK(parsed(accepted).string_or("result", "?") == "cleared");   // the cause is gone, so this acknowledgement is accepted
+    CHECK(!sim.status().protect_open && !sim.status().protect_latched);
+    CHECK(sim.protect_ack() == AckResult::NotHeld);
+    sim.set_spindle_target(12000);                                // it opens again, and again stays
+    sim.advance(2000);
+    CHECK(sim.status().protect_open && sim.status().protect_trips == 2);
+    const std::string still = sim.answer("POST /api/protect/ack");
+    CHECK(parsed(still).string_or("result", "?") == "still_active" && sim.status().protect_open);
+    CHECK(sim.answer("GET /api/protect/ack").empty());            // only POST
+
+    // turning the latch off lets go of what is held
+    sim.set_spindle_target(0);
+    sim.advance(3000);
+    CHECK(sim.status().protect_open);
+    sim.settings().protect_latch = false;
+    CHECK(!sim.status().protect_open && !sim.status().protect_latched);
+
+    // the hysteresis: after an overspeed the output closes only when the speed is that far below the limit
+    Settings h = secure();
+    h.rpm_max = 10000;
+    h.rpm_hysteresis = 1000;
+    HeadSim fast(h);
+    fast.advance(1000);
+    fast.set_spindle_target(10500);
+    fast.advance(2000);
+    CHECK(fast.status().protect_open);
+    fast.set_spindle_target(9500);                                // below the limit, not yet 1000 below it
+    fast.advance(500);
+    CHECK(fast.status().protect_open);
+    fast.set_spindle_target(8900);
+    fast.advance(500);
+    CHECK(!fast.status().protect_open);
+    fast.set_spindle_target(9500);                                // and a speed under the limit does not open it from closed
+    fast.advance(500);
+    CHECK(!fast.status().protect_open);
+    // a hysteresis larger than the limit never holds a stopped spindle open
+    h.rpm_hysteresis = 50000;
+    HeadSim huge(h);
+    huge.advance(1000);
+    huge.set_spindle_target(12000);
+    huge.advance(2000);
+    CHECK(huge.status().protect_open);
+    huge.set_spindle_target(0);
+    huge.advance(3000);
+    CHECK(!huge.status().protect_open);
+
+    // the settings have a range
+    std::vector<Problem> problems;
+    Settings read = parse_settings("protect_latch = on\nrpm_hysteresis = 50001\n", problems);
+    CHECK(problems.size() == 1 && read.protect_latch && read.rpm_hysteresis == 0);
+    read = parse_settings("rpm_hysteresis = 300\n", problems);
+    CHECK(read.rpm_hysteresis == 300 && !read.protect_latch);
+  }
+
   std::printf("%d checks, %d failed\n", checks, fails);
   return fails == 0 ? 0 : 1;
 }

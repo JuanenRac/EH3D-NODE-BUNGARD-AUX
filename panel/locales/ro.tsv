@@ -495,3 +495,8 @@ ntpEnabled	Ia ora de la un server de timp (NTP)
 ntpServer	Server de timp (NTP)
 autoRestart	Repornește singur la fiecare
 autoRestartNever	Niciodată
+fRpmHyst	Histerezis de viteză (rot/min)
+fProtectLatch	Păstrează ieșirea de protecție deschisă până la confirmare
+stProtectLatched	Ieșirea rămâne deschisă până când o persoană o confirmă.
+stProtectAck	Confirmă
+stProtectAckStill	Cauza este încă prezentă: nu se poate confirma încă.

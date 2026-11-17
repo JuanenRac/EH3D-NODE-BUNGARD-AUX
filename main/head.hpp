@@ -18,6 +18,9 @@ void register_routes(httpd_handle_t server);
 std::string live_json();
 std::string measure_json(int samples);
 
+/// A person acknowledges a protect output that the latch holds open (setting `protect_latch`). `code` is the HTTP status: 200, or 409 while a cause is still present.
+std::string protect_ack_json(int& code);
+
 /// The calibration of the laser (kind "offset", "xtalk" or "reset"; `target_mm` is the distance of the flat target). Refused with "disabled" unless the settings allow it. `found` is true
 /// when it worked, and the new values are then also stored in the settings of the node (`offset_mm` in mm, `xtalk_cps` in counts per second).
 std::string calibrate_json(const std::string& kind, double target_mm, bool& found, double& offset_mm, double& xtalk_cps);

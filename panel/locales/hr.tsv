@@ -495,3 +495,8 @@ ntpEnabled	Uzimaj vrijeme s vremenskog poslužitelja (NTP)
 ntpServer	Vremenski poslužitelj (NTP)
 autoRestart	Sam se ponovno pokreni svakih
 autoRestartNever	Nikad
+fRpmHyst	Histereza brzine (okr/min)
+fProtectLatch	Zaštitni izlaz ostaje otvoren dok se ne potvrdi
+stProtectLatched	Izlaz ostaje otvoren dok ga osoba ne potvrdi.
+stProtectAck	Potvrdi
+stProtectAckStill	Uzrok je još prisutan: još se ne može potvrditi.

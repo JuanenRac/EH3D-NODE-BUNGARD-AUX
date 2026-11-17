@@ -495,3 +495,8 @@ ntpEnabled	Pren l'hora d'un servidor d'hora (NTP)
 ntpServer	Servidor d'hora (NTP)
 autoRestart	Reinicia't sol cada
 autoRestartNever	Mai
+fRpmHyst	Histèresi de velocitat (rpm)
+fProtectLatch	Mantén oberta la sortida de protecció fins que es reconegui
+stProtectLatched	La sortida es manté oberta fins que una persona la reconegui.
+stProtectAck	Reconeix
+stProtectAckStill	La causa encara hi és: encara no es pot reconèixer.

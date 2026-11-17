@@ -49,8 +49,13 @@ Always answered, with or without the token. One line of JSON; a program must ign
 | `protect_trips` | number | how many times the protect output has opened since the start |
 | `protect_last` | text | why it opened last (`none` when it has not) |
 | `protect_last_s` | number | the running time, in seconds, of the last opening; -1 when it has not opened |
+| `protect_latched` | bool | the protect output is held open until a person acknowledges it (setting `protect_latch`), even if no cause is present any more |
 
 The server needs `node`, `camera`, `laser`, `rpm_sensor` and `protect_open` (it refuses a status without them); every other key may be missing.
+
+## `POST /api/protect/ack`
+
+Needs the token. Acknowledges a protect output that the setting `protect_latch` holds open. It answers `ok`, `result` and `protect_open`: `result` is `cleared` (the output follows the causes again), `not_held` (nothing was held) or `still_active` (a cause is still present: the answer is `409` and nothing changes).
 
 ## `POST /api/measure[?samples=N]`
 
