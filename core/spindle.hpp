@@ -191,7 +191,8 @@ public:
     Thermal(double warn_c, double critical_c, double hysteresis_c) : warn_(warn_c), crit_(critical_c), hyst_(hysteresis_c) {}
 
     /// A new reading; a reading that is not a number (a sensor that failed) leaves the state unknown, which the protect output treats as hot.
-    Heat update(double celsius, bool valid) {
+    Heat update(double celsius, bool valid, std::uint32_t now_ms = 0) {
+        at_ms_ = now_ms;
         if (!valid) {
             state_ = Heat::Unknown;
             return state_;
@@ -213,12 +214,18 @@ public:
     }
 
     Heat state() const { return state_; }
+    /// The state at `now_ms`: a reading older than `stale_ms` (the task that reads the sensor is stuck) is no reading at all, so it is unknown; 0 never goes stale.
+    Heat state_at(std::uint32_t now_ms, std::uint32_t stale_ms) const {
+        if (stale_ms != 0 && static_cast<std::uint32_t>(now_ms - at_ms_) > stale_ms) return Heat::Unknown;
+        return state_;
+    }
     double last_c() const { return last_; }
 
 private:
     double warn_, crit_, hyst_;
     Heat state_ = Heat::Unknown;
     double last_ = 0.0;
+    std::uint32_t at_ms_ = 0;
 };
 
 /// Whether the protect output is open (the spindle must stop): too fast, or too hot. A sensor that is switched on and does not answer counts as hot, so a broken

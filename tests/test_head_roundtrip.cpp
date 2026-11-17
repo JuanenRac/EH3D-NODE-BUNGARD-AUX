@@ -66,7 +66,7 @@ static const char* const kChanged =
     "laser_distance_mode = short\nlaser_timing_budget_ms = 50\nlaser_roi = 8x8\nlaser_roi_center = 199\nlaser_outlier_k = 2.5\nlaser_outlier_floor_mm = 0.1\n"
     "laser_calibration_enabled = on\nlaser_cal_offset_mm = 0.75\nlaser_cal_xtalk_cps = 1200\n"
     "rpm_enabled = off\nrpm_pulses_per_rev = 4\nrpm_input = analog\nrpm_edge = falling\nrpm_auto_threshold = off\nrpm_threshold_hi_mv = 2400\nrpm_threshold_lo_mv = 800\nrpm_max = 50000\nrpm_stale_ms = 2000\n"
-    "temp_sensor = ds18b20\ntemp_resolution = 10\ntemp_rom = 28FF0102030405A6\nntc_series_ohm = 4700\nntc_r25_ohm = 4700\nntc_beta = 3380\ntemp_warn_c = 50\ntemp_critical_c = 65\ntemp_hysteresis_c = 2\n"
+    "temp_sensor = ds18b20\ntemp_resolution = 10\ntemp_rom = 28FF0102030405A6\nntc_series_ohm = 4700\nntc_r25_ohm = 4700\nntc_beta = 3380\ntemp_warn_c = 50\ntemp_critical_c = 65\ntemp_hysteresis_c = 2\ntemp_stale_ms = 1500\n"
     "light_enabled = off\nlight_leds = 12\nlight_level = 40\nlight_max_level = 70\nlight_tone = warm\nlight_auto_off_s = 300\nlight_on_at_start = on\nlight_order = rgb\n"
     "protect_output = off\ntoken = abcdefgh12\n";
 

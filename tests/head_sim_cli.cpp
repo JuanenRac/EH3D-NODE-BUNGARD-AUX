@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
             else if (name == "laser_spikes") f.laser_spikes = on;
             else if (name == "rpm_noise") f.rpm_noise = on;
             else if (name == "temp_missing") f.temp_missing = on;
+            else if (name == "temp_task_stuck") f.temp_task_stuck = on;
             else if (name == "light_missing") f.light_missing = on;
             else std::fprintf(stderr, "unknown fault %s\n", name.c_str());
         } else if (!first.empty()) {

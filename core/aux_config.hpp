@@ -127,6 +127,7 @@ struct Settings {
     double temp_warn_c = 55.0;              // 20..150
     double temp_critical_c = 70.0;          // 20..200, always above the warning
     double temp_hysteresis_c = 3.0;         // 0.5..20
+    std::uint32_t temp_stale_ms = 2000;     // 0..60000, a temperature reading older than this counts as unknown (the protect output opens); 0: never too old
 
     // the ring of LEDs around the camera (eight WS2812 on one wire): it lights the area under the head so the camera sees well
     bool light_enabled = true;
@@ -397,6 +398,8 @@ inline Settings parse_settings_over(const Settings& base, const std::string& tex
             if (real(20.0, 200.0)) s.temp_critical_c = d;
         } else if (key == "temp_hysteresis_c") {
             if (real(0.5, 20.0)) s.temp_hysteresis_c = d;
+        } else if (key == "temp_stale_ms") {
+            if (num(0, 60000)) s.temp_stale_ms = n;
         } else if (key == "light_enabled") {
             if (flag()) s.light_enabled = b;
         } else if (key == "light_leds") {
