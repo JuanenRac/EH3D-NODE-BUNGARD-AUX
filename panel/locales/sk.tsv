@@ -495,3 +495,8 @@ ntpEnabled	Brať čas z časového servera (NTP)
 ntpServer	Časový server (NTP)
 autoRestart	Reštartovať sa sám každých
 autoRestartNever	Nikdy
+fRpmHyst	Hysteréza otáčok (ot/min)
+fProtectLatch	Nechať ochranný výstup otvorený, kým sa nepotvrdí
+stProtectLatched	Výstup zostáva otvorený, kým ho niekto nepotvrdí.
+stProtectAck	Potvrdiť
+stProtectAckStill	Príčina stále pretrváva: zatiaľ sa nedá potvrdiť.

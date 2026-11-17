@@ -495,3 +495,8 @@ ntpEnabled	Čas jemlji s časovnega strežnika (NTP)
 ntpServer	Časovni strežnik (NTP)
 autoRestart	Sam se ponovno zaženi vsakih
 autoRestartNever	Nikoli
+fRpmHyst	Histereza hitrosti (vrt/min)
+fProtectLatch	Zaščitni izhod ostane odprt, dokler ni potrjen
+stProtectLatched	Izhod ostane odprt, dokler ga oseba ne potrdi.
+stProtectAck	Potrdi
+stProtectAckStill	Vzrok še obstaja: potrditev še ni mogoča.

@@ -495,3 +495,8 @@ ntpEnabled	Merr orën nga një server ore (NTP)
 ntpServer	Serveri i orës (NTP)
 autoRestart	Rindizu vetë çdo
 autoRestartNever	Kurrë
+fRpmHyst	Histerezë e shpejtësisë (rrot/min)
+fProtectLatch	Mbaje daljen e mbrojtjes të hapur deri sa të konfirmohet
+stProtectLatched	Dalja mbetet e hapur derisa një person ta konfirmojë.
+stProtectAck	Konfirmo
+stProtectAckStill	Shkaku është ende i pranishëm: ende nuk mund të konfirmohet.

@@ -495,3 +495,8 @@ ntpEnabled	Ħu l-ħin minn server tal-ħin (NTP)
 ntpServer	Server tal-ħin (NTP)
 autoRestart	Erġa' ibda waħdu kull
 autoRestartNever	Qatt
+fRpmHyst	Isterisi tal-veloċità (rpm)
+fProtectLatch	Żomm l-output tal-protezzjoni miftuħ sakemm jiġi kkonfermat
+stProtectLatched	L-output jibqa' miftuħ sakemm persuna tikkonfermah.
+stProtectAck	Ikkonferma
+stProtectAckStill	Il-kawża għadha preżenti: għadu ma jistax jiġi kkonfermat.

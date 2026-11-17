@@ -495,3 +495,8 @@ ntpEnabled	Ņemt laiku no laika servera (NTP)
 ntpServer	Laika serveris (NTP)
 autoRestart	Pašam restartēties ik pēc
 autoRestartNever	Nekad
+fRpmHyst	Ātruma histerēze (apgr./min)
+fProtectLatch	Turēt aizsardzības izeju atvērtu, līdz tā tiek apstiprināta
+stProtectLatched	Izeja paliek atvērta, līdz cilvēks to apstiprina.
+stProtectAck	Apstiprināt
+stProtectAckStill	Cēlonis vēl pastāv: apstiprināt vēl nevar.

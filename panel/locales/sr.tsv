@@ -495,3 +495,8 @@ ntpEnabled	Узимај време са временског сервера (NTP
 ntpServer	Временски сервер (NTP)
 autoRestart	Сам се поново покрени сваких
 autoRestartNever	Никад
+fRpmHyst	Хистерезис брзине (о/мин)
+fProtectLatch	Заштитни излаз остаје отворен док се не потврди
+stProtectLatched	Излаз остаје отворен док га особа не потврди.
+stProtectAck	Потврди
+stProtectAckStill	Узрок је још присутан: још се не може потврдити.

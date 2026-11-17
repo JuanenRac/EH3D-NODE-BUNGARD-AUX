@@ -123,8 +123,10 @@ public:
             s.has_temp = !faults_.temp_missing && s.heat != Heat::Unknown;   // a reading that went stale is no reading
             s.temp_c = temp_c_;
         }
-        s.protect_open = protect_open(cfg_, s.rpm, s.heat);
-        protect_log_.update(protect_reason(cfg_, s.rpm, s.heat), static_cast<long>(now_ms_ / 1000));
+        const ProtectReason held = protect_latch_.apply(protect_reason(cfg_, s.rpm, s.heat, protect_latch_.live()), cfg_.protect_latch);
+        s.protect_open = held != ProtectReason::None;
+        s.protect_latched = protect_latch_.held();
+        protect_log_.update(held, static_cast<long>(now_ms_ / 1000));
         s.protect_reason = protect_reason_text(protect_log_.now);
         s.protect_trips = protect_log_.trips;
         s.protect_last = protect_reason_text(protect_log_.last);
@@ -165,8 +167,18 @@ public:
                 if (!q.empty() && detail::to_uint(q, 1, 31, n)) {}
                 return json_measure(measure(static_cast<int>(n)));
             }
+            case Route::ProtectAck: {
+                const AckResult result = protect_ack();
+                return json_protect_ack(result, status().protect_open);
+            }
             default: return "";
         }
+    }
+
+    /// POST /api/protect/ack: a person acknowledges a protect output that the latch holds open (the status is looked at first, so the latch has judged the present).
+    AckResult protect_ack() {
+        status();
+        return protect_latch_.acknowledge();
     }
 
 private:
@@ -183,6 +195,7 @@ private:
     SimFaults faults_;
     std::uint32_t rng_;
     Thermal thermal_{cfg_.temp_warn_c, cfg_.temp_critical_c, cfg_.temp_hysteresis_c};
+    mutable ProtectLatch protect_latch_;
     mutable ProtectLog protect_log_;   // what the status tells about the protect output; a look at the status is what updates it
     double x_ = 0.0, y_ = 0.0;
     double rpm_ = 0.0, target_rpm_ = 0.0;

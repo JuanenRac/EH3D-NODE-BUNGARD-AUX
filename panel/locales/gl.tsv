@@ -495,3 +495,8 @@ ntpEnabled	Tomar a hora dun servidor de hora (NTP)
 ntpServer	Servidor de hora (NTP)
 autoRestart	Reiniciarse só cada
 autoRestartNever	Nunca
+fRpmHyst	Histérese de velocidade (rpm)
+fProtectLatch	Manter aberta a saída de protección ata que se recoñeza
+stProtectLatched	A saída mantense aberta ata que unha persoa a recoñeza.
+stProtectAck	Recoñecer
+stProtectAckStill	A causa aínda está presente: aínda non se pode recoñecer.

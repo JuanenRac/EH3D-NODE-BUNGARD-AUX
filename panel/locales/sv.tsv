@@ -495,3 +495,8 @@ ntpEnabled	Hämta tiden från en tidsserver (NTP)
 ntpServer	Tidsserver (NTP)
 autoRestart	Starta om sig själv var
 autoRestartNever	Aldrig
+fRpmHyst	Varvtalshysteres (varv/min)
+fProtectLatch	Håll skyddsutgången öppen tills den kvitteras
+stProtectLatched	Utgången hålls öppen tills en person kvitterar.
+stProtectAck	Kvittera
+stProtectAckStill	Orsaken finns kvar: det går inte att kvittera ännu.

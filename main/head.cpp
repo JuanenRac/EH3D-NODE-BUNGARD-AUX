@@ -43,6 +43,7 @@ volatile bool protect_is_open = true;
 // why it is open, how often it has opened and when last: the watch task writes it, the status reads it
 std::mutex protect_lock;
 bungard_aux::ProtectLog protect_log;
+bungard_aux::ProtectLatch protect_latch;   // guarded by protect_lock, like the log
 // the temperature is read by a task of its own (a DS18B20 takes up to 750 ms to convert); this lock guards what it leaves for the others
 std::mutex thermal_lock;
 double temp_now_c = 0.0;
@@ -193,6 +194,7 @@ std::string live_json_now() {
         s.protect_trips = protect_log.trips;
         s.protect_last = bungard_aux::protect_reason_text(protect_log.last);
         s.protect_last_s = protect_log.last_s;
+        s.protect_latched = protect_latch.held();
     }
     s.uptime_s = static_cast<std::uint32_t>(esp_timer_get_time() / 1000000);
     s.light = light::present();
@@ -314,6 +316,30 @@ esp_err_t calibrate_handler(httpd_req_t* req) {
     double offset = 0.0, xtalk = 0.0;
     const std::string body = calibrate_now(cr, found, offset, xtalk);
     if (found) head::store_calibration(offset, xtalk);
+    httpd_resp_send(req, body.c_str(), body.size());
+    return ESP_OK;
+}
+
+/// A person acknowledges a protect output that the latch holds open. Refused (409) while a cause is still present.
+std::string protect_ack_now(int& code) {
+    bungard_aux::AckResult result;
+    bool open;
+    {
+        std::lock_guard<std::mutex> guard(protect_lock);
+        result = protect_latch.acknowledge();
+        open = result == bungard_aux::AckResult::Cleared ? false : protect_is_open;
+    }
+    code = result == bungard_aux::AckResult::StillActive ? 409 : 200;
+    return bungard_aux::json_protect_ack(result, open);
+}
+
+esp_err_t protect_ack_handler(httpd_req_t* req) {
+    bungard_aux::Request r;
+    if (!allowed(req, bungard_aux::Route::ProtectAck, r)) return ESP_OK;
+    httpd_resp_set_type(req, "application/json");
+    int code = 200;
+    const std::string body = protect_ack_now(code);
+    if (code == 409) httpd_resp_set_status(req, "409 Conflict");
     httpd_resp_send(req, body.c_str(), body.size());
     return ESP_OK;
 }
@@ -443,11 +469,14 @@ void watch_task(void*) {
         esp_task_wdt_reset();
         eh3d::nodeguard::beat("watch");   // the guard tells a watch task that does not come round (it is the one that writes the protect output)
         double rpm = settings.rpm_enabled ? sensors::rpm_now() : 0.0;
-        const bungard_aux::ProtectReason reason = bungard_aux::protect_reason(settings, rpm, heat_now());
-        const bool open = reason != bungard_aux::ProtectReason::None;
-        protect_is_open = open;
+        const bungard_aux::Heat heat = heat_now();
+        bool open = false;
         {
             std::lock_guard<std::mutex> guard(protect_lock);
+            const bungard_aux::ProtectReason live = bungard_aux::protect_reason(settings, rpm, heat, protect_latch.live());
+            const bungard_aux::ProtectReason reason = protect_latch.apply(live, settings.protect_latch);   // held open until acknowledged when the latch is on
+            open = reason != bungard_aux::ProtectReason::None;
+            protect_is_open = open;
             protect_log.update(reason, static_cast<long>(esp_timer_get_time() / 1000000));
         }
         sensors::protect_set(open);
@@ -491,7 +520,9 @@ void register_routes(httpd_handle_t server) {
     httpd_uri_t light_set = {"/api/light", HTTP_POST, light_set_handler, nullptr};
     httpd_uri_t snapshot = {"/api/snapshot", HTTP_GET, snapshot_handler, nullptr};
     httpd_uri_t calibrate = {"/api/laser/calibrate", HTTP_POST, calibrate_handler, nullptr};
+    httpd_uri_t protect_ack = {"/api/protect/ack", HTTP_POST, protect_ack_handler, nullptr};
     httpd_register_uri_handler(server, &calibrate);
+    httpd_register_uri_handler(server, &protect_ack);
     httpd_register_uri_handler(server, &light_get);
     httpd_register_uri_handler(server, &light_set);
     httpd_register_uri_handler(server, &snapshot);
@@ -513,6 +544,7 @@ std::string calibrate_json(const std::string& kind, double target_mm, bool& foun
     cr.target_mm = target_mm;
     return calibrate_now(cr, found, offset_mm, xtalk_cps);
 }
+std::string protect_ack_json(int& code) { return protect_ack_now(code); }
 std::string measure_json(int samples) { return measure_json_now(samples < 1 ? 1 : samples > 31 ? 31 : samples); }
 
 }  // namespace head

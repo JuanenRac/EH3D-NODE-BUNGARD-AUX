@@ -495,3 +495,8 @@ ntpEnabled	Võta aeg ajaserverist (NTP)
 ntpServer	Ajaserver (NTP)
 autoRestart	Taaskäivita ennast iga
 autoRestartNever	Mitte kunagi
+fRpmHyst	Kiiruse hüstereesi (p/min)
+fProtectLatch	Hoia kaitseväljund avatuna, kuni see kinnitatakse
+stProtectLatched	Väljund jääb avatuks, kuni inimene selle kinnitab.
+stProtectAck	Kinnita
+stProtectAckStill	Põhjus on veel olemas: kinnitada ei saa veel.

@@ -495,3 +495,8 @@ ntpEnabled	Hent tiden fra en tidsserver (NTP)
 ntpServer	Tidsserver (NTP)
 autoRestart	Genstart af sig selv hver
 autoRestartNever	Aldrig
+fRpmHyst	Hastighedshysterese (omdr./min)
+fProtectLatch	Hold beskyttelsesudgangen åben, til den kvitteres
+stProtectLatched	Udgangen holdes åben, til en person kvitterer.
+stProtectAck	Kvittér
+stProtectAckStill	Årsagen er der stadig: kan ikke kvitteres endnu.

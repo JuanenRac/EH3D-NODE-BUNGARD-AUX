@@ -495,3 +495,8 @@ ntpEnabled	Hartu ordua ordu-zerbitzari batetik (NTP)
 ntpServer	Ordu-zerbitzaria (NTP)
 autoRestart	Berrabiarazi bere kabuz hainbatero
 autoRestartNever	Inoiz ez
+fRpmHyst	Abiaduraren histeresia (bira/min)
+fProtectLatch	Mantendu babes-irteera irekita aitortu arte
+stProtectLatched	Irteera irekita dago pertsona batek aitortu arte.
+stProtectAck	Aitortu
+stProtectAckStill	Arrazoia oraindik hor dago: oraindik ezin da aitortu.

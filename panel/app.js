@@ -440,6 +440,14 @@ function barBox(id, labelId) {
   return el("div", { class: "bar-track", id, role: "progressbar", "aria-labelledby": labelId, "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": "0" }, fill);
 }
 
+// A person acknowledges a protect output that is held open (the setting protect_latch); the node refuses while a cause is still present.
+async function acknowledgeProtect() {
+  const r = await api("POST", "head/protect/ack", {});
+  if (r.status === 409 && r.data && r.data.result === "still_active") S.message = { kind: "bad", text: t("stProtectAckStill") };
+  else if (!r.ok) S.message = { kind: "bad", text: errorText(r.data.error) };
+  render();
+}
+
 // One measure of the table under the head: the median of the good readings of the laser.
 async function measureTable() {
   const button = document.getElementById("st-measure");
@@ -496,7 +504,9 @@ function statusPage() {
       calibrationBlock()),
     card(t("stSpindle"), el("p", { class: "big" }, el("span", { id: "sp-rpm" }, "—")), el("span", { id: "sp-label", class: "hint" }, t("stSpindleBar")), barBox("sp-bar", "sp-label"),
       el("p", { class: "muted", id: "sp-max" }), el("div", { class: "pills" }, el("span", { id: "st-p-heat" })), el("p", { class: "big" }, el("span", { id: "sp-temp" }, "—"))),
-    card(t("stProtect"), el("div", { class: "pills" }, el("span", { id: "st-p-protect" })), el("p", { class: "muted" }, t("stProtectHelp")), el("p", { class: "muted", id: "st-protect-why" })),
+    card(t("stProtect"), el("div", { class: "pills" }, el("span", { id: "st-p-protect" })), el("p", { class: "muted" }, t("stProtectHelp")), el("p", { class: "muted", id: "st-protect-why" }),
+      el("p", { class: "muted", id: "st-protect-held" }),
+      isAdmin() ? el("div", { class: "actions" }, el("button", { class: "b", type: "button", id: "st-protect-ack", hidden: true, onclick: acknowledgeProtect }, t("stProtectAck"))) : null),
     card(t("stNode"), kv([[t("firmware"), el("span", { id: "st-version" }, "—")], [t("uptime"), el("span", { id: "st-uptime" }, "—")], [t("address"), el("span", { id: "st-ip" }, "—")]])));
 }
 
@@ -538,6 +548,9 @@ function patchStatus() {
   const nowWhy = m.protect_open && causes[m.protect_reason] ? t("stProtectNow", t(causes[m.protect_reason])) : "";
   const lastWhy = m.protect_trips > 0 && causes[m.protect_last] ? t("stProtectLast", m.protect_trips, t(causes[m.protect_last])) : "";
   setText("st-protect-why", [nowWhy, lastWhy].filter(Boolean).join(" "));
+  setText("st-protect-held", m.protect_latched ? t("stProtectLatched") : "");
+  const ack = document.getElementById("st-protect-ack");
+  if (ack) ack.hidden = !m.protect_latched;
   setText("st-version", m.version); setText("st-ip", S.status && S.status.network && S.status.network.ip ? S.status.network.ip : "—"); setText("st-uptime", formatUptime(m.uptime_s));
 }
 
@@ -609,7 +622,7 @@ function headPage() {
             el("button", { class: "b", type: "button", onclick: () => lightCall("cue=nok") }, t("lightBtnNok")))] : null),
       card(t("hSpindle"), el("p", { class: "muted" }, t("hSpindleIntro")),
         hf("fRpmOn", "rpm_enabled", { type: "checkbox", rerender: true }),
-        h.rpm_enabled ? el("div", { class: "row" }, num("fPulses", "rpm_pulses_per_rev", 1, 64, "1"), num("fRpmMax", "rpm_max", 100, 60000, "24000"), num("fRpmStale", "rpm_stale_ms", 100, 10000, "1000")) : null,
+        h.rpm_enabled ? el("div", { class: "row" }, num("fPulses", "rpm_pulses_per_rev", 1, 64, "1"), num("fRpmMax", "rpm_max", 100, 60000, "24000"), num("fRpmHyst", "rpm_hysteresis", 0, 50000, "0"), num("fRpmStale", "rpm_stale_ms", 100, 10000, "1000")) : null,
         h.rpm_enabled ? el("div", { class: "row" }, hf("fRpmInput", "rpm_input", { type: "select", rerender: true, options: [["digital", t("rpmDigital")], ["analog", t("rpmAnalog")]] }), hf("fRpmEdge", "rpm_edge", { type: "select", options: [["rising", t("edgeRising")], ["falling", t("edgeFalling")]] })) : null,
         h.rpm_enabled && h.rpm_input === "analog" ? el("div", { class: "row" }, hf("fRpmAuto", "rpm_auto_threshold", { type: "checkbox", rerender: true }), h.rpm_auto_threshold ? null : num("fRpmThHi", "rpm_threshold_hi_mv", 50, 3300, "2000"), h.rpm_auto_threshold ? null : num("fRpmThLo", "rpm_threshold_lo_mv", 0, 3250, "1000")) : null,
         hf("fTempSensor", "temp_sensor", { type: "select", rerender: true, options: [["none", t("tempNone")], ["ds18b20", "DS18B20"], ["ntc", "NTC"], ["mlx90614", "MLX90614"]] }),
@@ -617,6 +630,7 @@ function headPage() {
         h.temp_sensor === "ntc" ? el("div", { class: "row" }, num("fNtcSeries", "ntc_series_ohm", 100, 1000000, "10000", { step: "any" }), num("fNtcR25", "ntc_r25_ohm", 100, 1000000, "10000", { step: "any" }), num("fNtcBeta", "ntc_beta", 1000, 10000, "3950", { step: "any" })) : null,
         h.temp_sensor !== "none" ? el("div", { class: "row" }, num("fTempWarn", "temp_warn_c", 0, 200, "55", { step: "any" }), num("fTempCritical", "temp_critical_c", 0, 250, "70", { step: "any" }), num("fTempHyst", "temp_hysteresis_c", 0, 50, "3", { step: "any" })) : null,
         hf("fProtect", "protect_output", { type: "checkbox", hint: t("fProtectHint") }),
+        hf("fProtectLatch", "protect_latch", { type: "checkbox" }),
         note(t("hSpindleSafety"), "bad"))));
 }
 

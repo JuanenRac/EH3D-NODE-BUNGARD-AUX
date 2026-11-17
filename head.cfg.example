@@ -92,6 +92,10 @@ light_order = grb
 
 # the protect output opens when the spindle is too fast or too hot (a sensor that is on and silent counts as hot)
 protect_output = on
+# off: the protect output closes by itself when the cause goes away; on: it stays open until a person acknowledges it (the panel, or POST /api/protect/ack with the token)
+protect_latch = off
+# after an overspeed the output closes again only when the speed is this many rpm below rpm_max (0: as soon as the speed is not above rpm_max)
+rpm_hysteresis = 0
 
 # the self-check: the node judges its own status and says it with codes in /api/status (selfcheck, selfcheck_codes); a laser reading older than this many seconds is reported, and for this many seconds after the start a reading that is not there yet is not a fault
 selfcheck_enabled = on

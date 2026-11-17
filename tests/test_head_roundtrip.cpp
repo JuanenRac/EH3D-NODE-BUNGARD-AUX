@@ -68,7 +68,7 @@ static const char* const kChanged =
     "rpm_enabled = off\nrpm_pulses_per_rev = 4\nrpm_input = analog\nrpm_edge = falling\nrpm_auto_threshold = off\nrpm_threshold_hi_mv = 2400\nrpm_threshold_lo_mv = 800\nrpm_max = 50000\nrpm_stale_ms = 2000\n"
     "temp_sensor = ds18b20\ntemp_resolution = 10\ntemp_rom = 28FF0102030405A6\nntc_series_ohm = 4700\nntc_r25_ohm = 4700\nntc_beta = 3380\ntemp_warn_c = 50\ntemp_critical_c = 65\ntemp_hysteresis_c = 2\ntemp_stale_ms = 1500\n"
     "light_enabled = off\nlight_leds = 12\nlight_level = 40\nlight_max_level = 70\nlight_tone = warm\nlight_auto_off_s = 300\nlight_on_at_start = on\nlight_order = rgb\n"
-    "protect_output = off\ntoken = abcdefgh12\n";
+    "protect_output = off\nprotect_latch = on\nrpm_hysteresis = 800\ntoken = abcdefgh12\n";
 
 int main() {
   const std::set<std::string> keys = parser_keys();

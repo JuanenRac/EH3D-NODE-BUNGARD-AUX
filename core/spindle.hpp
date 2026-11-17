@@ -233,13 +233,18 @@ private:
 /// Why the protect output is open: what the status tells next to `protect_open`.
 enum class ProtectReason { None, TooFast, Hot, SensorSilent };
 
-inline ProtectReason protect_reason(const Settings& s, double rpm, Heat heat) {
+/// `before` is what this look found one look ago: after an overspeed the output closes again only when the speed is `rpm_hysteresis` below `rpm_max` (0: as soon as it is not above `rpm_max`).
+inline ProtectReason protect_reason(const Settings& s, double rpm, Heat heat, ProtectReason before) {
     if (!s.protect_output) return ProtectReason::None;
-    if (s.rpm_enabled && rpm > static_cast<double>(s.rpm_max)) return ProtectReason::TooFast;
+    double fast_above = static_cast<double>(s.rpm_max);
+    if (before == ProtectReason::TooFast && s.rpm_hysteresis > 0) fast_above = std::max(0.0, fast_above - static_cast<double>(s.rpm_hysteresis));
+    if (s.rpm_enabled && rpm > fast_above) return ProtectReason::TooFast;
     if (s.temp_sensor != TempSensor::None && heat == Heat::Hot) return ProtectReason::Hot;
     if (s.temp_sensor != TempSensor::None && heat == Heat::Unknown) return ProtectReason::SensorSilent;
     return ProtectReason::None;
 }
+
+inline ProtectReason protect_reason(const Settings& s, double rpm, Heat heat) { return protect_reason(s, rpm, heat, ProtectReason::None); }
 
 inline bool protect_open(const Settings& s, double rpm, Heat heat) { return protect_reason(s, rpm, heat) != ProtectReason::None; }
 
@@ -252,6 +257,49 @@ inline const char* protect_reason_text(ProtectReason r) {
     }
     return "none";
 }
+
+/// What an acknowledgement of a held protect output came to.
+enum class AckResult { NotHeld, StillActive, Cleared };
+
+inline const char* ack_result_text(AckResult r) {
+    switch (r) {
+        case AckResult::NotHeld: return "not_held";
+        case AckResult::StillActive: return "still_active";
+        case AckResult::Cleared: return "cleared";
+    }
+    return "not_held";
+}
+
+/// The latch of the protect output (setting `protect_latch`): once the output has opened it stays open, even when the cause has gone, until `acknowledge` is called while no cause
+/// is present. With the latch off the output follows the causes, as before, and nothing is held. `apply` is called with each look; it returns what the output must follow.
+class ProtectLatch {
+public:
+    ProtectReason apply(ProtectReason live, bool latch) {
+        live_ = live;
+        if (!latch) {
+            held_ = ProtectReason::None;
+            return live;
+        }
+        if (live != ProtectReason::None && held_ == ProtectReason::None) held_ = live;
+        return held_ != ProtectReason::None ? held_ : live;
+    }
+
+    /// A person acknowledges the opening. Refused while a cause is still present (it would open again at the next look).
+    AckResult acknowledge() {
+        if (held_ == ProtectReason::None) return AckResult::NotHeld;
+        if (live_ != ProtectReason::None) return AckResult::StillActive;
+        held_ = ProtectReason::None;
+        return AckResult::Cleared;
+    }
+
+    bool held() const { return held_ != ProtectReason::None; }
+    /// What the last look found, whether it is held or not (the hysteresis of the speed needs it).
+    ProtectReason live() const { return live_; }
+
+private:
+    ProtectReason held_ = ProtectReason::None;
+    ProtectReason live_ = ProtectReason::None;
+};
 
 /// What the node remembers about the protect output: how many times it has opened since the start, why it opened last and when (seconds of running time, -1 when it has not).
 /// `update` is called with the reason of each look; a trip is a change from closed to open.

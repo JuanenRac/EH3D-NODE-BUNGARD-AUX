@@ -495,3 +495,8 @@ ntpEnabled	De tijd van een tijdserver halen (NTP)
 ntpServer	Tijdserver (NTP)
 autoRestart	Zichzelf herstarten elke
 autoRestartNever	Nooit
+fRpmHyst	Toerentalhysterese (tpm)
+fProtectLatch	Beveiligingsuitgang open houden tot bevestiging
+stProtectLatched	De uitgang blijft open tot iemand bevestigt.
+stProtectAck	Bevestigen
+stProtectAckStill	De oorzaak is er nog: bevestigen kan nog niet.

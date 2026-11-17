@@ -495,3 +495,8 @@ ntpEnabled	Sækja tímann frá tímaþjóni (NTP)
 ntpServer	Tímaþjónn (NTP)
 autoRestart	Endurræsa sig sjálfur á hverjum
 autoRestartNever	Aldrei
+fRpmHyst	Hraðahysteresa (snún./mín.)
+fProtectLatch	Halda varnarútgangi opnum þar til hann er staðfestur
+stProtectLatched	Útgangurinn helst opinn þar til einhver staðfestir hann.
+stProtectAck	Staðfesta
+stProtectAckStill	Orsökin er enn til staðar: ekki er hægt að staðfesta enn.

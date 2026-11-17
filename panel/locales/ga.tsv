@@ -495,3 +495,8 @@ ntpEnabled	Faigh an t-am ó fhreastalaí ama (NTP)
 ntpServer	Freastalaí ama (NTP)
 autoRestart	Atosaigh é féin gach
 autoRestartNever	Choíche
+fRpmHyst	Hisitéireas luais (rpm)
+fProtectLatch	Coinnigh an t-aschur cosanta oscailte go dtí go ndeimhnítear é
+stProtectLatched	Fanann an t-aschur oscailte go dtí go ndeimhníonn duine é.
+stProtectAck	Deimhnigh
+stProtectAckStill	Tá an chúis fós ann: ní féidir é a dheimhniú go fóill.

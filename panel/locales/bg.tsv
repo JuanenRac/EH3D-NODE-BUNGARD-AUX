@@ -495,3 +495,8 @@ ntpEnabled	Вземане на часа от сървър за време (NTP)
 ntpServer	Сървър за време (NTP)
 autoRestart	Рестарт сам на всеки
 autoRestartNever	Никога
+fRpmHyst	Хистерезис на скоростта (об/мин)
+fProtectLatch	Защитният изход остава отворен, докато не бъде потвърден
+stProtectLatched	Изходът остава отворен, докато човек не го потвърди.
+stProtectAck	Потвърди
+stProtectAckStill	Причината все още е налице: още не може да се потвърди.
