@@ -77,6 +77,8 @@ ntc_beta = 3950
 temp_warn_c = 55
 temp_critical_c = 70
 temp_hysteresis_c = 3
+# a temperature reading older than this many milliseconds counts as unknown, so a stuck reading task opens the protect output (0: never too old)
+temp_stale_ms = 2000
 
 # the ring of LEDs around the camera (eight WS2812 on one wire): the level it starts at, the ceiling it never goes over (0 to 100), the tone (white, cool, warm, red, green or blue), when it turns itself off (seconds, 0: never) and the order of the colours of the LED (grb or rgb)
 light_enabled = on

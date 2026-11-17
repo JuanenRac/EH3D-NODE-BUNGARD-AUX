@@ -273,6 +273,29 @@ int main() {
     CHECK(parsed(json_status(sim.status())).get("temp_c")->type == eh3d::json::Type::kNull);
   }
 
+  // ---- a temperature task that hangs after a good reading does not leave the last "ok" in charge ---------------------------------------------
+  {
+    Settings cfg = secure();
+    cfg.temp_sensor = TempSensor::Ds18b20;
+    HeadSim sim(cfg);
+    sim.advance(31000);
+    CHECK(sim.status().heat == Heat::Ok && !sim.status().protect_open);
+    sim.faults().temp_task_stuck = true;
+    sim.advance(1500);
+    CHECK(sim.status().heat == Heat::Ok && !sim.status().protect_open);   // still inside the 2 s of a reading
+    sim.advance(1500);
+    CHECK(sim.status().heat == Heat::Unknown && sim.status().protect_open && has_code(sim, "AUX-T01"));
+    sim.faults().temp_task_stuck = false;   // the task comes back: the reading is fresh again
+    sim.advance(100);
+    CHECK(sim.status().heat == Heat::Ok && !sim.status().protect_open);
+    cfg.temp_stale_ms = 0;                  // 0 never goes stale: the behaviour of before
+    HeadSim never(cfg);
+    never.advance(31000);
+    never.faults().temp_task_stuck = true;
+    never.advance(60000);
+    CHECK(never.status().heat == Heat::Ok);
+  }
+
   // ---- the settings change what is said, and they are never in the code ------------------------------------------------------------------
   {
     Settings cfg = secure();

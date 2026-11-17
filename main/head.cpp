@@ -53,7 +53,7 @@ constexpr int kMaxStreams = 2;   // each one is a task with a buffer of a pictur
 
 bungard_aux::Heat heat_now() {
     std::lock_guard<std::mutex> guard(thermal_lock);
-    return thermal.state();
+    return thermal.state_at(static_cast<std::uint32_t>(esp_timer_get_time() / 1000), settings.temp_stale_ms);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------ the camera
@@ -177,7 +177,7 @@ std::string live_json_now() {
     sensors::rpm_diagnostics(s.rpm_quality, s.rpm_rejected, s.rpm_level_mv, s.rpm_th_hi_mv, s.rpm_th_lo_mv);
     {
         std::lock_guard<std::mutex> guard(thermal_lock);
-        s.has_temp = temp_now_valid;
+        s.has_temp = temp_now_valid && s.heat != bungard_aux::Heat::Unknown;   // a reading that went stale is no reading
         s.temp_c = temp_now_c;
     }
     if (settings.temp_sensor == bungard_aux::TempSensor::Ds18b20) {
@@ -427,7 +427,7 @@ void temperature_task(void*) {
         const bool got = sensors::temperature_read(c);
         {
             std::lock_guard<std::mutex> guard(thermal_lock);
-            thermal.update(c, got);
+            thermal.update(c, got, static_cast<std::uint32_t>(esp_timer_get_time() / 1000));
             temp_now_valid = got;
             if (got) temp_now_c = c;
         }
@@ -473,7 +473,10 @@ void start(const bungard_aux::Settings& s) {
     ::stream::start(settings);
     eh3d::nodeguard::expect_task("watch");
     if (xTaskCreate(watch_task, "watch", 4096, nullptr, 5, nullptr) == pdPASS) eh3d::nodeguard::subsystem_up(eh3d::nodeguard::kSubOutputs);
-    if (settings.temp_sensor != bungard_aux::TempSensor::None) xTaskCreate(temperature_task, "temp", 4096, nullptr, 4, nullptr);
+    if (settings.temp_sensor != bungard_aux::TempSensor::None &&
+        xTaskCreate(temperature_task, "temp", 4096, nullptr, 4, nullptr) != pdPASS) {
+        ESP_LOGE(TAG, "the task of the temperature could not start: the protect output stays open");   // the state never leaves unknown
+    }
 }
 
 void register_routes(httpd_handle_t server) {

@@ -39,6 +39,7 @@ struct SimFaults {
     bool rpm_noise = false;         // the pulses of the speed sensor are noisy
     bool spindle_stalled = false;   // the spindle is ordered to turn and does not: the speed sensor reads 0
     bool temp_missing = false;      // the temperature sensor gives nothing
+    bool temp_task_stuck = false;   // the task that reads the temperature hangs: the last reading stays and gets old
     bool light_missing = false;     // the ring of LEDs was not found
     bool laser_spikes = false;      // every third reading of a measure is 3 mm too far (a glitch of the sensor): the filter has to throw those away
 };
@@ -68,7 +69,7 @@ public:
         now_ms_ += ms;
         if (last_laser_ms_ >= 0) laser_age_ms_ += ms;
         // the thermal state machine sees every step, as the task of the temperature does
-        if (cfg_.temp_sensor != TempSensor::None) thermal_.update(temp_c_, !faults_.temp_missing);
+        if (cfg_.temp_sensor != TempSensor::None && !faults_.temp_task_stuck) thermal_.update(temp_c_, !faults_.temp_missing, now_ms_);
     }
 
     /// The true distance from the sensor to the table under the head.
@@ -118,9 +119,9 @@ public:
         s.rpm_input = rpm_input_text(cfg_.rpm_input);
         s.rpm_quality = !cfg_.rpm_enabled || rpm_ <= 0.0 ? "none" : faults_.rpm_noise ? "noisy" : "good";
         if (cfg_.temp_sensor != TempSensor::None) {
-            s.has_temp = !faults_.temp_missing;
+            s.heat = thermal_.state_at(now_ms_, cfg_.temp_stale_ms);
+            s.has_temp = !faults_.temp_missing && s.heat != Heat::Unknown;   // a reading that went stale is no reading
             s.temp_c = temp_c_;
-            s.heat = thermal_.state();
         }
         s.protect_open = protect_open(cfg_, s.rpm, s.heat);
         protect_log_.update(protect_reason(cfg_, s.rpm, s.heat), static_cast<long>(now_ms_ / 1000));

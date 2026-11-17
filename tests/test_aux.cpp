@@ -195,6 +195,13 @@ static void thermal_state() {
     // a sensor that fails is not a cold spindle
     CHECK(th.update(0.0, false) == Heat::Unknown);
     CHECK(th.update(30.0, true) == Heat::Ok);
+    // a reading that is not renewed goes stale: 0 never does
+    th.update(30.0, true, 1000);
+    CHECK(th.state_at(3000, 2000) == Heat::Ok);
+    CHECK(th.state_at(3001, 2000) == Heat::Unknown);
+    CHECK(th.state_at(1000000, 0) == Heat::Ok);
+    th.update(30.0, true, 3500);
+    CHECK(th.state_at(5000, 2000) == Heat::Ok);
 }
 
 static void protect_output() {

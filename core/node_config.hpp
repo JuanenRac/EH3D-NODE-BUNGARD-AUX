@@ -118,7 +118,7 @@ inline void head_write(json::Writer& w, const bungard_aux::Settings& h, bool sec
       .field("rpm_input", bungard_aux::rpm_input_text(h.rpm_input)).field("rpm_edge", bungard_aux::rpm_edge_text(h.rpm_edge)).field("rpm_auto_threshold", h.rpm_auto_threshold)
       .field("rpm_threshold_hi_mv", static_cast<long long>(h.rpm_threshold_hi_mv)).field("rpm_threshold_lo_mv", static_cast<long long>(h.rpm_threshold_lo_mv));
   w.field("temp_sensor", bungard_aux::temp_sensor_text(h.temp_sensor)).field("temp_resolution", h.temp_resolution).field("temp_rom", h.temp_rom).field("ntc_series_ohm", h.ntc_series_ohm).field("ntc_r25_ohm", h.ntc_r25_ohm).field("ntc_beta", h.ntc_beta)
-      .field("temp_warn_c", h.temp_warn_c).field("temp_critical_c", h.temp_critical_c).field("temp_hysteresis_c", h.temp_hysteresis_c).field("protect_output", h.protect_output)
+      .field("temp_warn_c", h.temp_warn_c).field("temp_critical_c", h.temp_critical_c).field("temp_hysteresis_c", h.temp_hysteresis_c).field("temp_stale_ms", static_cast<long long>(h.temp_stale_ms)).field("protect_output", h.protect_output)
       .field("selfcheck_enabled", h.selfcheck_enabled).field("selfcheck_laser_age_max_s", static_cast<long long>(h.selfcheck_laser_age_max_s))
       .field("selfcheck_grace_s", static_cast<long long>(h.selfcheck_grace_s));
   if (secrets) w.field("token", h.token); else w.field("token_set", !h.token.empty());
