@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.0] - Newest improvements of the auxiliary node of the drill
+
 - **The protect output can be held open until a person acknowledges it:** the new setting `protect_latch` (off by default, so nothing changes until it is switched on) keeps the output open after the cause of an opening has gone, until the opening is acknowledged with `POST /api/protect/ack` (the token, or the administrator's button on the status page, in the 37 languages). The acknowledgement is refused with `409` while a cause is still present. The status tells it with `protect_latched`. The new setting `rpm_hysteresis` (0 by default) keeps the output open after an overspeed until the speed is that many rpm below `rpm_max`, so a speed that hovers around the limit does not make the output chatter. The simulated head plays both and the tests cover the latch, the refused and the accepted acknowledgement, the hysteresis and the ranges. Not built or run on a board.
 
 - **A temperature task that hangs no longer leaves the last good reading in charge:** the state of the temperature now goes with the time of its last reading, and one older than `temp_stale_ms` (2000 ms by default, 0 = never too old) counts as unknown, so the protect output opens with the code `AUX-T01` as it does for a silent sensor. A task that cannot be created is logged and leaves the state unknown. The head simulator has a `temp_task_stuck` fault and tests cover the stale reading, its recovery and the limit turned off.
