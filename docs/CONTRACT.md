@@ -51,7 +51,7 @@ Always answered, with or without the token. One line of JSON; a program must ign
 | `protect_last_s` | number | the running time, in seconds, of the last opening; -1 when it has not opened |
 | `protect_latched` | bool | the protect output is held open until a person acknowledges it (setting `protect_latch`), even if no cause is present any more |
 
-The server needs `node`, `camera`, `laser`, `rpm_sensor` and `protect_open` (it refuses a status without them); every other key may be missing.
+The server hands the answer on as it is and reads none of its keys itself; a program that reads the status must ignore a key it does not know, and treat a key that is missing as not known.
 
 ## `POST /api/protect/ack`
 
@@ -73,6 +73,18 @@ Needs the token. One measure of the height of the table under the head.
 | `refused` | number | readings the sensor itself refused |
 | `status` | text | the commonest reason the sensor gave for refusing |
 | `status_code` | number | and its number |
+
+## The other requests
+
+The same port serves five more requests, for the programs that look at the work. They need the token (a node with no token refuses them), given as `Authorization: Bearer <token>` or as `?token=`.
+
+* `GET /stream` is the camera as MJPEG until the viewer closes it.
+* `GET /api/snapshot` is one picture of the camera as JPEG; it answers `503` with `{"error":"no camera"}` or `{"error":"no picture"}` when there is none.
+* `GET /api/light` is the state of the ring of LEDs as one line of JSON.
+* `POST /api/light` changes the ring. The words go in the query: `on` (1 or 0), `level` (0 to 100), `tone`, `color` (six hexadecimal digits), `sectors`, and `cue` with `cue_ms` (100 to 600000) for a short signal. A word that does not fit is a `400` with `{"error":"bad_request","key":"<word>"}`; a ring that was not found is a `503` with `{"error":"no_light"}`.
+* `POST /api/laser/calibrate?kind=offset|xtalk|reset&mm=N` calibrates the laser against a flat target `mm` away (10 to 4000; a reset needs none). It works only while the calibration is allowed in the settings; the answer says `ok` or `why` (`disabled`, `no_readings`, `bad_target`...).
+
+The server asks for the status, the measure, the picture and the ring (`GET` and `POST /api/light`) with an empty body, so the node reads every word from the query. A host test cannot run these against a head on a machine; `tools/test_server_contract.py` compares the routes, the verbs, the words of the ring and the range of the readings of a measure with what the server asks for.
 
 ## The self-check
 

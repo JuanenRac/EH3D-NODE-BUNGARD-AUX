@@ -28,3 +28,5 @@ After you type `SI` it switches the light ring on for 2 s and puts it back as it
 | 6 | Light: switch on, change the level and the tone, switch off | The ring follows each change and never exceeds the ceiling | |
 | 7 | Take a snapshot with the light on and with it off | Both are sharp enough to see a 0.8 mm hole | |
 | 8 | Pull the network cable and plug it back | The node comes back and the stream resumes | |
+| 9 | With the node on the bench and EH3D-SERVER next to it, name the node in a machine (`head_address`, `head_token`) and ask `GET /api/v1/machines/:id/head/status`, `POST .../head/measure?samples=5`, `GET .../head/light`, `POST .../head/light?on=1&level=60&tone=white&sectors=all` and `GET .../head/snapshot` | Each answers with the words and the status code of the node, and the keys are the ones of docs/CONTRACT.md | |
+| 10 | Ask `POST /api/laser/calibrate?kind=offset&mm=100` and `GET /stream` straight from a program with the token, then without it | With the token they work (the calibration only while it is allowed in the settings); without it every request but the status is refused | |
