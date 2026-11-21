@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The web panel has the eight languages of the project, no more:** English, Spanish, Italian, German, French, Portuguese (of Portugal), Chinese and Japanese. The folder `panel/locales` (the words of 29 more languages), the file `/langs.js` and the code that asked for it are gone, so the firmware no longer embeds them; a browser or a stored choice of `pt-br` or `fr-ca` is read as Portuguese or French, and any other language shows English. `tests/check_panel_text.py` fails if the languages come back, and the README in the eight languages, the architecture and the structure of the repository say eight instead of 37.
 - **The shared firmware base is taken again:** `core/node_settings.hpp` is the copy of the base of EH3D-COMMON, which now knows the eight languages of the project only.
 
 - **Contract tests against the server, run without the board:** `tools/test_server_contract.py` reads the sources of EH3D-SERVER when it sits next to this repository and fails when the server asks the node for a route or a verb the node does not have, when a word of the ring of light that the server lets through (or documents: tones, sectors, cues) is not one the node reads, when the range of the readings of a measure (1 to 31) differs, or when an address without a port would not reach the port of the node; it also checks that the firmware registers exactly the routes of `core/protocol.hpp` and that the contract page names every route. Nothing was tried on a head on a machine.
