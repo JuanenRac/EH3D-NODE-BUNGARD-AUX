@@ -270,6 +270,7 @@ EH3D-NODE-BUNGARD-AUX/
 ├── build.sh build.bat                           build and run the host tests in a live panel
 ├── eh3d.project.json                            manifest: version, role, maturity and build command
 ├── CHANGELOG.md                                 what changed in each version
+├── AGENTS.md                                    the rules for anyone who changes the repository
 ├── SECURITY.md SUPPORT.md                       how to report a vulnerability and where to ask
 ├── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   how to contribute, the code of conduct and the licence
 └── bump_manifest_version.py                     version utility of the manifest
@@ -310,6 +311,11 @@ README and texts exist in English, Spanish, French, Italian, German, Chinese, Ja
 * The settings: `head.cfg.example` lists every key with its default and its range.
 * The hardware: the pins, the wiring of the protect output and the parts, in `docs/HARDWARE.md`.
 * [Changelog](CHANGELOG.md)
+* [Scope](docs/SCOPE.md): what the program is for, what it will not do and what it never decides.
+* [Requirements](docs/REQUIREMENTS.md): the register of capabilities, the state of each and the test that shows it.
+* [Status](docs/STATUS.md): what exists, what is missing and what is still open.
+* [Not yet](docs/NOT_YET.md): good ideas that are left out of this version.
+* [Rules for changing the repository](AGENTS.md): the rules for anyone who changes the repository.
 
 ## 🤝 Contributing & Community
 

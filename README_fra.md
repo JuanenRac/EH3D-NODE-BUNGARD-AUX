@@ -270,6 +270,7 @@ EH3D-NODE-BUNGARD-AUX/
 ├── build.sh build.bat                           compile et exécute les tests sur ordinateur dans un panneau en direct
 ├── eh3d.project.json                            manifeste : version, rôle, maturité et commande de compilation
 ├── CHANGELOG.md                                 ce qui a changé dans chaque version
+├── AGENTS.md                                    les règles pour qui modifie le dépôt
 ├── SECURITY.md SUPPORT.md                       signaler une vulnérabilité et poser des questions
 ├── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   contribuer, code de conduite et licence
 └── bump_manifest_version.py                     utilitaire de version du manifeste
@@ -310,6 +311,11 @@ Le README et les textes existent en anglais, espagnol, français, italien, allem
 * Les réglages : `head.cfg.example` liste chaque clé avec sa valeur par défaut et sa plage.
 * Le matériel : les broches, le câblage de la sortie de protection et les pièces, dans `docs/HARDWARE.md`.
 * [Journal des modifications](CHANGELOG.md)
+* [Périmètre](docs/SCOPE.md): à quoi sert le programme, ce qu'il ne fera pas et ce qu'il ne décide jamais.
+* [Exigences](docs/REQUIREMENTS.md): le registre des capacités, l'état de chacune et le test qui la montre.
+* [État](docs/STATUS.md): ce qui existe, ce qui manque et ce qui reste ouvert.
+* [Pas encore](docs/NOT_YET.md): de bonnes idées laissées de côté dans cette version.
+* [Règles pour modifier le dépôt](AGENTS.md): les règles pour qui modifie le dépôt.
 
 ## 🤝 Contribuer et communauté
 

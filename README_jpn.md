@@ -270,6 +270,7 @@ EH3D-NODE-BUNGARD-AUX/
 ├── build.sh build.bat                           ホスト テストをライブ パネルでビルドして実行
 ├── eh3d.project.json                            マニフェスト：バージョン、役割、成熟度、ビルドコマンド
 ├── CHANGELOG.md                                 各バージョンの変更点
+├── AGENTS.md                                    リポジトリを変更する人のための規則
 ├── SECURITY.md SUPPORT.md                       脆弱性の報告方法と問い合わせ先
 ├── CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE   貢献方法、行動規範、ライセンス
 └── bump_manifest_version.py                     マニフェストのバージョンユーティリティ
@@ -310,6 +311,11 @@ README とテキストは、英語、スペイン語、フランス語、イタ�
 * 設定：`head.cfg.example` に各キーの既定値と範囲があります。
 * ハードウェア：ピン、保護出力の配線、部品は `docs/HARDWARE.md` にあります。
 * [変更履歴](CHANGELOG.md)
+* [スコープ](docs/SCOPE.md)： このプログラムの目的、行わないこと、決して判断しないこと。
+* [要件](docs/REQUIREMENTS.md)： 機能の一覧、それぞれの状態、それを示すテスト。
+* [状況](docs/STATUS.md)： 存在するもの、足りないもの、まだ未決のこと。
+* [まだ対象外](docs/NOT_YET.md)： このバージョンに含めなかった良いアイデア。
+* [リポジトリ変更の規則](AGENTS.md)： リポジトリを変更する人のための規則。
 
 ## 🤝 コントリビュートとコミュニティ
 
