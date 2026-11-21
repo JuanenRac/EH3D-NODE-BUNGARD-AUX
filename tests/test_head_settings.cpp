@@ -134,6 +134,14 @@ int main() {
   config::clear_live_settings(b);
   CHECK(config::to_json(a, true) != config::to_json(b, true));
 
+  // the languages of the project: the eight and the two former variants are known; any other text, however it is written, is not
+  for (const char* code : {"en", "es", "de", "fr", "it", "ja", "zh", "pt", "pt-br", "fr-ca"}) CHECK(config::language_is_known(code));
+  for (const char* code : {"", "EN", "e", "eng", "pt-PT", "pt-BR", "xx", "es-MX", "bg", "ru", "uk", "fi", "pl", "nl", "ca", "no", "is", "eu"}) CHECK(!config::language_is_known(code));
+  // hostile codes: padding, a NUL after a good code, markup, a path, a list, a very long text, other alphabets, full-width letters, the usual long tags and a good code with a suffix are all refused
+  CHECK(!config::language_is_known(std::string_view("en\0", 3)) && !config::language_is_known(std::string_view("\0", 1)) && !config::language_is_known(std::string_view("pt-br\0x", 7)));
+  for (const char* code : {" en", "en ", "en\n", "\ten", "en-", "-en", "en,es", "en;es", "<script>", "../en", "en/../es", "\"en\"", "%65n", "\xEF\xBD\x85\xEF\xBD\x8E", "\xE6\x97\xA5\xE6\x9C\xAC\xE8\xAA\x9E", "ru-RU", "zh-CN", "ja-JP", "pt_br", "fr_ca", "Pt-Br", "FR-CA", "pt-br ", "fr-ca\n", "pt-br-x", "fr-ca-x", "pt-pt", "en-US", "constructor", "__proto__"}) CHECK(!config::language_is_known(code));
+  CHECK(!config::language_is_known(std::string(5000, 'e')) && !config::language_is_known(std::string(256, 'p') + "t"));
+
   std::printf("%s\n", fails == 0 ? "head settings: all checks passed" : "head settings: FAILED");
   return fails == 0 ? 0 : 1;
 }
