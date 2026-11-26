@@ -4,6 +4,7 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The shared lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so the local validation no longer fails over downloaded code.
 - **The test counts of the eight README files are the ones the host tests print today**.
 - The shared checks (`tools/ci_validate.py` version 6, `tools/status_lights.py`, `tools/lessons_lint.py`) are the current ones of the documentation hub: the validation now also runs the workflow checker and the lessons of past CI failures against their baselines, and a README that states another maturity than the manifest fails.
 - **More tests of the ONVIF side:** requests cut at any place, tokens with a part changed or missing, the plain text password and a node name with XML characters (`tests/test_stream.cpp`).
