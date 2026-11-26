@@ -4,6 +4,10 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **The test counts of the eight README files are the ones the host tests print today**.
+- The shared checks (`tools/ci_validate.py` version 6, `tools/status_lights.py`, `tools/lessons_lint.py`) are the current ones of the documentation hub: the validation now also runs the workflow checker and the lessons of past CI failures against their baselines, and a README that states another maturity than the manifest fails.
+- **More tests of the ONVIF side:** requests cut at any place, tokens with a part changed or missing, the plain text password and a node name with XML characters (`tests/test_stream.cpp`).
+
 ## [0.1.1] - Protect latch and new failure checks - firmware not tested on hardware
 
 - **The web panel has the eight languages of the project, no more:** English, Spanish, Italian, German, French, Portuguese (of Portugal), Chinese and Japanese. The folder `panel/locales` (the words of 29 more languages), the file `/langs.js` and the code that asked for it are gone, so the firmware no longer embeds them; a browser or a stored choice of `pt-br` or `fr-ca` is read as Portuguese or French, and any other language shows English. `tests/check_panel_text.py` fails if the languages come back, and the README in the eight languages, the architecture and the structure of the repository say eight instead of 37.
