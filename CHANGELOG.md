@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.1] - Protect latch and new failure checks - firmware not tested on hardware
+
 - **The web panel has the eight languages of the project, no more:** English, Spanish, Italian, German, French, Portuguese (of Portugal), Chinese and Japanese. The folder `panel/locales` (the words of 29 more languages), the file `/langs.js` and the code that asked for it are gone, so the firmware no longer embeds them; a browser or a stored choice of `pt-br` or `fr-ca` is read as Portuguese or French, and any other language shows English. `tests/check_panel_text.py` fails if the languages come back, and the README in the eight languages, the architecture and the structure of the repository say eight instead of 37.
 - **The shared firmware base is taken again:** `core/node_settings.hpp` is the copy of the base of EH3D-COMMON, which now knows the eight languages of the project only.
 
