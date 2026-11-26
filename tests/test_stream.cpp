@@ -273,12 +273,83 @@ static void onvif() {
     CHECK(onvif_handle(nopass, envelope("GetSystemDateAndTime"), "").http_status == 200);
 }
 
+// words from the network that are cut, strange or hostile never open a protected call
+static void onvif_refuses_hostile_words() {
+    OnvifConfig c;
+    c.ip = "10.0.0.5";
+    c.user = "viewer";
+    c.password = "userpassword";
+    const std::string nonce = "LKqI6G/AikKCQrN0zqZFlg==", created = "2010-09-16T07:50:45Z";
+    const std::string good = token_header("viewer", "userpassword", nonce, created);
+
+    // a request cut at any place before the end of the tag of its operation is refused, whatever it already carries
+    const std::string whole = envelope("GetStreamUri", good);
+    const std::size_t op_end = whole.find('>', whole.find("<tds:GetStreamUri")) + 1;
+    bool cut_refused = true;
+    for (std::size_t n = 0; n < op_end; ++n) {
+        const SoapAnswer cut = onvif_handle(c, whole.substr(0, n), "");
+        if (cut.http_status != 400 || has(cut.body, "rtsp://")) cut_refused = false;
+    }
+    CHECK(cut_refused);
+    CHECK(onvif_handle(c, whole, "").http_status == 200);
+
+    // a token with a part changed or missing
+    const auto status = [&c](const std::string& header) { return onvif_handle(c, envelope("GetStreamUri", header), "").http_status; };
+    const auto with = [&good](const std::string& from, const std::string& to) {
+        std::string h = good;
+        h.replace(h.find(from), from.size(), to);
+        return h;
+    };
+    CHECK(status(good) == 200);
+    CHECK(status(with(">viewer<", ">viewer2<")) == 400);
+    CHECK(status(with(">viewer<", "><")) == 400);
+    CHECK(status(with(created, "2010-09-16T07:50:46Z")) == 400);
+    CHECK(status(with(nonce, "AAAAAAAAAAAAAAAAAAAAAA==")) == 400);
+    CHECK(status(with("<wsse:Nonce>" + nonce + "</wsse:Nonce>", "<wsse:Nonce/>")) == 400);
+    CHECK(status(with("<wsu:Created>" + created + "</wsu:Created>", "")) == 400);
+
+    // the plain text password of the standard, right and wrong
+    const auto plain = [](const std::string& password) {
+        return "<wsse:UsernameToken><wsse:Username>viewer</wsse:Username><wsse:Password Type=\"x#PasswordText\">" + password + "</wsse:Password></wsse:UsernameToken>";
+    };
+    CHECK(status(plain("userpassword")) == 200);
+    CHECK(status(plain("userpasswor")) == 400);
+    CHECK(status(plain("")) == 400);
+    OnvifConfig nouser = c;
+    nouser.user.clear();
+    CHECK(onvif_handle(nouser, envelope("GetStreamUri", good), "").http_status == 400);
+
+    // the name, the firmware and the serial of the node cannot add elements to an answer
+    OnvifConfig odd = c;
+    odd.name = "a<b>&\"c";
+    odd.firmware = "<f>";
+    odd.serial = "&s";
+    const SoapAnswer host = onvif_handle(odd, envelope("GetHostname", good), "");
+    CHECK(has(host.body, "<tt:Name>a&lt;b&gt;&amp;&quot;c</tt:Name>") && !has(host.body, "<b>"));
+    const SoapAnswer info = onvif_handle(odd, envelope("GetDeviceInformation", good), "");
+    CHECK(has(info.body, "&lt;f&gt;") && has(info.body, "&amp;s") && !has(info.body, "<f>"));
+    CHECK(!has(probe_match(odd, "", "abc"), "<b>") && !has(probe_match(odd, "", "abc"), "RelatesTo"));
+
+    // the small reader of elements
+    using onvif_detail::body_operation;
+    using onvif_detail::element_text;
+    CHECK(element_text("<a:Name> spaced \r\n</a:Name>", "Name") == "spaced");
+    CHECK(element_text("<Name>never closed", "Name").empty() && element_text("<Name", "Name").empty() && element_text("", "Name").empty());
+    CHECK(element_text("<Name/><x:Name>second</x:Name>", "Name") == "second");
+    CHECK(body_operation("<s:Body>words only</s:Body>").empty() && body_operation("<s:Body").empty() && body_operation("").empty());
+    CHECK(is_discovery_probe("<x><a:Action>http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</a:Action></x>"));  // no types asked: anything
+    // a clock that cannot be read answers the first day of 1970
+    const SoapAnswer clock = onvif_handle(c, envelope("GetSystemDateAndTime"), "not a time");
+    CHECK(clock.http_status == 200 && has(clock.body, "<tt:Year>1970</tt:Year>") && has(clock.body, "<tt:Hour>0</tt:Hour>"));
+}
+
 int main() {
     hashes();
     request_parsing();
     rtsp_flow();
     rtp_payload();
     onvif();
+    onvif_refuses_hostile_words();
     std::printf("%d checks, %d failed\n", checks, failures);
     return failures == 0 ? 0 : 1;
 }
