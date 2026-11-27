@@ -55,7 +55,7 @@ The server hands the answer on as it is and reads none of its keys itself; a pro
 
 ## `POST /api/protect/ack`
 
-Needs the token. Acknowledges a protect output that the setting `protect_latch` holds open. It answers `ok`, `result` and `protect_open`: `result` is `cleared` (the output follows the causes again), `not_held` (nothing was held) or `still_active` (a cause is still present: the answer is `409` and nothing changes).
+Needs the token: a person signed in to the panel is not enough on this route (an administrator acknowledges from the panel, on the panel's own route). Acknowledges a protect output that the setting `protect_latch` holds open. It answers `ok`, `result` and `protect_open`: `result` is `cleared` (the output follows the causes again), `not_held` (nothing was held) or `still_active` (a cause is still present: the answer is `409` and nothing changes).
 
 ## `POST /api/measure[?samples=N]`
 

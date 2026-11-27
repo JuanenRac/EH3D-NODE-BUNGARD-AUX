@@ -157,8 +157,7 @@ bool allowed(httpd_req_t* req, bungard_aux::Route route, bungard_aux::Request& r
     r.query = q == std::string::npos ? "" : uri.substr(q + 1);
     if (bungard_aux::authorized(settings, route, bearer_of(req), r)) return true;
     // a person signed in to the panel sees the camera and measures without the access token of the programs (the picture of the panel cannot carry a header)
-    // (calibrating changes what every reading means: it takes the token of the head, or the administrator's own route of the panel)
-    if (route != bungard_aux::Route::Status && route != bungard_aux::Route::Calibrate && eh3d::web::signed_in(req)) return true;
+    if (bungard_aux::session_may(route) && eh3d::web::signed_in(req)) return true;
     httpd_resp_set_status(req, "401 Unauthorized");
     httpd_resp_send(req, "{\"error\":\"unauthorized\"}", HTTPD_RESP_USE_STRLEN);
     return false;

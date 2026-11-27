@@ -79,6 +79,11 @@ inline bool authorized(const Settings& s, Route route, const std::string& bearer
     return same_secret(s.token, given);
 }
 
+/// What a person signed in to the panel may ask on the routes of the programs without the access token, whatever the role: the status, the measure, the picture and the light.
+/// A calibration changes what every reading means and an acknowledgement releases a protect output that is held: those take the token here, and an administrator does them on the
+/// routes of the panel.
+inline bool session_may(Route route) { return route != Route::Status && route != Route::Calibrate && route != Route::ProtectAck; }
+
 /// The number of readings a measure asks for: the query, kept inside what the settings allow.
 inline int samples_of(const Settings& s, const Request& r) {
     std::string v = query_value(r.query, "samples");

@@ -277,6 +277,9 @@ static void words_of_the_network() {
     CHECK(!authorized(none, Route::Measure, "anything", m));
     CHECK(!authorized(none, Route::Stream, "anything", q));
     CHECK(same_secret("a", "a") && !same_secret("a", "b") && !same_secret("a", "ab"));
+    // a person signed in to the panel, of whatever role, looks and measures; releasing a held protect output and calibrating are not given with the session alone
+    CHECK(session_may(Route::Measure) && session_may(Route::Snapshot) && session_may(Route::Stream) && session_may(Route::LightGet) && session_may(Route::LightSet));
+    CHECK(!session_may(Route::ProtectAck) && !session_may(Route::Calibrate) && !session_may(Route::Status));
 
     // how many readings: the query, inside what is allowed
     Request s5;
