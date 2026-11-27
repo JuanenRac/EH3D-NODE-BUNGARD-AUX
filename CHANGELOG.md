@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **Third-party notices:** `docs/THIRD_PARTY_NOTICES` holds the licences and copyright notices of ESP-IDF, of the third-party code inside it and of the components the firmware is built with, made by `tools/third_party_notices.py` from the build of every board. The CI fails when a declared dependency is not listed.
+
 ## [0.1.2] - Clearing the latched protection needs the token - firmware not tested on hardware
 
 - **A panel session alone no longer releases a held protect output (security):** `POST /api/protect/ack`, the route of the programs, accepted any signed-in person, a viewer too. It now takes the access token of the head; an administrator acknowledges from the panel as before. Built in CI, not tried on a board.
