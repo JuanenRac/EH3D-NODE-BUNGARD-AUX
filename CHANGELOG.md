@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.2] - Clearing the latched protection needs the token - firmware not tested on hardware
+
 - **A panel session alone no longer releases a held protect output (security):** `POST /api/protect/ack`, the route of the programs, accepted any signed-in person, a viewer too. It now takes the access token of the head; an administrator acknowledges from the panel as before. Built in CI, not tried on a board.
 - **The shared lessons check reads only what is part of the repository:** what git ignores, and folders such as `managed_components` that a firmware build downloads, are no longer analysed, so the local validation no longer fails over downloaded code.
 - **The test counts of the eight README files are the ones the host tests print today**.
