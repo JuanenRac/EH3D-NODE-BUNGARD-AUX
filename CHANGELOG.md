@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.3] - Third-party notices - firmware not tested on hardware
+
 - **Third-party notices:** `docs/THIRD_PARTY_NOTICES` holds the licences and copyright notices of ESP-IDF, of the third-party code inside it and of the components the firmware is built with, made by `tools/third_party_notices.py` from the build of every board. The CI fails when a declared dependency is not listed.
 
 ## [0.1.2] - Clearing the latched protection needs the token - firmware not tested on hardware
